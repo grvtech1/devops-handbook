@@ -17,7 +17,7 @@
 > 2. *(M6)* CI pipeline ne image ECR pe push kar di. Cluster mein naya version pohunchane ke liye CI seedha `kubectl apply` karta hai — sahi ya galat? Agar galat, toh kya karta hai?
 > 3. *(M4)* K8s reconciliation loop kya compare karta hai, aur agar koi pod manually delete kar do, toh kya hota hai?
 >
-> <details><summary>Jawab</summary>
+> <details markdown="1"><summary>Jawab</summary>
 >
 > 1. Pull mein Argo cluster ke andar se Git read karta hai — cluster credentials kabhi bahar nahi jaate; CI ko kubeconfig ki zaroorat nahi. &nbsp; 2. Galat — CI sirf k8s manifest mein image tag update karta hai aur Git commit karta hai (Bridge 5); Argo baad mein Git se pull karta hai. &nbsp; 3. Desired state (spec replicas:3) vs current state (live pods:2) — controller loop missing pod wapas banata hai desired poora karne ke liye.
 > </details>
@@ -59,11 +59,11 @@ The two loops meet in exactly one place: **the Kubernetes cluster**. The outer l
 
 > 🇮🇳 **Hinglish intuition:** Outer loop = *neev aur ghar banao* (ek baar, mazbooti se). Inner loop = *rozana khana banao aur serve karo* (baar-baar, machine se). Dono ki common cheez ek hi: *recipe book* (Git).
 
-![The two loops sharing one Git repo, meeting at the Kubernetes cluster](../devops_two_loops_mental_model.png)
+![The two loops sharing one Git repo, meeting at the Kubernetes cluster](assets/devops_two_loops_mental_model.png)
 
 *Figure 1: the two loops — outer (infra/Pets) and inner (delivery/Cattle) — meeting at the Kubernetes cluster, Git as the shared source of truth.*
 
-![The full production pipeline with every handoff (bridge) labelled, from code to user](../devops_full_pipeline_handoffs.png)
+![The full production pipeline with every handoff (bridge) labelled, from code to user](assets/devops_full_pipeline_handoffs.png)
 
 *Figure 2: the same system unrolled left-to-right — every handoff (the 8 bridges below) shown as an arrow from one tool to the next.*
 
@@ -261,7 +261,7 @@ Systems thinking includes *people*. On a real team these boxes have different ow
 
 Pehle memory se jawab do, phir neeche kholo.
 
-<details><summary>Jawab dekho</summary>
+<details markdown="1"><summary>Jawab dekho</summary>
 
 1. B1 TF→Ansible: IPs→inventory; UNREACHABLE. B2 Ansible→K8s: 3 playbooks live cluster banate hain; kubeadm fail / wrong join token. B3 Docker→Pod: ECR image kubelet pull karta hai; ImagePullBackOff. B4 push→CI: git push workflow trigger karta hai; wrong branch filter. B5⭐ CI→Git manifest: image tag update+commit, cluster seedha nahi; manifest update bhool gaye → old image chalta rehta. B6 Git→Argo→K8s: Argo pull+apply karta hai; OutOfSync sync nahi hua. B7 Pod→Service→User: EndpointSlice ready pods route karta hai; koi ready pods nahi → 503. B8 Pod→RDS: psycopg2 se RDS:5432 connect; wrong SG ya bad password → timeout.
 2. Bridge 5. CI cluster ko seedha nahi chhuta — sirf Git mein manifest update karta hai. Argo (cluster ke andar) Git se pull karke apply karta hai. Isliye CI ke paas cluster credentials nahi chahiye.

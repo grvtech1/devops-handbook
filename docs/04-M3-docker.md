@@ -16,7 +16,7 @@
 > 2. *(M1)* Terraform ka `tfstate` file Git mein kabhi commit kyun nahi karna chahiye?
 > 3. *(M0)* DevOps stack mein "packaging" layer ka kya kaam hai — aur Docker se pehle "it works on my machine" problem kyun hoti thi?
 >
-> <details><summary>Jawab</summary>
+> <details markdown="1"><summary>Jawab</summary>
 >
 > 1. `ok` = system already desired state mein tha, Ansible ne kuch nahi kiya. `changed` = Ansible ne fix kiya. `changed=0` doosre run mein = convergence — idempotency ka proof. &nbsp; 2. `tfstate` mein sensitive data plaintext mein hota hai (DB passwords, private keys). Git history permanent hai — ek baar commit hua toh practically leak. S3 + encryption + restricted IAM use karo. &nbsp; 3. Packaging = app aur uski saari dependencies ko ek portable unit mein bundle karna (Docker image). Pehle: OS version, library versions, runtime sab environments mein different hote — dev pe kaam karta, prod pe crash. Docker ne sab ek saath freeze kiya.
 > </details>
@@ -746,7 +746,7 @@ Answer these before moving to the lab. If you cannot answer, go back to the rele
 
 8. Container A (`web`) needs to connect to Container B (`db`) in the same Compose stack. What hostname does Container A use? Why does it work even when Container B restarts and gets a new IP?
 
-<details><summary>Jawab dekho</summary>
+<details markdown="1"><summary>Jawab dekho</summary>
 
 1. Container = Linux process isolated via **namespaces** (pid, net, mnt, uts, ipc, user — har namespace ek private view deta hai: process tree, network, filesystem, hostname) aur **cgroups** se constrain (CPU/RAM/IO limits). Host kernel share hota — no guest OS, no hypervisor. VM = full guest OS + kernel on virtualized hardware via hypervisor. Container: milliseconds start, MBs. VM: minutes, GBs. VM isolation stronger (separate kernel); container density zyada (100s per host).
 2. Wrong order (`COPY . .` then `pip install`): `app.py` edit karo → `COPY . .` layer cache miss → `pip install` bhi force rebuild — 2+ min wasted. Correct order (`COPY requirements.txt` → `pip install` → `COPY . .`): `app.py` edit karo → sirf last `COPY . .` layer rebuild — pip install cache hit karta. Ek cheap layer, seconds mein.

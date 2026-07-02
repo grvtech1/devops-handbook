@@ -23,7 +23,7 @@ and feeds into [09-connected-system.md](09-connected-system.md) (the full end-to
 > 2. *(M4)* Kubernetes ka reconciliation loop kya compare karta hai, aur jab fark mile toh loop kya action leta hai?
 > 3. *(M1)* `terraform apply` do baar lagatar chalao — doosri baar bhi nayi VPC banti hai kya? Is property ka naam kya hai?
 >
-> <details><summary>Jawab</summary>
+> <details markdown="1"><summary>Jawab</summary>
 >
 > 1. CI sirf k8s manifest mein image tag update karta hai aur Git mein commit+push karta hai — cluster ko seedha chhuta nahi. &nbsp; 2. Desired state (spec) vs current state (live pods/objects) — loop current ko desired tak drive karta hai, hamesha. &nbsp; 3. Nahi — already exist karta hai toh chhodh deta hai. Is property ko **idempotency** kehte hain.
 > </details>
@@ -518,7 +518,7 @@ argocd app set url-shortener --sync-policy automated
 
 Pehle memory se jawab do, phir neeche kholo.
 
-<details><summary>Jawab dekho</summary>
+<details markdown="1"><summary>Jawab dekho</summary>
 
 1. Cause B (cluster changed — `kubectl` ne kiya). selfHeal detects replicas=0 vs Git ka declared value aur ~30s–3min mein wapas Git wala count apply kar deta hai.
 2. Argo ~3 min poll ke baad naya image tag dekhta hai → OutOfSync (Cause A) → manifest apply karta hai → naya ReplicaSet starts → pods readiness probe pass karte hain → purane pods terminate → status: Synced + Healthy.

@@ -1,0 +1,51 @@
+/* ---- DevOps Handbook — site polish + interactive widgets ---- */
+
+/* Progress meter (injected on the Progress page and any tracker-like page) */
+.dhb-progress {
+  position: relative;
+  height: 28px;
+  background: var(--md-default-fg-color--lightest);
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 1rem 0 1.5rem;
+  box-shadow: inset 0 0 0 1px var(--md-default-fg-color--lightest);
+}
+.dhb-progress-fill {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 0;
+  background: linear-gradient(90deg, var(--md-primary-fg-color), var(--md-accent-fg-color));
+  transition: width .35s ease;
+}
+.dhb-progress-label {
+  position: relative;
+  display: block;
+  text-align: center;
+  line-height: 28px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  color: var(--md-default-fg-color);
+}
+
+/* Make task-list checkboxes feel clickable (progress.js enables them) */
+.md-content .task-list-item input[type="checkbox"] {
+  cursor: pointer;
+}
+.md-content .task-list-item input[type="checkbox"]:not(:disabled) {
+  transform: scale(1.15);
+}
+
+/* Flashcards — quiz mode (blur answers until clicked) */
+.dhb-fc-toggle { margin: .25rem 0 1.25rem; }
+.dhb-fc-answer { cursor: pointer; transition: filter .15s ease; }
+.dhb-fc-answer.dhb-hidden { filter: blur(5px); user-select: none; }
+.dhb-fc-answer.dhb-hidden:hover { filter: blur(2.5px); }
+.dhb-fc-hint {
+  font-size: .75rem;
+  color: var(--md-default-fg-color--light);
+  margin: -.5rem 0 1rem;
+}
+
+/* A touch more breathing room in the chapter header callouts */
+.md-typeset blockquote { border-left-width: 3px; }

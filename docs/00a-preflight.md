@@ -621,7 +621,7 @@ curl -X POST https://api.example.com/shorten \
 8. A junior engineer says "I deployed the image to the repository." What two words are
    confused, and what are the correct terms?
 
-<details><summary>Jawab dekho</summary>
+<details markdown="1"><summary>Jawab dekho</summary>
 
 1. Exit code `1` (any non-zero) means failure. A CI pipeline with `set -e` or a standard
    pipeline runner will stop the build, mark it failed, and not proceed to the next step —

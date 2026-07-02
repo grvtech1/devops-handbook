@@ -20,7 +20,7 @@
 > 2. *(M4)* K8s Deployment mein rolling update ke dauran agar naya pod readiness probe fail kare to kya hota hai?
 > 3. *(M1)* "Idempotent" ka matlab kya hai? Terraform ka ek concrete example do jahan yeh property kaam aati hai.
 >
-> <details><summary>Jawab</summary>
+> <details markdown="1"><summary>Jawab</summary>
 >
 > 1. (1) Image tag galat hai ya registry mein exist nahi karta. (2) Private registry mein auth fail — `imagePullSecret` missing ya credentials wrong. &nbsp; 2. Rolling update ruk jaata hai — purani pods alive rehti hain, naye pods nahi aate jab tak readiness fail ho; cluster old version pe chalta rehta. &nbsp; 3. Idempotent = same operation baar-baar karo, result same rahe. Terraform: "3 EC2 chahiye" — 5 baar `apply` karo, hamesha 3 hi rahenge, 15 nahi banenge.
 > </details>
@@ -548,7 +548,7 @@ Pehle memory se jawab do, phir neeche kholo.
 7. A matrix build fans out across three services. Service A takes 4 minutes, B takes 6 minutes, C takes 3 minutes. What is the total wall-clock time?
 8. Why does the manifest-update pattern improve security compared to running `kubectl apply` directly from CI?
 
-<details><summary>Jawab dekho</summary>
+<details markdown="1"><summary>Jawab dekho</summary>
 
 1. Continuous Delivery: artifact is always production-ready but a human manually approves the final push to production. Continuous Deployment: no human gate — every passing build goes to production automatically.
 2. The `build-push` job does NOT run if the `test` job fails (exits non-zero). `needs: test` means it waits for `test` to complete successfully; failure cancels all downstream jobs.

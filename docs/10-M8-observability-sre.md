@@ -16,7 +16,7 @@
 > 2. *(M7)* `selfHeal: true` set hai aur kisi ne `kubectl edit deployment` se live image tag change kar diya. Argo kya karega — Cause A ya Cause B, aur kitne time mein?
 > 3. *(M6)* CI mein `github.sha` tag kyun use karte hain `latest` ki jagah? Ek concrete problem batao jo `latest` se production mein aata hai.
 >
-> <details><summary>Jawab</summary>
+> <details markdown="1"><summary>Jawab</summary>
 >
 > 1. Readiness fail → pod Service ke EndpointSlice se hata diya jaata hai (traffic nahi milta, restart nahi hota). Liveness fail → pod restart hota hai. Dono alag cheezein — alag problems ke liye. &nbsp; 2. Cause B (cluster drifted from Git). selfHeal ~30s–3min mein Git wala version wapas apply karta hai. &nbsp; 3. `latest` mutable hai — alag nodes pe alag images pull ho sakti hain, rollback mushkil. `github.sha` immutable hai — exactly wohi build deploy hota hai jo test se guzri.
 > </details>
@@ -521,7 +521,7 @@ Observability infrastructure is itself production infrastructure. If it goes dow
 
 Pehle memory se jawab do, phir neeche kholo.
 
-<details><summary>Jawab dekho</summary>
+<details markdown="1"><summary>Jawab dekho</summary>
 
 1. Log-based alerting scale nahi karta — har rule ke liye ek grep/regex job chahiye, high-volume logs pe aggregate queries slow hoti hain, aur volume badhne par load bahut zyada hota hai. Metrics (pre-aggregated counters/histograms) isi liye exist karte hain — log-grepping replace karne ke liye alerting mein.
 2. `{route, method, status, user_id}` — `user_id` ke millions of unique values hain → millions of unique time-series → Prometheus RAM explode → OOMKilled. Bounded labels (route, method, status) safe hain; unbounded labels (user_id, order_id) cardinality explosion laate hain.

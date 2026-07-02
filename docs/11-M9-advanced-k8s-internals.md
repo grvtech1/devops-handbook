@@ -23,7 +23,7 @@ M4 (`05-M4-kubernetes-core`) taught you the vocabulary: pods, Deployments, Servi
 > 2. *(M5)* Ek pod ka `requests.memory: 128Mi` aur `limits.memory: 256Mi` set hai — yeh pod kaunsi QoS class mein aayega aur memory pressure pe kaunse pod ke baad evict hoga?
 > 3. *(M8)* "p99 latency = 2s" aur "average latency = 200ms" — dono mein se interviewer ko kaun sa metric zyada batata hai, aur kyun?
 >
-> <details><summary>Jawab</summary>
+> <details markdown="1"><summary>Jawab</summary>
 >
 > 1. Service = fixed ClusterIP + DNS name; selector se Ready pods ko traffic route hota hai. Pod IP change ho ya pod delete ho — Service name same rehta, kube-proxy new pod ko EndpointSlice mein add karta hai. &nbsp; 2. Burstable (requests < limits). Guaranteed ke baad, BestEffort se pehle evict hoga. &nbsp; 3. p99 — average mein outliers chhup jaate hain; p99 batata hai worst 1% users ki experience jo sabse zyada feel karte hain.
 > </details>
@@ -853,7 +853,7 @@ Pehle memory se jawab do, phir neeche kholo.
 
 8. A new microservice pod needs to call the Kubernetes API (to list ConfigMaps). It returns `403 Forbidden`. Trace the RBAC objects you need to create, and give the `kubectl auth can-i` command to verify before deploying.
 
-<details><summary>Jawab dekho</summary>
+<details markdown="1"><summary>Jawab dekho</summary>
 
 1. kubectl → apiserver (YAML validate) → writes Deployment to etcd → Deployment controller creates ReplicaSet → etcd → ReplicaSet controller creates Pod objects → etcd → Scheduler assigns nodes → writes nodeName to Pod → etcd → kubelet starts containers via containerd → writes Running/Ready status back to apiserver/etcd.
 2. Readiness probe failing. Pod alive, zero traffic. `kubectl describe pod <name>` (Events: "Readiness probe failed") aur `kubectl get endpointslices` (pod IP absent from slice).
@@ -962,7 +962,7 @@ Pehle memory se jawab do, phir neeche kholo.
 
 Full bank in `14-interview-bank.md`. These are the highest-signal M9 questions:
 
-<details><summary>Jawab dekho</summary>
+<details markdown="1"><summary>Jawab dekho</summary>
 
 | # | Question | One-line answer |
 |---|---|---|

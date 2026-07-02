@@ -23,7 +23,7 @@
 > 2. *(M1)* Terraform `plan` command kya karta hai, aur `apply` se pehle kyun zaruri hai?
 > 3. *(M0)* "Pets vs cattle" ka infrastructure mein kya matlab hai? Kubernetes pods kahan fit hote hain?
 >
-> <details><summary>Jawab</summary>
+> <details markdown="1"><summary>Jawab</summary>
 >
 > 1. `:latest` mutable hai — alag time pe pull karo to alag image mil sakti; rollback impossible. SHA digest pin karo — immutable, traceable. &nbsp; 2. `plan` = dry run — batata hai kya badlega bina kuch badlaye; unexpected changes pakdo apply se pehle. &nbsp; 3. Pets = unique hand-crafted servers (toot jaaye to rona). Cattle = interchangeable units (koi bhi maare, naya la do). Kubernetes pods = pure cattle — ek crash kare, K8s naya banata hai.
 > </details>
@@ -129,7 +129,7 @@ Every workload in K8s follows this four-layer chain:
 
 🇮🇳 **Hinglish intuition:** Pod = tiffin dabba 🍱. Tiffin ke andar dish (container) hoti. Tiffin ka address (IP) bahar likha hota — par jab naya tiffin aata to address badal jaata. Isliye upar Service chahiye (agle section mein).
 
-![The Kubernetes controller chain: API server → Deployment → ReplicaSet → Pod → Container, each watching the layer below](../kubernetes_controller_chain.png)
+![The Kubernetes controller chain: API server → Deployment → ReplicaSet → Pod → Container, each watching the layer below](assets/kubernetes_controller_chain.png)
 
 *Figure: the controller chain rendered. Each controller watches its slice of desired state and creates/heals the layer below — the reconciliation loop in action.*
 
@@ -714,7 +714,7 @@ Pehle memory se jawab do, phir neeche kholo.
 
 8. A developer asks why they cannot ping `pod-ip:8080` from their laptop. The Service is working fine. Explain what ClusterIP means and what they should do instead.
 
-<details><summary>Jawab dekho</summary>
+<details markdown="1"><summary>Jawab dekho</summary>
 
 1. Deployment controller sees desired=3, current=2 and immediately creates a replacement pod. The reconciliation loop (chowkidar) runs 24/7 — zero human intervention needed.
 2. Labels are case-sensitive. `app: API` ≠ `app: api`. The Service selector finds no matching pods, so no endpoints are added — traffic goes nowhere.

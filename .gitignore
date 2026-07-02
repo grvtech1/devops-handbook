@@ -30,3 +30,8 @@
 Thumbs.db
 node_modules/
 *.log
+
+# Unreferenced diagram exports at repo root (used copies live in docs/assets/)
+/*.svg
+/devops_two_loops_overview.png
+/devops_two_loops_overview2.png

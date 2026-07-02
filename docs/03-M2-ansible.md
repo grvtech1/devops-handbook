@@ -16,7 +16,7 @@
 > 2. *(M0)* "Provisioning" aur "configuration management" alag layers kyun hain? Har ek ka ek real tool name karo.
 > 3. *(M1)* `tfstate` file laptop pe kyun nahi rakhna chahiye — remote S3 mein kyun store karte hain?
 >
-> <details><summary>Jawab</summary>
+> <details markdown="1"><summary>Jawab</summary>
 >
 > 1. Idempotent apply = SET operation (desired = 3), ADD nahi. 5 baar apply karo — sirf 3 servers. Terraform desired state se compare karta, duplicates kabhi nahi banata. &nbsp; 2. Provisioning = raw machine banana (Terraform EC2 spin up karta); configuration = uss machine ke andar software daalna (Ansible nginx install karta). Alag concerns, alag tools — mix mat karo. &nbsp; 3. Laptop pe sirf aapke paas — teammate ka TF andha ho jaata, zero resources sochta, duplicates banata. Plus simultaneous apply se state corrupt. S3 = shared almari; DynamoDB lock = taala, ek waqt mein ek hi likhе.
 > </details>
@@ -468,7 +468,7 @@ Pehle memory se jawab do, phir neeche kholo.
 
 8. What does `ansible-playbook --check` do? When would you use it instead of a plain `ansible-playbook` run?
 
-<details><summary>Jawab dekho</summary>
+<details markdown="1"><summary>Jawab dekho</summary>
 
 1. Agentless (SSH + Python only — koi agent install/maintain overhead nahi on targets); push model (aap trigger karo, targets khud phone home nahi karte — timing ka full control); idempotent (desired end-state describe karta, steps nahi — twice chalao, same result, koi side effects nahi).
 2. `ok` = system already desired state mein, Ansible ne check kiya aur kuch nahi kiya. `changed` = system desired state mein nahi tha, Ansible ne fix kiya. Second run mein `changed=0` = convergence — system reached and holds desired state. Idempotency ka proof — interview mein zaroor batao.

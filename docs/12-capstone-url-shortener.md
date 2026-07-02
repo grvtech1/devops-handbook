@@ -20,7 +20,7 @@
 > 2. *(M6)* CI pipeline mein image tag `github.sha` use karte hain na ki `latest` — iska ek practical fayda batao jo directly rollback se related ho?
 > 3. *(M4)* Kubernetes mein readiness probe fail hone pe pod ko kya hota hai — pod restart hota hai ya kuch aur?
 >
-> <details><summary>Jawab</summary>
+> <details markdown="1"><summary>Jawab</summary>
 >
 > 1. Alag laptops pe tfstate = no lock; do log simultaneously `apply` karein to infra corrupt ya duplicate resources ban sakte. S3 = shared truth; DynamoDB lock = ek waqt pe sirf ek apply possible. &nbsp; 2. SHA immutable — har image unique aur traceable. `git revert` se purana SHA wapas manifest mein aata, Argo wahi image deploy karta. `latest` mutable hai — rollback ambiguous. &nbsp; 3. Pod EndpointSlice se remove hota hai (traffic band) — pod alive rehta, restart NAHI hota. Readiness fail = "main ready nahi hun"; liveness fail pe restart hota.
 > </details>
@@ -870,7 +870,7 @@ Pehle memory se jawab do, phir neeche kholo.
 7. `terraform destroy` hangs at "Destroying aws_vpc.main". What likely created a resource inside the VPC that Terraform does not track, and how do you fix it?
 8. Your CI fails with "aws ecr get-login-password: command not found" on the EC2 master node. What is the correct fix and why is installing AWS CLI on the node the wrong long-term answer?
 
-<details><summary>Jawab dekho</summary>
+<details markdown="1"><summary>Jawab dekho</summary>
 
 1. ReplicaSet controller sees "desired 2, have 1" → creates new pod automatically. URL data in RDS unaffected — app is stateless, pods carry no data of their own.
 2. (a) `paths: ['app/**']` filter in CI trigger — manifest commits don't touch `app/`, so CI doesn't retrigger. (b) `[skip ci]` in manifest-update commit message — GitHub Actions ignores this commit. Both layers required.

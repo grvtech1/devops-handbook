@@ -414,7 +414,7 @@ Answer from memory before revealing answers.
 7. Why should you never use `latest` as a Docker image tag in production?
 8. What is the difference between idempotency and reconciliation?
 
-<details>
+<details markdown="1">
 <summary>Answers</summary>
 
 1. Speed, Safety, Repeatability.

@@ -1,0 +1,108 @@
+site_name: The DevOps Engineer's Handbook
+site_description: >-
+  Free, zero-to-job-ready DevOps handbook — from "what is a terminal" to
+  production- and interview-ready. Systems thinking, hands-on labs, capstones.
+site_url: https://grvtech1.github.io/devops-handbook/
+repo_url: https://github.com/grvtech1/devops-handbook
+repo_name: grvtech1/devops-handbook
+edit_uri: edit/main/docs/
+copyright: >-
+  © 2026 grvtech1 — licensed
+  <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+
+theme:
+  name: material
+  language: en
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.instant.progress
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.indexes
+    - navigation.footer
+    - toc.follow
+    - search.suggest
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.tabs.link
+  icon:
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  - abbr
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - footnotes
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - toc:
+      permalink: true
+
+extra_css:
+  - stylesheets/extra.css
+extra_javascript:
+  - javascripts/progress.js
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/grvtech1/devops-handbook
+
+nav:
+  - Home: index.md
+  - Study Plan: study-plan.md
+  - My Progress: progress.md
+  - Handbook:
+      - Curriculum (Index): 00-INDEX.md
+      - "Part 0 — Pre-flight":
+          - "00a · Pre-flight ground floor": 00a-preflight.md
+          - "00b · Setup runbook": 00b-setup-runbook.md
+      - "Part I — Core toolchain":
+          - "M0 · Foundations": 01-M0-foundations.md
+          - "M1 · Terraform": 02-M1-terraform.md
+          - "M2 · Ansible": 03-M2-ansible.md
+          - "M3 · Docker": 04-M3-docker.md
+          - "M4 · Kubernetes Core": 05-M4-kubernetes-core.md
+          - "M5 · Sizing & Cost": 06-M5-sizing-and-cost.md
+          - "M6 · CI/CD": 07-M6-cicd.md
+          - "M7 · GitOps": 08-M7-gitops.md
+      - "Part II — Systems thinking":
+          - "The Connected System": 09-connected-system.md
+      - "Part III — Operate":
+          - "M8 · Observability & SRE": 10-M8-observability-sre.md
+          - "M9 · Advanced K8s Internals": 11-M9-advanced-k8s-internals.md
+      - "Part IV — Capstones":
+          - "Capstone I · URL Shortener": 12-capstone-url-shortener.md
+          - "Capstone II · MicroShop": 13-capstone-microshop.md
+      - "Part V — Reference & career":
+          - "Interview Bank": 14-interview-bank.md
+          - "Roadmap · M11–M18": 15-roadmap-M11-M18.md
+          - "Reference Appendix": 16-reference-appendix.md
+          - "Flashcards": 17-flashcards.md
+          - "Job-Ready": 18-career-job-ready.md

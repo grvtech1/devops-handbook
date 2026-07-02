@@ -21,7 +21,7 @@
 > 2. *(M9)* `catalog-api.default.svc.cluster.local` mein `.default.` kya represent karta hai — aur yeh FQDN shortname `catalog-api` se kab better hai?
 > 3. *(M7)* App-of-apps pattern mein parent Application kya karta hai, aur yeh single Application se kab zyada sahi choice hai?
 >
-> <details><summary>Jawab</summary>
+> <details markdown="1"><summary>Jawab</summary>
 >
 > 1. Argo CD pull model: cluster reconnect hone pe Argo Git se desired state compare karta → OutOfSync detect karta → `argocd/application.yaml` apply karte hi sab services automatically sync ho jaati hain (selfHeal + automated sync). &nbsp; 2. `.default.` = namespace. FQDN tab zaroori hai jab call alag namespace se ho — same namespace mein shortname `catalog-api` kaam karta, cross-namespace mein nahi. &nbsp; 3. Parent Application child Applications ko manage karta (Git se). Jab multiple teams independently deploy karein — per-service rollback aur sync status chahiye — tab app-of-apps single Application se better hai.
 > </details>
@@ -682,7 +682,7 @@ Pehle memory se jawab do, phir neeche kholo.
 
 8. HPA is configured with `minReplicas: 1` for `catalog-api`. A traffic spike hits 10× normal. Explain the sequence: HPA reads a metric → decides to scale → new pods start → pods receive traffic. Name two things that must be true before the new pods receive traffic.
 
-<details><summary>Jawab dekho</summary>
+<details markdown="1"><summary>Jawab dekho</summary>
 
 1. CoreDNS resolves `catalog-api` to a ClusterIP — a stable virtual IP managed by kube-proxy. CoreDNS is the in-cluster DNS server; it maps `<service>.<ns>.svc.cluster.local` to the Service's ClusterIP.
 2. FQDN: `catalog-api.default.svc.cluster.local`. Short name kaam karta same namespace mein. Cross-namespace call mein (e.g., `payments` namespace se `default` namespace ki service) FQDN zaroori hai.

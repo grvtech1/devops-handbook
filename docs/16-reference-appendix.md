@@ -327,7 +327,7 @@ Interviewers penalize answers that say "Idempotency is Terraform" — idempotenc
 
 ## Quick Troubleshoot Reference
 
-> Symptom-to-fix table from live lab failures (P1–P8). See [Capstone-LabGotchas.md](../Capstone-LabGotchas.md).
+> Symptom-to-fix table from live lab failures (P1–P8). See [the Interview Bank war-stories](14-interview-bank.md).
 
 | Symptom | Check command / location | Fix |
 |---------|--------------------------|-----|

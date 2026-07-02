@@ -11,7 +11,7 @@
 
 This is a **book**, not a pile of notes. Read it in order the first time — each module deliberately builds the mental model the next one assumes. After the first pass, use it as a reference: the [Glossary](16-reference-appendix.md#glossary) and [Interview Bank](14-interview-bank.md) are designed for pre-interview review.
 
-> 🗺️ **Naye ho? Ek plan lo.** Bina schedule ke log beech me chhod dete hain. Follow the **[Study Plan](../STUDY-PLAN.md)** (12-week ya 6-week track) aur apni **[Progress](../PROGRESS.md)** tick karte jao — visible progress hi motivation hai. Repo front-door: **[README](../README.md)**. Job tak pahunchne ke liye: **[18 — Job-Ready](18-career-job-ready.md)**.
+> 🗺️ **Naye ho? Ek plan lo.** Bina schedule ke log beech me chhod dete hain. Follow the **[Study Plan](study-plan.md)** (12-week ya 6-week track) aur apni **[Progress](progress.md)** tick karte jao — visible progress hi motivation hai. Repo front-door: **[README](index.md)**. Job tak pahunchne ke liye: **[18 — Job-Ready](18-career-job-ready.md)**.
 
 **Three learning modes, use whichever fits your moment:**
 
@@ -32,7 +32,7 @@ Padhna aur *yaad rakhna* do alag cheezein hain. Yeh handbook is tarah bana hai k
 
 **1. Har learning chapter ke shuru me `↩️ Recall gate`.** 3 sawaal — *pichhle* modules se. Neeche kuch padho usse pehle, memory se jawab do. Yeh **active recall** hai: dobara *nikaalna* (retrieve), dobara *padhna* nahi. Memory retrieve karne se pakki hoti hai, re-read karne se nahi.
 
-**2. Har quiz aur recall gate ka jawab `<details>` me chhupa hai.** Pehle khud socho, *phir* kholo. Agar galat nikla — wahi cheez sabse achhe se yaad rahegi. Isko **desirable difficulty** kehte hain: thodi takleef = pakki yaad.
+**2. Har quiz aur recall gate ka jawab `<details markdown="1">` me chhupa hai.** Pehle khud socho, *phir* kholo. Agar galat nikla — wahi cheez sabse achhe se yaad rahegi. Isko **desirable difficulty** kehte hain: thodi takleef = pakki yaad.
 
 **3. Spaced review — badhte gap pe dobara milo:**
 
@@ -78,7 +78,7 @@ Before any tool, hold this picture. Every DevOps system on earth is two feedback
 
 > 🇮🇳 **Hinglish intuition:** Outer loop = *ghar aur kitchen taiyaar karo* (ek baar). Inner loop = *dish banao aur serve karo* (baar-baar, har order pe).
 
-![The two loops — infrastructure (outer) vs application delivery (inner), sharing one Git repo](../devops_two_loops_mental_model.png)
+![The two loops — infrastructure (outer) vs application delivery (inner), sharing one Git repo](assets/devops_two_loops_mental_model.png)
 
 *Figure: the Two Loops mental model. Outer = build the place things run (Terraform + Ansible, "Pets"); inner = ship the app into it (CI → Argo → Kubernetes, "Cattle"); Git is the shared brain both loops reconcile toward.*
 
@@ -159,7 +159,7 @@ Every Part I–III module is written to the **same skeleton**, so you always kno
 6. **Commands, explained** — never a command without *why*.
 7. **Beginner mistakes** vs **Senior insights** — the gap this book is closing.
 8. **Memory shortcuts** — the hooks that survive to interview day.
-9. **↩️ Recall gate (top, from earlier modules) → Summary → Self-check quiz (answers hidden in `<details>` — memory se pehle) → Hands-on lab (with a ✅ *success looks like* check) → Interview questions → Production challenge.**
+9. **↩️ Recall gate (top, from earlier modules) → Summary → Self-check quiz (answers hidden in `<details markdown="1">` — memory se pehle) → Hands-on lab (with a ✅ *success looks like* check) → Interview questions → Production challenge.**
 
 ---
 
@@ -179,7 +179,7 @@ These ideas recur in *every* module. Spot them everywhere and the toolchain coll
 
 ## 6. Source & provenance
 
-This handbook consolidates and de-duplicates ~20 prior working documents (field manuals, bootcamp notes, glossaries, capstone deep-dives, and lab gotchas). The originals are preserved unchanged in [`_source-archive/`](../_source-archive/) for reference. The live implementation of the capstone lives in [`microshop/`](../microshop/), and hands-on Kubernetes labs (CKAD-style) live in [`kubernetes-projects-learning/`](../kubernetes-projects-learning/).
+This handbook consolidates and de-duplicates ~20 prior working documents (field manuals, bootcamp notes, glossaries, capstone deep-dives, and lab gotchas). The originals are preserved unchanged in [`_source-archive/`](https://github.com/grvtech1/devops-handbook/tree/main/_source-archive) for reference.
 
 ---
 

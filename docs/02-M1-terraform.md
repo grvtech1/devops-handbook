@@ -16,7 +16,7 @@
 > 2. *(M0)* "Provisioning" aur "configuration management" alag kyun hain — dono ka ek-ek real-world example do.
 > 3. *(M0)* "Pets vs cattle" DevOps mein kya hota hai — aur yeh distinction scale ke liye kyun zaroori hai?
 >
-> <details><summary>Jawab</summary>
+> <details markdown="1"><summary>Jawab</summary>
 >
 > 1. Idempotency = ek operation safely baar baar chalao, result same (single op, safe re-run). Reconciliation = continuous loop jo hamesha desired state enforce karta rehta hai. &nbsp; 2. Provisioning = raw machine banana, e.g., EC2 spin up (Terraform); configuration = uss machine ke andar software daalna, e.g., nginx install (Ansible). Alag concerns, alag tools. &nbsp; 3. Pets = unique, hand-configured servers jo replace nahi ho sakte; cattle = identical, interchangeable nodes jo bina soche replace ho jaate — automation aur scale ke liye zaroori.
 > </details>
@@ -592,7 +592,7 @@ Pehle memory se jawab do, phir neeche kholo.
 
 8. Your module `modules/vpc` exposes `subnet_public_a_id` in its `outputs.tf`. In `environments/dev/main.tf`, how do you reference that value when wiring it to the `ec2` module?
 
-<details><summary>Jawab dekho</summary>
+<details markdown="1"><summary>Jawab dekho</summary>
 
 1. Declarative = desired end-state describe karo ("3 servers chahiye"); tool khud steps figure out karta. Imperative = har step manually likhna padta ("Step 1: VPC banao, Step 2: subnet..."). Terraform declarative — `resource "aws_instance" "web" { count = 3 }`; bash script imperative — `aws ec2 run-instances ...` ek ek kar ke.
 2. 3 instances. Terraform SET operation karta (desired = 3), ADD nahi (actual += 3). Idempotency — 5 baar apply karo, sirf 3 servers.

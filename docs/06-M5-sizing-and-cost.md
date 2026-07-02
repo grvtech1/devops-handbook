@@ -21,7 +21,7 @@
 > 2. *(M3)* Dockerfile mein layer-order ka ek chhota-sa fark build time kyun kaata hai — niyam kya hai?
 > 3. *(M1)* Terraform mein "drift" aur "lost state" mein kya fark hai? Dono ka worst-case result kya hota hai?
 >
-> <details><summary>Jawab</summary>
+> <details markdown="1"><summary>Jawab</summary>
 >
 > 1. Container process alive hai (Running), par readiness probe fail ho rahi hai — pod Service ke endpoints mein tab tak nahi aayega jab tak probe pass na ho. &nbsp; 2. Layers top-down invalidate hoti hain — jo layer change hui, uske neeche sab rebuild. Rule: slow-changing (pip install) upar, fast-changing (app code) neeche. &nbsp; 3. Drift = kisi ne Terraform ke bahar infra badla (state aur reality alag). Lost state = state-file kho gayi; Terraform sochta "kuch nahi hai" aur sab rebuild karta — zyada dangerous.
 > </details>
@@ -538,7 +538,7 @@ Pehle memory se jawab do, phir neeche kholo.
 7. What is the T-series CPU credit trap? How does it manifest in production? How do you detect it in CloudWatch?
 8. When would you use VPA alongside HPA? What conflict must you avoid?
 
-<details><summary>Jawab dekho</summary>
+<details markdown="1"><summary>Jawab dekho</summary>
 
 1. Exit 137 = OOMKilled = RAM limit breached. First: `kubectl describe pod <name>` — confirm OOMKilled in State and exit code 137. Second: `kubectl top pod <name>` — see actual memory usage vs limit. Then raise `memory.limits` (and requests proportionally).
 2. 12% CPU / 15% RAM = severely over-provisioned — paying for idle capacity. Risk: if T-series, CPU credits quietly drain under any burst. Right-size down to a smaller instance or fewer nodes; enable CA scale-down.
