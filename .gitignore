@@ -1,0 +1,32 @@
+# This repository tracks the DevOps Handbook deliverable.
+# Unrelated projects / nested repos that happen to live in the same folder are ignored,
+# so a future `git add -A` never sweeps in secrets or someone else's project.
+
+/billfree-techops/
+/GAS webapp/
+/microshop/
+/kubernetes-projects-learning/
+/.agents/
+/.claude/
+/.vscode/
+
+# Leftover files from the old git-playground history (not part of the handbook)
+/Code.gs
+/Code1.gs
+/Index.html
+/Index.pre_spa_build_20260301_154700.html
+/code1
+/config.txt
+/data.txt
+/notes.txt
+/cloudflare-pages/
+
+# Old binary exports — the handbook markdown is the source of truth
+*.docx
+*.pdf
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+node_modules/
+*.log
