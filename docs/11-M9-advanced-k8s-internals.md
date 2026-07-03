@@ -641,6 +641,80 @@ kubectl get rolebindings,clusterrolebindings -A | grep <serviceaccount>
 
 > **Interview answer alert:** "Why shouldn't pods run as cluster-admin?" — blast radius. Compromised pod = attacker reads all Secrets (API keys, DB passwords), creates new privileged pods, exfiltrates data. RBAC limits blast radius to what that specific pod legitimately needs.
 
+### Hardening a pod: `securityContext`
+
+RBAC controls what the pod's *identity* can do via the K8s API. `securityContext` controls what the running *process* can do at the Linux level — two complementary layers. Both are required for defence-in-depth.
+
+```yaml
+spec:
+  automountServiceAccountToken: false   # don't mount the SA token unless the app calls the K8s API
+  securityContext:
+    runAsNonRoot: true                  # refuse to start if the image runs as root (UID 0)
+    runAsUser: 1000
+    fsGroup: 2000                       # files created in mounted volumes are owned by this GID
+  containers:
+    - name: app
+      securityContext:
+        allowPrivilegeEscalation: false # process can't gain more privileges than it started with
+        readOnlyRootFilesystem: true    # filesystem is read-only (mount an emptyDir for /tmp if needed)
+        capabilities:
+          drop: ["ALL"]                 # drop all Linux capabilities; add back only what's needed
+```
+
+**Field-by-field:**
+
+| Field | What it does |
+|---|---|
+| `runAsNonRoot: true` | K8s refuses to start the pod if the image's `USER` is root. Pairs with the non-root image from [M3](04-M3-docker.md) — the image must actually be non-root or this rejects it at admission. |
+| `allowPrivilegeEscalation: false` | Prevents `setuid`/`sudo` tricks from gaining more permissions than the process started with. |
+| `readOnlyRootFilesystem: true` | Stops an attacker writing a payload (reverse-shell, crypto miner) to the container filesystem. Mount `emptyDir` volumes for any path that genuinely needs writes (e.g., `/tmp`). |
+| `capabilities: drop: ["ALL"]` | Strips all Linux capabilities (raw sockets, binding ports < 1024, etc.) — least privilege at the kernel level. Add back only what the app truly needs, e.g. `add: ["NET_BIND_SERVICE"]` to listen on port 443. |
+| `automountServiceAccountToken: false` | Prevents a compromised pod from calling the K8s API with the SA token auto-mounted at `/var/run/secrets/kubernetes.io/serviceaccount/token`. Set `true` only for pods that legitimately need to call the K8s API (operators, admission webhooks). |
+
+> 🇮🇳 **Hinglish intuition:** RBAC = office ID card (kaun sa door khulta hai). securityContext = job description (andar jaake kya *kar* sakta hai). Dono chahiye — card bhi, rules bhi.
+
+```bash
+# Verify the effective security settings on a running pod:
+kubectl get pod <name> -o yaml | grep -A20 securityContext
+```
+
+### Spreading replicas for HA: anti-affinity & topology spread
+
+**WHY:** By default the K8s scheduler may place all three replicas of a Deployment on the same node or in the same Availability Zone. That node crashes or that AZ goes down → total outage despite having three "replicas."
+
+**The modern fix — `topologySpreadConstraints`:**
+
+```yaml
+spec:
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone   # spread evenly across AZs
+      whenUnsatisfiable: DoNotSchedule           # hard constraint — never violate the skew
+      labelSelector:
+        matchLabels:
+          app: myapp
+```
+
+`maxSkew: 1` means the replica count difference between the most-loaded and least-loaded zone must not exceed 1. With 3 replicas across 3 AZs: 1-1-1. `DoNotSchedule` makes this a hard constraint — the scheduler will not place a pod that would violate the skew. (`ScheduleAnyway` is the soft-preference alternative.)
+
+**The older approach — `podAntiAffinity`:**
+
+```yaml
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: myapp
+              topologyKey: kubernetes.io/hostname   # no two replicas on the same node
+```
+
+`podAntiAffinity` says "don't co-locate two replicas on the same node." It is simpler but operates at a single topology level. `topologySpreadConstraints` works at any topology level (node, zone, region, rack) and can balance across multiple dimensions simultaneously. Use `topologySpreadConstraints` for new workloads; `podAntiAffinity` remains valid for strict "never two on the same node" rules.
+
+> 🇮🇳 **Hinglish intuition:** Teen employees — teen alag office branches mein bhejo. Ek branch band ho jaaye toh baaki kaam karte rahein. `topologySpreadConstraints` = HR policy "equal distribution across cities." `podAntiAffinity` = "same cabin mein do log nahi" — useful, par sirf ek level pe kaam karta.
+
+> Cross-link: HA replica count and multi-AZ sizing decisions → [M5 sizing and cost](06-M5-sizing-and-cost.md).
+
 ### Helm — templated, versioned K8s packages
 
 Helm is the Kubernetes package manager. Instead of maintaining 10 YAML files per application and copying them between environments, you write a **chart** with templates and inject environment-specific values.

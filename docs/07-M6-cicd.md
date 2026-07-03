@@ -215,6 +215,61 @@ strategy:
 
 🇮🇳 **Hinglish intuition:** Matrix = ek job definition se teen runners ek saath shuru — parallel factory lines. Wall-clock = sabse dheele ki time (sum nahi). Interview mein: "3 Docker images best CI pattern?" → Matrix build.
 
+### Three production-grade Actions patterns
+
+These three patterns appear in nearly every mature GitHub Actions workflow. Learn them once; apply everywhere.
+
+#### (a) `actions/cache` — skip the re-download
+
+Without caching, every runner installs all dependencies from scratch on every run — 30–90 seconds wasted per job.
+
+```yaml
+- uses: actions/cache@v4
+  with:
+    path: ~/.cache/pip                 # (or ~/.npm, ~/go/pkg/mod, ~/.m2/repository, etc.)
+    key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+```
+
+The `key` is the cache identity. It is derived from a hash of the lockfile (`requirements.txt`, `package-lock.json`, `go.sum`). If the lockfile has not changed since the last run, the key matches, the cache is restored, and the install step is skipped entirely — a **cache hit**. If the lockfile changes (new or upgraded dependency), the key changes, the cache misses, a fresh install runs, and the new cache is saved for the next run.
+
+> 🇮🇳 **Hinglish intuition:** Cache = pehle se tayyar ingredients. Lockfile same hai? Same ingredients use karo — install skip. Lockfile badli? Fresh ingredients, naya cache save karo next run ke liye.
+
+#### (b) `concurrency` + `cancel-in-progress` — kill the stale run
+
+When a developer pushes two commits quickly, two pipeline runs start. The first is already stale — you only care about the second. Without `concurrency`, both run to completion: two Docker builds, two deploys potentially racing each other to the cluster.
+
+```yaml
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+```
+
+`group` is the key that identifies concurrent runs. Two runs with the same group key are considered concurrent. `cancel-in-progress: true` cancels any still-running workflow in that group the moment a newer one starts. The `github.ref` in the group key scopes cancellation to the same branch — `main` runs never cancel each other, but a stale `feature/x` run is cancelled as soon as the next `feature/x` push arrives.
+
+> 🇮🇳 **Hinglish intuition:** Do commits ek ke baad ek? Pehla run cancel karo — second ki hi zaroorat hai. Isse do deploys ek saath race nahi karte aur runner minutes waste nahi hote.
+
+#### (c) OIDC — auth to AWS with no long-lived secrets
+
+The static-key pattern (`AWS_ACCESS_KEY_ID` + `AWS_SECRET_ACCESS_KEY` stored in GitHub Secrets) is the legacy approach. Keys can leak, they require periodic rotation, and they are a permanently standing credential.
+
+The modern approach is **OIDC** (OpenID Connect): GitHub mints a short-lived identity token for each job; AWS is configured to trust tokens from GitHub's OIDC provider and exchanges the token for a temporary role session — no stored secrets anywhere.
+
+```yaml
+permissions:
+  id-token: write       # let the job mint a short-lived OIDC token
+  contents: read
+
+steps:
+  - uses: aws-actions/configure-aws-credentials@v4
+    with:
+      role-to-assume: arn:aws:iam::<acct>:role/github-actions   # assume a role, no stored keys
+      aws-region: ap-south-1
+```
+
+Why this matters: the job receives temporary credentials that expire when the job ends. There is no `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY` sitting in GitHub Settings to rotate or leak. AWS verifies the token's audience and subject claims (e.g., `repo:org/repo:ref:refs/heads/main`) before granting the role, so a compromised runner on a different repo cannot assume your role. Static keys are the fallback only when OIDC trust cannot be established (e.g., self-hosted runners without internet access to GitHub's OIDC endpoint).
+
+> 🇮🇳 **Hinglish intuition:** OIDC = ek-use visitor pass jo kaam ke baad khud expire ho jaata — kho bhi gaya toh koi farak nahi. Static keys = permanent entry card jo kho sakti hai aur rotate karni padti hai. Senior engineer OIDC lagate hain from day one.
+
 ---
 
 ## GitLab CI and the Jenkins comparison

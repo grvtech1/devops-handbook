@@ -292,6 +292,29 @@ resource "aws_instance" "web" {
 
 **Rule:** Terraform provisions the machine. Ansible configures what is inside it. Do not mix them. See [03-M2-ansible.md](03-M2-ansible.md) for how Ansible takes the output IPs from Terraform and configures the servers.
 
+### The `lifecycle` block (small but critical)
+
+Every resource block accepts an optional `lifecycle` meta-argument that controls how Terraform creates, updates, and destroys that resource. Three arguments cover the situations you will actually hit in production:
+
+```hcl
+resource "aws_db_instance" "prod" {
+  # ...
+  lifecycle {
+    prevent_destroy       = true                   # guard: `terraform destroy` / accidental removal is BLOCKED
+    create_before_destroy = true                   # make the replacement BEFORE deleting the old = no downtime
+    ignore_changes        = [tags["LastModified"]] # stop fighting drift on fields changed outside TF
+  }
+}
+```
+
+**`prevent_destroy = true`** — a hard stop. If any plan would destroy this resource, Terraform errors the plan instead of executing it. A mistaken `terraform destroy` or a resource replacement triggered by a config change cannot complete while this flag is set. Use it on any production database, S3 bucket, or resource whose accidental deletion would cause data loss. Remove it explicitly only when you intend a real destroy.
+
+**`create_before_destroy = true`** — for resources that must be *replaced* (not updated in place), Terraform normally destroys the old resource first and then creates the new one, leaving a gap. With this flag, the new resource is fully provisioned *before* the old one is removed — zero-downtime replacement. Essential for launch templates, ACM certificates, and anything with a downstream dependency that would break during the gap.
+
+**`ignore_changes`** — when something outside Terraform legitimately modifies an attribute, TF treats the difference as drift and tries to revert it on every plan. `ignore_changes` tells Terraform: "stop watching this field." Common cases: an autoscaler sets `desired_capacity`; a tag like `LastModified` is written by a Lambda or a cost-allocation tool. Without this, you get a perpetual diff that `apply` never fully resolves.
+
+> 🇮🇳 **Hinglish intuition:** `prevent_destroy` = taala 🔒 jo sirf intentional remove pe khulta hai — `terraform plan` hi fail kar deta hai galti se. `create_before_destroy` = naya bridge banao phir purana girao — traffic ruka nahi. `ignore_changes` = "yeh field bahar se manage hoti hai, TF tujhe koi matlab nahi" — perpetual diff hamesha ke liye gayab.
+
 ---
 
 ## Modules and Environment Isolation
@@ -496,6 +519,19 @@ terraform fmt
 # Check syntax and validate resource configurations. Run before plan.
 terraform validate
 ```
+
+### `plan -out`: apply exactly what you reviewed
+
+```bash
+terraform plan -out=tfplan     # save the exact plan to a file
+terraform apply tfplan         # apply THAT plan — no drift between review and apply
+```
+
+In interactive use, `plan` followed immediately by `apply` is fine. In CI — and especially in a prod apply gate — there is a window between the plan you reviewed and the `apply` you run. If the state changed in that window (a teammate applied something, an autoscaler touched a resource), `apply` without a saved plan re-plans silently and acts on the new state, not what you reviewed and approved.
+
+`plan -out=tfplan` captures the exact plan object at that moment. `apply tfplan` executes precisely that snapshot — no re-plan, no surprises. The capstone CI ([07-M6-cicd.md](07-M6-cicd.md)) pairs this with an approval gate: `plan` runs on the PR, the plan file is stored as a pipeline artifact, and `apply` uses that file in the merge job — guaranteeing the apply matches what was reviewed.
+
+> 🇮🇳 **Hinglish intuition:** `plan -out` = jo tumne review kiya, wahi cheez apply hogi — plan aur apply ke beech mein state change se bach jaate ho. CI mein "reviewed plan" ko artifact ki tarah pakad ke rakho, phir exactly wahi apply karo.
 
 ---
 

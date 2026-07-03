@@ -366,6 +366,35 @@ CMD ["node", "dist/server.js"]
 | No secrets in layers | They survive in `docker history` even if deleted later | Use secrets at runtime via env vars |
 | Non-root user | Least-privilege | `adduser` + `USER` instruction |
 
+### Run as non-root (container hardening)
+
+**WHY:** Containers default to root (UID 0). If an attacker breaks out of the application and a kernel exploit or misconfiguration exists, root-inside-the-container can become root-on-the-host — a container escape. Running as a non-root user shrinks the blast radius: the attacker's process has no more privilege than a normal unprivileged account.
+
+**The pattern:**
+
+```dockerfile
+# 1. Create a dedicated non-root user + group
+#    --system = no login shell, no home directory, no password
+RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+
+# 2. Copy app files AND set ownership in one layer
+COPY --chown=appuser:appgroup . /app
+
+# 3. Drop root — every instruction after this line runs as appuser
+USER appuser
+CMD ["/app/server"]
+```
+
+**`COPY --chown=appuser:appgroup`** is the modern shortcut: it copies files *and* sets ownership in a single layer. The older two-step approach — `COPY . /app` then `RUN chown -R appuser:appgroup /app` — creates an extra layer that doubles the disk footprint for those files (both the pre-chown and post-chown state live in the image). Both approaches are valid; `--chown` is cleaner and produces a smaller image.
+
+**The ordering rule:** all root-requiring steps — `apt-get install`, `adduser`, `RUN chown` — must come *before* `USER appuser`. After that instruction the shell has no root: any root command will fail with `permission denied`. Put `USER` as the last structural step, immediately before `CMD`/`ENTRYPOINT`.
+
+> 🇮🇳 **Hinglish intuition:** Build ke time root banta hai — contractor hai, master key hai, kaam karta hai. `USER appuser` ke baad contractor jaata hai, normal resident aata hai — limited keys, limited risk. Koi break-in kare toh sirf ek flat ka damage, poori building ka nahi.
+
+**Distroless shortcut:** `gcr.io/distroless/base:nonroot` (and any `distroless:nonroot` variant) already ship with a non-root `USER` baked in — you do not write the `adduser`/`USER` lines yourself. The image enforces it automatically.
+
+> Cross-link: the Dockerfile drops root at the image level; the pod spec *verifies* it at the cluster level. See `runAsNonRoot: true` in [M9 `securityContext`](11-M9-advanced-k8s-internals.md) — if the image still runs as UID 0, Kubernetes refuses to start the pod at admission time.
+
 ---
 
 ## Registries, tags, and the `latest` trap

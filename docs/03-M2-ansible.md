@@ -263,6 +263,24 @@ ansible-playbook -i inventory.ini site.yml --check
 
 `--check` is a dry run — Ansible evaluates what *would* change without making any actual change. It is Ansible's equivalent of `terraform plan` (see [02-M1-terraform](02-M1-terraform.md)). Add `--diff` to see line-by-line file diffs. Always run `--check` before applying a playbook to an unfamiliar environment.
 
+### `serial:` — roll across hosts safely
+
+By default, Ansible runs every task in a play on **all** hosts in parallel. A bad change hits every server simultaneously — the entire fleet fails at once.
+
+```yaml
+- hosts: webservers
+  serial: 1          # update this many hosts at a time (also accepts "25%")
+  tasks: [ ... ]
+```
+
+`serial: 1` processes one host at a time. `serial: "25%"` batches 25% of the inventory per wave. Ansible completes all tasks on the first batch, reports the result, then moves to the next batch. If a task fails on the first host, Ansible stops — the remaining hosts are untouched.
+
+This is the same **blast-radius** thinking as Kubernetes rolling updates (see [05-M4-kubernetes-core.md](05-M4-kubernetes-core.md)): never update the entire fleet at once; limit how much is at risk at any moment. In Kubernetes, `maxUnavailable` and `maxSurge` control the rolling window; in Ansible, `serial:` does the same job at the SSH layer.
+
+Practical pattern: use `serial: 1` for sensitive changes (config rewrites, service restarts, kernel upgrades); use `serial: "25%"` for routine package updates across a large fleet where speed matters and risk is lower.
+
+> 🇮🇳 **Hinglish intuition:** `serial: 1` = ek ek server update karo — pehla fail hua toh baaki fleet safe hai. Sab ek saath update = ek galti se poora fleet down. Kubernetes rolling update wala same idea, Ansible mein SSH level pe.
+
 ---
 
 ## Real production example: building a Kubernetes cluster with Ansible
