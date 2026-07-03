@@ -50,7 +50,7 @@ This project is roughly 3× the work of Capstone I. It is also 3× the interview
 | CI strategy | Single build job | Matrix: 3 parallel builds |
 | Argo CD applications | 1 Application | 1 Application watching k8s/ (upgrade: app-of-apps) |
 | Cache | None | Redis (cache-aside, 60 s TTL) |
-| Database | SQLite / flat file | Postgres on RDS (managed, stateful) |
+| Database | Postgres on RDS (single service, 1 DB) | Postgres on RDS (shared across services) |
 | Ingress routing | Single path | Path-based: `/`, `/catalog`, `/order` |
 | HPA | Optional | Per-service HPA |
 | Observability | Cluster-level | Four Golden Signals per service |

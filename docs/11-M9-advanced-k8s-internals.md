@@ -792,7 +792,7 @@ kubectl exec -it <pod> -- nslookup db-service
 | Concept | One-liner |
 |---|---|
 | apiserver | Only component that touches etcd directly |
-| etcd | Cluster's RAM — lose it without backup = amnesia |
+| etcd | Cluster's **hard drive** (persistent, WAL + snapshots) — lose it without backup = amnesia |
 | Raft quorum | ≥3 control-plane nodes (odd); majority must agree to write |
 | CNI/Calico | Cross-node pod routing (BGP / overlay / eBPF) |
 | EndpointSlice | Live list of Ready pod IPs; kube-proxy reads this |

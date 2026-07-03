@@ -269,7 +269,7 @@ app:
 # This whole line is a comment
 port: 5432         # integer
 port: "5432"       # string — quotes force string type
-enabled: true      # boolean (not "True", not "yes" in modern YAML)
+enabled: true      # boolean — always use lowercase true/false; "yes"/"no" are booleans in YAML 1.1 parsers (e.g. PyYAML default) but plain strings in YAML 1.2 — avoid them
 description: |     # multi-line string: | preserves newlines
   Line one.
   Line two.

@@ -178,9 +178,9 @@ resource "aws_security_group" "web" {
 
 # ── 6. An EC2 instance ─────────────────────────────────────────────────────
 resource "aws_instance" "web" {
-  ami           = "ami-0f5ee92e2d63afc18"  # AMI = Amazon Machine Image, OS blueprint for EC2
+  ami           = "ami-0f5ee92e2d63afc18"  # AMI = Amazon Machine Image, OS blueprint for EC2 — ⚠️ AMI IDs are region-specific and get deregistered; real code should use a `data "aws_ami"` lookup (see Senior Insights table)
   instance_type = "t3.micro"
-  subnet_id     = aws_subnet.public.id     # place in the public subnet
+  subnet_id     = aws_subnet.public.id     # aws_subnet.public shown in the full example — omitted here for brevity
   vpc_security_group_ids = [aws_security_group.web.id]
   tags = { Name = "web-server" }
 }

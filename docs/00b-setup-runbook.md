@@ -83,15 +83,19 @@ The `2` in the VERSION column is the critical check — WSL1 does not have a rea
 lsb_release -a
 ```
 
-Expected output:
+Expected output (Ubuntu 22.04 or 24.04 LTS, depending on your install):
 
 ```
 No LSB modules are available.
 Distributor ID: Ubuntu
-Description:    Ubuntu 22.04.x LTS
-Release:        22.04
-Codename:       jammy
+Description:    Ubuntu 22.04.x LTS  (or 24.04.x LTS)
+Release:        22.04  (or 24.04)
+Codename:       jammy  (or noble)
 ```
+
+> **Note:** `wsl --install` may default to Ubuntu 22.04 or 24.04 depending on your Windows
+> version and Microsoft's current default. Both work for this book. The Git version you install
+> in Step 2 will vary accordingly — Ubuntu 22.04 ships git 2.34.x; Ubuntu 24.04 ships git 2.43.x.
 
 > **Mac/Linux note:** Skip this step. You already have a native terminal. On macOS, install
 > Homebrew (`/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`)
@@ -355,9 +359,16 @@ K8s lab until the capstone projects.
 
 ### Install kind
 
+> **Note:** The version below may be outdated. Check the latest release at
+> https://github.com/kubernetes-sigs/kind/releases and substitute the current tag.
+
 ```bash
+# Fetch the latest kind release tag dynamically
+KIND_VERSION=$(curl -s https://api.github.com/repos/kubernetes-sigs/kind/releases/latest \
+  | grep tag_name | cut -d '"' -f 4)
+
 # Download the kind binary for Linux amd64
-curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.23.0/kind-linux-amd64
+curl -Lo ./kind "https://kind.sigs.k8s.io/dl/${KIND_VERSION}/kind-linux-amd64"
 
 # Make it executable and move to PATH
 chmod +x kind
@@ -370,10 +381,10 @@ sudo mv kind /usr/local/bin/kind
 kind version
 ```
 
-Expected output:
+Expected output (version number will vary):
 
 ```
-kind v0.23.x go1.xx.x linux/amd64
+kind v0.2x.x go1.xx.x linux/amd64
 ```
 
 ### Create your first local cluster
@@ -572,26 +583,36 @@ The **AWS Free Tier** gives you 12 months of limited free usage after signup. Ke
 
 ### Set a billing alarm now (before you create anything)
 
-```bash
-# Create a $10 billing alarm via the CLI (once-off setup)
-aws cloudwatch put-metric-alarm \
-  --alarm-name "MonthlySpendAlert-10USD" \
-  --alarm-description "Alert when estimated charges exceed $10" \
-  --metric-name EstimatedCharges \
-  --namespace AWS/Billing \
-  --statistic Maximum \
-  --period 86400 \
-  --threshold 10 \
-  --comparison-operator GreaterThanThreshold \
-  --dimensions Name=Currency,Value=USD \
-  --evaluation-periods 1 \
-  --alarm-actions arn:aws:sns:us-east-1:YOUR_ACCOUNT_ID:billing-alerts \
-  --region us-east-1
-```
+**Recommended (2 minutes, no CLI required):** AWS Console → **Billing** → **Budgets** →
+**Create budget** → Cost budget → $10/month → email alert. Do this before any lab.
 
-> **Simpler alternative:** AWS Console → **Billing** → **Budgets** → **Create budget** → Cost
-> budget → $10/month → email alert. This takes 2 minutes and is the recommended path for
-> beginners. Do this before any lab.
+> **CLI alternative (advanced):** The CloudWatch billing alarm command below requires an SNS
+> topic to exist first. Create one with `aws sns create-topic --name billing-alerts` and add
+> a subscription (`aws sns subscribe ...`) before running the alarm command. Without the topic,
+> `--alarm-actions` will point to a non-existent ARN and the alarm is silently created but
+> never fires.
+>
+> ```bash
+> # Step 1: create the SNS topic (once)
+> aws sns create-topic --name billing-alerts --region us-east-1
+> # Step 2: subscribe your email (check inbox for confirmation link)
+> aws sns subscribe --topic-arn arn:aws:sns:us-east-1:YOUR_ACCOUNT_ID:billing-alerts \
+>   --protocol email --notification-endpoint you@example.com --region us-east-1
+> # Step 3: create the alarm
+> aws cloudwatch put-metric-alarm \
+>   --alarm-name "MonthlySpendAlert-10USD" \
+>   --alarm-description "Alert when estimated charges exceed $10" \
+>   --metric-name EstimatedCharges \
+>   --namespace AWS/Billing \
+>   --statistic Maximum \
+>   --period 86400 \
+>   --threshold 10 \
+>   --comparison-operator GreaterThanThreshold \
+>   --dimensions Name=Currency,Value=USD \
+>   --evaluation-periods 1 \
+>   --alarm-actions arn:aws:sns:us-east-1:YOUR_ACCOUNT_ID:billing-alerts \
+>   --region us-east-1
+> ```
 
 ### The golden rule — `terraform destroy` before you stop for the day
 
@@ -616,7 +637,7 @@ Run each command below and confirm the output matches:
 | Tool | Command | Expected output |
 |------|---------|----------------|
 | WSL2 | `wsl -l -v` (PowerShell) | Ubuntu, VERSION 2, Running |
-| Ubuntu | `lsb_release -a` | Ubuntu 22.04 LTS |
+| Ubuntu | `lsb_release -a` | Ubuntu 22.04 or 24.04 LTS |
 | Git | `git --version` | `git version 2.x.x` |
 | Docker | `docker version` | Client + Server versions shown |
 | Docker smoke | `docker run hello-world` | "Hello from Docker!" |

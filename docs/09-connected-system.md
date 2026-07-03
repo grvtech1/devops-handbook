@@ -261,6 +261,14 @@ Systems thinking includes *people*. On a real team these boxes have different ow
 
 Pehle memory se jawab do, phir neeche kholo.
 
+1. Name the 8 bridges and one failure mode for each.
+2. Which bridge is the CI→CD seam, and why does CI *not* touch the cluster?
+3. Give the same golden thread (reconciliation) as it appears in four different tools.
+4. tfstate is deleted. What does the next `terraform plan` think, and why is that dangerous?
+5. Why is Argo's **pull** model considered more secure than CI-driven `kubectl apply` (**push**)?
+6. Someone runs `kubectl edit` on a live Deployment. Walk through what Argo does and which thread explains it.
+7. Where does durable state live in this system, and what does that let you do with compute?
+
 <details markdown="1"><summary>Jawab dekho</summary>
 
 1. B1 TF→Ansible: IPs→inventory; UNREACHABLE. B2 Ansible→K8s: 3 playbooks live cluster banate hain; kubeadm fail / wrong join token. B3 Docker→Pod: ECR image kubelet pull karta hai; ImagePullBackOff. B4 push→CI: git push workflow trigger karta hai; wrong branch filter. B5⭐ CI→Git manifest: image tag update+commit, cluster seedha nahi; manifest update bhool gaye → old image chalta rehta. B6 Git→Argo→K8s: Argo pull+apply karta hai; OutOfSync sync nahi hua. B7 Pod→Service→User: EndpointSlice ready pods route karta hai; koi ready pods nahi → 503. B8 Pod→RDS: psycopg2 se RDS:5432 connect; wrong SG ya bad password → timeout.
@@ -271,14 +279,6 @@ Pehle memory se jawab do, phir neeche kholo.
 6. Argo OutOfSync detect karta hai (Cause B — cluster drifted). selfHeal:true hai toh Git manifest wapas apply karta hai, manual edit revert. Thread 1 (reconciliation) — current state ko desired state tak drive karo, hamesha.
 7. Durable state: tfstate → S3; DB → RDS (cluster ke bahar). Yeh compute ko disposable banata hai — pods aur servers Cattle hain, kill and replace freely, koi data loss nahi.
 </details>
-
-1. Name the 8 bridges and one failure mode for each.
-2. Which bridge is the CI→CD seam, and why does CI *not* touch the cluster?
-3. Give the same golden thread (reconciliation) as it appears in four different tools.
-4. tfstate is deleted. What does the next `terraform plan` think, and why is that dangerous?
-5. Why is Argo's **pull** model considered more secure than CI-driven `kubectl apply` (**push**)?
-6. Someone runs `kubectl edit` on a live Deployment. Walk through what Argo does and which thread explains it.
-7. Where does durable state live in this system, and what does that let you do with compute?
 
 ## Hands-on lab
 On paper (no cloud spend), from memory:

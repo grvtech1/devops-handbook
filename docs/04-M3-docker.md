@@ -91,7 +91,7 @@ Isolation in a container comes from two Linux kernel primitives:
 | `user` | User IDs — UID 0 in container ≠ UID 0 on host |
 
 **cgroups** (control groups) enforce resource limits:
-- Maximum CPU millicores
+- CPU quota (`cpu.shares` / `cpu.cfs_quota_us` + `cpu.cfs_period_us`) — Kubernetes expresses this as millicores, but the native cgroup primitive is `cpu.shares` and CPU bandwidth quotas
 - Maximum RAM — exceed it and the process is killed (OOMKilled, exit code 137)
 - I/O bandwidth
 - Network priority
@@ -651,8 +651,9 @@ docker rmi myapp:1.0
 # WHY: Remove an image from local cache (frees disk space).
 
 docker system prune -a
-# WHY: Remove all stopped containers, dangling images, unused networks and volumes.
-# Use on a dev machine running low on disk. Never use in production.
+# WHY: Remove all stopped containers, ALL unused images (not just dangling),
+# unused networks, and build cache. Does NOT remove volumes by default —
+# add --volumes to also prune them. Use on a dev machine running low on disk. Never use in production.
 
 # ── Compose ───────────────────────────────────────────────────────────────────
 
@@ -718,7 +719,7 @@ docker compose logs -f
 - Every Dockerfile instruction is a **layer**. Layers are cached. Cache invalidation cascades top-down. The **layer-order trick** — dependencies before code — keeps expensive install steps cached across code changes.
 - The **build context** is what gets sent to the Docker daemon. Use `.dockerignore` to exclude `node_modules`, `.git`, and secrets.
 - Use **multi-stage builds** to keep build toolchains out of production images. Runtime images should be small, non-root, and contain only what the app needs to run.
-- Images live in **registries** (DockerHub / GHCR / ECR). `docker push` uploads; the kubelet `docker pull`s on each node. A bad tag or missing auth causes **ImagePullBackOff**.
+- Images live in **registries** (DockerHub / GHCR / ECR). `docker push` uploads; the kubelet pulls the image (via containerd) on each node. A bad tag or missing auth causes **ImagePullBackOff**.
 - Never use `latest` in production. Tag by **git SHA** (immutable, traceable) or semver. Pin critical images to a **digest** for absolute reproducibility.
 - **Docker Compose** manages multi-container stacks locally. Services communicate by DNS service name. Named volumes persist data. This is the local preview of what Kubernetes does at scale.
 

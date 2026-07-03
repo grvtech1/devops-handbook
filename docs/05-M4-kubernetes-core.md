@@ -259,7 +259,7 @@ A Pod and its Service have up to **four** "port" fields, and beginners mix them 
 | Field | Lives on | What it means | Example |
 |-------|----------|---------------|---------|
 | `containerPort` | Pod (container) | The port your app actually listens on inside the container | `8000` |
-| `targetPort` | Service | Which pod port the Service forwards to — **must equal `containerPort`** | `8000` |
+| `targetPort` | Service | Which pod port the Service forwards to — must match the port the app **actually listens on** inside the container (`containerPort` is documentation-only and does not bind or open a port) | `8000` |
 | `port` | Service | The port the Service itself exposes; how other pods call it (`my-svc:80`) | `80` |
 | `nodePort` | Service (**NodePort type only**) | The external port opened on every node (`30000–32767`) | `30080` |
 
@@ -410,7 +410,7 @@ A node can run a maximum of approximately **110 pods** (hard cap in default K8s)
 1. **CPU**: no more schedulable CPU left on the node.
 2. **RAM**: no more memory left.
 3. **IP pool**: each pod needs an IP from the node's CIDR block. When the pool is exhausted, no more pods, even if CPU and RAM are free. This surprises most beginners.
-4. **~110 pod hard cap**: hits before the above on very small nodes.
+4. **~110 pod hard cap**: relevant on resource-rich nodes running many low-request pods — you can exhaust the 110-pod count before running out of CPU or RAM. (The limit is configurable via the kubelet `--max-pods` flag; 110 is the default.)
 
 Debug reflex: pod stuck in `Pending` with CPU and RAM appearing free? Run `kubectl describe pod <name>` and read the Events section. The scheduler writes the exact reason there — IP exhaustion, affinity mismatch, taint rejection.
 

@@ -299,7 +299,7 @@ def go(c: str):
     row = cur.fetchone(); conn.close()
     if not row:
         raise HTTPException(404, "Not found")
-    return RedirectResponse(row[0])   # 302 by default
+    return RedirectResponse(row[0])   # 307 by default (Starlette default; pass status_code=302 to override)
 ```
 
 `app/requirements.txt`:
@@ -575,11 +575,13 @@ spec:
         readinessProbe:
           # K8s only sends traffic once this probe passes
           httpGet: { path: /health, port: 8000 }
-          initialDelaySeconds: 5; periodSeconds: 5
+          initialDelaySeconds: 5
+          periodSeconds: 5
         livenessProbe:
           # K8s restarts pod if this probe fails 3× in a row
           httpGet: { path: /health, port: 8000 }
-          initialDelaySeconds: 10; periodSeconds: 10
+          initialDelaySeconds: 10
+          periodSeconds: 10
         resources:                  # required for scheduler to pack nodes correctly
           requests: { cpu: "100m", memory: "128Mi" }
           limits:   { cpu: "250m", memory: "256Mi" }
@@ -594,7 +596,7 @@ spec:
   type: NodePort                    # self-managed: no LoadBalancer integration
   selector: { app: url-shortener } # must match pod label exactly (P5 break)
   ports:
-  - port: 80; targetPort: 8000; nodePort: 30080
+  - { port: 80, targetPort: 8000, nodePort: 30080 }
 ```
 
 Create the secret (one-time; or use `secret.yaml` with base64-encoded value):
@@ -629,7 +631,7 @@ jobs:
 
       # Gate: tests must pass before image is built
       - name: Test
-        run: pip install pytest && cd app && pytest
+        run: pip install pytest -r app/requirements.txt && cd app && pytest
 
       - uses: aws-actions/configure-aws-credentials@v4
         with:
@@ -731,15 +733,17 @@ For EKS variant (uses `terraform-aws-modules/eks/aws` and VPC module), see the n
 
 | Resource | Instance | Cost/month (ap-south-1) |
 |----------|----------|------------------------|
-| EC2 master | t3.medium | ~$13 |
-| EC2 worker ×2 | t3.medium | ~$26 |
-| RDS Postgres | db.t3.micro | ~$15 |
+| EC2 master | t3.medium | ~$30 |
+| EC2 worker ×2 | t3.medium | ~$60 |
+| RDS Postgres | db.t3.micro | ~$12–15 |
 | ECR storage | ~1 GB | ~$0.10 |
 | S3 tfstate | negligible | ~$0.01 |
 | Data transfer | modest | ~$1 |
-| **Total** | | **~$55–73/month** |
+| **Total** | | **~$105–115/month** |
 
-> Leave this running overnight = ~$2.50. Leave it for a weekend = ~$10. Leave it for a month = one wasted month of learning budget.
+> Leave this running overnight = ~$2.50 (3× t3.medium ≈ $0.125/hr). Leave it for a weekend = ~$10. Leave it for a month = one wasted month of learning budget.
+
+> **Prices vary by region and change over time — always verify with the [AWS Pricing Calculator](https://calculator.aws) before budgeting.**
 
 **Daily discipline:**
 ```bash
@@ -874,11 +878,11 @@ Pehle memory se jawab do, phir neeche kholo.
 
 1. ReplicaSet controller sees "desired 2, have 1" → creates new pod automatically. URL data in RDS unaffected — app is stateless, pods carry no data of their own.
 2. (a) `paths: ['app/**']` filter in CI trigger — manifest commits don't touch `app/`, so CI doesn't retrigger. (b) `[skip ci]` in manifest-update commit message — GitHub Actions ignores this commit. Both layers required.
-3. No cloud-controller-manager on self-managed cluster → nothing provisions an ELB. Options: (a) switch to `type: NodePort`; (b) install MetalLB for bare-metal load balancing.
+3. No cloud-controller-manager on self-managed cluster → nothing provisions an ELB. Options: (a) switch to `type: NodePort` (recommended for this project); (b) install MetalLB for bare-metal load balancing (note: MetalLB is designed for bare-metal/on-prem environments — on **AWS VPC**, its L2/ARP mode does not work because VPC does not pass gratuitous ARPs; use NodePort or nginx-ingress via NodePort instead).
 4. Argo CD with `selfHeal: true` detects drift (cluster=10, Git=2). Within ~3 min polling interval, Argo applies Git manifest → reverts to 2 replicas automatically.
 5. `publicly_accessible = false` = RDS has no public IP; internet cannot reach the DB even if a Security Group rule is misconfigured. Defense-in-depth: two independent barriers (no public IP + SG) instead of SG alone.
 6. `git revert <bad-commit-hash>` → new commit with previous image SHA in deployment.yaml → Argo detects OutOfSync → rolling update to previous image. No manual `kubectl` needed.
-7. A K8s resource (e.g. `type: LoadBalancer` Service) provisioned an AWS resource (ELB, ENI) inside the VPC that Terraform does not track. Fix: `kubectl delete` those K8s resources first so AWS cleans up the ELB, then `terraform destroy`.
+7. On this self-managed cluster (no cloud-controller-manager), `type: LoadBalancer` stays `<pending>` — it cannot provision an ELB. The more likely culprit is a manually-deployed NGINX ingress controller or other component that requested a LoadBalancer Service and got one (only possible if cloud-controller-manager was separately installed). On **EKS**, the classic answer is a `type: LoadBalancer` Service that provisioned an AWS ELB outside Terraform's knowledge. The fix in either case: `kubectl delete` any such K8s resources first so AWS cleans up the associated cloud resources, then `terraform destroy`. (Self-managed + NodePort = much lower risk of orphaned AWS resources, but the habit matters for when you move to EKS.)
 8. `aws-actions/amazon-ecr-login@v2` GitHub Action handles ECR auth on the CI runner — no AWS CLI needed on EC2 nodes. Installing AWS CLI on nodes = bakes tooling onto EC2, requires credentials on node, not scalable or auditable.
 </details>
 

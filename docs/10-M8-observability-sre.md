@@ -130,7 +130,7 @@ Every production system must answer three structurally different questions. Each
 | **Summary** | Pre-computed quantiles, client-side | Legacy; rarely preferred now | Less flexible than histogram |
 
 **Numbers to know:**
-- Default scrape interval: `15s`
+- Typical scrape interval: `15s` (Prometheus binary default is `1m`; kube-prometheus-stack and most production deployments configure `15s`)
 - Default local retention: `15d`
 - Prometheus is stateful (local TSDB) — in production, teams run **Thanos** or **Mimir** for high availability and long-term storage beyond 15 days
 
@@ -431,7 +431,9 @@ scrape_configs:
 ```bash
 # Port-forward Prometheus to localhost:9090
 # Why: access the UI and HTTP API without a LoadBalancer; works in any cluster
-kubectl port-forward svc/prometheus-server 9090:80 -n monitoring
+# Note: the exact Service name depends on the Helm release/chart used;
+# kube-prometheus-stack (used in the Hands-on Lab) names it as shown below.
+kubectl port-forward svc/monitoring-kube-prometheus-prometheus 9090:9090 -n monitoring
 
 # Port-forward Grafana to localhost:3000
 # Why: same reason — dev and debugging access without exposing a public endpoint

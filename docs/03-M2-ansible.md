@@ -27,7 +27,7 @@
 
 ## The 60-second version
 
-Ansible is a **configuration management** tool. You write YAML (Yet Another Markup Language) that describes what each server should look like — packages installed, files in place, services running. Ansible reads that YAML, SSHs into every target server, and enforces the described state. If something is already correct, it skips it. If it is wrong or missing, it fixes it. Run it a hundred times; the result is the same every time.
+Ansible is a **configuration management** tool. You write YAML (YAML Ain't Markup Language) that describes what each server should look like — packages installed, files in place, services running. Ansible reads that YAML, SSHs into every target server, and enforces the described state. If something is already correct, it skips it. If it is wrong or missing, it fixes it. Run it a hundred times; the result is the same every time.
 
 Three properties define it:
 
@@ -189,7 +189,8 @@ ansible_ssh_private_key_file=~/.ssh/id_rsa
         enabled: yes         # must survive reboots
 
   handlers:
-    # Handlers run ONCE at playbook end, only if notified
+    # Handlers flush ONCE at the end of each PLAY (not the whole playbook), only if notified.
+    # Use `meta: flush_handlers` as a task to force them to fire mid-play.
     - name: Restart nginx
       service:
         name: nginx

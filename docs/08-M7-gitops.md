@@ -518,18 +518,6 @@ argocd app set url-shortener --sync-policy automated
 
 Pehle memory se jawab do, phir neeche kholo.
 
-<details markdown="1"><summary>Jawab dekho</summary>
-
-1. Cause B (cluster changed — `kubectl` ne kiya). selfHeal detects replicas=0 vs Git ka declared value aur ~30s–3min mein wapas Git wala count apply kar deta hai.
-2. Argo ~3 min poll ke baad naya image tag dekhta hai → OutOfSync (Cause A) → manifest apply karta hai → naya ReplicaSet starts → pods readiness probe pass karte hain → purane pods terminate → status: Synced + Healthy.
-3. Synced+Degraded: Argo ne manifest apply kar diya (cluster=Git) lekin pods crash ho rahe hain (e.g. bad image tag → ImagePullBackOff). OutOfSync+Healthy: kisi ne manually replicas badhaye (`kubectl scale`) — pods sab running hain (Healthy) lekin Git se alag hain (OutOfSync). Dono axes independent hain.
-4. `git revert` ek naya commit banata hai — Git aur cluster dono sync rehte hain Argo ke apply ke baad. `argocd app rollback` cluster wapas le jaata hai lekin Git ko nahi — next Argo sync rollback undo kar deta hai (split brain).
-5. (1) Auto-sync band karo: `argocd app set <app> --sync-policy none`. (2) Manual `kubectl` change karo. (3) Root cause fix karo. (4) Git update karo desired state se match karne ke liye + push. (5) Auto-sync wapas on karo: `--sync-policy automated`.
-6. Teen branches: dev/staging/main(prod). Teen Argo Applications — har ek apni branch watch karta hai (`targetRevision: dev/staging/main`). `staging→main` merge = prod automatically deploy. No separate deploy command.
-7. (1) CI ke paas kubeconfig hai — CI hack = cluster exposed. (2) Koi permanent audit trail nahi. Manifest-update+Argo mein: CI sirf Git mein likhta hai; Argo (cluster ke andar) creds hold karta hai; Git commit = audit trail.
-8. Teen inputs: (1) Git desired, (2) live cluster, (3) last-applied annotation. Sirf (1) vs (2) se Argo intentional in-cluster change aur drift mein fark nahi kar sakta — teeno chahiye accurate diff ke liye.
-</details>
-
 1. A developer runs `kubectl scale deployment app --replicas=0` on production. `selfHeal: true` is
    set. What happens, and which OutOfSync cause is this?
 
@@ -552,6 +540,18 @@ Pehle memory se jawab do, phir neeche kholo.
 
 8. Explain the 3-way diff. Why does Argo need three inputs rather than just comparing Git to the
    live cluster?
+
+<details markdown="1"><summary>Jawab dekho</summary>
+
+1. Cause B (cluster changed — `kubectl` ne kiya). selfHeal detects replicas=0 vs Git ka declared value aur ~30s–3min mein wapas Git wala count apply kar deta hai.
+2. Argo ~3 min poll ke baad naya image tag dekhta hai → OutOfSync (Cause A) → manifest apply karta hai → naya ReplicaSet starts → pods readiness probe pass karte hain → purane pods terminate → status: Synced + Healthy.
+3. Synced+Degraded: Argo ne manifest apply kar diya (cluster=Git) lekin pods crash ho rahe hain (e.g. bad image tag → ImagePullBackOff). OutOfSync+Healthy: kisi ne manually replicas badhaye (`kubectl scale`) — pods sab running hain (Healthy) lekin Git se alag hain (OutOfSync). Dono axes independent hain.
+4. `git revert` ek naya commit banata hai — Git aur cluster dono sync rehte hain Argo ke apply ke baad. `argocd app rollback` cluster wapas le jaata hai lekin Git ko nahi — next Argo sync rollback undo kar deta hai (split brain).
+5. (1) Auto-sync band karo: `argocd app set <app> --sync-policy none`. (2) Manual `kubectl` change karo. (3) Root cause fix karo. (4) Git update karo desired state se match karne ke liye + push. (5) Auto-sync wapas on karo: `--sync-policy automated`.
+6. Teen branches: dev/staging/main(prod). Teen Argo Applications — har ek apni branch watch karta hai (`targetRevision: dev/staging/main`). `staging→main` merge = prod automatically deploy. No separate deploy command.
+7. (1) CI ke paas kubeconfig hai — CI hack = cluster exposed. (2) Koi permanent audit trail nahi. Manifest-update+Argo mein: CI sirf Git mein likhta hai; Argo (cluster ke andar) creds hold karta hai; Git commit = audit trail.
+8. Teen inputs: (1) Git desired, (2) live cluster, (3) last-applied annotation. Sirf (1) vs (2) se Argo intentional in-cluster change aur drift mein fark nahi kar sakta — teeno chahiye accurate diff ke liye.
+</details>
 
 ---
 

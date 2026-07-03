@@ -392,7 +392,7 @@ Updated the security group's SSH rule with `my_ip = "$(curl ifconfig.me)/32"` an
 
 **G5 — k3s API server dies with TLS timeout** `[Kubernetes/Memory]`
 
-`kubectl get nodes` returned `TLS handshake timeout`. `crictl ps | grep k3s` was empty — the k3s process had been OOM-killed by the kernel on a 1 GB t3.micro. Added a 2 GB swapfile (`fallocate -l 2G /swapfile`, `mkswap`, `swapon`), restarted k3s, cluster came back. **Lesson:** k3s needs ~500 MB RAM. On 1 GB nodes, swap is the lifeline. In production, minimum 2 GB (t3.small+).
+`kubectl get nodes` returned `TLS handshake timeout`. `systemctl status k3s` showed the k3s process had stopped — it had been OOM-killed by the kernel on a 1 GB t3.micro. (k3s runs as a systemd service, not as a CRI-managed container, so `crictl ps` will not show it; use `systemctl status k3s` or `ps aux | grep k3s` to check if the process is alive.) Added a 2 GB swapfile (`fallocate -l 2G /swapfile`, `mkswap`, `swapon`), restarted k3s, cluster came back. **Lesson:** k3s needs ~500 MB RAM. On 1 GB nodes, swap is the lifeline. In production, minimum 2 GB (t3.small+).
 
 ---
 

@@ -382,11 +382,13 @@ m  6  g  .  x large
 
 | Size | vCPU | RAM |
 |------|------|-----|
-| medium | 2 | 4 GB |
+| medium¹ | 1–2 | 4 GB |
 | large | 2 | 8 GB |
 | xlarge | 4 | 16 GB |
 | 2xlarge | 8 | 32 GB |
 | 4xlarge | 16 | 64 GB |
+
+¹ `.medium` exists only on **T-series** (`t3.medium` = 2 vCPU / 4 GB) and **Graviton** (`m6g/m7g.medium` = 1 vCPU / 4 GB); `m5`/`m6i` start at `.large`. Pattern to remember: from `.large` up, each step **doubles** vCPU *and* RAM.
 
 ### Sizing formulas
 
