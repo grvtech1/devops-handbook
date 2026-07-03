@@ -3,7 +3,7 @@
 > **Learn DevOps from absolute zero to production- and interview-ready — free, self-paced, hands-on.**
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-blue.svg)](https://github.com/grvtech1/devops-handbook/blob/main/LICENSE)
-[![Chapters](https://img.shields.io/badge/Chapters-21-green.svg)](#curriculum-at-a-glance)
+[![Chapters](https://img.shields.io/badge/Chapters-23-green.svg)](#curriculum-at-a-glance)
 [![Level](https://img.shields.io/badge/Level-Zero%20→%20Job--ready-orange.svg)](#what-youll-be-able-to-do-by-the-end)
 [![Cost](https://img.shields.io/badge/Cost-Free-brightgreen.svg)](#-the-free-no-credit-card-path)
 

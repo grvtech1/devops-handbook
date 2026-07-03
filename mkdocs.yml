@@ -94,6 +94,7 @@ nav:
           - "M7 · GitOps": 08-M7-gitops.md
       - "Part II — Systems thinking":
           - "The Connected System": 09-connected-system.md
+          - "Follow One Commit (hands-on CI/CD)": 19-cicd-hands-on-flow.md
       - "Part III — Operate":
           - "M8 · Observability & SRE": 10-M8-observability-sre.md
           - "M9 · Advanced K8s Internals": 11-M9-advanced-k8s-internals.md
@@ -102,6 +103,7 @@ nav:
           - "Capstone II · MicroShop": 13-capstone-microshop.md
       - "Part V — Reference & career":
           - "Interview Bank": 14-interview-bank.md
+          - "Confusions & Trade-offs (X-vs-Y)": 20-confusions-and-tradeoffs.md
           - "Roadmap · M11–M18": 15-roadmap-M11-M18.md
           - "Reference Appendix": 16-reference-appendix.md
           - "Flashcards": 17-flashcards.md

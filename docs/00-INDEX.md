@@ -123,6 +123,7 @@ Every module tells you exactly **which arrow it owns** and **what it hands to th
 | # | Module | Core production question it answers |
 |---|--------|--------------------------------------|
 | [09](09-connected-system.md) | **The Connected System** | *How do all 7 tools actually hand off to each other, end to end?* |
+| [19](19-cicd-hands-on-flow.md) | **Follow One Commit** (hands-on CI/CD) | *Trace a single `git push` through CI → scan → registry → GitOps → rolling update → observe.* |
 
 ### Part III — Operate like a senior (intermediate → production)
 | # | Module | Core production question it answers |
@@ -140,6 +141,7 @@ Every module tells you exactly **which arrow it owns** and **what it hands to th
 | # | Module | Purpose |
 |---|--------|---------|
 | [14](14-interview-bank.md) | **Interview Bank** | 40+ production-grade Q&A + 19 real lab war-stories |
+| [20](20-confusions-and-tradeoffs.md) | **Confusions & Trade-offs** (X-vs-Y) | The small distinctions interviewers probe: SG vs NACL, EBS/EFS/S3, RDS vs DynamoDB, RED vs USE, blue-green vs canary, merge vs rebase, AWS↔Azure |
 | [15](15-roadmap-M11-M18.md) | **Principal Track roadmap (M11–M18)** | Incident response, progressive delivery, distributed systems, security, FinOps, platform engineering |
 | [16](16-reference-appendix.md) | **Reference Appendix** | Glossary (80+ terms), error→cause reflex table, troubleshooting quick-ref, sizing quick-ref, command cheat-sheets |
 | [17](17-flashcards.md) | **Flashcard deck** | Every module's must-remember Q→A in Hinglish — Anki-importable, for daily spaced repetition (see [§0.1](#01-how-to-remember-this-for-life--the-spaced-review-system)) |
