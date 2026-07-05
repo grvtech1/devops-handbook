@@ -249,6 +249,74 @@ Systems thinking includes *people*. On a real team these boxes have different ow
 
 ---
 
+## 7. Who does what — the tool recall drill
+
+Section 6 was about *people*. This one is about *tools*: **which tool owns which job.** Interviewers probe this constantly ("who deploys to the cluster?", "who runs the container?") — so drill it until the answer is instant. Cover the right column and quiz yourself.
+
+**The layer stack (memorize this ONE picture):**
+```
+ App → Pods / Containers          ← KUBERNETES  (schedules, restarts, scales)
+ Node OS: containerd, kubeadm      ← ANSIBLE     (installs & configures the node)
+ The server: VM, VPC, subnet, disk ← TERRAFORM   (creates the infrastructure)
+```
+> 🇮🇳 **Hinglish intuition:** *"Terraform building banata, Ansible kitchen set karta (stove/utensils = containerd/kubeadm), Kubernetes chef hai jo dishes (pods) pakata."* Teen tools, teen layers, isi order me. Ansible cook nahi karta; K8s plumbing nahi bichata.
+
+**Task → owner (the master table):**
+
+| The task | Who does it | Layer |
+|----------|-------------|-------|
+| Create the VM / VPC / disk | **Terraform** | infra |
+| Install runtime + kubeadm, disable swap, kernel tuning | **Ansible** | node OS |
+| Form the cluster (init/join) | **kubeadm** (run by Ansible) | node OS |
+| Build the container image | **Docker** (on the CI runner) | build |
+| Store the image | **Registry** (ECR / GHCR / Hub) | build |
+| Actually run a container | **containerd** (under kubelet) | node |
+| Decide which node a pod runs on | **kube-scheduler** | control plane |
+| Keep N replicas alive (self-heal) | **Deployment → ReplicaSet** | cluster |
+| Route traffic to the right pods | **Service** (+ kube-proxy) / **Ingress** | cluster |
+| Persist data beyond a pod | **PVC → PV** (→ EBS) | storage |
+| Hold config / secrets | **ConfigMap / Secret** | cluster |
+| Test → build → scan the code | **CI** (Jenkins / GitHub Actions) | pipeline |
+| **Deploy to the cluster** | **ArgoCD** (GitOps) — **not CI!** | delivery |
+| Observe (metrics/logs/alerts) | **Prometheus / Grafana / Loki** | observability |
+
+> ⚠️ **The trap most people fall into:** thinking *CI deploys*. It doesn't — **CI writes to Git; ArgoCD reads from Git and deploys.** That separation (Bridge 5) is the whole point of GitOps.
+
+**Where does each tool RUN?** (another recall-killer)
+
+| Laptop / CI runner (clients) | Master node | Worker nodes |
+|---|---|---|
+| `terraform` (calls cloud API) | api-server + etcd | kubelet |
+| `ansible` (SSH push) | scheduler, controllers | kube-proxy |
+| `kubectl` (calls API) | ArgoCD (pods) | **containerd ← your pods run here** |
+| `docker build`, `git push` | Prometheus / Grafana (pods) | |
+
+> **Golden rule:** **clients** (Terraform, Ansible, kubectl, docker-build) run *from* your laptop/CI and command remote things; **servers** (containerd, kubelet, ArgoCD) run *on* the cluster. ArgoCD lives **inside** the cluster — that's what makes GitOps pull-based.
+
+**Rapid-fire (cover the answers, drill until instant):**
+
+<details markdown="1"><summary>Who does X? — jawab dekho</summary>
+
+- Creates the EC2 instance? → **Terraform**
+- Installs containerd + kubeadm? → **Ansible**
+- Forms the cluster? → **kubeadm**
+- Builds the Docker image? → **CI** (Docker on the runner)
+- Stores the image? → **Registry**
+- Runs the container on a node? → **containerd** (under kubelet)
+- Decides which node? → **scheduler**
+- Recreates a dead pod? → **ReplicaSet** (via the Deployment)
+- Load-balances to pods? → **Service**
+- Routes external HTTP by path? → **Ingress**
+- Gives a pod persistent storage? → **PVC → PV** (EBS)
+- Deploys the new image to the cluster? → **ArgoCD** (from Git) — *not CI*
+- Watches Git for changes? → **ArgoCD**
+- Collects metrics? → **Prometheus** · Shows dashboards? → **Grafana**
+</details>
+
+> 📎 The actual **commands** for each tool live in [Command Cheat-Sheets & Labs](22-command-cheatsheets.md) — this drill is *who*, that chapter is *how*.
+
+---
+
 ## Summary
 
 - The stack is **2 loops** (infra/outer/Pets + delivery/inner/Cattle) sharing **1 Git repo**; they meet at the **Kubernetes cluster**.

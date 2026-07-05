@@ -83,6 +83,7 @@ nav:
       - "Part 0 — Pre-flight":
           - "00a · Pre-flight ground floor": 00a-preflight.md
           - "00b · Setup runbook": 00b-setup-runbook.md
+          - "Linux · the ground everything runs on": 21-linux-toolkit.md
       - "Part I — Core toolchain":
           - "M0 · Foundations": 01-M0-foundations.md
           - "M1 · Terraform": 02-M1-terraform.md
@@ -104,6 +105,7 @@ nav:
       - "Part V — Reference & career":
           - "Interview Bank": 14-interview-bank.md
           - "Confusions & Trade-offs (X-vs-Y)": 20-confusions-and-tradeoffs.md
+          - "Command Cheat-Sheets & Labs": 22-command-cheatsheets.md
           - "Roadmap · M11–M18": 15-roadmap-M11-M18.md
           - "Reference Appendix": 16-reference-appendix.md
           - "Flashcards": 17-flashcards.md

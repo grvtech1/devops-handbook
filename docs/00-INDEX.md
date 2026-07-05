@@ -106,6 +106,7 @@ Every module tells you exactly **which arrow it owns** and **what it hands to th
 |---|--------|--------------------------|
 | [00a](00a-preflight.md) | **Pre-flight: the ground floor** | *What is a terminal, YAML, Git, an HTTP request, a CIDR block — the plumbing every later chapter assumes?* |
 | [00b](00b-setup-runbook.md) | **Setup runbook** | *How do I install the whole toolchain (WSL, Docker, Terraform, kubectl, AWS CLI) and create a safe AWS account?* |
+| [21](21-linux-toolkit.md) | **Linux: the ground everything runs on** | *Navigate/read/edit files, debug a slow-or-down server, mine logs with pipes — the hands-on command toolkit every DevOps role assumes.* |
 
 ### Part I — Foundations & the core toolchain (absolute beginner → intermediate)
 | # | Module | Core production question it answers |
@@ -142,6 +143,7 @@ Every module tells you exactly **which arrow it owns** and **what it hands to th
 |---|--------|---------|
 | [14](14-interview-bank.md) | **Interview Bank** | 40+ production-grade Q&A + 19 real lab war-stories |
 | [20](20-confusions-and-tradeoffs.md) | **Confusions & Trade-offs** (X-vs-Y) | The small distinctions interviewers probe: SG vs NACL, EBS/EFS/S3, RDS vs DynamoDB, RED vs USE, blue-green vs canary, merge vs rebase, AWS↔Azure |
+| [22](22-command-cheatsheets.md) | **Command Cheat-Sheets & Labs** | The "terminal-open" muscle-memory reference: Git · Docker · kubectl · Ansible · Terraform · ArgoCD · **Jenkins** — commands, mini-labs, and interview one-liners |
 | [15](15-roadmap-M11-M18.md) | **Principal Track roadmap (M11–M18)** | Incident response, progressive delivery, distributed systems, security, FinOps, platform engineering |
 | [16](16-reference-appendix.md) | **Reference Appendix** | Glossary (80+ terms), error→cause reflex table, troubleshooting quick-ref, sizing quick-ref, command cheat-sheets |
 | [17](17-flashcards.md) | **Flashcard deck** | Every module's must-remember Q→A in Hinglish — Anki-importable, for daily spaced repetition (see [§0.1](#01-how-to-remember-this-for-life--the-spaced-review-system)) |
