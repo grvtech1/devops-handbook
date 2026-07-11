@@ -348,6 +348,35 @@ spec:
 | **Readiness** | "Is the pod ready to receive traffic right now?" | Removes pod from EndpointSlice — traffic stops, pod stays alive | Entire pod lifetime |
 | **Liveness** | "Is the process stuck / deadlocked?" | Restarts container (kills it) | Entire pod lifetime |
 
+```mermaid
+flowchart TD
+    BOOT["Container<br/>starting up"]:::run
+    SP{"Startup Probe<br/>pass?"}:::cd
+    READY{"Readiness Probe<br/>pass?"}:::cd
+    LIVE{"Liveness Probe<br/>pass?"}:::cd
+    TRAFFIC(["In EndpointSlice<br/>traffic ON"]):::run
+    NOTRAF(["Removed from<br/>EndpointSlice"]):::warn
+    KRESTART(["kubelet restarts<br/>container"]):::warn
+
+    BOOT --> SP
+    SP -->|"fail × threshold"| KRESTART
+    SP -->|"pass — boot done"| READY
+    SP -->|"pass — activates"| LIVE
+    READY -->|"pass"| TRAFFIC
+    READY -->|"fail"| NOTRAF
+    NOTRAF -->|"re-check"| READY
+    LIVE -->|"fail × threshold"| KRESTART
+
+    classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;
+    classDef cd fill:#f3e5f5,stroke:#8e24aa,color:#4a148c;
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef obs fill:#f1f8e9,stroke:#689f38,color:#33691e;
+    classDef net fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef warn fill:#fdeeee,stroke:#d64545,color:#b23030;
+```
+
+*Probe lifecycle: startup probe gates liveness + readiness during slow boot; readiness failure pulls the pod from traffic without killing it; liveness failure restarts the container.*
+
 **Key interaction:** Startup probe blocks liveness and readiness probes until it passes. Without it, a slow-starting app (30-second JVM warmup) gets killed by liveness before it finishes booting → `CrashLoopBackOff` despite correct code.
 
 ```yaml
@@ -760,46 +789,76 @@ helm template my-api ./chart -f values-prod.yaml
 
 This traces a single HTTP request from the internet to the database and back, with per-hop latency and the debug command that isolates each hop.
 
-```
-INTERNET
-   │
-   │ ①  TCP :443 (HTTPS)
-   ▼  latency: network RTT (ms)
-┌─────────────────────────┐
-│  Load Balancer / DNS    │  debug: curl -v https://api.example.com
-│  (AWS ALB / NodePort)   │  latency: ~1ms LB routing
-└─────────────┬───────────┘
-              │ ② NodePort :30080 or Ingress controller pod
-              ▼  latency: ~0.1ms kernel
-┌─────────────────────────┐
-│  nginx Ingress Pod      │  debug: kubectl logs -n ingress-nginx deploy/...
-│  Host: api.example.com  │  common fail: 404 = host header not matched
-│  TLS termination        │  debug: kubectl describe ingress
-└─────────────┬───────────┘
-              │ ③  Service ClusterIP → kube-proxy (iptables/IPVS)
-              ▼  latency: ~0.1ms iptables DNAT
-┌─────────────────────────┐
-│  kube-proxy             │  debug: kubectl get endpointslices
-│  ClusterIP → pod IP     │  common fail: empty slice = readiness failed
-└─────────────┬───────────┘
-              │ ④  Pod network (CNI: Calico)
-              ▼  latency: ~0.1–0.5ms cross-node
-┌─────────────────────────┐
-│  App Pod :8080          │  debug: kubectl exec pod -- curl localhost:8080/health
-│  FastAPI / Express      │  debug: kubectl logs <pod>
-│  Handles request logic  │  common fail: CrashLoopBackOff / OOMKilled
-└─────────────┬───────────┘
-              │ ⑤  CoreDNS lookup → DB Service DNS
-              ▼  latency: ~0.5ms DNS
-┌─────────────────────────┐
-│  Database               │  debug: kubectl exec pod -- nc -zv <db-host> 5432
-│  RDS :5432 / ClusterIP  │  debug: kubectl exec pod -- nslookup db-service
-│  Persistent data layer  │  common fail: SG :5432 blocked / DNS fail
-└─────────────────────────┘
+```mermaid
+flowchart TD
+    CLIENT(["Client<br/>browser or curl"]):::net
+    LB{{"Cloud LB<br/>AWS ALB"}}:::net
+    ING{{"nginx Ingress<br/>Host header routing"}}:::net
+    SVC["Service<br/>ClusterIP"]:::net
+    KP["kube-proxy<br/>iptables DNAT"]:::net
+    EPS[("EndpointSlice<br/>Ready pod IPs")]:::net
+    POD["App Pod<br/>:8080"]:::run
+    DB[("Database<br/>:5432")]:::run
 
-Dominant latency: DB round-trip (①+⑤) >> network (②③④) in µs–ms
-Total per-request overhead vs bare metal: ~1–3ms on healthy cluster
+    CLIENT -->|"HTTPS :443"| LB
+    LB -->|"NodePort :30080"| ING
+    ING -->|"Host match<br/>to Service"| SVC
+    SVC --> KP
+    KP -.->|"reads"| EPS
+    KP -->|"DNAT to pod IP"| POD
+    POD -->|"SQL query"| DB
+
+    classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;
+    classDef cd fill:#f3e5f5,stroke:#8e24aa,color:#4a148c;
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef obs fill:#f1f8e9,stroke:#689f38,color:#33691e;
+    classDef net fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef warn fill:#fdeeee,stroke:#d64545,color:#b23030;
 ```
+
+*Instrumented request lifecycle: Client → cloud LB → nginx Ingress (TLS + Host-header routing) → Service ClusterIP → kube-proxy reads EndpointSlice (DNAT) → App Pod → Database. DB round-trip dominates latency; cluster overhead is ~1–3 ms.*
+
+??? note "Text version (ASCII)"
+    ```
+    INTERNET
+       │
+       │ ①  TCP :443 (HTTPS)
+       ▼  latency: network RTT (ms)
+    ┌─────────────────────────┐
+    │  Load Balancer / DNS    │  debug: curl -v https://api.example.com
+    │  (AWS ALB / NodePort)   │  latency: ~1ms LB routing
+    └─────────────┬───────────┘
+                  │ ② NodePort :30080 or Ingress controller pod
+                  ▼  latency: ~0.1ms kernel
+    ┌─────────────────────────┐
+    │  nginx Ingress Pod      │  debug: kubectl logs -n ingress-nginx deploy/...
+    │  Host: api.example.com  │  common fail: 404 = host header not matched
+    │  TLS termination        │  debug: kubectl describe ingress
+    └─────────────┬───────────┘
+                  │ ③  Service ClusterIP → kube-proxy (iptables/IPVS)
+                  ▼  latency: ~0.1ms iptables DNAT
+    ┌─────────────────────────┐
+    │  kube-proxy             │  debug: kubectl get endpointslices
+    │  ClusterIP → pod IP     │  common fail: empty slice = readiness failed
+    └─────────────┬───────────┘
+                  │ ④  Pod network (CNI: Calico)
+                  ▼  latency: ~0.1–0.5ms cross-node
+    ┌─────────────────────────┐
+    │  App Pod :8080          │  debug: kubectl exec pod -- curl localhost:8080/health
+    │  FastAPI / Express      │  debug: kubectl logs <pod>
+    │  Handles request logic  │  common fail: CrashLoopBackOff / OOMKilled
+    └─────────────┬───────────┘
+                  │ ⑤  CoreDNS lookup → DB Service DNS
+                  ▼  latency: ~0.5ms DNS
+    ┌─────────────────────────┐
+    │  Database               │  debug: kubectl exec pod -- nc -zv <db-host> 5432
+    │  RDS :5432 / ClusterIP  │  debug: kubectl exec pod -- nslookup db-service
+    │  Persistent data layer  │  common fail: SG :5432 blocked / DNS fail
+    └─────────────────────────┘
+
+    Dominant latency: DB round-trip (①+⑤) >> network (②③④) in µs–ms
+    Total per-request overhead vs bare metal: ~1–3ms on healthy cluster
+    ```
 
 **Systematic debug ladder (hop-by-hop, never guess):**
 ```bash

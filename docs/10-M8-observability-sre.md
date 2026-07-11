@@ -85,26 +85,60 @@ A well-instrumented system gives you **both**: pre-built dashboards for the thin
 
 Every production system must answer three structurally different questions. Each question needs a different data shape — which is why you run three separate tools, not one.
 
-```
-┌─────────────────────────────────────────────────────────────────────┐
-│                     THE THREE PILLARS                               │
-│                                                                     │
-│  QUESTION               PILLAR          TOOL          DATA SHAPE    │
-│  ─────────────────────────────────────────────────────────────────  │
-│  "How much / how many   METRICS         Prometheus    Numeric       │
-│   over time?"                                         time-series   │
-│                                                                     │
-│  "What exactly          LOGS            Loki / ELK    Structured    │
-│   happened here?"                                     text events   │
-│                                                                     │
-│  "Where did the time    TRACES          OTel +        Timed span    │
-│   go across services?"                 Jaeger         trees         │
-└─────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    APP["App Pod<br/>/metrics endpoint"]:::run
+    PROM[("Prometheus<br/>TSDB")]:::obs
+    LOKI[("Loki<br/>log store")]:::obs
+    JAEGER[("Jaeger<br/>trace store")]:::obs
+    PTAIL["Promtail<br/>DaemonSet"]:::run
+    OTEL["OTel Collector"]:::shared
+    GRAFANA{{"Grafana<br/>dashboards"}}:::obs
+    ALERT{{"Alertmanager"}}:::warn
+    PAGE(["Slack<br/>PagerDuty"]):::warn
 
-  Metrics say SOMETHING is wrong.
-  Logs say WHAT it was.
-  Traces say WHERE (which hop) it happened.
+    APP -->|"scrape /metrics<br/>every 15s"| PROM
+    APP -->|"stdout logs"| PTAIL
+    APP -->|"spans"| OTEL
+    PTAIL -->|"ship to"| LOKI
+    OTEL -->|"forward"| JAEGER
+    PROM --> GRAFANA
+    LOKI --> GRAFANA
+    JAEGER --> GRAFANA
+    PROM -->|"alert rules"| ALERT
+    ALERT -->|"route"| PAGE
+
+    classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;
+    classDef cd fill:#f3e5f5,stroke:#8e24aa,color:#4a148c;
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef obs fill:#f1f8e9,stroke:#689f38,color:#33691e;
+    classDef net fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef warn fill:#fdeeee,stroke:#d64545,color:#b23030;
 ```
+
+*Observability pipeline: metrics scrape → Prometheus → Grafana dashboards + Alertmanager pages; logs via Promtail → Loki → Grafana; traces via OTel Collector → Jaeger → Grafana. All three pillars converge in one pane.*
+
+??? note "Text version (ASCII)"
+    ```
+    ┌─────────────────────────────────────────────────────────────────────┐
+    │                     THE THREE PILLARS                               │
+    │                                                                     │
+    │  QUESTION               PILLAR          TOOL          DATA SHAPE    │
+    │  ─────────────────────────────────────────────────────────────────  │
+    │  "How much / how many   METRICS         Prometheus    Numeric       │
+    │   over time?"                                         time-series   │
+    │                                                                     │
+    │  "What exactly          LOGS            Loki / ELK    Structured    │
+    │   happened here?"                                     text events   │
+    │                                                                     │
+    │  "Where did the time    TRACES          OTel +        Timed span    │
+    │   go across services?"                 Jaeger         trees         │
+    └─────────────────────────────────────────────────────────────────────┘
+
+      Metrics say SOMETHING is wrong.
+      Logs say WHAT it was.
+      Traces say WHERE (which hop) it happened.
+    ```
 
 | Pillar | Question it answers | Data shape | Tool | Cost at scale |
 |--------|---------------------|------------|------|---------------|

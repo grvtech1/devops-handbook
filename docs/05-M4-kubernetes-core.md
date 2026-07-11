@@ -104,28 +104,54 @@ The critical consequence: you do not tell K8s **how** to fix things. You tell it
 
 Every workload in K8s follows this four-layer chain:
 
+```mermaid
+flowchart TD
+  DEP["Deployment<br/>(replicas: 3)"]:::ctl
+  RS["ReplicaSet<br/>(desired = actual?)"]:::ctl
+  P1["Pod 1"]:::run
+  P2["Pod 2"]:::run
+  P3["Pod 3<br/>(crashed)"]:::run
+  PNEW["New Pod 3<br/>(auto-replaced)"]:::run
+
+  DEP -->|"creates / owns"| RS
+  RS -->|"creates"| P1
+  RS -->|"creates"| P2
+  RS -->|"creates"| P3
+  RS -. "detects crash, starts replacement" .-> PNEW
+
+  classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+  classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+  classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+  classDef ctl fill:#ede7f6,stroke:#5e35b1,color:#311b92;
+  classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;
 ```
-┌─────────────────────────────────────────────────────────┐
-│  DEPLOYMENT 👔                                          │
-│  "Keep 3 replicas of this pod spec always running"      │
-│  Owns rolling updates, rollbacks, desired replica count │
-│         │                                               │
-│         ▼                                               │
-│  REPLICA SET                                            │
-│  "Count pods, start/stop to hit the number"             │
-│  One ReplicaSet per version (rolling update = new RS)   │
-│         │                                               │
-│         ▼                                               │
-│  POD 🍱  (smallest deployable unit)                     │
-│  Shared network namespace + shared storage volumes      │
-│  One or more containers that must live together         │
-│  IP address — changes every time pod is replaced        │
-│         │                                               │
-│         ▼                                               │
-│  CONTAINER 🍛                                           │
-│  Your actual application process                        │
-└─────────────────────────────────────────────────────────┘
-```
+
+*Deployment → ReplicaSet → Pods: the ReplicaSet reconciles desired count 24/7 — a crashed pod is automatically replaced with no human intervention.*
+
+??? note "Text version (ASCII)"
+
+    ```
+    ┌─────────────────────────────────────────────────────────┐
+    │  DEPLOYMENT 👔                                          │
+    │  "Keep 3 replicas of this pod spec always running"      │
+    │  Owns rolling updates, rollbacks, desired replica count │
+    │         │                                               │
+    │         ▼                                               │
+    │  REPLICA SET                                            │
+    │  "Count pods, start/stop to hit the number"             │
+    │  One ReplicaSet per version (rolling update = new RS)   │
+    │         │                                               │
+    │         ▼                                               │
+    │  POD 🍱  (smallest deployable unit)                     │
+    │  Shared network namespace + shared storage volumes      │
+    │  One or more containers that must live together         │
+    │  IP address — changes every time pod is replaced        │
+    │         │                                               │
+    │         ▼                                               │
+    │  CONTAINER 🍛                                           │
+    │  Your actual application process                        │
+    └─────────────────────────────────────────────────────────┘
+    ```
 
 🇮🇳 **Hinglish intuition:** Pod = tiffin dabba 🍱. Tiffin ke andar dish (container) hoti. Tiffin ka address (IP) bahar likha hota — par jab naya tiffin aata to address badal jaata. Isliye upar Service chahiye (agle section mein).
 
@@ -364,23 +390,55 @@ Both probes use the same mechanism: HTTP GET to a health endpoint, TCP socket ch
 
 A K8s cluster has two kinds of machines:
 
+```mermaid
+flowchart TD
+  KUBECTL["kubectl"]:::ci
+  API["api-server"]:::ctl
+  ETCD[("etcd<br/>(cluster state)")]:::store
+  SCHED["scheduler"]:::ctl
+  CM["controller-manager"]:::ctl
+  KL["kubelet<br/>(worker node)"]:::run
+  KP["kube-proxy<br/>(worker node)"]:::run
+  CR["containerd<br/>(worker node)"]:::run
+  POD["Pod<br/>(your app)"]:::run
+
+  KUBECTL -->|"REST"| API
+  API -->|"read / write"| ETCD
+  SCHED -->|"watch + bind"| API
+  CM -->|"watch + reconcile"| API
+  KL -->|"heartbeat / status"| API
+  KP -->|"watch Services"| API
+  KL --> CR
+  CR --> POD
+
+  classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+  classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+  classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+  classDef ctl fill:#ede7f6,stroke:#5e35b1,color:#311b92;
+  classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│  CLUSTER                                                        │
-│                                                                 │
-│  ┌──────────────────────────────┐                               │
-│  │  MASTER / CONTROL PLANE 🧠   │   <── cluster's brain        │
-│  │  API server, scheduler,      │   <── you never run app      │
-│  │  controller-manager, etcd    │       pods here              │
-│  └──────────────────────────────┘                               │
-│                                                                 │
-│  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐            │
-│  │  WORKER 💪   │ │  WORKER 💪   │ │  WORKER 💪   │            │
-│  │  Your pods   │ │  Your pods   │ │  Your pods   │            │
-│  │  run here    │ │  run here    │ │  run here    │            │
-│  └──────────────┘ └──────────────┘ └──────────────┘            │
-└─────────────────────────────────────────────────────────────────┘
-```
+
+*Kubernetes cluster architecture: kubectl talks to the api-server; control-plane components (scheduler, controller-manager) watch and write state via the api-server; kubelets on worker nodes register status and drive containerd to run pods.*
+
+??? note "Text version (ASCII)"
+
+    ```
+    ┌─────────────────────────────────────────────────────────────────┐
+    │  CLUSTER                                                        │
+    │                                                                 │
+    │  ┌──────────────────────────────┐                               │
+    │  │  MASTER / CONTROL PLANE 🧠   │   <── cluster's brain        │
+    │  │  API server, scheduler,      │   <── you never run app      │
+    │  │  controller-manager, etcd    │       pods here              │
+    │  └──────────────────────────────┘                               │
+    │                                                                 │
+    │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐            │
+    │  │  WORKER 💪   │ │  WORKER 💪   │ │  WORKER 💪   │            │
+    │  │  Your pods   │ │  Your pods   │ │  Your pods   │            │
+    │  │  run here    │ │  run here    │ │  run here    │            │
+    │  └──────────────┘ └──────────────┘ └──────────────┘            │
+    └─────────────────────────────────────────────────────────────────┘
+    ```
 
 | Master / Control Plane | Worker |
 |---|---|

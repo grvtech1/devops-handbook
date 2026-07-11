@@ -73,18 +73,47 @@ The K8s reconciliation loop (learned in M4) compares desired state with current 
 gap. GitOps extends that same loop outward: **Git holds the desired state; the cluster holds the
 current state; Argo CD is the loop that bridges them.**
 
+```mermaid
+flowchart LR
+    CI["CI Runner<br/>no cluster creds"]:::shared
+    GIT[("Git Repo<br/>desired state")]:::shared
+    ARGO{{"Argo CD<br/>in-cluster"}}:::cd
+    DIFF{"OutOfSync?<br/>3-way diff"}:::cd
+    K8S[("Kubernetes<br/>live state")]:::run
+    DRIFT(["Cause B drift<br/>kubectl change"]):::warn
+
+    CI -->|"git push"| GIT
+    ARGO -. "pull every ~3 min" .-> GIT
+    ARGO -->|"reads live state"| K8S
+    ARGO --> DIFF
+    DIFF -->|"No — Synced"| K8S
+    DIFF -->|"Yes — apply"| K8S
+    K8S -. "drift detected" .-> DRIFT
+    DRIFT -. "selfHeal: Git wins" .-> K8S
+
+    classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;
+    classDef cd fill:#f3e5f5,stroke:#8e24aa,color:#4a148c;
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef obs fill:#f1f8e9,stroke:#689f38,color:#33691e;
+    classDef net fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef warn fill:#fdeeee,stroke:#d64545,color:#b23030;
 ```
-GIT (desired state)                 CLUSTER (current state)
-────────────────────                ──────────────────────
-k8s/deployment.yaml   ←── Argo ──→  live Deployment object
-  image: app:a1b2c3    3-way diff    image: app:old-sha
-  replicas: 2          detects gap   replicas: 2
-                                     (OutOfSync on image)
-                          ↓
-                    kubectl apply    ← Argo applies Git version
-                          ↓
-                    cluster matches Git → Synced
-```
+
+*GitOps reconcile loop: Argo CD polls Git from inside the cluster (pull model — CI never holds cluster credentials), compares desired vs live state, applies any diff, and auto-heals kubectl drift.*
+
+??? note "Text version (ASCII)"
+    ```
+    GIT (desired state)                 CLUSTER (current state)
+    ────────────────────                ──────────────────────
+    k8s/deployment.yaml   ←── Argo ──→  live Deployment object
+      image: app:a1b2c3    3-way diff    image: app:old-sha
+      replicas: 2          detects gap   replicas: 2
+                                         (OutOfSync on image)
+                              ↓
+                        kubectl apply    ← Argo applies Git version
+                              ↓
+                        cluster matches Git → Synced
+    ```
 
 **Three-way diff** is the key mechanism. Argo compares:
 1. **Git desired** — what the YAML in the repo says

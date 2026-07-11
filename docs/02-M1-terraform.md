@@ -113,6 +113,23 @@ Idempotent means the operation can be safely repeated. If your code says `count 
                      changes made)      changes state)
 ```
 
+```mermaid
+flowchart LR
+    HCL["Write HCL<br/>(.tf files)"]:::ci --> PLAN["terraform plan<br/>(preview changes)"]:::ci
+    PLAN -->|"if approved"| APPLY["terraform apply<br/>(real API calls)"]:::infra
+    APPLY --> CLOUD[("Real Cloud<br/>EC2 VPC RDS")]:::run
+    CLOUD -. "state tracks<br/>resources" .-> STATE[("tfstate<br/>state file")]:::store
+    STATE -. "compared on<br/>next plan" .-> PLAN
+
+    classDef infra fill:#fce4ec,stroke:#d81b60,color:#880e4f;
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+    classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;
+```
+
+*The Terraform loop: HCL declares desired state, plan previews changes against tfstate, apply modifies real cloud, and the state file is the map that tracks what was built.*
+
 > 🇮🇳 **Hinglish intuition:** `plan` = bill dekhna 🧾. `apply` = payment 💳. Bill padhe bina payment mat karo.
 
 ### Providers and Resources
@@ -385,6 +402,24 @@ Dev VPC:  10.0.0.0/16
 Prod VPC: 10.1.0.0/16
           ↑ different second octet — no overlap
 ```
+
+```mermaid
+flowchart TD
+    Dev["env/dev<br/>cidr=10.0.0.0/16"]:::ci -->|"calls"| M["module vpc<br/>(shared code)"]:::shared
+    Stg["env/staging<br/>cidr=10.2.0.0/16"]:::ci -->|"calls"| M
+    Prod["env/prod<br/>cidr=10.1.0.0/16"]:::ci -->|"calls"| M
+    M -->|"provisions"| VPC[("VPC per env<br/>isolated resources")]:::run
+    Dev -.->|"own state"| SD[("dev tfstate")]:::store
+    Prod -.->|"own state"| SP[("prod tfstate")]:::store
+
+    classDef infra fill:#fce4ec,stroke:#d81b60,color:#880e4f;
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+    classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;
+```
+
+*One shared module "vpc" called by dev, staging, and prod with different CIDRs; each environment writes to its own isolated tfstate.*
 
 ### Dev vs Prod — Key Differences
 

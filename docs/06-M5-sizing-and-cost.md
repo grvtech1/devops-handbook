@@ -154,23 +154,52 @@ resources:
 
 ### Failure Mode Diagram
 
-```
-CPU usage vs limit:
-──────────────────────────────────────────
-  Request  Limit
-  [===|=====|──────────────────────]
-       ↑       ↑
-  guaranteed  ceiling
-               │
-               └─ Cross → THROTTLE (slow, alive 🐢)
+```mermaid
+flowchart TD
+    POD["Pod declares<br/>requests + limits"]:::run
+    SCHED{"Node has capacity<br/>for request?"}:::run
+    PLACE["Pod placed on node<br/>request = guaranteed seat"]:::ok
+    PEND(["Pod Pending<br/>no fit found"]):::warn
+    CPUQ{"CPU exceeds<br/>limit?"}:::warn
+    MEMQ{"Memory exceeds<br/>limit?"}:::warn
+    THROTTLE["Throttled<br/>(slow — stays alive)"]:::ok
+    OOM(["OOMKilled<br/>exit 137 — restarts"]):::warn
 
-RAM usage vs limit:
-──────────────────────────────────────────
-  Request  Limit
-  [===|=====|──────────────────────]
-               │
-               └─ Cross → OOMKilled (restart 💀, exit 137)
+    POD --> SCHED
+    SCHED -->|"yes"| PLACE
+    SCHED -->|"no"| PEND
+    PLACE --> CPUQ
+    PLACE --> MEMQ
+    CPUQ -->|"yes"| THROTTLE
+    MEMQ -->|"yes"| OOM
+
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef warn fill:#fdeeee,stroke:#d64545,color:#b23030;
+    classDef ok fill:#e8f5e9,stroke:#43a047,color:#1b5e20;
 ```
+
+*`requests` = guaranteed seat the scheduler uses for placement; `limits` = hard ceiling — CPU throttles (alive), RAM kills (exit 137).*
+
+??? note "Text version (ASCII)"
+    ```
+    CPU usage vs limit:
+    ──────────────────────────────────────────
+      Request  Limit
+      [===|=====|──────────────────────]
+           ↑       ↑
+      guaranteed  ceiling
+                   │
+                   └─ Cross → THROTTLE (slow, alive 🐢)
+
+    RAM usage vs limit:
+    ──────────────────────────────────────────
+      Request  Limit
+      [===|=====|──────────────────────]
+                   │
+                   └─ Cross → OOMKilled (restart 💀, exit 137)
+    ```
 
 **The reflex (memorize this):**
 - `exit 137` = OOMKilled = RAM limit too low → raise `memory.limits` or switch to R-family.
@@ -268,20 +297,49 @@ connections  = (core_count × 2) + effective_spindle_count   ← starting point
 
 ### Three Tools, Three Dimensions
 
+```mermaid
+flowchart LR
+    LOAD["Traffic spike<br/>or load increase"]:::run
+    HPA["HPA<br/>Horizontal Pod Autoscaler"]:::ci
+    CA["Cluster Autoscaler"]:::ok
+    VPA["VPA<br/>Vertical Pod Autoscaler"]:::store
+    PODS["More pods<br/>(scale out)"]:::ok
+    PEND["Pods Pending<br/>no node capacity"]:::warn
+    NODE["New node added<br/>from node group"]:::ok
+    RESIZE["Pod requests<br/>resized (restart)"]:::store
+
+    LOAD --> HPA
+    LOAD -. "utilization data" .-> VPA
+    HPA --> PODS
+    PODS --> PEND
+    PEND -->|"triggers"| CA
+    CA --> NODE
+    VPA --> RESIZE
+
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef warn fill:#fdeeee,stroke:#d64545,color:#b23030;
+    classDef ok fill:#e8f5e9,stroke:#43a047,color:#1b5e20;
 ```
-                    ┌─────────────────────────────────────────────────┐
-                    │              SCALING DIRECTIONS                  │
-                    │                                                  │
-  pods              │  HPA ──────────────────────────────────────→    │
-  (horizontal)      │  [pod][pod][pod]  →  [pod][pod][pod][pod][pod] │
-                    │                                                  │
-  nodes             │  Cluster Autoscaler ──────────────────────────→ │
-  (horizontal)      │  [node][node]     →  [node][node][node]        │
-                    │                                                  │
-  pod size          │  VPA ↕                                          │
-  (vertical)        │  pod(256Mi)  →  pod(512Mi)  (resize requests)  │
-                    └─────────────────────────────────────────────────┘
-```
+
+*Three scaling dimensions: HPA adds pods → Cluster Autoscaler adds nodes when pods can't fit → VPA right-sizes pod requests over time.*
+
+??? note "Text version (ASCII)"
+    ```
+                        ┌─────────────────────────────────────────────────┐
+                        │              SCALING DIRECTIONS                  │
+                        │                                                  │
+      pods              │  HPA ──────────────────────────────────────→    │
+      (horizontal)      │  [pod][pod][pod]  →  [pod][pod][pod][pod][pod] │
+                        │                                                  │
+      nodes             │  Cluster Autoscaler ──────────────────────────→ │
+      (horizontal)      │  [node][node]     →  [node][node][node]        │
+                        │                                                  │
+      pod size          │  VPA ↕                                          │
+      (vertical)        │  pod(256Mi)  →  pod(512Mi)  (resize requests)  │
+                        └─────────────────────────────────────────────────┘
+    ```
 
 ### Side-by-Side Comparison
 

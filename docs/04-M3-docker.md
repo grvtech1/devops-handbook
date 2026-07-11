@@ -305,6 +305,32 @@ A compiled language (Go, Java, TypeScript) needs a full toolchain to build but o
 
 Multi-stage builds use one Dockerfile with multiple `FROM` instructions. Only the final stage ships.
 
+```mermaid
+flowchart TD
+  SRC["Source Code"]:::ci
+  TOOLS["Toolchain<br/>(node + tsc + dev deps)"]:::ci
+  STAGE1["Stage 1 — build<br/>FROM node:20<br/>discarded after build"]:::ci
+  DIST["Compiled artifact<br/>(dist/)"]:::shared
+  STAGE2["Stage 2 — runtime<br/>FROM node:20-alpine"]:::run
+  NONROOT["Non-root user<br/>(appuser)"]:::ctl
+  FINAL["Final Image<br/>slim · no compiler · secure"]:::run
+
+  SRC --> STAGE1
+  TOOLS --> STAGE1
+  STAGE1 -->|"npm run build"| DIST
+  DIST -->|"COPY --from=build"| STAGE2
+  NONROOT --> STAGE2
+  STAGE2 --> FINAL
+
+  classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+  classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+  classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+  classDef ctl fill:#ede7f6,stroke:#5e35b1,color:#311b92;
+  classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;
+```
+
+*Multi-stage build: the heavy build stage (full toolchain) is discarded; only the slim compiled artifact and runtime base ship to production.*
+
 ### Annotated multi-stage Dockerfile (Node.js TypeScript app)
 
 ```dockerfile
@@ -401,21 +427,44 @@ CMD ["/app/server"]
 
 ### Where images live
 
-```
-BUILD → PUSH → PULL flow
-────────────────────────────────────────────────────────────
-Developer laptop                  Registry                  K8s Node
-┌─────────────────┐    push    ┌───────────────┐   pull  ┌──────────────┐
-│  docker build   │ ─────────► │  myapp:abc123 │ ───────► │  kubelet     │
-│  (local cache)  │            │  (ECR/GHCR)   │         │  (containerd) │
-└─────────────────┘            └───────────────┘         └──────────────┘
+```mermaid
+flowchart LR
+  DF["Dockerfile"]:::ci
+  IMG["Image<br/>(blueprint)"]:::store
+  CTR["Container<br/>(running instance)"]:::run
+  REG[("Registry<br/>ECR / GHCR / Hub")]:::store
 
-  1. Developer (or CI runner) builds the image locally
-  2. docker push uploads it to the registry
-  3. When a Pod is scheduled, the kubelet on the target node
-     pulls the image from the registry
-  4. kubelet hands it to containerd to start the container
+  DF -->|"docker build"| IMG
+  IMG -->|"docker run"| CTR
+  IMG -->|"docker push"| REG
+  REG -. "docker pull" .-> IMG
+
+  classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+  classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+  classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+  classDef ctl fill:#ede7f6,stroke:#5e35b1,color:#311b92;
+  classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;
 ```
+
+*Docker object lifecycle: a Dockerfile is built into an immutable image, run as a container locally, and pushed to a registry so kubelets on any node can pull and run it.*
+
+??? note "Text version (ASCII)"
+
+    ```
+    BUILD → PUSH → PULL flow
+    ────────────────────────────────────────────────────────────
+    Developer laptop                  Registry                  K8s Node
+    ┌─────────────────┐    push    ┌───────────────┐   pull  ┌──────────────┐
+    │  docker build   │ ─────────► │  myapp:abc123 │ ───────► │  kubelet     │
+    │  (local cache)  │            │  (ECR/GHCR)   │         │  (containerd) │
+    └─────────────────┘            └───────────────┘         └──────────────┘
+
+      1. Developer (or CI runner) builds the image locally
+      2. docker push uploads it to the registry
+      3. When a Pod is scheduled, the kubelet on the target node
+         pulls the image from the registry
+      4. kubelet hands it to containerd to start the container
+    ```
 
 ### Registries explained
 

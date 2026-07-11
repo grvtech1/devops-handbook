@@ -106,6 +106,26 @@ ansible_ssh_common_args='-o ProxyJump=ubuntu@<BASTION_IP>'
 
 ## Building blocks
 
+```mermaid
+flowchart LR
+    Inv["inventory.ini<br/>(who to configure)"]:::store --> CN["Control Node<br/>(Ansible installed)"]:::shared
+    PB["playbook.yml<br/>(tasks and modules)"]:::ci --> CN
+    CN -->|"SSH push<br/>agentless"| W1["web1<br/>webservers"]:::run
+    CN -->|"SSH push<br/>agentless"| W2["web2<br/>webservers"]:::run
+    CN -->|"SSH push<br/>agentless"| DB1["db1<br/>dbservers"]:::run
+    W1 --> DS(["desired state<br/>enforced"]):::infra
+    W2 --> DS
+    DB1 --> DS
+
+    classDef infra fill:#fce4ec,stroke:#d81b60,color:#880e4f;
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+    classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;
+```
+
+*Ansible pushes config via SSH from a single control node; inventory names who to configure, playbook defines the tasks and modules to run.*
+
 ```
                  ┌─────────────────────────────────────────────────────┐
                  │              CONTROL NODE                           │
@@ -314,6 +334,24 @@ worker_ips = [10.0.1.11,          ├── swapoff -a
                                   kubectl get nodes → 3 nodes Ready
                                   Kubernetes cluster handed to M4
 ```
+
+```mermaid
+flowchart TD
+    TF["Terraform<br/>(provision)"]:::infra -->|"creates raw EC2"| EC2["EC2 Instance<br/>(empty server)"]:::run
+    EC2 -->|"IPs to inventory"| ANS["Ansible<br/>(configure)"]:::ci
+    ANS -->|"installs containerd<br/>kubeadm kubelet"| NODE["K8s Node<br/>(configured OS)"]:::shared
+    NODE -->|"managed by"| K8S["Kubernetes<br/>(orchestrate)"]:::run
+    K8S -->|"schedules"| P1["Pod A<br/>(app container)"]:::infra
+    K8S -->|"schedules"| P2["Pod B<br/>(app container)"]:::infra
+
+    classDef infra fill:#fce4ec,stroke:#d81b60,color:#880e4f;
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+    classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;
+```
+
+*The four-layer DevOps stack: Terraform provisions the raw server, Ansible configures the OS and runtime, Kubernetes orchestrates the pods.*
 
 **CNI** stands for Container Network Interface — the plugin that enables pod-to-pod networking across nodes. Calico is one popular CNI implementation.
 

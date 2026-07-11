@@ -359,30 +359,62 @@ This is the single most important concept in this module. It is the bridge betwe
 
 ### The manifest-update flow
 
+```mermaid
+flowchart LR
+    PUSH(["git push<br/>app code"]):::ci
+    CHECKOUT["Checkout<br/>source code"]:::ci
+    TEST{"Tests<br/>pass?"}:::ci
+    BUILD["Build image<br/>tag with SHA"]:::ci
+    SCAN{"Trivy scan<br/>no critical CVEs?"}:::ci
+    ECR[("Push to ECR<br/>immutable SHA tag")]:::store
+    MANIFEST["Update manifest<br/>git commit + push"]:::ci
+    ARGO["ArgoCD syncs<br/>(inside cluster)"]:::ok
+    FAIL(["Pipeline stops<br/>no image pushed"]):::warn
+
+    PUSH --> CHECKOUT
+    CHECKOUT --> TEST
+    TEST -->|"pass"| BUILD
+    TEST -->|"fail"| FAIL
+    BUILD --> SCAN
+    SCAN -->|"pass"| ECR
+    SCAN -->|"fail"| FAIL
+    ECR --> MANIFEST
+    MANIFEST -. "CI never touches cluster" .-> ARGO
+
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef warn fill:#fdeeee,stroke:#d64545,color:#b23030;
+    classDef ok fill:#e8f5e9,stroke:#43a047,color:#1b5e20;
 ```
-git push (app code change)
-        │
-        ▼ GitHub Actions triggered
-   ┌─────────────────────────────────────────┐
-   │  STEP 1: pytest                         │  ← test gate
-   │  STEP 2: docker build + push → ECR      │  ← image tagged with github.sha
-   │  STEP 3: sed k8s/deployment.yaml        │  ← update image tag in manifest
-   │  STEP 4: git commit + git push          │  ← CI writes to Git, not cluster
-   └─────────────────────────────────────────┘
-        │
-        │  CI NEVER TOUCHES THE CLUSTER
-        │
-        ▼ Git repo (k8s/deployment.yaml updated)
-        │
-        ▼ Argo CD (running inside the cluster, polling Git)
-   ┌─────────────────────────────────────────┐
-   │  Detects: deployment.yaml changed       │
-   │  Applies: kubectl apply (from inside)   │
-   │  Result: new pods with new image        │
-   └─────────────────────────────────────────┘
-        │
-        ▼ Cluster updated — new version running
-```
+
+*CI builds and gates quality; GitOps (ArgoCD) deploys — CI never holds cluster credentials.*
+
+??? note "Text version (ASCII)"
+    ```
+    git push (app code change)
+            │
+            ▼ GitHub Actions triggered
+       ┌─────────────────────────────────────────┐
+       │  STEP 1: pytest                         │  ← test gate
+       │  STEP 2: docker build + push → ECR      │  ← image tagged with github.sha
+       │  STEP 3: sed k8s/deployment.yaml        │  ← update image tag in manifest
+       │  STEP 4: git commit + git push          │  ← CI writes to Git, not cluster
+       └─────────────────────────────────────────┘
+            │
+            │  CI NEVER TOUCHES THE CLUSTER
+            │
+            ▼ Git repo (k8s/deployment.yaml updated)
+            │
+            ▼ Argo CD (running inside the cluster, polling Git)
+       ┌─────────────────────────────────────────┐
+       │  Detects: deployment.yaml changed       │
+       │  Applies: kubectl apply (from inside)   │
+       │  Result: new pods with new image        │
+       └─────────────────────────────────────────┘
+            │
+            ▼ Cluster updated — new version running
+    ```
 
 **Why this matters:**
 

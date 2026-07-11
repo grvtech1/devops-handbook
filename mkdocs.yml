@@ -12,7 +12,10 @@ copyright: >-
 
 theme:
   name: material
+  custom_dir: overrides
   language: en
+  logo: assets/logo.svg
+  favicon: assets/favicon.svg
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default

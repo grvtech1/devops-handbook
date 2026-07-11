@@ -166,6 +166,30 @@ Resources in different namespaces can still reach each other unless you add Netw
 **PVC = the claim ("give me 10 Gi"); PV = the actual disk; StorageClass = the class that auto-creates the disk on demand.**
 Think of it as: StorageClass is the catalogue, PVC is the order form, PV is the physical disk that arrives. In cloud environments, you usually define a StorageClass (backed by EBS, GCE PD, etc.) and create PVCs — the PV is provisioned automatically (dynamic provisioning). You rarely create PVs manually in cloud. → [M4](05-M4-kubernetes-core.md).
 
+```mermaid
+flowchart LR
+    SC["StorageClass<br/>gp3 provisioner"]:::ci
+    PVC[("PVC<br/>10 Gi claim")]:::store
+    PV[("PV<br/>provisioned disk")]:::store
+    EBS[("EBS Volume<br/>AWS block storage")]:::store
+    POD["Pod<br/>(StatefulSet)"]:::run
+    NEWPOD["New pod<br/>(rescheduled)"]:::ok
+
+    SC -. "auto-provisions" .-> PV
+    PV -->|"backed by"| EBS
+    PVC -->|"bound to"| PV
+    POD -->|"mounts"| PVC
+    NEWPOD -->|"re-mounts same"| PVC
+
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef warn fill:#fdeeee,stroke:#d64545,color:#b23030;
+    classDef ok fill:#e8f5e9,stroke:#43a047,color:#1b5e20;
+```
+
+*Pod → PVC → PV → EBS; pod dies and restarts, but the PVC binding (and the data) survive.*
+
 ### Why data survives pod death
 
 **The EBS volume is independent of the pod — pod dies, volume and its data survive, new pod re-mounts the same volume.**
@@ -196,6 +220,32 @@ Use `emptyDir` for temporary data within a single pod's lifetime (caches, build 
 
 **Client → cloud LB → Ingress controller → Service (ClusterIP + kube-proxy routing) → Pod.**
 Each layer serves a role: the cloud LB terminates external TCP; the Ingress controller inspects HTTP and routes by host/path to a Service; the Service is a stable virtual IP whose iptables rules (managed by kube-proxy) distribute traffic across healthy pod IPs. DNS lets pods reference Services by name — not by IP. → [M4](05-M4-kubernetes-core.md), [M9](11-M9-advanced-k8s-internals.md).
+
+```mermaid
+flowchart LR
+    CLIENT["Client request<br/>(internet)"]:::run
+    LB["Cloud LB<br/>(ALB or NLB)"]:::ci
+    INGRESS["Ingress controller<br/>routes by host/path"]:::ci
+    SVC["Service<br/>stable ClusterIP"]:::ok
+    DNS["CoreDNS<br/>name lookup"]:::ci
+    POD1["Pod replica 1"]:::run
+    POD2["Pod replica 2"]:::run
+
+    CLIENT -->|"HTTPS"| LB
+    LB -->|"HTTP"| INGRESS
+    INGRESS -->|"to Service"| SVC
+    SVC -->|"kube-proxy"| POD1
+    SVC -->|"kube-proxy"| POD2
+    DNS -. "svc.ns.svc.cluster.local" .-> SVC
+
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef warn fill:#fdeeee,stroke:#d64545,color:#b23030;
+    classDef ok fill:#e8f5e9,stroke:#43a047,color:#1b5e20;
+```
+
+*Client → LB → Ingress → Service → Pods; CoreDNS resolves Service names so pods never need to hard-code each other's IPs.*
 
 ### Service discovery via DNS
 
