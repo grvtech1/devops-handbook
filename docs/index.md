@@ -17,22 +17,51 @@
 
 ## How all of DevOps fits together
 
-The whole handbook hangs off **one mental model** — a developer's commit travels through CI, a registry, GitOps, and Kubernetes to real users, while Terraform/Ansible build the ground and observability closes the loop. Learn this picture once, and every tool has a *place*.
+The whole handbook hangs off **one mental model — two reconciliation loops that meet at the Kubernetes cluster.** The **outer loop** builds the platform (Terraform *provisions*; Ansible + kubeadm *configure the nodes and form the cluster*) — rarely, carefully. The **inner loop** ships the app on every commit (App repo → CI → registry → config repo → Argo CD → rolling update). Git is the shared source of truth, **CI never touches the cluster** (it only writes to Git; Argo *pulls*), the database lives **outside** the cluster, and observability closes the loop back to you.
 
 ```mermaid
 flowchart LR
-  Dev([👩‍💻 Developer]):::dev -->|git push| CI[["CI<br/>test · build · scan"]]:::ci
-  CI -->|image:sha| Reg[("Registry")]:::store
-  CI -->|bump tag| Cfg[("Git config repo")]:::store
-  Cfg -. watch .-> Argo["Argo CD<br/>(in cluster)"]:::cd
-  Argo -->|sync| K8s{{"Kubernetes<br/>pods · services"}}:::run
-  Reg -. pull .-> K8s
-  K8s -->|serve| Users([🌐 Users]):::dev
-  TF["Terraform<br/>provisions"]:::infra --> Cloud[("☁️ AWS")]:::infra
-  Ans["Ansible<br/>configures"]:::infra --> Cloud
-  Cloud --> K8s
-  K8s --> Obs["📊 Prometheus · Grafana"]:::obs
-  Obs -. feedback .-> Dev
+  Dev(["👩‍💻 Developer"]):::dev
+
+  subgraph INNER["🔁 INNER LOOP · ship the app · every commit"]
+    direction LR
+    App[("App repo<br/>code + Dockerfile")]:::store
+    CI[["CI runner<br/>test → build → Trivy scan"]]:::ci
+    Reg[("Registry<br/>image:sha")]:::store
+    Cfg[("Config repo<br/>K8s manifests")]:::store
+    Argo["Argo CD<br/>in-cluster"]:::cd
+  end
+
+  subgraph OUTER["🏗️ OUTER LOOP · build the platform · rarely"]
+    direction LR
+    TF["Terraform<br/>VPC · EC2 · RDS"]:::infra
+    Ans["Ansible + kubeadm<br/>configure · form cluster"]:::infra
+  end
+
+  K8s{{"Kubernetes<br/>rolling update · self-heal"}}:::run
+  Ing["Ingress / LB<br/>front door"]:::net
+  DB[("RDS<br/>database · state")]:::store
+  Users(["🌐 Users"]):::dev
+  Obs["📊 Prometheus · Grafana · Loki"]:::obs
+
+  Dev -->|"git push"| App
+  App -->|"triggers"| CI
+  CI -->|"push image"| Reg
+  CI -->|"bump tag · commit"| Cfg
+  Cfg -. "watch" .-> Argo
+  Argo -->|"sync · pull"| K8s
+  Reg -. "kubelet pull" .-> K8s
+
+  TF -->|"provisions"| Ans
+  Ans -->|"forms"| K8s
+  TF -. "creates" .-> DB
+
+  Users -->|"HTTPS"| Ing
+  Ing --> K8s
+  K8s -->|"read / write"| DB
+  K8s --> Obs
+  Obs -. "alerts · feedback" .-> Dev
+
   classDef dev fill:#e8eaf6,stroke:#3f51b5,color:#1a237e;
   classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
   classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
@@ -40,9 +69,12 @@ flowchart LR
   classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
   classDef infra fill:#fce4ec,stroke:#d81b60,color:#880e4f;
   classDef obs fill:#f1f8e9,stroke:#689f38,color:#33691e;
+  classDef net fill:#ede7f6,stroke:#5e35b1,color:#311b92;
 ```
 
-> 🇮🇳 **Hinglish intuition:** *Git = sach ka source. CI banata (image), Argo deploy karta (cluster me), Kubernetes chalata, observability wapas batati "sahi chala ya nahi." Terraform/Ansible = neev.* Poora course isi loop ke around hai.
+*Two loops, one cluster. **Outer** = build the platform (Pets, rare). **Inner** = ship the app (Cattle, every commit). Git is the shared brain; CI writes to Git and Argo pulls — so CI never holds cluster credentials; the RDS state lives outside the cluster; observability feeds back to the developer.*
+
+> 🇮🇳 **Hinglish intuition:** *Do loop hain — **bahar wala** (Terraform/Ansible) neev + cluster banata (kabhi-kabhi), **andar wala** (App repo→CI→Argo) app rozana bhejta. Dono cluster pe milte hain. Git = sach ka source; CI cluster ko **chhoota nahi** (sirf Git likhta, Argo pull karta); database cluster ke **bahar**; observability wapas feedback deti.* Poora course isi picture ke around hai.
 
 ---
 
