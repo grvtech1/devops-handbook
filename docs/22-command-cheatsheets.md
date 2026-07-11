@@ -180,6 +180,39 @@ git bisect good v1.0.0              # this commit was fine → git binary-search
 | **GitHub Flow** | main + short feature branches → PR → deploy | Continuous delivery (modern default) | Requires solid CI gate |
 | **Trunk-based** | One trunk + feature flags | Fastest CI, smallest batches | Demands feature-flag discipline |
 
+**Environment branches — how promotion flows** (the model in row 1):
+
+```mermaid
+flowchart TD
+  Dev(["👩‍💻 Developer"]):::dev
+  subgraph T["🧪 TEST — fast-moving, messy"]
+    Tb["test branch"]:::test
+    Ts[["Test server<br/>v1 · v2 · v3"]]:::test
+  end
+  subgraph Q["🔍 QA — testers verify"]
+    Qb["qa branch"]:::qa
+    Qs[["QA server<br/>v1 · v2"]]:::qa
+  end
+  subgraph P["🚀 PROD — real customers"]
+    Pb["prod branch"]:::prod
+    Ps[["Prod server<br/>R1"]]:::prod
+  end
+  Dev -->|"every commit"| Tb
+  Tb --> Ts
+  Tb ==>|"promote stable · merge"| Qb
+  Qb --> Qs
+  Qb ==>|"promote release-ready · merge"| Pb
+  Pb --> Ps
+  classDef dev fill:#e8eaf6,stroke:#3f51b5,color:#1a237e;
+  classDef test fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+  classDef qa fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+  classDef prod fill:#e8f5e9,stroke:#43a047,color:#1b5e20;
+```
+
+*Code is **promoted upward**: every commit lands on `test` (auto-deploys to the Test server); once stable, merge → `qa`; once release-ready, merge → `prod` (R1, R2… = releases). Each branch **auto-deploys** to its own environment.*
+
+> ⚠️ **The catch (why modern teams moved on):** long-lived branches **drift apart** — `test`, `qa`, and `prod` slowly diverge, so promotion merges get painful and *"works in QA, breaks in prod"* creeps in. The modern fix: **one `main` branch + per-environment config/overlays** (dev/staging/prod) delivered by **GitOps** — the *code* is identical everywhere; only the *config* differs. See [M7 GitOps](08-M7-gitops.md).
+
 > 🇮🇳 **Hinglish intuition:** Modern teams mein long-lived branches se bachte hain — chhoti, jaldi-merge branches + GitOps per-env overlays. Har environment ke liye alag branch = drift ka recipe.
 
 ---
