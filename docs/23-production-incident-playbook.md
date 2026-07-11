@@ -14,6 +14,47 @@ This chapter is **not a tutorial** — it is the reference you open when somethi
 
 The ordered reflex, every time:
 
+```mermaid
+flowchart TD
+    BEGIN(["Prod is broken"])
+    RECENT{"Recent deploy<br/>in last 2 hours?"}
+    BACK["Rollback NOW<br/>git revert + push<br/>or kubectl rollout undo"]
+    CALM{"Stabilized?"}
+    DIAG["Diagnose root cause<br/>logs · metrics · traces"]
+    ESC(["Escalate — page senior on-call"])
+    LAYER{"Which layer<br/>is broken?"}
+    PODS["Pods not starting<br/>→ Section A"]
+    NET["User-facing errors<br/>→ Section B"]
+    DEPFAIL["Rollout stuck<br/>→ Section C"]
+    INFRA["Node / resource pressure<br/>→ Section D"]
+    GITOPS["Argo CD issues<br/>→ Section G"]
+    DB["Database errors<br/>→ Section J"]
+
+    BEGIN --> RECENT
+    RECENT -->|"yes"| BACK --> CALM
+    CALM -->|"yes"| DIAG
+    CALM -->|"no"| ESC
+    RECENT -->|"no"| LAYER
+    LAYER -->|"pods"| PODS
+    LAYER -->|"network"| NET
+    LAYER -->|"deploy"| DEPFAIL
+    LAYER -->|"infra"| INFRA
+    LAYER -->|"gitops"| GITOPS
+    LAYER -->|"database"| DB
+
+    classDef start fill:#fdeeee,stroke:#d64545,color:#b23030;
+    classDef decide fill:#fff8e1,stroke:#f57f17,color:#e65100;
+    classDef act fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef jump fill:#e8f5e9,stroke:#43a047,color:#1b5e20;
+
+    class BEGIN,ESC start;
+    class RECENT,CALM,LAYER decide;
+    class BACK,DIAG act;
+    class PODS,NET,DEPFAIL,INFRA,GITOPS,DB jump;
+```
+
+*60-second triage: check for a recent deploy first — if yes, roll back immediately; if no, pick the failing layer and jump to the matching section.*
+
 ```
 1. ACKNOWLEDGE  →  alert the team, open an incident channel
 2. ASSESS       →  blast radius — how many users? which services? which regions?

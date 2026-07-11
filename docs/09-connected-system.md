@@ -36,6 +36,36 @@ The whole stack is **two reconciliation loops sharing one Git repo**. The **oute
 
 ## 1. The two loops (the map)
 
+```mermaid
+flowchart LR
+    Git["GIT<br/>source of truth"]:::shared
+    TF["Terraform<br/>VPC · EC2 · RDS · ECR"]:::infra
+    Ans["Ansible<br/>kubeadm · Calico"]:::infra
+    K8s["Kubernetes Cluster<br/>where loops meet"]:::run
+    CI["CI / Actions<br/>test + build"]:::ci
+    ECR["Registry / ECR<br/>immutable image"]:::ci
+    Argo["Argo CD<br/>pull-based GitOps"]:::ci
+    Users(["Users"]):::run
+
+    Git -->|"outer loop"| TF
+    TF -->|"B1 · server IPs"| Ans
+    Ans -->|"B2 · live cluster"| K8s
+    Git -->|"inner loop"| CI
+    CI -->|"B3 · image push"| ECR
+    CI -->|"B5 · tag commit"| Git
+    ECR -. "B3 · kubelet pull" .-> K8s
+    Git -. "B6 · watches" .-> Argo
+    Argo -->|"B6 · apply"| K8s
+    K8s --> Users
+
+    classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;
+    classDef infra fill:#fce4ec,stroke:#d81b60,color:#880e4f;
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+```
+
+*Outer loop (Pets, runs rarely) and inner loop (Cattle, every push) both read from Git and converge at the Kubernetes cluster.*
+
 ```
                         ┌───────────────────────────────────────────┐
                         │            GIT  — single source of truth    │
@@ -177,6 +207,33 @@ Now watch a single feature travel the entire system, crossing every bridge in or
    ▶ Result: a live Kubernetes cluster. The two loops now share this cluster.
 ```
 
+```mermaid
+flowchart LR
+    Push["git push<br/>to main"]:::ci
+    Test["CI · pytest<br/>test gate"]:::ci
+    Build["CI · docker build<br/>push to ECR"]:::ci
+    ManifestUp["CI updates<br/>image tag in Git"]:::ci
+    ArgoSync["Argo CD<br/>OutOfSync then apply"]:::ci
+    RollingUp["K8s rolling update<br/>new ReplicaSet"]:::run
+    Svc["Service<br/>EndpointSlice"]:::run
+    RDS[("RDS<br/>state outside")]:::run
+    User(["User<br/>200 OK"]):::run
+
+    Push -->|"B4 triggers"| Test
+    Test -->|"pass"| Build
+    Build -->|"B3 image in ECR"| ManifestUp
+    ManifestUp -->|"B5 commit"| ArgoSync
+    ArgoSync -->|"B6 apply"| RollingUp
+    RollingUp -->|"B7 ready pods"| Svc
+    Svc --> User
+    RollingUp -->|"B8 connect"| RDS
+
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+```
+
+*Every git push crosses Bridges 4 → 5 → 6 → 7 (and Bridge 8 for the database) before reaching the user.*
+
 ### Day 1+ — Delivery (inner loop, every push)
 ```
 7.  git push origin main            → matches on: push: [main]                 [Bridge 4]
@@ -202,6 +259,39 @@ tfstate deleted?  → Terraform thinks NOTHING exists → would try to rebuild e
 ---
 
 ## 5. The connection web (one glance)
+
+```mermaid
+flowchart TD
+    TF["Terraform<br/>builds VPC · EC2 · RDS · ECR · S3"]:::infra
+    Ans["Ansible<br/>kubeadm · cluster bootstrap"]:::infra
+    Git["GIT<br/>source of truth"]:::shared
+    CI["CI / Actions"]:::ci
+    ECR["Registry / ECR"]:::ci
+    Argo["Argo CD<br/>pull-based"]:::ci
+    K8s["K8s Cluster<br/>Deployment · Service · Ingress"]:::run
+    RDS[("RDS<br/>state outside cluster")]:::run
+    Users(["Users"]):::run
+
+    TF -->|"B1 · IPs"| Ans
+    TF -->|"creates"| ECR
+    TF -->|"creates"| RDS
+    Ans -->|"B2 · live cluster"| K8s
+    Git -->|"B4 · triggers"| CI
+    CI -->|"B3 · image push"| ECR
+    CI -->|"B5 · tag update"| Git
+    ECR -. "B3 · kubelet pull" .-> K8s
+    Git -. "B6 · watches" .-> Argo
+    Argo -->|"B6 · apply"| K8s
+    K8s -->|"B7"| Users
+    K8s -->|"B8 · connect"| RDS
+
+    classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;
+    classDef infra fill:#fce4ec,stroke:#d81b60,color:#880e4f;
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+```
+
+*All eight bridges in one view — Terraform builds the foundation, Git is the hub both loops read from, all paths converge at the Kubernetes cluster.*
 
 ```
                          ┌──────────── TERRAFORM ────────────┐

@@ -33,6 +33,46 @@ The example service throughout is a hypothetical backend service (Go/gRPC in the
 
 ### The 10-step pipeline
 
+```mermaid
+flowchart LR
+    DEV(["Developer"])
+    PUSH["1 · git push"]
+    TEST["2 · checkout + test"]
+    BUILD["3 · docker build<br/>multi-stage distroless"]
+    SCAN{"4 · Trivy scan<br/>HIGH or CRITICAL?"}
+    HALT(["STOP — pipeline fails"])
+    IMG["5a · docker push<br/>SHA-tagged image"]
+    REG[("Registry")]
+    KUST["5b · kustomize edit<br/>git commit + push"]
+    CFG[("Config repo")]
+    ARGO["6-7 · Argo detects<br/>change and syncs"]
+    ROLL["8-9 · Rolling update<br/>readiness probes pass"]
+    OBS["10 · Observe<br/>RED dashboards"]
+
+    DEV --> PUSH --> TEST --> BUILD --> SCAN
+    SCAN -->|"CVE found"| HALT
+    SCAN -->|"clean"| IMG
+    IMG --> REG
+    IMG --> KUST --> CFG --> ARGO --> ROLL --> OBS
+    OBS -.->|"feedback"| DEV
+
+    classDef dev fill:#f3e5f5,stroke:#7b1fa2,color:#4a148c;
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef warn fill:#fdeeee,stroke:#d64545,color:#b23030;
+    classDef store fill:#fff8e1,stroke:#f57f17,color:#e65100;
+    classDef gitops fill:#e8f5e9,stroke:#43a047,color:#1b5e20;
+    classDef obs fill:#fce4ec,stroke:#c2185b,color:#880e4f;
+
+    class DEV dev;
+    class PUSH,TEST,BUILD,IMG,KUST ci;
+    class SCAN,HALT warn;
+    class REG,CFG store;
+    class ARGO gitops;
+    class ROLL,OBS obs;
+```
+
+*The 10-step CI/CD pipeline: CI (steps 1–5) builds, scans, and hands off via a Git commit; Argo CD (steps 6–10) syncs and rolls out — neither side touches the other's domain.*
+
 ```
  DEVELOPER           CI RUNNER (ephemeral)              REGISTRY     GITOPS        CLUSTER
      │                        │                              │            │              │

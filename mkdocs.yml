@@ -42,9 +42,17 @@ theme:
     - search.highlight
     - search.share
     - content.code.copy
+    - content.code.annotate
     - content.tabs.link
+    - content.tooltips
+    - announce.dismiss
   icon:
     repo: fontawesome/brands/github
+    admonition:
+      note: material/lightbulb-on
+      tip: material/rocket-launch
+      warning: material/alert
+      danger: material/skull-outline
 
 markdown_extensions:
   - abbr
@@ -54,13 +62,28 @@ markdown_extensions:
   - tables
   - footnotes
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.highlight:
       anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
+  - pymdownx.tabbed:
+      alternate_style: true
   - pymdownx.tasklist:
       custom_checkbox: true
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.caret
+  - pymdownx.tilde
   - toc:
       permalink: true
 
