@@ -131,6 +131,7 @@ Every module tells you exactly **which arrow it owns** and **what it hands to th
 |---|--------|--------------------------------------|
 | [10](10-M8-observability-sre.md) | **M8 — Observability & SRE** | *It's 2 a.m. and something is slow — how do I see inside a running system?* |
 | [11](11-M9-advanced-k8s-internals.md) | **M9 — Advanced Kubernetes Internals** | *Probes, QoS, DNS, graceful shutdown, HPA, RBAC, Ingress — what really happens inside?* |
+| [23](23-production-incident-playbook.md) | **Production Incident Playbook** | *It's on fire in prod — what do I run, in what order, to fix it? 26 real issues (CrashLoop, 502, OOM, PVC Pending, state-lock, AccessDenied, DB…) with symptom → diagnose → fix → prevent.* |
 
 ### Part IV — Prove it (capstone)
 | # | Module | Core production question it answers |
