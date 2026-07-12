@@ -137,3 +137,6 @@ nav:
           - "Reference Appendix": 16-reference-appendix.md
           - "Flashcards": 17-flashcards.md
           - "Job-Ready": 18-career-job-ready.md
+      - "Part VI — The Production Gauntlet":
+          - "Build the Real System": 24-production-gauntlet-build.md
+          - "Chaos Engineering · break & fix": 25-production-gauntlet-chaos.md

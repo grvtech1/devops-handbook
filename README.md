@@ -3,7 +3,7 @@
 **A free, zero-to-job-ready DevOps course** — from *"what is a terminal?"* all the way to **production- and interview-ready**. Systems thinking (not a tool tour), hands-on labs, two capstone projects, ~190 flashcards, and a study plan that gets you to the finish line.
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-blue.svg)](LICENSE)
-![Chapters](https://img.shields.io/badge/chapters-26-brightgreen)
+![Chapters](https://img.shields.io/badge/chapters-28-brightgreen)
 ![Level](https://img.shields.io/badge/level-zero%20%E2%86%92%20job--ready-orange)
 ![Cost](https://img.shields.io/badge/cost-free-success)
 
@@ -30,7 +30,7 @@ Searchable · dark mode · mobile-friendly · **interactive progress tracking** 
 
 You can do almost everything **locally** with `kind` (a local Kubernetes) — no cloud bill. An AWS free-tier account is only needed for the *optional* cloud capstone. Nobody is blocked by cost.
 
-## What's inside (26 chapters)
+## What's inside (28 chapters)
 
 | Part | Covers |
 |------|--------|
@@ -40,6 +40,7 @@ You can do almost everything **locally** with `kind` (a local Kubernetes) — no
 | **III — Operate** | Observability & SRE, advanced Kubernetes internals, a **production incident playbook** (26 real issues → fixes) |
 | **IV — Capstones** | URL shortener + MicroShop (microservices) — build the whole stack |
 | **V — Reference & career** | Interview bank, X-vs-Y confusion-busters, hands-on command cheat-sheets (Git/Docker/kubectl/Ansible/Terraform/ArgoCD/**Jenkins**), M11–M18 roadmap, glossary, flashcards, job-ready checklist |
+| **VI — Production Gauntlet** | Build one real system ("ShopFast") end-to-end to production, then **break it with chaos engineering** — 12 worked experiments (pod/node/AZ/network/DB-failover/dependency/cert…) → diagnose → senior fix |
 
 **How it's built to stick:** per-chapter recall gates, hidden quiz answers, predict-first prompts, real production war-stories, and a spaced-review flashcard deck.
 

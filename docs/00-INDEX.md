@@ -150,6 +150,12 @@ Every module tells you exactly **which arrow it owns** and **what it hands to th
 | [17](17-flashcards.md) | **Flashcard deck** | Every module's must-remember Q→A in Hinglish — Anki-importable, for daily spaced repetition (see [§0.1](#01-how-to-remember-this-for-life--the-spaced-review-system)) |
 | [18](18-career-job-ready.md) | **Career / Job-Ready** | Turn the handbook into a job: portfolio, resume bullets, interview scripts, 2-week sprint, salary ranges |
 
+### Part VI — The Production Gauntlet (build → break → fix)
+| # | Module | Core production question it answers |
+|---|--------|--------------------------------------|
+| [24](24-production-gauntlet-build.md) | **Build the Real System** | *Can I take one real service ("ShopFast") from empty repo to production on AWS+K8s — with every small process (IaC, GitOps, TLS, secrets, HPA, PDB, NetworkPolicy, backups, alerts) done right?* |
+| [25](25-production-gauntlet-chaos.md) | **Chaos Engineering — break & fix** | *Would I rather find the failure on a game-day or at 2 a.m.? 12 chaos experiments → diagnose → fix like a senior SRE.* |
+
 ---
 
 ## 4. The lesson template (what every module chapter contains)

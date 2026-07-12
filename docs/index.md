@@ -8,7 +8,7 @@
 [:material-map: See the curriculum](00-INDEX.md){ .md-button }
 [:material-github: Star on GitHub](https://github.com/grvtech1/devops-handbook){ .md-button }
 
-![Chapters](https://img.shields.io/badge/chapters-26-4051b5) &nbsp;
+![Chapters](https://img.shields.io/badge/chapters-28-4051b5) &nbsp;
 ![Level](https://img.shields.io/badge/level-zero%20→%20job--ready-f57c00) &nbsp;
 ![Cost](https://img.shields.io/badge/cost-free-43a047) &nbsp;
 ![License](https://img.shields.io/badge/license-CC%20BY%204.0-1e88e5)
@@ -273,6 +273,13 @@ Almost everything runs **locally** with [`kind`](https://kind.sigs.k8s.io/) (Kub
     [16 · Appendix](16-reference-appendix.md) ·
     [17 · Flashcards](17-flashcards.md) ·
     [18 · Job-ready](18-career-job-ready.md)
+
+-   **🔥 Part VI — The Production Gauntlet**
+
+    ---
+
+    [24 · Build the real system](24-production-gauntlet-build.md) ·
+    [25 · Chaos engineering — break & fix](25-production-gauntlet-chaos.md)
 
 </div>
 
