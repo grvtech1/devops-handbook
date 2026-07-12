@@ -113,6 +113,11 @@ Most tutorials put everything in one repo. Production teams almost always split 
 | **App repo** | Source code, Dockerfile, CI workflow | Developers (feature branches, PRs) |
 | **Config repo** | K8s manifests, Kustomize overlays | CI automation (image tag bumps) + ops (infra changes) |
 
+!!! info "The config repo has many names — they all mean the same thing"
+    The **config repo** is nothing special: it's a **normal Git repo** (on GitHub/GitLab, exactly like your app repo) — **not** something that lives *inside* the cluster or on a special server. You'll see it called the **GitOps repo · manifests repo · deploy / deployment repo · desired-state repo · environment repo**. All one thing: *wherever your Kubernetes manifests live and Argo CD watches.* And it can be a **separate repo** (as shown here) **or just a folder** (`/deploy`, `/k8s`, `/kustomize`) inside the app repo — Argo watches the path either way.
+
+    > 🇮🇳 **Intuition:** App repo = *recipe* (code). Config repo = *order slip* (which version, how many replicas). Argo = *waiter* jo order slip padhke kitchen (cluster) ko wahi banwata. Order slip alag notebook me ho ya menu ke peeche — dono chalega.
+
 **Why split?**
 
 1. **Separation of concerns** — "what the code does" vs "what's deployed." A security team can own the config repo without touching source.
