@@ -338,6 +338,159 @@ If your Service is not sending traffic to your pods, 90% of the time the label i
 
 ---
 
+## Labels, selectors & the RC → ReplicaSet story
+
+> **What's above** introduced labels as traffic-routing tags and node-placement filters. This section deepens the mechanics: the annotation distinction, both selector syntaxes, the RC→RS history, and the production gotchas that catch everyone.
+
+### The warehouse-tag analogy
+
+Imagine a fulfilment warehouse:
+
+| Real world | K8s equivalent |
+|---|---|
+| **Box on the floor** | **Pod** — a running workload unit |
+| **Sticky tag on the box** (`app=web`, `env=prod`) | **Label** — arbitrary key-value metadata attached to any K8s object |
+| **Magnetic wand that picks up tagged boxes** | **Selector** — a filter that matches objects by their labels |
+| **Shipping counter** ("give me any box tagged `app=web`") | **Service** — routes traffic to pods whose labels match its selector |
+| **Supervisor** ("always keep 3 boxes tagged `app=web` on this floor") | **ReplicaSet** — reconciles the *count* of pods matching its selector |
+| **Post-it on the inside of the box lid** (barcode, supplier notes) | **Annotation** — non-selectable metadata for tooling and humans |
+
+🇮🇳 **Hinglish intuition:** Label = dabbe pe chipka sticker. Service = "jo bhi box `app=web` sticker wala hai, usse utha ke shipping counter pe de." ReplicaSet = supervisor jo ginta rehta — "teen chahiye, do hain, ek aur banao." Annotation = sticker ke peeche chhupa internal note — koyi magnet nahi utha sakta, sirf andar wale logte.
+
+### Labels vs Annotations
+
+| Property | **Label** | **Annotation** |
+|---|---|---|
+| Selectable by controllers | **Yes** — Services, ReplicaSets, NetworkPolicies, kubectl `-l` all filter by label | **No** — never used in a `selector:` block |
+| Value length | 63 characters max | Unlimited (can hold JSON blobs) |
+| Used by | kube-scheduler, Services, ReplicaSets, NetworkPolicies, HPA | kubectl describe, Helm, cert-manager, Argo CD, Prometheus scrape config |
+| Typical examples | `app: web`, `env: prod`, `version: v2` | `kubernetes.io/change-cause: "deploy #142"`, `prometheus.io/scrape: "true"` |
+
+**Rule:** if a controller or network rule needs to *find* the object → label. If it is metadata for humans or non-K8s tooling → annotation.
+
+### Equality-based vs set-based selectors
+
+| Syntax | Who uses it | YAML form | `kubectl -l` form |
+|---|---|---|---|
+| **Equality-based** (`=`, `!=`) | `Service`, `ReplicationController` (legacy) | `matchLabels: {app: web}` | `kubectl get pods -l app=web` |
+| **Set-based** (`in`, `notin`, `exists`) | `ReplicaSet`, `Deployment`, `Job`, `DaemonSet` | `matchExpressions: [{key: env, operator: In, values: [prod,staging]}]` | `kubectl get pods -l 'env in (prod,staging)'` |
+
+```bash
+# Select pods where app=web AND env=prod (equality)
+kubectl get pods -l app=web,env=prod
+
+# Set-based: env is staging or prod
+kubectl get pods -l 'env in (staging,prod)'
+
+# Exclude canary pods
+kubectl get pods -l 'track notin (canary)'
+
+# Add a label to a live pod
+kubectl label pod <pod-name> version=v2
+
+# Show all labels on every pod
+kubectl get pods --show-labels
+
+# Inspect the full object chain at once
+kubectl get deploy,rs,pods --show-labels
+```
+
+### Labels as the glue — the selector graph
+
+```mermaid
+flowchart TD
+  DEP["Deployment<br/>selector: app=web"]:::ctl
+  RS["ReplicaSet<br/>selector: app=web"]:::ctl
+  P1["Pod A<br/>app=web"]:::run
+  P2["Pod B<br/>app=web"]:::run
+  P3["Pod C<br/>app=web"]:::run
+  SVC["Service<br/>selector: app=web"]:::net
+  NP["NetworkPolicy<br/>podSelector: app=web"]:::net
+
+  DEP -->|"manages"| RS
+  RS -->|"creates"| P1
+  RS -->|"creates"| P2
+  RS -->|"creates"| P3
+  SVC -. "routes traffic to" .-> P1
+  SVC -. "routes traffic to" .-> P2
+  SVC -. "routes traffic to" .-> P3
+  NP -. "applies rules to" .-> P1
+  NP -. "applies rules to" .-> P2
+  NP -. "applies rules to" .-> P3
+
+  classDef ctl fill:#ede7f6,stroke:#5e35b1,color:#311b92;
+  classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+  classDef net fill:#ede7f6,stroke:#5e35b1,color:#311b92;
+```
+
+*The label `app=web` is the single wire connecting Deployment, ReplicaSet, Service, and NetworkPolicy to the same pods — change a pod's label and it simultaneously falls out of all four.*
+
+### ReplicationController vs ReplicaSet — the full story
+
+**ReplicationController (RC)** was K8s's original self-healing primitive (v1.0). It worked, but its selector was **equality-only**: `app=web`. You could not say "pods in the set {web, api}" or "all pods except canary."
+
+| Property | **ReplicationController (RC)** | **ReplicaSet (RS)** |
+|---|---|---|
+| Introduced | K8s 1.0 | K8s 1.2 (GA in 1.9) |
+| Selector support | Equality-based only (`=`, `!=`) | **Set-based** (`in`, `notin`, `exists`) + equality |
+| Used directly today | **No — legacy, do not create** | Only via Deployment (Deployment creates and owns it) |
+| Rolling update | Manual `kubectl rolling-update` (removed in K8s 1.11) | Managed automatically by Deployment controller |
+| Relationship to Deployment | Standalone — no Deployment layer | Created and owned by a Deployment |
+
+**Why RS replaced RC:** A Deployment rolling-update works by creating two ReplicaSets — one for the old image (scaling to 0) and one for the new image (scaling to the desired count). To distinguish "pods from RS-v1" from "pods from RS-v2" even when both carry `app=web`, K8s injects a `pod-template-hash` label onto every pod a ReplicaSet creates, and the RS's selector includes that hash. Set-based selectors made this clean; RC's equality-only selectors could not support it.
+
+**The chain you work with today:**
+
+```
+Deployment  (you interact with this — scale, rollout, rollback)
+  └── ReplicaSet v2  (current version — runs at full desired count)
+        ├── Pod  (app=web, pod-template-hash=abc123)
+        ├── Pod  (app=web, pod-template-hash=abc123)
+        └── Pod  (app=web, pod-template-hash=abc123)
+  └── ReplicaSet v1  (previous version — scaled to 0 after rollout, kept for rollback)
+```
+
+### Self-healing: what the ReplicaSet is actually doing
+
+Self-healing is the RS running a perpetual reconciliation loop:
+
+```
+loop (every few seconds):
+  desired = RS.spec.replicas
+  actual  = COUNT(pods WHERE labels MATCH RS.selector AND status != Terminating)
+  if actual < desired: create (desired - actual) new pods
+  if actual > desired: delete (actual - desired) pods (newest first)
+```
+
+Key implication: the RS counts **all pods matching its selector**, not just pods it created. If you manually create a bare pod and accidentally label it `app=web` while an RS with that selector is running, the RS may **delete one of its own pods** (actual now > desired because the bare pod joined the count).
+
+!!! warning "The #1 gotcha: selector mismatch → empty EndpointSlice → dead Service traffic"
+    **Scenario:** your Service has `selector: app: web` but your pods carry `app: Web` (capital W). Both apply without error. Then:
+
+    ```bash
+    kubectl get endpoints <svc-name>   # → <none>
+    kubectl get endpointslices         # → 0 addresses
+    ```
+
+    Every request to the Service returns **connection refused** or **503**. K8s does not validate that a Service selector matches any existing pod — it silently creates an empty EndpointSlice.
+
+    **Debug reflex:**
+    ```bash
+    kubectl get pods --show-labels            # exact labels on running pods
+    kubectl get endpoints <svc-name>          # empty = selector mismatch
+    kubectl describe svc <svc-name>           # compare Selector: field vs pod labels
+    ```
+
+    **Two more traps in the same family:**
+
+    1. **Deployment/RS selector is immutable after creation.** `kubectl patch deployment ... -p '{"spec":{"selector":...}}'` errors out — K8s refuses to change it. To change the selector, delete and recreate the Deployment. (Demonstrated in Step 8 of the hands-on lab above.)
+
+    2. **Deleting a controller-owned pod just brings it back.** The RS replaces it immediately to restore the count. To reduce the number of running pods, `kubectl scale deployment <name> --replicas=N` — never delete individual pods to shrink a fleet.
+
+    Cross-link: selector mismatch → empty EndpointSlice → 502/503 at the Ingress. The EndpointSlice internals and the networking debug path are in [M9 networking internals](11-M9-advanced-k8s-internals.md).
+
+---
+
 ## Probes: readiness vs liveness
 
 A container can be **running** (the process started) without being **ready** (the application is actually serving requests). K8s distinguishes these with probes.

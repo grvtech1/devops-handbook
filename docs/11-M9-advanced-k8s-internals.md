@@ -329,6 +329,74 @@ flowchart LR
 
 🇮🇳 **Hinglish intuition:** CNI = inter-city highway. Har pod ek ghar hai. Bina highway ke sirf apne mohalle (node) mein jaa sakte ho. CNI highways banata hai node se node tak — har ghar se har ghar seedha.
 
+#### How a pod actually gets its IP
+
+**The apartment-building analogy:**
+
+| Real world | K8s equivalent |
+|---|---|
+| **Building** | **Node** — the physical or virtual machine running many pods |
+| **Apartment** | **Pod** — each pod gets its own **network namespace** (netns): its own `eth0`, its own routing table, isolated from every other pod on the same node |
+| **Two-ended pipe** connecting flat to hallway | **veth pair** — a virtual cable: one end (`eth0`) lives inside the pod's netns; the other end plugs into the **node bridge** (`cni0` / `cbr0`) |
+| **Building manager handing out apartment numbers** | **IPAM** (IP Address Management) — the CNI plugin allocates a unique IP from this node's slice of the pod CIDR (e.g. node-1 owns `10.244.1.0/24`, node-2 owns `10.244.2.0/24`) |
+
+**The assignment flow — what happens between `kubectl apply` and `eth0` existing inside the pod:**
+
+```mermaid
+flowchart LR
+  KL["kubelet"]:::run
+  PAUSE["pause container<br/>(holds the netns)"]:::run
+  CNI["CNI plugin<br/>(/opt/cni/bin/)"]:::net
+  IPAM["IPAM<br/>(allocate from<br/>node CIDR slice)"]:::store
+  VETH["veth pair<br/>(eth0 in pod<br/>peer on node bridge)"]:::net
+  READY["Pod has eth0<br/>and a routable IP"]:::run
+
+  KL -->|"1 · create pause container"| PAUSE
+  PAUSE -->|"2 · netns ready"| CNI
+  CNI -->|"3 · allocate IP"| IPAM
+  IPAM -->|"4 · IP returned"| VETH
+  VETH -->|"5 · configure IP and routes"| READY
+
+  classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+  classDef net fill:#ede7f6,stroke:#5e35b1,color:#311b92;
+  classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+```
+
+*kubelet → pause container (holds the netns) → CNI ADD → IPAM (allocate from node's pod CIDR slice) → veth pair + IP + routes → pod has eth0.*
+
+**Step by step:**
+
+1. **kubelet** creates the *pause* (infra) container first. Its only job: hold the pod's **network namespace** open. All application containers in the pod then join this same namespace — that is why every container in a pod shares the same IP and `localhost`.
+2. kubelet calls the **CNI plugin binary** (`/opt/cni/bin/calico`, `flannel`, `cilium`, …) with a JSON **`CNI ADD`** request.
+3. The plugin calls its **IPAM** backend (host-local, Calico's etcd, etc.), which returns a free IP from the **node's allocated CIDR slice**.
+4. The plugin creates a **veth pair**: `eth0` inside the pod's netns and a peer interface (e.g. `cali<hash>` or `veth<hash>`) attached to the **node bridge** (`cni0` / `cbr0`). The IP and default route are written into the pod's netns.
+5. The pod can now send and receive packets.
+
+**Same-node vs cross-node (cross-link):**
+
+- **Same-node:** `Pod-A eth0` → veth → node bridge → veth → `Pod-B eth0`. Pure in-kernel bridging; no encapsulation, full MTU available.
+- **Cross-node:** packet exits the bridge and hits the CNI's cross-node routing — overlay (VXLAN/IPIP) or BGP, as described in the mode table earlier in this section.
+
+**NetworkPolicy is enforced by the CNI plugin:** Calico and Cilium install kernel hooks (eBPF or iptables) at the veth interface to enforce NetworkPolicy rules. **Flannel does not implement NetworkPolicy** — if you apply NetworkPolicy objects on a Flannel cluster, they are silently ignored and all pod traffic remains permitted.
+
+!!! danger "MTU mismatch — big payloads hang; health checks pass; TLS handshakes stall"
+    Overlay encapsulation (VXLAN or IPIP) adds **~50 bytes** of header to every packet. If the pod `eth0` MTU stays at the default **1500**, any pod packet near the 1500-byte mark becomes too large once the overlay header is prepended — it is silently dropped or fragmented at the underlay.
+
+    **The deceptive pattern:** small HTTP requests and DNS (small UDP) work perfectly. Large REST responses, TLS `ClientHello` + certificate exchange, and gRPC streams intermittently stall. Everything appears fine until traffic carries real payloads or is tested under load.
+
+    ```bash
+    # Inside any pod — check eth0 MTU
+    kubectl exec -it <pod> -- ip link show eth0
+    # healthy on VXLAN cluster:  "mtu 1450" — NOT 1500
+    # mtu 1500 on an overlay cluster → MTU mismatch confirmed
+    ```
+
+    **Fix:** configure the CNI MTU to `hostMTU − overhead`:
+    - Calico VXLAN → `1450` · Calico IPIP → `1480` · Cilium VXLAN → `1450`
+    - Calico: `vethMTU` in `FelixConfiguration`; Flannel: `Backend.MTU` in the `kube-flannel-cfg` ConfigMap
+
+    MTU mismatch is the classic *"works on dev, breaks under real load"* cluster bug. Always check `ip link` inside a pod when TLS handshakes or large payloads are unreliable while small requests succeed.
+
 ### Service → EndpointSlice → pod (with kube-proxy)
 
 ```
@@ -526,6 +594,168 @@ spec:
 ```
 
 **Pattern: default-deny first, then allow-list.** Create `default-deny-ingress` for every namespace, then add explicit allow policies. NetworkPolicy requires a CNI that supports it (Calico, Cilium — not all do).
+
+---
+
+## B2. TLS / HTTPS — how a request is secured
+
+The Ingress section above showed cert-manager's annotation hook and where the certificate lands (a Kubernetes Secret). This section goes inside the TLS protocol itself — the part interviewers ask about when they say "walk me through a HTTPS request."
+
+### The postcard problem + three guarantees
+
+Plain HTTP is a **postcard**: readable by any router, ISP, or cloud provider between sender and receiver. TLS wraps it in a sealed, verified envelope.
+
+| TLS guarantee | What it means | Without it |
+|---|---|---|
+| **Confidentiality** | Payload encrypted — only client and server can read it | Any network hop reads passwords, tokens, PII |
+| **Integrity** | MAC detects tampering — altered bytes are caught | Attacker modifies the response in transit |
+| **Authenticity** | Certificate proves the server is who it claims to be | You might connect to an imposter, not your bank |
+
+> 🇮🇳 **Hinglish intuition:** HTTP = postcard (daaiya bhi padh sakta). HTTPS = sealed registered envelope with verified sender stamp — band karo, address confirm karo, phir trust karo.
+
+### The certificate analogy — passport + padlock
+
+- **Certificate = verified passport.** It says "I am api.example.com" and a trusted Certificate Authority (CA) has verified and signed that claim. Like a passport it has an expiry date and an issuer's seal.
+- **Asymmetric key pair = public padlock + private key.** The server shares its padlock (public key) freely — anyone can lock something with it. Only the server's private key opens it. Sharing the padlock does not expose the private key.
+
+### Chain of trust
+
+Browsers and operating systems come pre-installed with a small set of **Root CA** certificates they trust unconditionally. A Root CA signs Intermediate CA certificates; Intermediate CAs sign your domain's leaf certificate. The server must send both the leaf cert AND the intermediate — the browser walks the chain to the trusted root.
+
+```mermaid
+flowchart TD
+  ROOT["Root CA<br/>pre-installed in OS and browser"]:::ok
+  INT["Intermediate CA<br/>signed by Root CA"]:::ctl
+  LEAF["Leaf certificate<br/>api.example.com"]:::run
+  BROWSER["Browser trust store"]:::net
+  ROOT --> INT
+  INT --> LEAF
+  ROOT -. "pre-installed in" .-> BROWSER
+  BROWSER -. "validates chain up to" .-> LEAF
+  classDef ok fill:#e8f5e9,stroke:#43a047,color:#1b5e20;
+  classDef ctl fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+  classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+  classDef net fill:#ede7f6,stroke:#5e35b1,color:#311b92;
+```
+
+*Root CA trusts the Intermediate; Intermediate signs the leaf cert for your domain; browser validates the full chain back to the pre-installed root.*
+
+> **Classic gotcha — "works in browser, fails in `curl`":** Browsers cache intermediate certificates from previous visits. `curl` needs the full chain in the server response. If the server only sends the leaf cert (missing intermediate), `curl` returns `SSL certificate problem: unable to get local issuer certificate` even while the browser shows a padlock.
+
+### Symmetric vs asymmetric — why TLS uses both
+
+| | Asymmetric (ECDHE) | Symmetric (AES-GCM) |
+|---|---|---|
+| Key sharing | Public key is safe to share openly | Same key both sides — must be exchanged securely first |
+| Speed | Slow — heavy elliptic-curve math | Very fast — hardware-accelerated |
+| Role in TLS | Authenticate server + agree on session key | Encrypt the actual HTTP payload |
+
+TLS uses asymmetric crypto to **securely agree** on a symmetric session key, then switches to fast symmetric encryption for all data. **ECDHE (Elliptic-Curve Diffie-Hellman Ephemeral)** generates a fresh key pair per session — even if the server's private key is stolen later, recorded past sessions cannot be decrypted. This property is **forward secrecy**.
+
+### The TLS 1.3 handshake
+
+```mermaid
+sequenceDiagram
+  participant C as Client
+  participant S as Server
+  C->>S: ClientHello - TLS version + cipher list + SNI hostname
+  S->>C: ServerHello - chosen cipher suite
+  S->>C: Certificate chain - leaf plus intermediate
+  Note over C: verify chain back to trusted Root CA
+  C->>S: ECDHE public key share
+  S->>C: ECDHE public key share
+  Note over C,S: both independently derive the same session key
+  C->>S: Finished - first encrypted message
+  S->>C: Finished - encrypted
+  Note over C,S: encrypted HTTP traffic begins
+```
+
+*TLS 1.3 handshake: SNI tells the server which certificate to present; ECDHE establishes a shared session key without ever transmitting it; all traffic after Finished is AES-encrypted.*
+
+**SNI (Server Name Indication):** The client sends the target hostname in cleartext at the very start of the handshake — before any encryption is applied. This lets one load balancer serve TLS certificates for many different domains from a single IP; the server picks the right certificate based on the SNI field.
+
+### TLS termination in Kubernetes
+
+The Ingress controller terminates TLS at the cluster edge:
+
+```
+Client → HTTPS :443 → Ingress controller (decrypts) → HTTP → Service → Pod
+```
+
+- The TLS certificate lives in a **Kubernetes Secret** (`type: kubernetes.io/tls`) holding `tls.crt` (leaf + intermediate chain) and `tls.key` (private key).
+- The Ingress reads `spec.tls[].secretName` and loads the cert into the nginx controller's memory.
+- Traffic from the Ingress to backend Services travels as **plain HTTP inside the cluster**.
+- For **pod-to-pod encryption**, you need **mTLS via a service mesh** (Istio or Linkerd) — each sidecar proxy handles encryption transparently. This is the same mTLS used by the control plane internally (see section A′).
+
+### cert-manager — automated certificate lifecycle
+
+cert-manager is a Kubernetes controller that automates the full TLS lifecycle: request → issue → store → auto-renew. The Ingress section above covered the annotation; here is the complete flow:
+
+```mermaid
+flowchart TD
+  ING["Ingress object<br/>cluster-issuer annotation"]:::ctl
+  CM["cert-manager<br/>controller"]:::run
+  CI["ClusterIssuer<br/>letsencrypt-prod"]:::ok
+  ACME["ACME challenge<br/>HTTP-01 or DNS-01"]:::net
+  LE["Let's Encrypt CA"]:::ok
+  SEC["Kubernetes Secret<br/>tls.crt and tls.key"]:::store
+  RENEW["Auto-renew<br/>30 days before expiry"]:::ok
+  ING -->|"watches"| CM
+  CM --> CI
+  CI -->|"initiates"| ACME
+  ACME -->|"prove domain ownership"| LE
+  LE -->|"issues cert"| CM
+  CM -->|"writes"| SEC
+  SEC -->|"Ingress controller reads"| ING
+  CM -. "schedules" .-> RENEW
+  classDef ctl fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+  classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+  classDef ok fill:#e8f5e9,stroke:#43a047,color:#1b5e20;
+  classDef net fill:#ede7f6,stroke:#5e35b1,color:#311b92;
+  classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+```
+
+*cert-manager watches Ingress annotations, creates an ACME challenge with Let's Encrypt to prove domain ownership, stores the issued certificate in a Secret, and schedules auto-renewal 30 days before expiry.*
+
+**HTTP-01 challenge:** cert-manager creates a temporary HTTP endpoint at `http://<domain>/.well-known/acme-challenge/<token>`. Let's Encrypt fetches this URL to confirm domain ownership. Requires the domain's DNS to point to the cluster's public IP and port 80 to be open inbound.
+
+**DNS-01 challenge:** cert-manager writes a TXT record to your DNS provider (Route 53, Cloudflare) via their API. Let's Encrypt queries the TXT record to confirm ownership. Works for wildcard certs and private clusters where inbound HTTP is not available.
+
+!!! danger "Expired certificate = hard outage, no bypass"
+    Browsers reject expired certs with a non-bypassable block — users cannot reach your service at all, not even with a "proceed anyway" click. cert-manager renews 30 days early, but if renewal fails silently (HTTP-01 challenge blocked by a firewall, misconfigured ClusterIssuer, DNS-01 credentials expired), you get zero warning until the cert expires and the site goes dark.
+    ```bash
+    kubectl get certificate -A              # Ready=True + days until expiry
+    kubectl get order,challenge -A          # Pending = ACME challenge stuck
+    kubectl describe certificate <name>     # detailed status + last renewal attempt
+    ```
+
+**TLS gotchas table:**
+
+| Symptom | Root cause | Fix |
+|---|---|---|
+| `curl` fails, browser shows padlock | Missing intermediate cert in the server's chain | Ensure `fullchain.pem` in Secret — leaf plus intermediate |
+| `SSL: hostname mismatch` | Cert SAN does not include the request hostname | Cert must list `api.example.com` or `*.example.com` in Subject Alternative Name |
+| `certificate has expired` | cert-manager renewal failed silently | Check `order` and `challenge` objects; fix HTTP-01 firewall or DNS-01 credentials |
+| HTTP-01 challenge stuck `Pending` | Port 80 blocked — Let's Encrypt cannot reach the cluster | Open port 80 on LB and SG; ACME requires inbound HTTP |
+| Cert rejected with clock skew error | Server or client clock drifts outside cert validity window | Sync NTP on nodes — common on bare-metal clusters |
+
+**Inspect commands:**
+```bash
+# What does the server actually present?
+curl -vI https://api.example.com 2>&1 | grep -E "subject|issuer|expire|SSL"
+
+# Full chain — shows every cert the server sends and expiry
+openssl s_client -connect api.example.com:443 -servername api.example.com \
+  | openssl x509 -noout -text | grep -E "Subject|Issuer|Not After"
+
+# cert-manager lifecycle objects
+kubectl get certificate,order,challenge -A
+kubectl describe certificate api-tls-secret -n default
+```
+
+> 🇮🇳 **Hinglish intuition:** cert-manager = dedicated employee jo automatically 30 din pehle passport renewal ke liye apply karta hai. Agar ek baar wrong address (misconfigured issuer) — passport expire, site band, raat ko fix karo.
+
+**Three-sentence interview summary:** TLS provides confidentiality, integrity, and authenticity via a certificate chain rooted in a pre-installed CA. The handshake uses ECDHE asymmetric key exchange to agree on a per-session symmetric key (forward secrecy); all HTTP payload is then AES-encrypted with that key. In Kubernetes, the Ingress controller terminates TLS using a cert stored in a Secret — cert-manager automates the full lifecycle via ACME (Let's Encrypt), renewing 30 days before expiry.
 
 ---
 
@@ -802,6 +1032,94 @@ kubectl get storageclass
 ```
 
 > **Bare cluster gotcha:** Without a StorageClass + provisioner (e.g., `rancher/local-path-provisioner`), PVCs stay in `Pending` forever — no PV is created. Install a provisioner before deploying StatefulSets.
+
+### Storage lifecycle — provision → attach → mount
+
+The section above showed that a PVC binds to a PV. Here is what actually happens under the hood — three sequential stages that explain the majority of storage production incidents.
+
+**The rental-unit analogy:**
+
+| K8s concept | Rental analogy |
+|---|---|
+| **Pod** | Tenant who needs a room |
+| **PVC** | Rental application form |
+| **PV** | The actual physical unit |
+| **StorageClass** | Rental company — sets disk type, speed, reclaim policy |
+| **CSI driver** | Warehouse staff who physically build and deliver the unit |
+
+```mermaid
+flowchart LR
+  PVC["PVC created<br/>tenant rental form"]:::ctl
+  SC["StorageClass<br/>rental company"]:::store
+  CSI["CSI driver<br/>createVolume"]:::run
+  EBS["EBS volume<br/>one AZ only"]:::store
+  NODE["Node<br/>single attach"]:::ok
+  POD["Pod filesystem<br/>volume mounted"]:::run
+  PVC -->|"1 provision"| SC
+  SC --> CSI
+  CSI -->|"disk created"| EBS
+  EBS -->|"2 attach to node"| NODE
+  NODE -->|"3 mount and bind"| POD
+  classDef ctl fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+  classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+  classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+  classDef ok fill:#e8f5e9,stroke:#43a047,color:#1b5e20;
+```
+
+*Three-stage storage lifecycle: PVC triggers CSI to provision a disk (EBS built in one AZ); the disk attaches to a single node; kubelet formats and bind-mounts it into the pod's filesystem.*
+
+**Stage details:**
+
+- **① Provision:** The StorageClass instructs the CSI driver (`ebs.csi.aws.com`) to call the cloud API and create a disk. EBS volumes are provisioned in **one specific Availability Zone** — baked in at creation time, cannot be changed later.
+- **② Attach:** The EBS volume is attached to the node where the pod is scheduled (equivalent to `aws ec2 attach-volume`). EBS is a block device and supports **one node at a time** — it is not a network file system.
+- **③ Mount:** kubelet detects the attached block device, formats it if new, and bind-mounts it into the pod's container filesystem at the path specified in `volumeMounts`.
+
+**Access modes:**
+
+| Mode | Code | Meaning | Typical backend |
+|---|---|---|---|
+| **ReadWriteOnce** | RWO | One node mounts read-write | EBS, local-path — block devices |
+| **ReadWriteMany** | RWX | Many nodes mount read-write simultaneously | EFS, CephFS — network file systems |
+| **ReadOnlyMany** | ROX | Many nodes mount read-only | Pre-populated datasets, model weights |
+
+> **The "3 replicas can't share one EBS" trap:** A Deployment with `replicas: 3` and a single RWO PVC can only schedule one pod — the other two cannot attach the same EBS volume and stay `Pending`. Use EFS (RWX) for shared storage across pods, or use a StatefulSet with `volumeClaimTemplates` so each replica gets its own dedicated PVC.
+
+!!! danger "Two storage patterns that cause outages or data loss"
+    **Multi-Attach error (RWO + pod rescheduling):** A pod is rescheduled to a new node but the old node has not released the EBS attachment — node is slow to drain, or the kubelet crashed. The new pod's start blocks on `Unable to attach or mount volumes` for up to 6 minutes on EKS (the volume-detach timeout). Mitigation: use `volumeBindingMode: WaitForFirstConsumer` on the StorageClass so the disk is always provisioned in the same AZ the pod lands in, reducing reschedule-to-new-AZ scenarios.
+
+    **`reclaimPolicy: Delete` = silent data loss:** The default reclaim policy on most dynamic StorageClasses is `Delete`. When the PVC is deleted, the underlying EBS volume is **immediately and permanently deleted** with no confirmation prompt. For production databases set `reclaimPolicy: Retain` on the StorageClass before first use, or patch individual PVs after provisioning.
+    ```bash
+    kubectl get storageclass -o yaml | grep reclaimPolicy
+    kubectl patch pv <pv-name> -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}'
+    ```
+
+**StatefulSet `volumeClaimTemplates` — per-replica stable identity:**
+
+```yaml
+volumeClaimTemplates:
+- metadata:
+    name: data
+  spec:
+    accessModes: ["ReadWriteOnce"]
+    storageClassName: gp3
+    resources:
+      requests:
+        storage: 10Gi
+```
+
+This generates PVCs named `data-db-0`, `data-db-1`, `data-db-2`. When the `db-0` pod restarts — even after a crash or node failure — it always re-binds `data-db-0`. The primary always gets its own disk, never a replica's. This stable identity is what makes StatefulSets safe for databases with leader/follower roles.
+
+> 🇮🇳 **Hinglish intuition:** EBS = personal locker (ek banda, ek locker, ek sheher). EFS = shared office fridge (sab ek saath use kar sakte). StorageClass RWO le liya aur teen pods ko share karna tha? Wahi fridge-locker confusion hai.
+
+**Storage gotchas quick-reference:**
+
+| Symptom | Root cause | Fix |
+|---|---|---|
+| PVC stuck `Pending` | No StorageClass or provisioner not installed | `kubectl describe pvc` → install provisioner or create StorageClass |
+| PVC stuck `Pending` on EKS | AZ mismatch — volume in `us-east-1a`, pod on `us-east-1b` node | Use `volumeBindingMode: WaitForFirstConsumer` on StorageClass |
+| `Multi-Attach error` on pod reschedule | EBS (RWO) still attached to old node | Wait for detach timeout; force-delete stuck pod; check old node health |
+| Data deleted after `kubectl delete pvc` | `reclaimPolicy: Delete` (StorageClass default) | Set `Retain` on StorageClass before first PVC; patch PV if already provisioned |
+| 2 of 3 Deployment replicas stuck `Pending` | RWO PVC — only one node can attach EBS | Switch to RWX backend (EFS) or use StatefulSet with `volumeClaimTemplates` |
 
 ### RBAC — Role-Based Access Control
 
