@@ -120,6 +120,146 @@ etcdctl endpoint health --endpoints=https://127.0.0.1:2379 \
 
 ---
 
+## A′. The full wiring — who talks to whom (and how)
+
+Section A told you *what* each component does. This one is the part that separates *"K8s pata hai"* from *"K8s production mein chalaya hai"*: **how they actually connect, who gives the request, who takes it, on which port, over which protocol, and where it breaks at 2 a.m.**
+
+### One analogy that makes ALL of it click: the restaurant 🍽️
+
+Picture the cluster as **one big, busy restaurant**. Every component is a role, and — crucially — everyone follows one communication rule.
+
+| Component | Restaurant role | Its ONE job | How it talks |
+|---|---|---|---|
+| **etcd** | The **order-book** locked in the back office | Hold the single truth; nightly photocopy = backup | Only the Manager may open it |
+| **kube-apiserver** | The **Manager at the pass** | The *only* one who opens the order-book; everyone speaks to them | Checks your ID → permissions → house-rules, then writes |
+| **watch** | The **live order-screen (KDS)** everyone stares at | Push new tickets instantly | Manager *pushes*; no one keeps asking "koi naya order?" |
+| **kube-scheduler** | The **seating host** | Seat a new party (pod) at the best table (node) | Reads the screen → tells Manager "table = node-2" |
+| **kube-controller-manager** | The **shift supervisors** | "Reality = order-book" — 3 chefs on the book, only 2 present → hire one | File requests with the Manager |
+| **kubelet** | The **station chef** on each branch | Actually cook the tickets for *my* station; report ready/burnt | Watches the screen; reports to Manager |
+| **kube-proxy** | The **floor signage & runners** | "Pasta counter" always reaches an *open* pasta table | Wires the arrows from the screen |
+| **Pod** | A **table setting / the dish** | Serve, then get cleared & reset — never repaired | Ephemeral; replaced, not fixed |
+
+> 🇮🇳 **Yeh sentence poora control plane unlock karta hai:** *"Restaurant mein har koi sirf **Manager** se baat karta hai — kabhi seedha order-book se, kabhi ek doosre se nahi. Manager sabki ID check karta, phir order-book mein likhta. Aur ek ulti call bhi hai: jab customer bole 'us station pe abhi kya pak raha dikhao', to **Manager khud us chef ke paas** jaata hai."* → wahi apiserver → kubelet wali `kubectl logs` call hai.
+
+### The golden rule of direction: kaun *client*, kaun *server*
+
+99% confusion isse clear hota hai — **kaun connection *shuru* karta hai:**
+
+- **Almost everyone is a CLIENT of the apiserver.** Scheduler, controller-manager, kubelet, kube-proxy, CoreDNS — sab **apiserver ko outbound connect** karte hain (watch + write ke liye). Wo apiserver ko dhoondte hain, apiserver unhe nahi.
+- **Sirf apiserver → etcd** — order-book ka darwaza sirf Manager kholta.
+- **Do REVERSE calls** jahan apiserver *khud client* banta: **apiserver → kubelet :10250** (`logs`/`exec`/`port-forward`/metrics) aur **apiserver → admission webhooks**.
+
+```mermaid
+flowchart TD
+  KC(["kubectl · apps · CoreDNS"]):::ext
+  API["kube-apiserver<br/>:6443 HTTPS"]:::api
+  ETCD[("etcd<br/>:2379 client · :2380 peer")]:::store
+  SCH["scheduler"]:::ctl
+  CM["controller-manager"]:::ctl
+  KL["kubelet :10250"]:::run
+  KP["kube-proxy"]:::net
+  CRI["containerd<br/>unix socket"]:::run
+  KC -->|"REST · mTLS"| API
+  API <-->|"gRPC · mTLS · ONLY door"| ETCD
+  SCH -->|"watch pods · POST binding"| API
+  CM -->|"watch · reconcile"| API
+  KL -->|"watch my pods · POST status"| API
+  KP -->|"watch svc + endpointslices"| API
+  API -.->|"REVERSE · logs/exec :10250"| KL
+  KL -->|"CRI · gRPC"| CRI
+  classDef ext fill:#e8eaf6,stroke:#3f51b5,color:#1a237e;
+  classDef api fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+  classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+  classDef ctl fill:#ede7f6,stroke:#5e35b1,color:#311b92;
+  classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+  classDef net fill:#f3e5f5,stroke:#8e24aa,color:#4a148c;
+```
+
+*Har arrow ek client→server connection hai. Sab apiserver pe converge karte; sirf ek ulta teer (apiserver → kubelet).*
+
+### The connection matrix (give request / take request)
+
+| Client (request deta) | → Server (leta) | Port | Protocol | Kya maangta | Auth |
+|---|---|---|---|---|---|
+| `kubectl` / apps | **apiserver** | **6443** | HTTPS/REST | CRUD + watch objects | kubeconfig cert / SA token (mTLS) |
+| **apiserver** | **etcd** | **2379** | gRPC | read/write state | etcd client cert (mTLS) |
+| etcd | etcd peers | **2380** | gRPC | Raft consensus | peer certs |
+| **scheduler** | apiserver | 6443 | HTTPS (watch) | unscheduled pods → POST Binding | client cert |
+| **controller-manager** | apiserver | 6443 | HTTPS (watch) | reconcile read/write | client cert |
+| **kubelet** | apiserver | 6443 | HTTPS (watch) | *"mere node ke pods"* → POST status | node cert `system:node:<name>` |
+| **kube-proxy** | apiserver | 6443 | HTTPS (watch) | Services + EndpointSlices | SA token |
+| **apiserver** | **kubelet** | **10250** | HTTPS | `logs`/`exec`/metrics | apiserver client cert |
+| kubelet | **containerd** | unix sock | gRPC (CRI) | pull image · start/stop | local socket perms |
+
+### How they actually "talk" — the live order-screen (`watch`)
+
+Components apiserver ko poll **nahi** karte (*"kuch naya? kuch naya?"* — apiserver mar jaayega). Instead — **list-watch**:
+
+```mermaid
+sequenceDiagram
+  participant C as controller/kubelet
+  participant A as apiserver
+  participant E as etcd
+  C->>A: LIST pods (all + resourceVersion)
+  A->>E: read
+  A-->>C: all pods + RV=1050
+  C->>A: WATCH pods since RV=1050 (long-lived stream)
+  Note over A,C: connection OPEN (HTTP2 / chunked)
+  E-->>A: pod changed → RV=1051
+  A-->>C: push event: MODIFIED pod
+  Note over C: local cache (informer) → work-queue → reconcile
+```
+
+- **LIST** = ek baar pura snapshot + ek **`resourceVersion`** (yeh etcd ka revision number hai).
+- **WATCH** = us RV se aage har change (**ADDED/MODIFIED/DELETED**) ek **open connection** pe *push* — polling nahi.
+- Client ise **informer + local cache + work-queue** mein rakhta → har controller ke paas apni in-memory copy (apiserver pe load kam).
+- Watch peechhe reh gaya (`410 Gone — too old resource version`)? Client dobara **re-LIST** karta. Yeh **level-triggered** hai — controller *current desired state* pe react karta, missed events se nahi tootta.
+
+> 🇮🇳 **Bada insight:** apiserver **stateless** hai — saara sach etcd mein. Isliye apiserver ki latency ≈ **etcd ki disk latency**. Slow etcd disk = *poora* cluster slow. (`etcd_disk_wal_fsync_duration_seconds` watch karo.)
+
+### Har hop mTLS hai — aur yahan sabse bada production gotcha
+
+Upar ka har arrow **TLS (aksar mutual TLS)** pe — dono side certificate se verify. kubeadm mein certs `/etc/kubernetes/pki/`, kubeconfigs `/etc/kubernetes/*.conf`.
+
+!!! danger "The #1 self-managed cluster outage every 2–3 yr engineer eventually hits"
+    **kubeadm ke certs sirf 365 din valid.** Saal baad kubelet ↔ apiserver ek doosre ko trust karna band → **nodes NotReady, `kubectl` dead, cluster "achanak" tut gaya.** Managed K8s (EKS/GKE) isse handle karta; self-managed pe *tumhara* dard hai.
+    ```bash
+    kubeadm certs check-expiration     # kab expire?
+    kubeadm certs renew all            # renew → control-plane restart
+    ```
+
+Identity ka role: **kubelet → apiserver** node-identity `system:node:<name>` (group `system:nodes`) se — **Node Authorizer + NodeRestriction** ensure karta ek node sirf apne pods dekhe (blast-radius chhota). **Pods → apiserver** projected **ServiceAccount JWT** (`/var/run/secrets/kubernetes.io/serviceaccount/token`) se, `kubernetes.default.svc` pe.
+
+### Node ke andar ki plumbing (station chef ke tools)
+
+kubelet do "neeche" wale layers se **local unix-socket gRPC** pe baat karta (network nahi):
+
+```
+kubelet ──CRI (gRPC · /run/containerd/containerd.sock)──▶ containerd ──▶ runc   (container start)
+kubelet ──CNI (binary: /opt/cni/bin/<plugin>)──────────▶ Calico/Cilium         (pod ko IP milta)
+kubelet ──CSI (gRPC · unix socket)─────────────────────▶ EBS/EFS driver        (volume attach+mount)
+```
+
+**CRI** = kubelet↔containerd ka contract · **CNI** = container ban-ne ke baad pod ko IP + routing · **CSI** = storage attach.
+
+### Production connection gotchas — jo actually debug karni padti hain
+
+| Symptom | Asli wajah (connection) | Check |
+|---|---|---|
+| `kubectl` hang / cluster frozen | apiserver down ya etcd quorum lost | `crictl ps`, etcd health, apiserver logs |
+| Nodes **NotReady** | kubelet → apiserver :6443 block (network/cert) | node se `curl -k https://<api>:6443` · `journalctl -u kubelet` |
+| `kubectl logs`/`exec` **hang** | apiserver → kubelet **:10250** block (SG/firewall) | control-plane → nodes :10250 rule kholo |
+| Sab slow (p99 spike) | **etcd disk latency** | fast SSD · `etcd_disk_wal_fsync_duration` |
+| Cluster "achanak" tut gaya (~1 saal) | **certs expire** | `kubeadm certs check-expiration` |
+| Pods Pending | scheduler down / no fitting node | `kubectl describe pod` (events) |
+| Pod-to-pod / DNS fail | CNI / CoreDNS / SG (overlay port) | Calico IPIP=proto 4 · BGP :179 · CNI pods |
+
+> 🇮🇳 **AWS self-managed pe firewall/SG rule (interview classic):** nodes → apiserver **6443**, apiserver → nodes **10250**, etcd **2379-2380** (control-plane aapas mein), CNI overlay (Calico IPIP / BGP 179). Ek rule missing = *"cluster half-working"* — wahi 2 baje wala incident.
+
+**⚡ 20-second recall:** *Sab apiserver ke client · sirf apiserver → etcd (mTLS gRPC 2379) · talk = LIST+WATCH (push, not poll) · resourceVersion = etcd revision · ulti call apiserver → kubelet 10250 (logs/exec) · har hop mTLS · kubeadm certs 365 din · etcd slow = sab slow, etcd = backup #1.*
+
+---
+
 ## B. Networking Internals
 
 ### CNI (Container Network Interface) — cross-node pod routing
