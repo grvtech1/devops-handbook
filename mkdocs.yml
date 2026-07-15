@@ -123,6 +123,7 @@ nav:
           - "The Connected System": 09-connected-system.md
           - "K8s Objects · How They Connect": 26-k8s-objects-map.md
           - "10-Day Learning Plan": 27-10-day-plan.md
+          - "Helm in the Real World (your 2 projects)": 28-helm-real-projects.md
           - "Follow One Commit (hands-on CI/CD)": 19-cicd-hands-on-flow.md
       - "Part III — Operate":
           - "M8 · Observability & SRE": 10-M8-observability-sre.md
