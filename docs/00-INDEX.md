@@ -124,6 +124,7 @@ Every module tells you exactly **which arrow it owns** and **what it hands to th
 | # | Module | Core production question it answers |
 |---|--------|--------------------------------------|
 | [09](09-connected-system.md) | **The Connected System** | *How do all 7 tools actually hand off to each other, end to end?* |
+| [26](26-k8s-objects-map.md) | **Kubernetes Objects — How They All Connect** | *Objects feel disconnected? One idea, one master map, 5 buckets — read once and the whole picture clicks.* |
 | [19](19-cicd-hands-on-flow.md) | **Follow One Commit** (hands-on CI/CD) | *Trace a single `git push` through CI → scan → registry → GitOps → rolling update → observe.* |
 
 ### Part III — Operate like a senior (intermediate → production)

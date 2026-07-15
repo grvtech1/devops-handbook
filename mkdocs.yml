@@ -121,6 +121,7 @@ nav:
           - "M7 · GitOps": 08-M7-gitops.md
       - "Part II — Systems thinking":
           - "The Connected System": 09-connected-system.md
+          - "K8s Objects · How They Connect": 26-k8s-objects-map.md
           - "Follow One Commit (hands-on CI/CD)": 19-cicd-hands-on-flow.md
       - "Part III — Operate":
           - "M8 · Observability & SRE": 10-M8-observability-sre.md
