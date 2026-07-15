@@ -1,0 +1,509 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>10-Day DevOps Confidence Sprint — Revise · Do · Prove</title>
+<style>
+  :root{
+    --bg:#0A1220;--bg2:#0D1728;--surface:#101E33;--surface2:#16263F;
+    --border:#1F3355;--border2:#2C4A78;
+    --text:#C6DBF5;--text-dim:#718AAF;--text-bright:#EAF3FF;
+    --green:#34D399;--green-bg:rgba(52,211,153,.10);--green-br:rgba(52,211,153,.30);
+    --cyan:#38BDF8;--cyan-bg:rgba(56,189,248,.10);--cyan-br:rgba(56,189,248,.30);
+    --amber:#FBBF24;--amber-bg:rgba(251,191,36,.10);--amber-br:rgba(251,191,36,.30);
+    --rose:#FB7185;--rose-bg:rgba(251,113,133,.10);--rose-br:rgba(251,113,133,.30);
+    --purple:#A78BFA;--purple-bg:rgba(167,139,250,.10);--purple-br:rgba(167,139,250,.30);
+    --mono:'JetBrains Mono','SF Mono','Cascadia Code','Consolas',monospace;
+    --sans:system-ui,-apple-system,'Segoe UI',sans-serif;
+  }
+  :root[data-theme="light"]{
+    --bg:#EEF3FB;--bg2:#E4EBF7;--surface:#FFF;--surface2:#F1F5FD;
+    --border:#D2DEF0;--border2:#B4C6E4;--text:#223B5E;--text-dim:#5F7898;--text-bright:#0C1B33;
+    --green:#0E9D68;--cyan:#0C8CC8;--amber:#B57F0A;--rose:#D6446A;--purple:#6D4BD6;
+    --green-bg:rgba(16,150,100,.09);--cyan-bg:rgba(14,140,200,.09);--amber-bg:rgba(180,130,10,.10);
+    --rose-bg:rgba(200,50,80,.09);--purple-bg:rgba(110,70,220,.09);
+  }
+  @media(prefers-color-scheme:light){:root:not([data-theme="dark"]){
+    --bg:#EEF3FB;--bg2:#E4EBF7;--surface:#FFF;--surface2:#F1F5FD;
+    --border:#D2DEF0;--border2:#B4C6E4;--text:#223B5E;--text-dim:#5F7898;--text-bright:#0C1B33;
+    --green:#0E9D68;--cyan:#0C8CC8;--amber:#B57F0A;--rose:#D6446A;--purple:#6D4BD6;
+    --green-bg:rgba(16,150,100,.09);--cyan-bg:rgba(14,140,200,.09);--amber-bg:rgba(180,130,10,.10);
+    --rose-bg:rgba(200,50,80,.09);--purple-bg:rgba(110,70,220,.09);
+  }}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:16px}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.65;-webkit-font-smoothing:antialiased;padding:0 20px 80px}
+  .wrap{max-width:920px;margin:0 auto}
+  .theme-btn{position:fixed;top:14px;right:16px;z-index:50;background:var(--surface);border:1px solid var(--border2);color:var(--text);border-radius:20px;padding:6px 13px;font-family:var(--mono);font-size:12px;cursor:pointer}
+  .theme-btn:hover{color:var(--text-bright);border-color:var(--cyan)}
+
+  .hero{padding:50px 0 30px;text-align:center;border-bottom:1px solid var(--border);margin-bottom:26px}
+  .hero .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px}
+  .hero h1{font-size:33px;line-height:1.12;color:var(--text-bright);font-weight:800;letter-spacing:-.02em;text-wrap:balance;margin-bottom:12px}
+  .hero p{font-size:16px;color:var(--text-dim);max-width:600px;margin:0 auto}
+  .hero .meta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+  .chip{font-family:var(--mono);font-size:12px;background:var(--surface);border:1px solid var(--border);padding:6px 12px;border-radius:20px;display:flex;align-items:center;gap:7px}
+  .chip .d{width:8px;height:8px;border-radius:50%}
+
+  .section-label{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-dim);margin:44px 0 16px;display:flex;align-items:center;gap:10px}
+  .section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+  /* gap analysis */
+  .gap-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:640px){.gap-grid{grid-template-columns:1fr}}
+  .gap-card{border-radius:12px;padding:16px 18px;border:1px solid var(--border);background:var(--surface)}
+  .gap-card h3{font-size:14px;display:flex;align-items:center;gap:8px;margin-bottom:10px;color:var(--text-bright)}
+  .gap-card ul{list-style:none}
+  .gap-card li{font-size:13.5px;padding:4px 0 4px 20px;position:relative;color:var(--text)}
+  .gap-card li::before{position:absolute;left:0;font-weight:700}
+  .gap-card.ok{border-color:var(--green-br)} .gap-card.ok h3{color:var(--green)} .gap-card.ok li::before{content:'✓';color:var(--green)}
+  .gap-card.thin{border-color:var(--amber-br)} .gap-card.thin h3{color:var(--amber)} .gap-card.thin li::before{content:'⚠';color:var(--amber)}
+  .gap-card.skip{border-color:var(--border2)} .gap-card.skip h3{color:var(--text-dim)} .gap-card.skip li::before{content:'⏭';color:var(--text-dim)}
+  .gap-card.do{border-color:var(--rose-br)} .gap-card.do h3{color:var(--rose)} .gap-card.do li::before{content:'▸';color:var(--rose)}
+
+  .verdict{background:var(--cyan-bg);border:1px solid var(--cyan-br);border-radius:12px;padding:18px 20px;margin:20px 0;font-size:15.5px}
+  .verdict b{color:var(--text-bright)}
+  .verdict .big{font-size:17px;color:var(--cyan);font-weight:700;margin-bottom:6px}
+
+  /* method */
+  .method{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:6px 0}
+  @media(max-width:640px){.method{grid-template-columns:1fr}}
+  .m-card{border-radius:12px;padding:16px 18px;border:1px solid var(--border);background:var(--surface);border-top:3px solid}
+  .m-card.r{border-top-color:var(--purple)} .m-card.d{border-top-color:var(--cyan)} .m-card.p{border-top-color:var(--green)}
+  .m-card .tag{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+  .m-card.r .tag{color:var(--purple)} .m-card.d .tag{color:var(--cyan)} .m-card.p .tag{color:var(--green)}
+  .m-card h4{font-size:15px;color:var(--text-bright);margin-bottom:6px}
+  .m-card p{font-size:13px;color:var(--text-dim)}
+
+  /* day cards */
+  .day{background:var(--surface);border:1px solid var(--border);border-radius:14px;margin-bottom:16px;overflow:hidden;scroll-margin-top:16px}
+  .day-head{display:flex;align-items:center;gap:14px;padding:16px 20px;cursor:pointer;border-left:4px solid var(--accent)}
+  .day.d1{--accent:var(--green)}.day.d2{--accent:var(--green)}.day.d3{--accent:var(--amber)}
+  .day.d4{--accent:var(--cyan)}.day.d5{--accent:var(--cyan)}.day.d6{--accent:var(--purple)}
+  .day.d7{--accent:var(--rose)}.day.d8{--accent:var(--amber)}.day.d9{--accent:var(--rose)}.day.d10{--accent:var(--cyan)}
+  .day-num{width:46px;height:46px;border-radius:11px;background:var(--surface2);display:grid;place-items:center;flex-shrink:0;font-family:var(--mono);font-weight:800;font-size:15px;color:var(--accent);border:1px solid var(--border)}
+  .day-num small{display:block;font-size:8px;letter-spacing:.1em;color:var(--text-dim);font-weight:400}
+  .day-title{flex:1}
+  .day-title h3{font-size:17px;color:var(--text-bright);font-weight:700}
+  .day-title .sub{font-size:12.5px;color:var(--text-dim);font-family:var(--mono)}
+  .day-toggle{color:var(--text-dim);font-size:18px;transition:transform .2s}
+  .day.open .day-toggle{transform:rotate(90deg)}
+  .day-body{display:none;padding:0 20px 20px 20px}
+  .day.open .day-body{display:block}
+
+  .lane{border-radius:10px;padding:13px 15px;margin-top:10px;border:1px solid var(--border);background:var(--bg2)}
+  .lane-tag{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:7px;font-weight:700}
+  .lane.revise .lane-tag{color:var(--purple)} .lane.do .lane-tag{color:var(--cyan)} .lane.prove .lane-tag{color:var(--green)}
+  .lane ul{list-style:none}
+  .lane li{font-size:13.5px;padding:3px 0 3px 20px;position:relative;color:var(--text)}
+  .lane.revise li::before{content:'↩';position:absolute;left:0;color:var(--purple)}
+  .lane.do li::before{content:'▸';position:absolute;left:0;color:var(--cyan)}
+  .lane.prove li::before{content:'✓';position:absolute;left:0;color:var(--green)}
+  .lane code{font-family:var(--mono);font-size:12px;background:var(--surface2);padding:1px 6px;border-radius:4px;color:var(--cyan)}
+  .lane.revise code{color:var(--purple)} .lane.prove code{color:var(--green)}
+  .proj{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;margin-right:4px;vertical-align:middle}
+  .proj.v{color:var(--green);background:var(--green-bg);border:1px solid var(--green-br)}
+  .proj.bf{color:var(--cyan);background:var(--cyan-bg);border:1px solid var(--cyan-br)}
+  .day-ref{font-size:12px;color:var(--text-dim);font-family:var(--mono);margin-top:12px;padding-top:10px;border-top:1px dashed var(--border)}
+
+  /* recall habit */
+  .habit{background:var(--purple-bg);border:1px solid var(--purple-br);border-radius:12px;padding:18px 20px;margin:10px 0}
+  .habit h3{color:var(--purple);font-size:15px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+  .habit table{width:100%;border-collapse:collapse;font-size:13.5px}
+  .habit td,.habit th{text-align:left;padding:7px 10px;border-bottom:1px solid var(--border)}
+  .habit th{font-family:var(--mono);font-size:11px;color:var(--text-dim)}
+  .habit td:first-child{font-family:var(--mono);color:var(--purple);white-space:nowrap}
+
+  .final{background:var(--green-bg);border:1px solid var(--green-br);border-radius:12px;padding:20px 22px;margin:20px 0}
+  .final h3{color:var(--green);font-size:16px;margin-bottom:10px}
+  .final p{font-size:14.5px;margin:8px 0}
+  .final b{color:var(--text-bright)}
+
+  .foot{text-align:center;padding:36px 0 0;margin-top:30px;border-top:1px solid var(--border);font-family:var(--mono);font-size:12px;color:var(--text-dim)}
+  .expand-all{font-family:var(--mono);font-size:12px;background:var(--surface2);border:1px solid var(--border);color:var(--text-dim);border-radius:8px;padding:6px 12px;cursor:pointer;margin-bottom:14px}
+  .expand-all:hover{color:var(--text-bright);border-color:var(--cyan)}
+</style>
+</head>
+<body>
+<button class="theme-btn" onclick="toggleTheme()" id="themeBtn">◐ theme</button>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="eyebrow">Personalized · concepts clear → confidence</div>
+    <h1>10-Day DevOps Confidence Sprint</h1>
+    <p>Padhna band, <b style="color:var(--text-bright)">karna aur samjha ke bolna</b> shuru. Har din: purana <b>revise</b> karo → apne real project pe <b>karo</b> → khud ko <b>prove</b> karo. Toy apps nahi — teri asli VANTA aur Billfree.</p>
+    <div class="meta">
+      <div class="chip"><span class="d" style="background:var(--green)"></span>VANTA-Boutique · kind (local)</div>
+      <div class="chip"><span class="d" style="background:var(--cyan)"></span>Billfree-techops · AWS</div>
+      <div class="chip"><span class="d" style="background:var(--purple)"></span>Handbook · 28 modules</div>
+    </div>
+  </header>
+
+  <!-- GAP ANALYSIS -->
+  <div class="section-label">Gap analysis — saaf baat</div>
+
+  <div class="verdict">
+    <div class="big">Tera content gap mein nahi hai — execution mein hai.</div>
+    Tere paas world-class 28-module handbook hai (recall gates, flashcards, incident playbook, 2 capstones) + 2 real projects. Par <b>progress.md poora untick</b>, <b>spaced-review log khaali</b>. Matlab: padha bahut, <b>DRILL nahi kiya</b>. Confidence content se nahi, <b>reps</b> se aata hai.
+  </div>
+
+  <div class="gap-grid">
+    <div class="gap-card ok">
+      <h3>✓ Poora + gehra (bas drill karo)</h3>
+      <ul>
+        <li>Linux, Git, Docker, Compose</li>
+        <li>Kubernetes core + config + storage</li>
+        <li>CI/CD, GitOps/ArgoCD, Helm, Kustomize</li>
+        <li>Terraform, Ansible, sizing/cost</li>
+        <li>Observability, incident playbook (26 issues), chaos</li>
+      </ul>
+    </div>
+    <div class="gap-card thin">
+      <h3>⚠ Patla — concept hai, hands-on kam</h3>
+      <ul>
+        <li>Secrets maturity: Vault / SealedSecrets / External Secrets</li>
+        <li>Service mesh (Istio/mTLS) — sirf mention</li>
+        <li>Azure / AZ-900 — sirf ek mapping table</li>
+      </ul>
+    </div>
+    <div class="gap-card do">
+      <h3>▸ Asli kaam (yeh sprint isi pe hai)</h3>
+      <ul>
+        <li>Har chapter ka <b>recall gate</b> memory se</li>
+        <li>Har concept ko <b>real project pe karo</b></li>
+        <li><b>Break &amp; fix</b> — incident playbook live</li>
+        <li>Blank page + explain-out-loud = proof</li>
+      </ul>
+    </div>
+    <div class="gap-card skip">
+      <h3>⏭ Abhi skip (10-din ke baad)</h3>
+      <ul>
+        <li>Roadmap M11–M18 (principal track)</li>
+        <li>Progressive delivery, supply-chain security</li>
+        <li>Azure cert — interview breadth, core nahi</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- METHOD -->
+  <div class="section-label">Har din ka format — 3 lanes</div>
+  <div class="method">
+    <div class="m-card r">
+      <div class="tag">↩ Revise · 15 min</div>
+      <h4>Recall gate</h4>
+      <p>Us chapter ke 3 sawaal <b>memory se</b> — dobara padho nahi, dobara <b>nikaalo</b>. Yehi yaad pakki karta hai.</p>
+    </div>
+    <div class="m-card d">
+      <div class="tag">▸ Do · 60–90 min</div>
+      <h4>Real project pe</h4>
+      <p>Terminal kholo. VANTA/Billfree pe actual commands. Todo, banao, badlo. Haath se — mujhse execute mat karwao.</p>
+    </div>
+    <div class="m-card p">
+      <div class="tag">✓ Prove · 15 min</div>
+      <h4>Khud ko sabit karo</h4>
+      <p>Blank page pe diagram banao, ya loud bolo jaise interview. Atka? Wahi kal ka revise.</p>
+    </div>
+  </div>
+
+  <!-- DAYS -->
+  <div class="section-label">The 10 days</div>
+  <button class="expand-all" onclick="toggleAll()" id="expandBtn">⊕ Sab kholo</button>
+
+  <!-- DAY 1 -->
+  <div class="day d1">
+    <div class="day-head" onclick="toggleDay(this)">
+      <div class="day-num">01<small>DAY</small></div>
+      <div class="day-title"><h3>Fundamentals drill — Linux · Git · Docker</h3><div class="sub">zameen pakki karo</div></div>
+      <div class="day-toggle">▸</div>
+    </div>
+    <div class="day-body">
+      <div class="lane revise"><div class="lane-tag">↩ Revise</div><ul>
+        <li>Ch 21 (Linux toolkit) + Ch 04 (Docker) ke recall gates memory se</li>
+        <li>Ek line: image vs container vs registry vs layer?</li>
+      </ul></div>
+      <div class="lane do"><div class="lane-tag">▸ Do — terminal kholo</div><ul>
+        <li><span class="proj v">VANTA</span>frontend ka Dockerfile padho → <code>docker build</code> → <code>docker run</code> → browser</li>
+        <li><code>docker exec -it &lt;id&gt; sh</code> — andar ghuso, files/env dekho</li>
+        <li>Linux debug drill: <code>top</code>, <code>df -h</code>, <code>ss -tlnp</code>, <code>journalctl</code>, <code>tail -f</code></li>
+        <li>Git: branch banao → change → commit → merge → <code>git log --oneline</code></li>
+      </ul></div>
+      <div class="lane prove"><div class="lane-tag">✓ Prove</div><ul>
+        <li>Blank page: <code>Dockerfile → build → image → run → container</code> flow likho</li>
+        <li>Loud bolo: "layer caching se rebuild fast kaise hota hai?"</li>
+      </ul></div>
+      <div class="day-ref">📖 Handbook: 21-linux-toolkit · 04-M3-docker · 22-command-cheatsheets</div>
+    </div>
+  </div>
+
+  <!-- DAY 2 -->
+  <div class="day d2">
+    <div class="day-head" onclick="toggleDay(this)">
+      <div class="day-num">02<small>DAY</small></div>
+      <div class="day-title"><h3>Kubernetes Core — self-heal, scale, rollout</h3><div class="sub">cook + manager + counter</div></div>
+      <div class="day-toggle">▸</div>
+    </div>
+    <div class="day-body">
+      <div class="lane revise"><div class="lane-tag">↩ Revise</div><ul>
+        <li>Ch 05 (K8s Core) + Ch 26 (Objects map) recall gates</li>
+        <li>Pod vs ReplicaSet vs Deployment — kaun kya, labels ka role?</li>
+      </ul></div>
+      <div class="lane do"><div class="lane-tag">▸ Do — kind cluster ready hai</div><ul>
+        <li><span class="proj v">VANTA</span><code>kubectl get pods,deploy,svc,rs -L app</code> — label flow dekho</li>
+        <li>Self-heal: <code>kubectl delete pod &lt;frontend-pod&gt;</code> → khud wapas aata hai</li>
+        <li>Scale: <code>kubectl scale deploy frontend --replicas=4</code> → watch</li>
+        <li>Rollout: image badlo → <code>kubectl set image</code> → <code>rollout status</code> → <code>rollout undo</code></li>
+      </ul></div>
+      <div class="lane prove"><div class="lane-tag">✓ Prove</div><ul>
+        <li>Blank page: self-heal loop (desired vs actual → controller → new pod)</li>
+        <li>Loud: "rolling update mein zero downtime kaise?"</li>
+      </ul></div>
+      <div class="day-ref">📖 05-M4-kubernetes-core · 26-k8s-objects-map</div>
+    </div>
+  </div>
+
+  <!-- DAY 3 -->
+  <div class="day d3">
+    <div class="day-head" onclick="toggleDay(this)">
+      <div class="day-num">03<small>DAY</small></div>
+      <div class="day-title"><h3>Config · Secret · Storage — break &amp; fix</h3><div class="sub">masala + pantry</div></div>
+      <div class="day-toggle">▸</div>
+    </div>
+    <div class="day-body">
+      <div class="lane revise"><div class="lane-tag">↩ Revise</div><ul>
+        <li>ConfigMap vs Secret vs PVC — kab kaun? (tera Helm/ConfigMap explainer bhi)</li>
+      </ul></div>
+      <div class="lane do"><div class="lane-tag">▸ Do</div><ul>
+        <li><span class="proj v">VANTA</span>Ek ConfigMap banao, frontend env usse inject karo, restart, verify</li>
+        <li>Secret banao <code>kubectl create secret generic</code> → Pod mein <code>secretRef</code></li>
+        <li><span class="proj bf">BILLFREE</span>postgres StatefulSet + <code>volumeClaimTemplates</code> padho — PVC lifecycle</li>
+        <li><b>Break:</b> galat secret key do → Pod fail → <code>describe</code>/<code>logs</code> se fix</li>
+      </ul></div>
+      <div class="lane prove"><div class="lane-tag">✓ Prove</div><ul>
+        <li>Loud: "Secret Git mein kyun nahi? base64 encryption kyun nahi?"</li>
+        <li>Pod restart pe PVC ka data kyun bacha rehta hai — samjhao</li>
+      </ul></div>
+      <div class="day-ref">📖 05-M4-kubernetes-core (config/storage) · 11-M9-advanced-k8s-internals · tera Helm_ConfigMap_Secret_Init explainer</div>
+    </div>
+  </div>
+
+  <!-- DAY 4 -->
+  <div class="day d4">
+    <div class="day-head" onclick="toggleDay(this)">
+      <div class="day-num">04<small>DAY</small></div>
+      <div class="day-title"><h3>Networking — Service · Ingress · DNS · NetworkPolicy</h3><div class="sub">request → pod tak</div></div>
+      <div class="day-toggle">▸</div>
+    </div>
+    <div class="day-body">
+      <div class="lane revise"><div class="lane-tag">↩ Revise</div><ul>
+        <li>Service 4 types, CoreDNS, kube-proxy, Calico — tera K8s networking artifact</li>
+      </ul></div>
+      <div class="lane do"><div class="lane-tag">▸ Do</div><ul>
+        <li><span class="proj v">VANTA</span>Pod-to-pod: ek pod mein <code>exec</code> → <code>wget cartservice:7070</code> — DNS se baat</li>
+        <li><code>kubectl get svc,endpoints</code> — Service ke peeche kaunse pod IPs</li>
+        <li><span class="proj bf">BILLFREE</span>Ingress-nginx + host/path routing padho; NetworkPolicy yaml</li>
+        <li><b>Break:</b> Service ka selector label galat karo → traffic gir jaye → fix</li>
+      </ul></div>
+      <div class="lane prove"><div class="lane-tag">✓ Prove</div><ul>
+        <li>Blank page: User → DNS → Ingress → Service → Pod — poora hop draw</li>
+        <li>Loud: "Calico vs Service — kaun packet ko kahan pahunchata?"</li>
+      </ul></div>
+      <div class="day-ref">📖 11-M9-advanced-k8s-internals · 20-confusions (SG vs NACL, LB types)</div>
+    </div>
+  </div>
+
+  <!-- DAY 5 -->
+  <div class="day d5">
+    <div class="day-head" onclick="toggleDay(this)">
+      <div class="day-num">05<small>DAY</small></div>
+      <div class="day-title"><h3>CI/CD — follow one commit</h3><div class="sub">test kitchen</div></div>
+      <div class="day-toggle">▸</div>
+    </div>
+    <div class="day-body">
+      <div class="lane revise"><div class="lane-tag">↩ Revise</div><ul>
+        <li>CI vs CD, runner, image tag handoff, Trivy scan — kyun zaroori</li>
+      </ul></div>
+      <div class="lane do"><div class="lane-tag">▸ Do</div><ul>
+        <li><span class="proj bf">BILLFREE</span><code>.github/workflows</code> padho — test → build → push → tag update</li>
+        <li>Ek chhota code change → push → GitHub Actions run live dekho</li>
+        <li>Trace karo: image kahan build hui, kahan push hui, config repo mein tag kaise badla</li>
+        <li><span class="proj v">VANTA</span>Local: <code>docker build</code> → <code>kind load</code> → <code>kubectl set image</code></li>
+      </ul></div>
+      <div class="lane prove"><div class="lane-tag">✓ Prove</div><ul>
+        <li>Loud: "CI cluster ko touch kyun nahi karta? handoff kahan hai?"</li>
+        <li>Blank page: git push → ... → running pod (har box likho)</li>
+      </ul></div>
+      <div class="day-ref">📖 07-M6-cicd · 19-cicd-hands-on-flow</div>
+    </div>
+  </div>
+
+  <!-- DAY 6 -->
+  <div class="day d6">
+    <div class="day-head" onclick="toggleDay(this)">
+      <div class="day-num">06<small>DAY</small></div>
+      <div class="day-title"><h3>GitOps + Helm — ArgoCD sync &amp; drift</h3><div class="sub">manager + meal deal</div></div>
+      <div class="day-toggle">▸</div>
+    </div>
+    <div class="day-body">
+      <div class="lane revise"><div class="lane-tag">↩ Revise</div><ul>
+        <li>Pull vs push CD, auto-sync, self-heal, prune; Helm chart vs values (tera Helm explainer)</li>
+      </ul></div>
+      <div class="lane do"><div class="lane-tag">▸ Do</div><ul>
+        <li><span class="proj v">VANTA</span>ArgoCD <code>kind</code> pe install → Application connect → sync dekho</li>
+        <li><b>Drift test:</b> <code>kubectl scale</code> se manually badlo → ArgoCD wapas Git jaisa kar de</li>
+        <li><span class="proj bf">BILLFREE</span>Helm chart + values structure padho; <code>helm template</code> se rendered YAML</li>
+        <li>ApplicationSet + app-of-apps pattern samjho</li>
+      </ul></div>
+      <div class="lane prove"><div class="lane-tag">✓ Prove</div><ul>
+        <li>Loud: "rollback GitOps mein kaise? (git revert)"</li>
+        <li>Kustomize vs Helm — ek line mein farak</li>
+      </ul></div>
+      <div class="day-ref">📖 08-M7-gitops · 28-helm-real-projects</div>
+    </div>
+  </div>
+
+  <!-- DAY 7 -->
+  <div class="day d7">
+    <div class="day-head" onclick="toggleDay(this)">
+      <div class="day-num">07<small>DAY</small></div>
+      <div class="day-title"><h3>Outer loop — Terraform · Ansible · AWS</h3><div class="sub">building banao</div></div>
+      <div class="day-toggle">▸</div>
+    </div>
+    <div class="day-body">
+      <div class="lane revise"><div class="lane-tag">↩ Revise</div><ul>
+        <li>IaC kyun, state file, plan-before-apply, idempotency, push vs pull</li>
+      </ul></div>
+      <div class="lane do"><div class="lane-tag">▸ Do</div><ul>
+        <li><span class="proj bf">BILLFREE</span><code>infra/terraform</code> padho — compute, network, cloud-init (kubeadm)</li>
+        <li><code>terraform plan</code> chalao — kya banega, state kya kehti hai</li>
+        <li>Safe lab: ek S3 bucket <code>apply</code> → verify → <code>destroy</code></li>
+        <li>Ansible playbook padho — nodes pe kya configure hota (containerd, kubeadm)</li>
+      </ul></div>
+      <div class="lane prove"><div class="lane-tag">✓ Prove</div><ul>
+        <li>Loud: "Terraform → Ansible → K8s — kaun kya banata, handoff kahan?"</li>
+        <li>tfstate delete ho jaye to kya hota — samjhao</li>
+      </ul></div>
+      <div class="day-ref">📖 02-M1-terraform · 03-M2-ansible · 06-M5-sizing-and-cost</div>
+    </div>
+  </div>
+
+  <!-- DAY 8 -->
+  <div class="day d8">
+    <div class="day-head" onclick="toggleDay(this)">
+      <div class="day-num">08<small>DAY</small></div>
+      <div class="day-title"><h3>Observability &amp; SRE — 2 a.m. drill</h3><div class="sub">health inspector</div></div>
+      <div class="day-toggle">▸</div>
+    </div>
+    <div class="day-body">
+      <div class="lane revise"><div class="lane-tag">↩ Revise</div><ul>
+        <li>RED vs USE metrics, logs vs metrics vs traces, SLO/alert</li>
+      </ul></div>
+      <div class="lane do"><div class="lane-tag">▸ Do</div><ul>
+        <li><span class="proj v">VANTA</span><code>kube-prometheus-stack</code> Helm se install → Grafana port-forward</li>
+        <li>4 dashboards dekho: compute, networking, node-exporter, ArgoCD</li>
+        <li><span class="proj bf">BILLFREE</span>ServiceMonitor + PrometheusRule padho — thresholds (error 5%, p95 1s)</li>
+        <li>Load daalo (loadgenerator) → CPU/latency graph move karte dekho</li>
+      </ul></div>
+      <div class="lane prove"><div class="lane-tag">✓ Prove</div><ul>
+        <li>Loud: "app slow hai — main pehle kya dekhun, kis order mein?"</li>
+      </ul></div>
+      <div class="day-ref">📖 10-M8-observability-sre</div>
+    </div>
+  </div>
+
+  <!-- DAY 9 -->
+  <div class="day d9">
+    <div class="day-head" onclick="toggleDay(this)">
+      <div class="day-num">09<small>DAY</small></div>
+      <div class="day-title"><h3>Break &amp; fix — Incident + Chaos</h3><div class="sub">yahi confidence deta hai</div></div>
+      <div class="day-toggle">▸</div>
+    </div>
+    <div class="day-body">
+      <div class="lane revise"><div class="lane-tag">↩ Revise</div><ul>
+        <li>Debug order: <code>describe</code> → events → <code>logs --previous</code> → root cause</li>
+        <li>Exit codes: 137 (OOM/SIGKILL), 1, 0 — kya matlab</li>
+      </ul></div>
+      <div class="lane do"><div class="lane-tag">▸ Do — jaan-boojh ke todo, phir fix karo</div><ul>
+        <li><span class="proj v">VANTA</span><b>CrashLoop:</b> liveness timeout 1s karo → CrashLoop → diagnose → fix (yaad hai? tune dekha tha)</li>
+        <li><b>OOMKilled:</b> memory limit bahut kam karo → 137 → badhao</li>
+        <li><b>ImagePullBackOff:</b> galat image tag → describe se pakdo</li>
+        <li><b>PVC Pending / Service no endpoints:</b> playbook ke 26 issues mein se 5 chuno</li>
+      </ul></div>
+      <div class="lane prove"><div class="lane-tag">✓ Prove</div><ul>
+        <li>Har issue: symptom → diagnose command → fix → prevent — likho</li>
+        <li>Ye war-stories interview mein sona hai</li>
+      </ul></div>
+      <div class="day-ref">📖 23-production-incident-playbook · 25-production-gauntlet-chaos</div>
+    </div>
+  </div>
+
+  <!-- DAY 10 -->
+  <div class="day d10">
+    <div class="day-head" onclick="toggleDay(this)">
+      <div class="day-num">10<small>DAY</small></div>
+      <div class="day-title"><h3>Grand opening — end-to-end + interview</h3><div class="sub">sab jodo, bolo</div></div>
+      <div class="day-toggle">▸</div>
+    </div>
+    <div class="day-body">
+      <div class="lane revise"><div class="lane-tag">↩ Revise</div><ul>
+        <li>Ch 09 (Connected System): 2 loops + 8 bridges + 5 golden threads</li>
+      </ul></div>
+      <div class="lane do"><div class="lane-tag">▸ Do — one commit to prod</div><ul>
+        <li><span class="proj bf">BILLFREE</span>Ek chhota change → push → CI green → ArgoCD sync → Grafana check — poora flow ek baar khud</li>
+        <li>VANTA + Billfree dono ka README/docs polish — portfolio ready</li>
+      </ul></div>
+      <div class="lane prove"><div class="lane-tag">✓ Prove — the final test</div><ul>
+        <li><b>Blank page (no notes):</b> 2 loops + 8 bridges + 5 threads draw karo</li>
+        <li><b>Whiteboard talk:</b> "git push se user tak" 10 min bolo, loud</li>
+        <li><b>STAR stories:</b> VANTA aur Billfree se 3 real "maine kya kiya" answers likho</li>
+      </ul></div>
+      <div class="day-ref">📖 09-connected-system · 14-interview-bank · 18-career-job-ready</div>
+    </div>
+  </div>
+
+  <!-- RECALL HABIT -->
+  <div class="section-label">Har din chalta rahega — recall habit</div>
+  <div class="habit">
+    <h3>🔁 5-min daily recall (ye chhodna mat)</h3>
+    <table>
+      <thead><tr><th>Kab</th><th>Kya</th></tr></thead>
+      <tbody>
+        <tr><td>Subah</td><td>Kal wale din ka recall gate — memory se, 5 min</td></tr>
+        <tr><td>Din mein</td><td>Aaj ka Do lane — haath se, terminal pe</td></tr>
+        <tr><td>Raat</td><td>Ch 17 flashcards — us din ke module ke, 5 min</td></tr>
+        <tr><td>progress.md</td><td>Aaj ke checkboxes tick karo — <b>dikhta progress hi motivation hai</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- FINAL -->
+  <div class="final">
+    <h3>✅ 10 din baad — "confident" ka matlab</h3>
+    <p><b>Padha nahi — kiya.</b> Har din progress.md tick hua, har concept apne project pe chala.</p>
+    <p><b>Recall aaya.</b> Blank page pe 2 loops + 8 bridges bina notes ke bana sakte ho.</p>
+    <p><b>Bol sakte ho.</b> "git push se user tak" 10 min whiteboard pe, aur VANTA/Billfree ki 3 STAR stories.</p>
+    <p><b>Toota, phir theek kiya.</b> CrashLoop/OOM/502 khud banaye aur fix kiye — yehi 2.5-saal ka experience "dikhna" hai.</p>
+  </div>
+
+  <div class="foot">
+    10-Day Confidence Sprint · VANTA + Billfree + Handbook<br>
+    Rozana kholo → aaj ka din expand karo → 3 lanes karo → tick karo
+  </div>
+
+</div>
+
+<script>
+  function toggleTheme(){var r=document.documentElement,c=r.getAttribute('data-theme');
+    if(!c)c=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+    var n=c==='dark'?'light':'dark';r.setAttribute('data-theme',n);
+    document.getElementById('themeBtn').textContent=n==='dark'?'☀ light':'☾ dark';}
+  function toggleDay(el){el.parentElement.classList.toggle('open');}
+  var allOpen=false;
+  function toggleAll(){allOpen=!allOpen;
+    document.querySelectorAll('.day').forEach(function(d){d.classList.toggle('open',allOpen);});
+    document.getElementById('expandBtn').textContent=allOpen?'⊖ Sab band karo':'⊕ Sab kholo';}
+  // open day 1 by default
+  document.querySelector('.day.d1').classList.add('open');
+</script>
+</body>
+</html>

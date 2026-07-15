@@ -125,6 +125,8 @@ Every module tells you exactly **which arrow it owns** and **what it hands to th
 |---|--------|--------------------------------------|
 | [09](09-connected-system.md) | **The Connected System** | *How do all 7 tools actually hand off to each other, end to end?* |
 | [26](26-k8s-objects-map.md) | **Kubernetes Objects — How They All Connect** | *Objects feel disconnected? One idea, one master map, 5 buckets — read once and the whole picture clicks.* |
+| [27](27-10-day-plan.md) | **10-Day Learning Plan** (understand) | *Sab pata hai par jodd nahi paaye? Ek restaurant analogy se poora DevOps connect — first-pass mental map.* |
+| [29](29-confidence-sprint.md) | **10-Day Confidence Sprint** (drill) | *Concepts clear ho gaye? Ab padhna band — revise · do · prove. Har concept apne VANTA + Billfree projects pe karke confidence banao.* |
 | [19](19-cicd-hands-on-flow.md) | **Follow One Commit** (hands-on CI/CD) | *Trace a single `git push` through CI → scan → registry → GitOps → rolling update → observe.* |
 
 ### Part III — Operate like a senior (intermediate → production)

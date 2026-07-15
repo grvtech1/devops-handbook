@@ -122,7 +122,8 @@ nav:
       - "Part II — Systems thinking":
           - "The Connected System": 09-connected-system.md
           - "K8s Objects · How They Connect": 26-k8s-objects-map.md
-          - "10-Day Learning Plan": 27-10-day-plan.md
+          - "10-Day Learning Plan (understand)": 27-10-day-plan.md
+          - "10-Day Confidence Sprint (drill)": 29-confidence-sprint.md
           - "Helm in the Real World (your 2 projects)": 28-helm-real-projects.md
           - "Follow One Commit (hands-on CI/CD)": 19-cicd-hands-on-flow.md
       - "Part III — Operate":

@@ -1,6 +1,8 @@
 # 27 — The 10-Day Learning Plan: Everything Connected
 
 > **Ye chapter kab padhen:** Jab sab cheez pata ho par jodd nahi paaye — ya shuru se ek solid mental map banana ho. Yahan ek hi analogy (restaurant) se poora DevOps connect hoga. Baaki chapters me depth hai; yahan sirf badi tasveer hai.
+>
+> **27 vs 29 — kaunsa kab?** Ye (27) *understand* track hai — pehli baar sab connect karna. Jab concepts clear ho jayein aur **haath ka bharosa** chahiye, to [29 — Confidence Sprint](29-confidence-sprint.md) karo: wahan padhna nahi, apne real projects pe *karke + recall karke + bol ke* confidence banate ho.
 
 ---
 

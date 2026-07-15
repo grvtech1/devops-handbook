@@ -18,6 +18,27 @@ Update the chapter count below as you finish each one.
 
 ---
 
+## 🔥 10-Day Confidence Sprint
+
+Concepts clear? Ab drill. Har din 3 lanes — see **[29 — Confidence Sprint](29-confidence-sprint.md)** (ya interactive dashboard `10_Day_Confidence_Sprint.html`). Tick karo, roz.
+
+| Day | Focus | ↩️ Revise | ▸ Do (project) | ✅ Prove |
+|-----|-------|:--------:|:--------------:|:--------:|
+| 1 | Linux · Git · Docker | [ ] | [ ] | [ ] |
+| 2 | K8s Core (self-heal, scale, rollout) | [ ] | [ ] | [ ] |
+| 3 | Config · Secret · Storage (break & fix) | [ ] | [ ] | [ ] |
+| 4 | Networking (Service · Ingress · DNS) | [ ] | [ ] | [ ] |
+| 5 | CI/CD (follow one commit) | [ ] | [ ] | [ ] |
+| 6 | GitOps + Helm (sync & drift) | [ ] | [ ] | [ ] |
+| 7 | Terraform · Ansible · AWS | [ ] | [ ] | [ ] |
+| 8 | Observability & SRE | [ ] | [ ] | [ ] |
+| 9 | Break & Fix (incident + chaos) | [ ] | [ ] | [ ] |
+| 10 | End-to-end + Interview (STAR) | [ ] | [ ] | [ ] |
+
+**Final proof (Day 10, no notes):** [ ] 2 loops + 8 bridges + 5 threads blank-page · [ ] "git push → user" 10-min whiteboard talk · [ ] 3 STAR stories from VANTA + Billfree
+
+---
+
 ## Chapter Checklist
 
 Sub-items: **read · lab · quiz · flashcards**. Tick each as done.

@@ -1,0 +1,974 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kubernetes — Poori Picture (VANTA + Billfree)</title>
+<style>
+  :root {
+    --bg: #0A1220;
+    --bg2: #0D1728;
+    --surface: #101E33;
+    --surface2: #16263F;
+    --border: #1F3355;
+    --border2: #2C4A78;
+    --text: #C6DBF5;
+    --text-dim: #718AAF;
+    --text-bright: #EAF3FF;
+
+    --green: #34D399;   --green-bg: rgba(52,211,153,0.10);  --green-br: rgba(52,211,153,0.28);
+    --cyan: #38BDF8;    --cyan-bg: rgba(56,189,248,0.10);   --cyan-br: rgba(56,189,248,0.28);
+    --amber: #FBBF24;   --amber-bg: rgba(251,191,36,0.10);  --amber-br: rgba(251,191,36,0.28);
+    --rose: #FB7185;    --rose-bg: rgba(251,113,133,0.10);  --rose-br: rgba(251,113,133,0.28);
+    --purple: #A78BFA;  --purple-bg: rgba(167,139,250,0.10);--purple-br: rgba(167,139,250,0.28);
+    --blue: #60A5FA;    --blue-bg: rgba(96,165,250,0.10);   --blue-br: rgba(96,165,250,0.28);
+
+    --vanta: #34D399;
+    --billfree: #60A5FA;
+
+    --mono: 'JetBrains Mono','SF Mono','Cascadia Code','Consolas',monospace;
+    --sans: system-ui,-apple-system,'Segoe UI',sans-serif;
+    --maxw: 880px;
+  }
+
+  :root[data-theme="light"] {
+    --bg: #EEF3FB;   --bg2: #E4EBF7;  --surface: #FFFFFF; --surface2: #F1F5FD;
+    --border: #D2DEF0; --border2: #B4C6E4;
+    --text: #223B5E; --text-dim: #5F7898; --text-bright: #0C1B33;
+    --green-bg: rgba(16,150,100,0.09); --cyan-bg: rgba(14,140,200,0.09);
+    --amber-bg: rgba(180,130,10,0.10); --rose-bg: rgba(200,50,80,0.09);
+    --purple-bg: rgba(110,70,220,0.09); --blue-bg: rgba(40,110,220,0.09);
+    --green:#0E9D68; --cyan:#0C8CC8; --amber:#B57F0A; --rose:#D6446A; --purple:#6D4BD6; --blue:#2C6FD6;
+    --vanta:#0E9D68; --billfree:#2C6FD6;
+  }
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #EEF3FB;   --bg2: #E4EBF7;  --surface: #FFFFFF; --surface2: #F1F5FD;
+      --border: #D2DEF0; --border2: #B4C6E4;
+      --text: #223B5E; --text-dim: #5F7898; --text-bright: #0C1B33;
+      --green-bg: rgba(16,150,100,0.09); --cyan-bg: rgba(14,140,200,0.09);
+      --amber-bg: rgba(180,130,10,0.10); --rose-bg: rgba(200,50,80,0.09);
+      --purple-bg: rgba(110,70,220,0.09); --blue-bg: rgba(40,110,220,0.09);
+      --green:#0E9D68; --cyan:#0C8CC8; --amber:#B57F0A; --rose:#D6446A; --purple:#6D4BD6; --blue:#2C6FD6;
+      --vanta:#0E9D68; --billfree:#2C6FD6;
+    }
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 20px; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ---------- Layout ---------- */
+  .shell { display: flex; max-width: 1360px; margin: 0 auto; }
+
+  /* Sidebar */
+  .sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 28px 18px 40px 24px;
+    border-right: 1px solid var(--border);
+    background: var(--bg2);
+  }
+  .sb-brand { font-family: var(--mono); font-size: 13px; color: var(--text-bright); font-weight: 700; letter-spacing: .04em; margin-bottom: 4px; }
+  .sb-brand span { color: var(--cyan); }
+  .sb-tag { font-size: 11px; color: var(--text-dim); margin-bottom: 22px; }
+  .sb-group { font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: .14em; color: var(--text-dim); margin: 18px 0 7px; padding-left: 10px; }
+  .sb-link { display: block; font-size: 13px; color: var(--text-dim); text-decoration: none; padding: 4px 10px; border-radius: 6px; border-left: 2px solid transparent; transition: all .15s; }
+  .sb-link:hover { color: var(--text-bright); background: var(--surface); }
+  .sb-link.tag-g { border-left-color: transparent; }
+
+  /* Main */
+  .main { flex: 1; min-width: 0; padding: 0 32px 80px; }
+  .wrap { max-width: var(--maxw); margin: 0 auto; }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: 56px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 40px; }
+  .hero-eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .18em; text-transform: uppercase; color: var(--cyan); margin-bottom: 14px; }
+  .hero h1 { font-size: 40px; line-height: 1.1; color: var(--text-bright); font-weight: 800; letter-spacing: -.02em; text-wrap: balance; margin-bottom: 16px; }
+  .hero p { font-size: 17px; color: var(--text-dim); max-width: 620px; }
+  .legend { display: flex; gap: 12px; margin-top: 26px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; font-family: var(--mono); background: var(--surface); border: 1px solid var(--border); padding: 7px 13px; border-radius: 8px; }
+  .legend-dot { width: 9px; height: 9px; border-radius: 3px; }
+
+  /* ---------- Section ---------- */
+  .part { margin-bottom: 20px; }
+  .part-head { display: flex; align-items: baseline; gap: 14px; margin: 54px 0 8px; padding-bottom: 14px; border-bottom: 2px solid var(--border); }
+  .part-num { font-family: var(--mono); font-size: 13px; color: var(--cyan); font-weight: 700; }
+  .part-head h2 { font-size: 26px; color: var(--text-bright); font-weight: 700; letter-spacing: -.01em; }
+  .part-intro { font-size: 15px; color: var(--text-dim); margin: 14px 0 30px; }
+
+  /* ---------- Concept card ---------- */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 24px 26px; margin-bottom: 22px; scroll-margin-top: 20px; position: relative; overflow: hidden; }
+  .card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:4px; background: var(--accent, var(--border2)); }
+  .card.g  { --accent: var(--green); }
+  .card.c  { --accent: var(--cyan); }
+  .card.a  { --accent: var(--amber); }
+  .card.r  { --accent: var(--rose); }
+  .card.p  { --accent: var(--purple); }
+  .card.b  { --accent: var(--blue); }
+
+  .card-head { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; flex-wrap: wrap; }
+  .card-icon { width: 38px; height: 38px; border-radius: 9px; display: grid; place-items: center; font-size: 19px; background: var(--accent-bg, var(--surface2)); flex-shrink: 0; }
+  .card.g .card-icon { background: var(--green-bg); }
+  .card.c .card-icon { background: var(--cyan-bg); }
+  .card.a .card-icon { background: var(--amber-bg); }
+  .card.r .card-icon { background: var(--rose-bg); }
+  .card.p .card-icon { background: var(--purple-bg); }
+  .card.b .card-icon { background: var(--blue-bg); }
+  .card-title { font-size: 20px; color: var(--text-bright); font-weight: 700; }
+  .card-kind { font-family: var(--mono); font-size: 11px; color: var(--text-dim); background: var(--surface2); border: 1px solid var(--border); padding: 3px 9px; border-radius: 20px; margin-left: auto; }
+
+  .card-lead { font-size: 15px; color: var(--text); margin: 12px 0 4px; }
+  .card-lead b { color: var(--text-bright); }
+
+  .oneliner { display: flex; gap: 10px; align-items: flex-start; background: var(--surface2); border-radius: 9px; padding: 11px 14px; margin: 16px 0; font-size: 14px; }
+  .oneliner .ol-icon { color: var(--accent, var(--cyan)); flex-shrink: 0; font-weight: 700; }
+  .card.g .oneliner .ol-icon { color: var(--green); }
+  .card.c .oneliner .ol-icon { color: var(--cyan); }
+  .card.a .oneliner .ol-icon { color: var(--amber); }
+  .card.r .oneliner .ol-icon { color: var(--rose); }
+  .card.p .oneliner .ol-icon { color: var(--purple); }
+  .card.b .oneliner .ol-icon { color: var(--blue); }
+
+  /* example blocks */
+  .examples { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  @media (max-width: 720px) { .examples { grid-template-columns: 1fr; } }
+  .ex { border-radius: 10px; padding: 13px 15px; border: 1px solid var(--border); background: var(--bg2); }
+  .ex-label { display: inline-flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: .05em; padding: 2px 8px; border-radius: 5px; margin-bottom: 8px; }
+  .ex-label.v { color: var(--vanta); background: var(--green-bg); border: 1px solid var(--green-br); }
+  .ex-label.bf { color: var(--billfree); background: var(--blue-bg); border: 1px solid var(--blue-br); }
+  .ex p { font-size: 13.5px; color: var(--text); line-height: 1.55; }
+  .ex code, .card-lead code, .oneliner code, .card-body code { font-family: var(--mono); font-size: 12.5px; background: var(--surface2); padding: 1px 6px; border-radius: 4px; color: var(--accent, var(--cyan)); }
+  .card.g code { color: var(--green); } .card.c code { color: var(--cyan); } .card.a code { color: var(--amber); }
+  .card.r code { color: var(--rose); } .card.p code { color: var(--purple); } .card.b code { color: var(--blue); }
+
+  /* code block */
+  pre { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 15px 17px; overflow-x: auto; margin: 16px 0; }
+  pre code { font-family: var(--mono); font-size: 12.5px; line-height: 1.7; color: var(--text); background: none; padding: 0; }
+  .k { color: var(--rose); }       /* keyword/key */
+  .s { color: var(--green); }      /* string/value */
+  .n { color: var(--amber); }      /* number */
+  .cm { color: var(--text-dim); font-style: italic; } /* comment */
+  .hl2 { color: var(--cyan); }     /* highlight */
+
+  .card-body { margin-top: 4px; }
+  .card-body p { margin: 10px 0; font-size: 14.5px; }
+  .card-body ul { margin: 10px 0 10px 4px; list-style: none; }
+  .card-body li { position: relative; padding-left: 20px; margin: 6px 0; font-size: 14px; color: var(--text); }
+  .card-body li::before { content: '▸'; position: absolute; left: 2px; color: var(--accent, var(--cyan)); }
+  .card.g li::before { color: var(--green); } .card.c li::before { color: var(--cyan); }
+  .card.a li::before { color: var(--amber); } .card.r li::before { color: var(--rose); }
+  .card.p li::before { color: var(--purple); } .card.b li::before { color: var(--blue); }
+
+  /* diagram box */
+  .diagram { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin: 20px 0; overflow-x: auto; }
+  .diagram-mono { font-family: var(--mono); font-size: 12.5px; line-height: 1.7; color: var(--text); white-space: pre; }
+
+  /* big architecture grid */
+  .arch { display: grid; gap: 14px; margin: 8px 0 4px; }
+  .arch-plane { border: 1.5px solid var(--purple-br); background: var(--purple-bg); border-radius: 12px; padding: 16px 18px; }
+  .arch-nodes { border: 1.5px solid var(--green-br); background: var(--green-bg); border-radius: 12px; padding: 16px 18px; }
+  .arch-title { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .arch-plane .arch-title { color: var(--purple); }
+  .arch-nodes .arch-title { color: var(--green); }
+  .comp-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 9px; }
+  .comp { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; }
+  .comp-name { font-family: var(--mono); font-size: 13px; color: var(--text-bright); font-weight: 600; margin-bottom: 2px; }
+  .comp-desc { font-size: 11.5px; color: var(--text-dim); line-height: 1.45; }
+
+  /* comparison table */
+  .cmp-table { width: 100%; border-collapse: collapse; margin: 8px 0; font-size: 13.5px; }
+  .cmp-table th, .cmp-table td { text-align: left; padding: 11px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .cmp-table thead th { font-family: var(--mono); font-size: 12px; letter-spacing: .05em; color: var(--text-dim); border-bottom: 2px solid var(--border2); }
+  .cmp-table th.col-v { color: var(--vanta); }
+  .cmp-table th.col-bf { color: var(--billfree); }
+  .cmp-table td:first-child { font-weight: 600; color: var(--text-bright); }
+  .cmp-table code { font-family: var(--mono); font-size: 12px; color: var(--cyan); }
+  .cmp-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
+
+  /* callout */
+  .callout { border-radius: 10px; padding: 14px 16px; margin: 18px 0; font-size: 14px; border: 1px solid; display: flex; gap: 11px; }
+  .callout .co-i { flex-shrink: 0; font-size: 16px; }
+  .callout.tip { background: var(--green-bg); border-color: var(--green-br); }
+  .callout.tip .co-i { color: var(--green); }
+  .callout.warn { background: var(--amber-bg); border-color: var(--amber-br); }
+  .callout.warn .co-i { color: var(--amber); }
+  .callout.note { background: var(--cyan-bg); border-color: var(--cyan-br); }
+  .callout.note .co-i { color: var(--cyan); }
+  .callout b { color: var(--text-bright); }
+
+  .foot { text-align: center; padding: 40px 0 0; margin-top: 50px; border-top: 1px solid var(--border); font-family: var(--mono); font-size: 12px; color: var(--text-dim); }
+
+  /* theme toggle */
+  .theme-btn { position: fixed; top: 16px; right: 20px; z-index: 50; background: var(--surface); border: 1px solid var(--border2); color: var(--text); border-radius: 20px; padding: 7px 14px; font-family: var(--mono); font-size: 12px; cursor: pointer; }
+  .theme-btn:hover { color: var(--text-bright); border-color: var(--cyan); }
+
+  @media (max-width: 960px) {
+    .sidebar { display: none; }
+    .main { padding: 0 20px 60px; }
+    .hero h1 { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<button class="theme-btn" onclick="toggleTheme()" id="themeBtn">◐ theme</button>
+
+<div class="shell">
+
+  <!-- ========== SIDEBAR ========== -->
+  <nav class="sidebar">
+    <div class="sb-brand"><span>☸</span> KUBERNETES</div>
+    <div class="sb-tag">Poori picture — VANTA + Billfree</div>
+
+    <div class="sb-group">Bird's Eye</div>
+    <a class="sb-link" href="#arch">Cluster ka anatomy</a>
+
+    <div class="sb-group">Workloads · app chalate hain</div>
+    <a class="sb-link" href="#pod">Pod</a>
+    <a class="sb-link" href="#replicaset">ReplicaSet</a>
+    <a class="sb-link" href="#deployment">Deployment</a>
+    <a class="sb-link" href="#statefulset">StatefulSet</a>
+    <a class="sb-link" href="#daemonset">DaemonSet</a>
+    <a class="sb-link" href="#job">Job / CronJob</a>
+
+    <div class="sb-group">Networking · connect karte hain</div>
+    <a class="sb-link" href="#labels">Labels & Selectors</a>
+    <a class="sb-link" href="#service">Service</a>
+    <a class="sb-link" href="#ingress">Ingress</a>
+    <a class="sb-link" href="#dns">CoreDNS & kube-proxy</a>
+    <a class="sb-link" href="#cni">CNI / Calico</a>
+    <a class="sb-link" href="#netpol">NetworkPolicy</a>
+
+    <div class="sb-group">Config & Storage</div>
+    <a class="sb-link" href="#namespace">Namespace</a>
+    <a class="sb-link" href="#configmap">ConfigMap</a>
+    <a class="sb-link" href="#secret">Secret</a>
+    <a class="sb-link" href="#storage">PV / PVC / StorageClass</a>
+
+    <div class="sb-group">Reliability & Scaling</div>
+    <a class="sb-link" href="#probes">Probes</a>
+    <a class="sb-link" href="#resources">Requests & Limits</a>
+    <a class="sb-link" href="#hpa">HPA (autoscaling)</a>
+    <a class="sb-link" href="#pdb">PDB</a>
+    <a class="sb-link" href="#security">SecurityContext</a>
+
+    <div class="sb-group">Access Control</div>
+    <a class="sb-link" href="#sa">ServiceAccount & RBAC</a>
+
+    <div class="sb-group">Delivery · manifests kaise pahunchte hain</div>
+    <a class="sb-link" href="#kustomize">Kustomize</a>
+    <a class="sb-link" href="#helm">Helm</a>
+    <a class="sb-link" href="#argocd">ArgoCD / GitOps</a>
+
+    <div class="sb-group">Observability</div>
+    <a class="sb-link" href="#monitoring">Prometheus & Grafana</a>
+
+    <div class="sb-group">Final</div>
+    <a class="sb-link" href="#compare">Dono projects — full compare</a>
+  </nav>
+
+  <!-- ========== MAIN ========== -->
+  <main class="main">
+    <div class="wrap">
+
+      <!-- HERO -->
+      <header class="hero">
+        <div class="hero-eyebrow">DevOps Learning · Complete Reference</div>
+        <h1>Kubernetes ki poori picture — ek jagah, do real projects se</h1>
+        <p>Har concept aur object, Hinglish mein samjha hua. Har cheez ke saath do real examples: <b style="color:var(--vanta)">VANTA-Boutique</b> (local kind, Kustomize — seekhne ke liye) aur <b style="color:var(--billfree)">Billfree-techops</b> (AWS + Terraform + Helm — production).</p>
+        <div class="legend">
+          <div class="legend-item"><span class="legend-dot" style="background:var(--vanta)"></span> VANTA-Boutique · learning</div>
+          <div class="legend-item"><span class="legend-dot" style="background:var(--billfree)"></span> Billfree-techops · production</div>
+        </div>
+      </header>
+
+      <!-- ============ PART 0: ARCHITECTURE ============ -->
+      <section class="part">
+        <div class="part-head"><span class="part-num">00</span><h2>Cluster ka anatomy — sabse pehle yeh</h2></div>
+        <p class="part-intro">Baaki sab objects isi cluster ke andar rehte hain. Cluster ke do hisse: <b>Control Plane</b> (dimaag — decisions leta hai) aur <b>Worker Nodes</b> (haath-pair — actual containers yahan chalte hain).</p>
+
+        <div class="card" id="arch" style="--accent: var(--purple)">
+          <div class="arch">
+            <div class="arch-plane">
+              <div class="arch-title">🧠 Control Plane &nbsp;·&nbsp; decisions</div>
+              <div class="comp-grid">
+                <div class="comp"><div class="comp-name">API Server</div><div class="comp-desc">Har command yahan aati hai. Cluster ka front door — <code style="font-size:11px">kubectl</code> isi se baat karta hai.</div></div>
+                <div class="comp"><div class="comp-name">etcd</div><div class="comp-desc">Cluster ki poori state ka database. "Kya hona chahiye" yahan likha hai.</div></div>
+                <div class="comp"><div class="comp-name">Scheduler</div><div class="comp-desc">Naya Pod kis Node pe chalega — yeh decide karta hai.</div></div>
+                <div class="comp"><div class="comp-name">Controller Mgr</div><div class="comp-desc">"Actual = desired?" Bar-bar check karta hai, mismatch fix karta hai.</div></div>
+              </div>
+            </div>
+            <div class="arch-nodes">
+              <div class="arch-title">💪 Worker Nodes &nbsp;·&nbsp; yahan containers chalte hain</div>
+              <div class="comp-grid">
+                <div class="comp"><div class="comp-name">kubelet</div><div class="comp-desc">Har node ka agent. API Server se order leta hai, containers chalata hai.</div></div>
+                <div class="comp"><div class="comp-name">containerd</div><div class="comp-desc">Actual container runtime. Image pull karke container start karta hai.</div></div>
+                <div class="comp"><div class="comp-name">kube-proxy</div><div class="comp-desc">Service ka traffic sahi Pod tak — iptables rules banata hai.</div></div>
+                <div class="comp"><div class="comp-name">Calico (CNI)</div><div class="comp-desc">Pod ko IP deta hai + node-to-node routing.</div></div>
+              </div>
+            </div>
+          </div>
+          <div class="oneliner"><span class="ol-icon">◆</span><div><b style="color:var(--text-bright)">Ek line mein:</b> Tum bolte ho "3 frontend chahiye" → API Server etcd mein likhta hai → Scheduler nodes choose karta hai → kubelet containerd se containers chalata hai → Controller dhyan rakhta hai ki hamesha 3 hi rahein.</div></div>
+          <div class="callout note"><span class="co-i">ℹ</span><div><b>VANTA</b> ek kind cluster hai (control-plane + worker ek hi Docker container mein simulate). <b>Billfree</b> mein Terraform AWS pe alag EC2 machines banata hai, phir <code>kubeadm</code> unhe real control-plane + worker nodes bana deta hai.</div></div>
+        </div>
+      </section>
+
+      <!-- ============ PART 1: WORKLOADS ============ -->
+      <section class="part">
+        <div class="part-head"><span class="part-num">01</span><h2>Workloads — jo actually app chalate hain</h2></div>
+        <p class="part-intro">Yeh objects tumhare containers ko chalate aur zinda rakhte hain. Sabse chhoti unit Pod hai; baaki sab Pod ko manage karne ke tareeke hain.</p>
+
+        <!-- POD -->
+        <div class="card g" id="pod">
+          <div class="card-head">
+            <div class="card-icon">📦</div>
+            <div class="card-title">Pod</div>
+            <div class="card-kind">kind: Pod</div>
+          </div>
+          <p class="card-lead">Kubernetes ki <b>sabse chhoti unit</b>. Ek Pod ke andar ek (ya kabhi zyada) container hota hai. Kubernetes container ko directly nahi, hamesha Pod ke through chalata hai.</p>
+          <div class="oneliner"><span class="ol-icon">◆</span><div>Pod = container + uska IP + storage + config, sab ek lifafe mein. Pod <b>ephemeral</b> hai — mar gaya to naya banta hai, purana wapas nahi aata (naya IP milta hai).</div></div>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p><code>frontend</code> Pod — Go ka web server, port 8080. Delete kar do to Deployment turant naya bana deta hai.</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p><code>auth-service</code> Pod — login/token handle karta hai, port 8080. HPA load pe 2 se 6 tak Pods banata hai.</p></div>
+          </div>
+          <div class="callout warn"><span class="co-i">⚠</span><div>Direct Pod kabhi nahi banate production mein. Mar gaya to koi wapas nahi laata. Isliye hamesha <b>Deployment</b> (ya StatefulSet/DaemonSet) use karte hain — wo Pod ko zinda rakhta hai.</div></div>
+        </div>
+
+        <!-- REPLICASET -->
+        <div class="card g" id="replicaset">
+          <div class="card-head">
+            <div class="card-icon">👥</div>
+            <div class="card-title">ReplicaSet</div>
+            <div class="card-kind">kind: ReplicaSet</div>
+          </div>
+          <p class="card-lead">"Hamesha <b>N copies</b> (replicas) chalti rahni chahiye" — yeh guarantee ReplicaSet deta hai. Ek Pod mara → ReplicaSet turant naya bana deta hai.</p>
+          <div class="oneliner"><span class="ol-icon">◆</span><div>Tum ReplicaSet khud nahi likhte — <b>Deployment</b> tumhare liye automatically banata hai. Labels se apne Pods pehchaanta hai.</div></div>
+          <div class="diagram"><div class="diagram-mono">ReplicaSet (app=frontend, replicas=3)
+   ├── Pod frontend-a1b2  ✓ Running
+   ├── Pod frontend-c3d4  ✓ Running
+   └── Pod frontend-e5f6  ✗ mar gaya → naya banaya → frontend-g7h8 ✓</div></div>
+          <div class="callout note"><span class="co-i">ℹ</span><div>Dono projects mein tum <code>kubectl get rs</code> chalao to har service ka ReplicaSet dikhega — par tumne kabhi ReplicaSet YAML nahi likhi. Deployment ne banaya.</div></div>
+        </div>
+
+        <!-- DEPLOYMENT -->
+        <div class="card g" id="deployment">
+          <div class="card-head">
+            <div class="card-icon">🚀</div>
+            <div class="card-title">Deployment</div>
+            <div class="card-kind">kind: Deployment</div>
+          </div>
+          <p class="card-lead">Sabse zyada use hone wala object. <b>Stateless</b> apps ke liye. Yeh ReplicaSet manage karta hai, aur uske through Pods. Iska superpower: <b>rolling update</b> aur <b>rollback</b>.</p>
+          <div class="oneliner"><span class="ol-icon">◆</span><div>Naya image deploy karo → Deployment ek-ek karke purane Pod hataata hai, naye laata hai — <b>zero downtime</b>. Kuch galat hua? <code>kubectl rollout undo</code> se wapas.</div></div>
+          <pre><code><span class="k">apiVersion:</span> apps/v1
+<span class="k">kind:</span> <span class="hl2">Deployment</span>
+<span class="k">metadata:</span>
+  <span class="k">name:</span> frontend
+  <span class="k">labels:</span> { <span class="k">app:</span> frontend }   <span class="cm"># (1) Deployment ka label</span>
+<span class="k">spec:</span>
+  <span class="k">replicas:</span> <span class="n">3</span>
+  <span class="k">selector:</span>
+    <span class="k">matchLabels:</span> { <span class="k">app:</span> frontend }  <span class="cm"># (2) "yeh Pods mere"</span>
+  <span class="k">template:</span>                       <span class="cm"># (3) Pod ka blueprint</span>
+    <span class="k">metadata:</span>
+      <span class="k">labels:</span> { <span class="k">app:</span> frontend }  <span class="cm"># (4) Pod pe yeh label (2 se match!)</span>
+    <span class="k">spec:</span>
+      <span class="k">containers:</span>
+        - <span class="k">name:</span> server
+          <span class="k">image:</span> <span class="s">docker.io/grvp1/frontend:latest</span></code></pre>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p>12 microservices — sab Deployments. <code>frontend</code>, <code>cartservice</code>, <code>checkoutservice</code>… Dev mein 1 replica, Prod overlay mein 3.</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p><code>api-gateway</code>, <code>auth-service</code>, <code>report-service</code>… sab reusable Helm chart se Deployment bante hain, default 2 replicas.</p></div>
+          </div>
+        </div>
+
+        <!-- STATEFULSET -->
+        <div class="card g" id="statefulset">
+          <div class="card-head">
+            <div class="card-icon">🗄️</div>
+            <div class="card-title">StatefulSet</div>
+            <div class="card-kind">kind: StatefulSet</div>
+          </div>
+          <p class="card-lead">Deployment ka bhai, par <b>stateful</b> apps ke liye — jinke paas apna data hai (databases). Har Pod ko <b>fixed naam + apna storage</b> milta hai jo restart pe bhi rehta hai.</p>
+          <div class="oneliner"><span class="ol-icon">◆</span><div>Deployment: Pods interchangeable, koi bhi chalega (frontend-x1, frontend-x2 — farak nahi). StatefulSet: <code>postgres-0</code> hamesha <code>postgres-0</code> rahega, apne 5Gi disk ke saath.</div></div>
+          <pre><code><span class="k">kind:</span> <span class="hl2">StatefulSet</span>
+<span class="k">metadata:</span> { <span class="k">name:</span> postgres, <span class="k">namespace:</span> billfree }
+<span class="k">spec:</span>
+  <span class="k">serviceName:</span> postgres
+  <span class="k">replicas:</span> <span class="n">1</span>
+  <span class="k">template:</span> { <span class="cm">... postgres:16-alpine container ...</span> }
+  <span class="k">volumeClaimTemplates:</span>            <span class="cm"># har Pod ko apna PVC</span>
+    - <span class="k">metadata:</span> { <span class="k">name:</span> data }
+      <span class="k">spec:</span>
+        <span class="k">accessModes:</span> [<span class="s">ReadWriteOnce</span>]
+        <span class="k">resources:</span> { <span class="k">requests:</span> { <span class="k">storage:</span> <span class="s">5Gi</span> } }</code></pre>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p><code>redis-cart</code> cart data rakhta hai. Reviews ke liye optional <code>postgres</code> component bhi StatefulSet-style persistence use karta hai.</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p><code>postgres</code> — main database, StatefulSet with 5Gi PVC via <code>volumeClaimTemplates</code>. Pod restart → wahi data wapas.</p></div>
+          </div>
+        </div>
+
+        <!-- DAEMONSET -->
+        <div class="card g" id="daemonset">
+          <div class="card-head">
+            <div class="card-icon">🛰️</div>
+            <div class="card-title">DaemonSet</div>
+            <div class="card-kind">kind: DaemonSet</div>
+          </div>
+          <p class="card-lead">"Har Node pe <b>exactly ek</b> Pod chalao" — yeh DaemonSet karta hai. Naya node juda? Automatically wahan bhi ek Pod. Node hata? Pod bhi gaya.</p>
+          <div class="oneliner"><span class="ol-icon">◆</span><div>Yeh un cheezon ke liye hai jinhe <b>har machine pe</b> chahiye: networking agent, log collector, metrics exporter.</div></div>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p><code>calico-node</code> — har node pe 1 Pod, pod-IP aur routing sambhalta hai. <code>kube-proxy</code> bhi DaemonSet.</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p>Same Calico + kube-proxy. Plus <code>node-exporter</code> (Prometheus ke liye) — har node ka CPU/RAM/disk metrics deta hai.</p></div>
+          </div>
+        </div>
+
+        <!-- JOB -->
+        <div class="card g" id="job">
+          <div class="card-head">
+            <div class="card-icon">⚙️</div>
+            <div class="card-title">Job & CronJob</div>
+            <div class="card-kind">kind: Job / CronJob</div>
+          </div>
+          <p class="card-lead">Deployment "hamesha chalta rehta hai". <b>Job</b> ek kaam karke <b>khatam</b> ho jaata hai (exit → done). <b>CronJob</b> = Job jo schedule pe chalta hai (jaise cron).</p>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p><code>loadgenerator</code> traffic banata rehta hai (yeh Deployment hai). Ek-baar-ke kaam ke liye Job pattern use hota.</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p><code>migrate-job</code> — deploy se pehle database migrations chalata hai (tables banata/update karta), phir khatam. Classic Job.</p></div>
+          </div>
+          <div class="callout tip"><span class="co-i">✓</span><div><b>Kab kya:</b> Hamesha chalna hai → Deployment. Data + identity chahiye → StatefulSet. Har node pe → DaemonSet. Ek baar chal ke khatam → Job. Schedule pe → CronJob.</div></div>
+        </div>
+      </section>
+
+      <!-- ============ PART 2: NETWORKING ============ -->
+      <section class="part">
+        <div class="part-head"><span class="part-num">02</span><h2>Networking — jo sab ko jodta hai</h2></div>
+        <p class="part-intro">Pods to ban gaye, par ek-doosre se aur bahar-duniya se baat kaise karein? Yeh part wahi hai — labels se lekar Calico tak.</p>
+
+        <!-- LABELS -->
+        <div class="card c" id="labels">
+          <div class="card-head">
+            <div class="card-icon">🏷️</div>
+            <div class="card-title">Labels & Selectors</div>
+            <div class="card-kind">glue of k8s</div>
+          </div>
+          <p class="card-lead">Labels = Pods pe chipke <b>stickers</b> (<code>app: frontend</code>). Selectors = "mujhe <code>app=frontend</code> wale Pods do". Isi ek mechanism pe poora Kubernetes khada hai.</p>
+          <div class="oneliner"><span class="ol-icon">◆</span><div>Deployment apne Pods labels se pehchaanta hai. Service traffic labels se route karti hai. HPA labels se scale karti hai. Sab jagah wahi label.</div></div>
+          <div class="diagram"><div class="diagram-mono">Deployment  selector: app=frontend ──┐
+                                     ├──► dhundhta hai
+Pod  labels: app=frontend  ◄─────────┘
+Service     selector: app=frontend ──► traffic isi Pod ko</div></div>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p>Simple style: <code>app: frontend</code>, <code>app: cartservice</code>. Seedha aur saaf.</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p>Production standard labels: <code>app.kubernetes.io/name: postgres</code>, <code>app.kubernetes.io/part-of: billfree-techops</code>. Zyada descriptive, tooling-friendly.</p></div>
+          </div>
+          <div class="callout warn"><span class="co-i">⚠</span><div>Deployment ka <code>selector.matchLabels</code>, Pod template ka <code>labels</code>, aur Service ka <code>selector</code> — teeno match hone chahiye. Ek bhi typo → Service ka traffic kisi Pod tak nahi pahunchega.</div></div>
+        </div>
+
+        <!-- SERVICE -->
+        <div class="card c" id="service">
+          <div class="card-head">
+            <div class="card-icon">🔌</div>
+            <div class="card-title">Service</div>
+            <div class="card-kind">kind: Service</div>
+          </div>
+          <p class="card-lead">Pods ke IP badalte rehte hain (mar-mar ke naye). Service ek <b>fixed naam + fixed virtual IP</b> deti hai jiske peeche Pods aate-jaate rehte hain. Plus <b>load balancing</b> free.</p>
+          <div class="oneliner"><span class="ol-icon">◆</span><div>Tum <code>cartservice:7070</code> pe call karo — Service peeche jitne bhi cartservice Pods hain unmein baant deti hai. Pod mara/naya bana, tumhe farak nahi padta.</div></div>
+          <p style="margin:14px 0 8px; color:var(--text-bright); font-weight:600;">4 types — access ka daayra:</p>
+          <div class="card-body">
+            <ul>
+              <li><b>ClusterIP</b> (default) — sirf cluster ke andar se access. Internal service-to-service. <span style="color:var(--text-dim)">Zyadatar sab.</span></li>
+              <li><b>NodePort</b> — node ke IP pe ek port khol deta hai (30000+). Bahar se access, par kaccha tareeka.</li>
+              <li><b>LoadBalancer</b> — cloud ka real load balancer deta hai (AWS ELB). Public internet-facing.</li>
+              <li><b>Headless</b> (<code>clusterIP: None</code>) — koi virtual IP nahi, seedha Pod IPs. StatefulSet/DB ke liye.</li>
+            </ul>
+          </div>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p><code>frontend</code> internal = ClusterIP. <code>frontend-external</code> browser ke liye — base mein LoadBalancer, par kind pe <b>NodePort 30080</b> mein patch (kyunki local pe real LB nahi).</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p>Sab services ClusterIP (internal). Bahar ki duniya <b>Ingress</b> se aati hai, seedha Service se nahi. <code>postgres</code> Service DB tak internal reach deti hai.</p></div>
+          </div>
+        </div>
+
+        <!-- INGRESS -->
+        <div class="card c" id="ingress">
+          <div class="card-head">
+            <div class="card-icon">🚪</div>
+            <div class="card-title">Ingress</div>
+            <div class="card-kind">kind: Ingress</div>
+          </div>
+          <p class="card-lead">Cluster ka <b>smart main gate</b>. Ek hi entry point, aur URL/host dekh ke sahi Service pe bhejta hai. TLS (HTTPS) bhi yahin terminate hota hai.</p>
+          <div class="oneliner"><span class="ol-icon">◆</span><div>Har service ke liye alag LoadBalancer mehnga aur ganda. Ek Ingress lagao → <code>/api</code> → api-gateway, <code>/auth</code> → auth-service, <code>app.com</code> → web. Ek gate, smart routing.</div></div>
+          <div class="diagram"><div class="diagram-mono">Internet
+   │
+   ▼
+[ Ingress Controller (nginx) ]  ← ek entry, TLS yahan
+   ├── billfree.com/api    → api-gateway  Service
+   ├── billfree.com/auth   → auth-service Service
+   └── billfree.com/       → web          Service</div></div>
+          <div class="callout note"><span class="co-i">ℹ</span><div><b>Ingress</b> sirf rules (YAML) hai. Use lagoo karne wala actual software = <b>Ingress Controller</b> (jaise <code>ingress-nginx</code>). Bina controller ke Ingress kuch nahi karta.</div></div>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p>Local kind pe Ingress use nahi kiya — seedha NodePort se <code>localhost:8088</code>. Learning ke liye simple rakha.</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p><code>ingress-nginx</code> ArgoCD se deploy. Helm chart mein har service ka <code>ingress.enabled</code> + host/path. Production ka asli main gate.</p></div>
+          </div>
+        </div>
+
+        <!-- DNS -->
+        <div class="card c" id="dns">
+          <div class="card-head">
+            <div class="card-icon">📖</div>
+            <div class="card-title">CoreDNS & kube-proxy</div>
+            <div class="card-kind">cluster plumbing</div>
+          </div>
+          <p class="card-lead">Do behind-the-scenes heroes jo Service ko kaam karwaate hain.</p>
+          <div class="card-body">
+            <ul>
+              <li><b style="color:var(--rose)">CoreDNS</b> — cluster ka phonebook. <code>cartservice</code> naam ko Service ke virtual IP <code>10.96.45.12</code> mein badalta hai. Isliye tum code mein IP nahi, <b>naam</b> likhte ho.</li>
+              <li><b style="color:var(--amber)">kube-proxy</b> — har node pe iptables rules banata hai. Service IP pe aaya packet → assli Pod IP pe redirect. Load balancing yahi karta hai.</li>
+            </ul>
+          </div>
+          <div class="diagram"><div class="diagram-mono">frontend: dial("cartservice:7070")
+   │  CoreDNS:  cartservice → 10.96.45.12  (Service IP)
+   ▼  kube-proxy: 10.96.45.12 → 10.244.2.8 (asli Pod IP)
+cartservice Pod ✓</div></div>
+          <div class="callout tip"><span class="co-i">✓</span><div>Dono projects mein yeh <code>kube-system</code> namespace mein already chal rahe hote hain — tumhe kuch setup nahi karna. <code>kubectl get pods -n kube-system</code> se dikhte hain.</div></div>
+        </div>
+
+        <!-- CNI -->
+        <div class="card c" id="cni">
+          <div class="card-head">
+            <div class="card-icon">🕸️</div>
+            <div class="card-title">CNI / Calico</div>
+            <div class="card-kind">DaemonSet · kube-system</div>
+          </div>
+          <p class="card-lead">CNI = Container Network Interface. Calico ek popular CNI hai. Iske do kaam: <b>(1)</b> har Pod ko IP dena, <b>(2)</b> alag-alag nodes ke Pods ko packet route karna.</p>
+          <div class="oneliner"><span class="ol-icon">◆</span><div>Bina CNI ke Pod ka koi IP nahi hota, koi network nahi. Calico har node pe (DaemonSet) baithta hai aur ek virtual network banata hai jahan har Pod ka apna IP hai.</div></div>
+          <div class="diagram"><div class="diagram-mono">Node 1                          Node 2
+frontend 10.244.1.5             cartservice 10.244.2.8
+   │  Calico agent                 Calico agent  ▲
+   └──────── physical network ─────────────────┘
+   Calico routing: "10.244.2.x Node 2 pe hai → wahan bhejo"</div></div>
+          <div class="callout note"><span class="co-i">ℹ</span><div><b>Calico vs Service:</b> Calico packet ko <b>node</b> tak pahunchata hai (IP routing). Service packet ko sahi <b>Pod</b> tak (load balance). Calico road banata hai, Service traffic director hai.</div></div>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p>kind apna default CNI (kindnet) laata hai — simple. Chhote setup ke liye kaafi.</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p><code>kubeadm</code> cluster mein Calico install hota hai — real pod networking + NetworkPolicy support ke saath.</p></div>
+          </div>
+        </div>
+
+        <!-- NETPOL -->
+        <div class="card c" id="netpol">
+          <div class="card-head">
+            <div class="card-icon">🛡️</div>
+            <div class="card-title">NetworkPolicy</div>
+            <div class="card-kind">kind: NetworkPolicy</div>
+          </div>
+          <p class="card-lead">Default mein <b>har Pod har Pod se</b> baat kar sakti hai — koi rok nahi. NetworkPolicy = firewall rules: "kaun kis se baat kar sakta hai".</p>
+          <div class="oneliner"><span class="ol-icon">◆</span><div>Security ke liye zaroori. Jaise: "database Pod se sirf backend baat kare, frontend ya bahar se koi seedha DB touch na kare."</div></div>
+          <pre><code><span class="k">kind:</span> <span class="hl2">NetworkPolicy</span>
+<span class="k">spec:</span>
+  <span class="k">podSelector:</span> { <span class="k">matchLabels:</span> { <span class="k">app:</span> postgres } }
+  <span class="k">ingress:</span>                       <span class="cm"># postgres mein andar kaun aa sakta</span>
+    - <span class="k">from:</span>
+      - <span class="k">podSelector:</span> { <span class="k">matchLabels:</span> { <span class="k">app:</span> auth-service } }
+      <span class="cm"># sirf auth-service → postgres. Baaki sab BLOCKED.</span></code></pre>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p>Learning setup — NetworkPolicy nahi lagayi (sab khula, simplicity ke liye).</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p><code>deploy/platform/networkpolicies.yaml</code> — production mein DB aur services ke beech proper isolation. Calico enforce karta hai.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ PART 3: CONFIG & STORAGE ============ -->
+      <section class="part">
+        <div class="part-head"><span class="part-num">03</span><h2>Config & Storage</h2></div>
+        <p class="part-intro">App ko settings, secrets aur permanent data chahiye. Yeh objects wahi dete hain — bina image ko chhue.</p>
+
+        <!-- NAMESPACE -->
+        <div class="card a" id="namespace">
+          <div class="card-head">
+            <div class="card-icon">🗂️</div>
+            <div class="card-title">Namespace</div>
+            <div class="card-kind">kind: Namespace</div>
+          </div>
+          <p class="card-lead">Cluster ke andar <b>logical folders</b>. Same naam ki cheezein alag namespaces mein rakhi ja sakti hain. Isolation + resource limits + access control ke liye.</p>
+          <div class="oneliner"><span class="ol-icon">◆</span><div>Namespace = folder, cluster = hard disk. Chhoti app: <code>default</code> namespace kaafi. Badi/multi-team: alag namespaces zaroori.</div></div>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p>Sab kuch <code>default</code> namespace mein — ek app, ek developer, simple. System cheezein <code>kube-system</code> mein.</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p>App <code>billfree</code> namespace mein, monitoring alag <code>monitoring</code> namespace mein, ingress-nginx apne namespace mein. Proper separation.</p></div>
+          </div>
+          <div class="callout tip"><span class="co-i">✓</span><div><b>Interview line:</b> "Namespace cluster ko logically partition karta hai — mainly multi-team/multi-environment ke liye. Single app ke liye default namespace sufficient hai."</div></div>
+        </div>
+
+        <!-- CONFIGMAP -->
+        <div class="card a" id="configmap">
+          <div class="card-head">
+            <div class="card-icon">📝</div>
+            <div class="card-title">ConfigMap</div>
+            <div class="card-kind">kind: ConfigMap</div>
+          </div>
+          <p class="card-lead">App ki <b>non-secret settings</b> — env vars, config files, URLs. Image ke bahar rakhi jaati hain taaki config badalne pe image rebuild na karna pade.</p>
+          <div class="oneliner"><span class="ol-icon">◆</span><div>"12-factor app" ka rule: config code se alag. Same image dev/staging/prod mein chale, bas ConfigMap alag.</div></div>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p>frontend ko sab service addresses env vars se milte hain: <code>CART_SERVICE_ADDR=cartservice:7070</code> — Deployment ke <code>env:</code> mein.</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p>Helm chart mein <code>env</code> / <code>envFrom</code> — non-secret settings ConfigMap-style inject hote hain per environment.</p></div>
+          </div>
+        </div>
+
+        <!-- SECRET -->
+        <div class="card a" id="secret">
+          <div class="card-head">
+            <div class="card-icon">🔐</div>
+            <div class="card-title">Secret</div>
+            <div class="card-kind">kind: Secret</div>
+          </div>
+          <p class="card-lead">ConfigMap jaisa hi, par <b>sensitive data</b> ke liye — DB passwords, API keys, tokens. Base64 encoded (encryption nahi!), access RBAC se controlled.</p>
+          <div class="callout warn"><span class="co-i">⚠</span><div><b>Golden rule:</b> Secret ki asli value <b>kabhi Git mein commit mat karo</b>. Git mein daala = hamesha ke liye history mein, sabko dikhega.</div></div>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p>kubeconfig, tfstate, tfvars — sab <code>.gitignore</code> mein. Koi secret repo mein nahi.</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p><code>postgres-secret</code> Git mein <b>nahi</b> — bootstrap script randomly generate karke banata hai. StatefulSet use karta hai <code>envFrom: secretRef</code>. Real setup mein SealedSecrets/External Secrets.</p></div>
+          </div>
+        </div>
+
+        <!-- STORAGE -->
+        <div class="card a" id="storage">
+          <div class="card-head">
+            <div class="card-icon">💾</div>
+            <div class="card-title">PV · PVC · StorageClass</div>
+            <div class="card-kind">persistent storage</div>
+          </div>
+          <p class="card-lead">Pod ephemeral hai — data uske saath mar jaata hai. Permanent data ke liye yeh teen: storage maang, storage supply, aur auto-provisioning.</p>
+          <div class="card-body">
+            <ul>
+              <li><b>PVC</b> (PersistentVolumeClaim) — "mujhe 5Gi disk chahiye" — <b>Pod ki maang</b>.</li>
+              <li><b>PV</b> (PersistentVolume) — asli storage piece jo maang poori karta hai — <b>supply</b>.</li>
+              <li><b>StorageClass</b> — "aap khud bana lo" — cloud se automatic disk provision (AWS EBS volume).</li>
+            </ul>
+          </div>
+          <div class="oneliner"><span class="ol-icon">◆</span><div>PVC restaurant ka order hai, PV wo dish, StorageClass wo kitchen jo on-demand bana deti hai. Pod PVC maangta hai, cloud automatically EBS disk deta hai.</div></div>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p>Local kind — <code>redis-cart</code> emptyDir/local storage. Learning ke liye persistence halka rakha.</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p><code>postgres</code> StatefulSet ka <code>volumeClaimTemplates</code> → 5Gi PVC → AWS StorageClass se real EBS volume. Pod restart pe wahi disk wapas.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ PART 4: RELIABILITY ============ -->
+      <section class="part">
+        <div class="part-head"><span class="part-num">04</span><h2>Reliability & Scaling — production ki jaan</h2></div>
+        <p class="part-intro">App chal jaana kaafi nahi. Load pe scale ho, crash pe khud theek ho, maintenance pe down na jaaye — yeh objects wahi ensure karte hain.</p>
+
+        <!-- PROBES -->
+        <div class="card r" id="probes">
+          <div class="card-head">
+            <div class="card-icon">🩺</div>
+            <div class="card-title">Health Probes</div>
+            <div class="card-kind">liveness · readiness · startup</div>
+          </div>
+          <p class="card-lead">Kubernetes ko kaise pata Pod healthy hai? Probes se — regular health check-ups.</p>
+          <div class="card-body">
+            <ul>
+              <li><b>livenessProbe</b> — "zinda hai?" Fail → Pod <b>restart</b>. (App hang ho gaya to.)</li>
+              <li><b>readinessProbe</b> — "traffic lene ke layak hai?" Fail → Service se <b>hata do</b> (mara nahi, bas traffic nahi). (Abhi startup ho raha, ya busy.)</li>
+              <li><b>startupProbe</b> — dheere start hone wale apps ke liye — "pehle poora start hone do, tab baaki probes shuru."</li>
+            </ul>
+          </div>
+          <pre><code><span class="k">readinessProbe:</span>
+  <span class="k">httpGet:</span> { <span class="k">path:</span> /readyz, <span class="k">port:</span> <span class="n">8080</span> }
+<span class="k">livenessProbe:</span>
+  <span class="k">httpGet:</span> { <span class="k">path:</span> /healthz, <span class="k">port:</span> <span class="n">8080</span> }
+  <span class="k">initialDelaySeconds:</span> <span class="n">10</span>   <span class="cm"># itna wait, phir check</span></code></pre>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p>frontend <code>/_healthz</code> pe probe. <b>Yaad hai</b> — emailservice/recommendationservice kind pe CrashLoop kar rahe the kyunki liveness timeout bahut aggressive tha (1s). Relax kiya to fix.</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p>Har service <code>/healthz</code> (liveness) + <code>/readyz</code> (readiness). postgres <code>pg_isready</code> exec probe se check hota hai.</p></div>
+          </div>
+        </div>
+
+        <!-- RESOURCES -->
+        <div class="card r" id="resources">
+          <div class="card-head">
+            <div class="card-icon">⚖️</div>
+            <div class="card-title">Requests & Limits</div>
+            <div class="card-kind">resources</div>
+          </div>
+          <p class="card-lead">Har container batata hai use kitna CPU/RAM chahiye. <b>requests</b> = minimum guarantee (Scheduler isse dekh ke node choose karta hai). <b>limits</b> = maximum, isse zyada nahi.</p>
+          <div class="oneliner"><span class="ol-icon">◆</span><div>requests hotel booking hai (yeh to milega hi). limits ceiling hai (isse upar gaye to — CPU throttle, RAM cross to <b>OOMKilled</b>).</div></div>
+          <pre><code><span class="k">resources:</span>
+  <span class="k">requests:</span> { <span class="k">cpu:</span> <span class="s">50m</span>, <span class="k">memory:</span> <span class="s">96Mi</span> }   <span class="cm"># guarantee</span>
+  <span class="k">limits:</span>   { <span class="k">cpu:</span> <span class="s">500m</span>, <span class="k">memory:</span> <span class="s">256Mi</span> }  <span class="cm"># ceiling</span></code></pre>
+          <div class="callout note"><span class="co-i">ℹ</span><div><code>500m</code> = 0.5 CPU core (m = millicores). <code>256Mi</code> = 256 mebibytes RAM. Exit code <b>137</b> jo VANTA mein aaya tha = OOMKilled ya liveness ne SIGKILL kiya.</div></div>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p>frontend: requests <code>100m/64Mi</code>, limits <code>200m/128Mi</code>. Halka, kind ke chhote resources ke liye.</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p>Chart default: requests <code>50m/96Mi</code>, limits <code>500m/256Mi</code>. postgres ko zyada: limit <code>1 CPU/512Mi</code>.</p></div>
+          </div>
+        </div>
+
+        <!-- HPA -->
+        <div class="card r" id="hpa">
+          <div class="card-head">
+            <div class="card-icon">📈</div>
+            <div class="card-title">HPA — Horizontal Pod Autoscaler</div>
+            <div class="card-kind">kind: HorizontalPodAutoscaler</div>
+          </div>
+          <p class="card-lead">Load badhe → Pods automatically badhao. Load kam → Pods ghatao. CPU/memory (ya custom metrics) dekh ke replicas adjust karta hai.</p>
+          <div class="oneliner"><span class="ol-icon">◆</span><div>"CPU 70% cross? ek aur Pod add karo, max 6 tak. Traffic gaya? wapas min 2 pe aa jao." Sab automatic, tum sote raho.</div></div>
+          <pre><code><span class="k">autoscaling:</span>
+  <span class="k">enabled:</span> <span class="s">true</span>
+  <span class="k">minReplicas:</span> <span class="n">2</span>
+  <span class="k">maxReplicas:</span> <span class="n">6</span>
+  <span class="k">targetCPUUtilizationPercentage:</span> <span class="n">70</span>  <span class="cm"># 70% pe scale up</span></code></pre>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p>Prod overlay mein optional <code>hpa.yaml</code>. Dev mein fixed 1 replica (learning ke liye scaling off).</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p>Har service default HPA on: <code>min 2, max 6, 70% CPU</code>. Real traffic pe api-gateway apne aap scale karta hai.</p></div>
+          </div>
+        </div>
+
+        <!-- PDB -->
+        <div class="card r" id="pdb">
+          <div class="card-head">
+            <div class="card-icon">🚧</div>
+            <div class="card-title">PDB — Pod Disruption Budget</div>
+            <div class="card-kind">kind: PodDisruptionBudget</div>
+          </div>
+          <p class="card-lead">Maintenance ke waqt (node drain, upgrade) Kubernetes Pods hataata hai. PDB kehti hai "<b>kam se kam itne Pods hamesha zinda</b> rehne chahiye" — sab ek saath mat hatao.</p>
+          <div class="oneliner"><span class="ol-icon">◆</span><div>Bina PDB ke node drain karo to saare replicas ek saath ja sakte hain → downtime. PDB <code>minAvailable: 1</code> = "chahe kuch ho, 1 to chalta rahe."</div></div>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p>Optional <code>pod-disruption-budgets</code> component available hai — production-readiness dikhane ke liye.</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p>Har service chart mein <code>pdb.enabled: true, minAvailable: 1</code>. Node maintenance pe zero downtime guarantee.</p></div>
+          </div>
+        </div>
+
+        <!-- SECURITY CONTEXT -->
+        <div class="card r" id="security">
+          <div class="card-head">
+            <div class="card-icon">🔒</div>
+            <div class="card-title">SecurityContext</div>
+            <div class="card-kind">pod/container hardening</div>
+          </div>
+          <p class="card-lead">Container ko <b>kam se kam power</b> do — agar hack bhi ho to nuksaan seemit. Root mat chalao, filesystem read-only, extra permissions drop.</p>
+          <pre><code><span class="k">securityContext:</span>
+  <span class="k">runAsNonRoot:</span> <span class="s">true</span>          <span class="cm"># root nahi</span>
+  <span class="k">readOnlyRootFilesystem:</span> <span class="s">true</span> <span class="cm"># file system likha na jaaye</span>
+  <span class="k">allowPrivilegeEscalation:</span> <span class="s">false</span>
+  <span class="k">capabilities:</span> { <span class="k">drop:</span> [<span class="s">ALL</span>] }  <span class="cm"># saari extra powers hatao</span></code></pre>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p>frontend: <code>runAsNonRoot</code>, <code>readOnlyRootFilesystem</code>, <code>drop: ALL</code>, non-root user 1000. Google ka sample already hardened.</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p>Chart default sabke liye: non-root user 1000, read-only FS, all caps dropped. Scratch chahiye to <code>emptyDir</code> volume.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ PART 5: ACCESS ============ -->
+      <section class="part">
+        <div class="part-head"><span class="part-num">05</span><h2>Access Control — kaun kya kar sakta hai</h2></div>
+
+        <div class="card p" id="sa">
+          <div class="card-head">
+            <div class="card-icon">🪪</div>
+            <div class="card-title">ServiceAccount & RBAC</div>
+            <div class="card-kind">identity + permissions</div>
+          </div>
+          <p class="card-lead"><b>ServiceAccount</b> = Pod ki identity (Pod ka "aadhaar card"). <b>RBAC</b> (Role-Based Access Control) = us identity ko kya karne ki permission hai.</p>
+          <div class="card-body">
+            <ul>
+              <li><b>ServiceAccount</b> — har Pod ek SA ke naam pe chalta hai. Yeh batata hai "main kaun hoon".</li>
+              <li><b>Role / ClusterRole</b> — permissions ka set ("Pods padh sakta hai, delete nahi").</li>
+              <li><b>RoleBinding</b> — SA ko Role se jodta hai ("is identity ko yeh permissions do").</li>
+            </ul>
+          </div>
+          <div class="oneliner"><span class="ol-icon">◆</span><div>ServiceAccount = tum kaun ho (ID card). Role = tum kya kar sakte ho (permissions). RoleBinding = ID card pe permissions chipka dena.</div></div>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p>Har service ka apna <code>ServiceAccount</code> (frontend, cartservice…). Least-privilege identity.</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p>ArgoCD ko cluster mein deploy karne ki RBAC permissions. Har service apni SA se chalti hai. Human access bhi RBAC se controlled.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ PART 6: DELIVERY ============ -->
+      <section class="part">
+        <div class="part-head"><span class="part-num">06</span><h2>Delivery — YAML cluster tak pahunchte kaise hain</h2></div>
+        <p class="part-intro">Ab tak sab objects dekhe. Par 12 services ki YAML manually apply karna? Nahi. Yeh tools wahi automate karte hain — aur yahi dono projects ka <b>sabse bada farak</b> hai.</p>
+
+        <!-- KUSTOMIZE -->
+        <div class="card b" id="kustomize">
+          <div class="card-head">
+            <div class="card-icon">🧩</div>
+            <div class="card-title">Kustomize</div>
+            <div class="card-kind">VANTA ka tareeka</div>
+          </div>
+          <p class="card-lead">Ek <b>base</b> (common YAML) banao, phir har environment ke liye <b>overlay</b> (sirf farak wali cheez). Copy-paste nahi — base + patch.</p>
+          <div class="diagram"><div class="diagram-mono">kustomize/
+├── base/            ← saari common YAML (frontend, cartservice, ...)
+└── overlays/
+    ├── dev/         ← replicas: 1,  image: latest,  NodePort 30080
+    ├── staging/     ← replicas: 2
+    └── prod/        ← replicas: 3,  + HPA</div></div>
+          <pre><code><span class="cm"># overlays/dev/kustomization.yaml</span>
+<span class="k">resources:</span> [../../base]
+<span class="k">replicas:</span>
+  - { <span class="k">name:</span> frontend, <span class="k">count:</span> <span class="n">1</span> }   <span class="cm"># base ko override</span>
+<span class="k">patches:</span>                              <span class="cm"># LB → NodePort (kind ke liye)</span>
+  - <span class="k">target:</span> { <span class="k">kind:</span> Service, <span class="k">name:</span> frontend-external }</code></pre>
+          <div class="callout tip"><span class="co-i">✓</span><div>Kustomize Kubernetes mein <b>built-in</b> hai — <code>kubectl apply -k overlays/dev</code>. Koi extra tool install nahi. Simple projects ke liye perfect.</div></div>
+        </div>
+
+        <!-- HELM -->
+        <div class="card b" id="helm">
+          <div class="card-head">
+            <div class="card-icon">⎈</div>
+            <div class="card-title">Helm</div>
+            <div class="card-kind">Billfree ka tareeka</div>
+          </div>
+          <p class="card-lead">YAML ka <b>template engine</b> — "package manager for Kubernetes". Ek reusable <b>chart</b> banao (blueprint with blanks), har service bas apni <code>values.yaml</code> se blanks bhare.</p>
+          <div class="oneliner"><span class="ol-icon">◆</span><div>Billfree ki 7 services alag-alag YAML nahi likhi — <b>ek</b> microservice chart hai, har service sirf apni values deti hai (naam, image, replicas). DRY at scale.</div></div>
+          <div class="diagram"><div class="diagram-mono">deploy/charts/microservice/     ← ek reusable blueprint
+   templates/
+     deployment.yaml  service.yaml  hpa.yaml
+     pdb.yaml  ingress.yaml  servicemonitor.yaml
+
+deploy/apps/auth-service/values.yaml    ← bas farak wali values
+deploy/apps/api-gateway/values.yaml     ← bas farak wali values
+   ... 7 services, 1 chart</div></div>
+          <div class="callout note"><span class="co-i">ℹ</span><div><b>Kustomize vs Helm:</b> Kustomize = base + patches (no variables, simple). Helm = full templating with variables/loops/conditions (powerful, thoda complex). Chhota project → Kustomize. Bahut services + reuse → Helm.</div></div>
+        </div>
+
+        <!-- ARGOCD -->
+        <div class="card b" id="argocd">
+          <div class="card-head">
+            <div class="card-icon">🔄</div>
+            <div class="card-title">ArgoCD / GitOps</div>
+            <div class="card-kind">kind: Application</div>
+          </div>
+          <p class="card-lead">GitOps ka core: <b>Git = single source of truth</b>. Cluster ko manually kabhi haath nahi lagaate. ArgoCD cluster mein baithke Git ko <b>watch</b> karta hai, aur cluster ko Git jaisa bana deta hai.</p>
+          <div class="oneliner"><span class="ol-icon">◆</span><div>Tum sirf Git mein commit karte ho (image tag, replicas). ArgoCD dekh leta hai aur khud cluster update kar deta hai. Rollback? <code>git revert</code> — bas.</div></div>
+          <div class="diagram"><div class="diagram-mono">Developer → git push (config repo)
+                 │
+                 ▼
+   [ ArgoCD in-cluster ]  ← Git ko watch karta hai
+                 │  "Git bola 3 replicas, cluster mein 2? theek karo"
+                 ▼
+   Cluster = Git ke jaisa (auto-sync + self-heal)</div></div>
+          <p style="margin:14px 0 6px; color:var(--text-bright); font-weight:600;">2 killer features:</p>
+          <div class="card-body">
+            <ul>
+              <li><b>Auto-sync</b> — Git badla, cluster khud update. Manual <code>kubectl apply</code> nahi.</li>
+              <li><b>Self-heal / drift correction</b> — kisi ne manually cluster badla? ArgoCD wapas Git jaisa kar deta hai. Cluster kabhi Git se bahar nahi jaata.</li>
+            </ul>
+          </div>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p><code>argocd/application.yaml</code> — repo <code>grvtech1/VANTA-Boutique</code> ko watch karke Kustomize overlays apply karta hai.</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p><code>ApplicationSet</code> per environment (dev/staging/prod) — ek pattern se saari services ki Apps auto-generate. <code>root.yaml</code> app-of-apps pattern. Ingress, monitoring, platform sab GitOps se.</p></div>
+          </div>
+          <div class="callout tip"><span class="co-i">✓</span><div><b>CI vs CD yaad rakho:</b> CI (GitHub Actions) image banata + Git mein tag likhta hai. CD (ArgoCD) Git se padhta + cluster deploy karta hai. <b>CI kabhi cluster ko touch nahi karta</b> — yeh GitOps ki jaan hai.</div></div>
+        </div>
+      </section>
+
+      <!-- ============ PART 7: OBSERVABILITY ============ -->
+      <section class="part">
+        <div class="part-head"><span class="part-num">07</span><h2>Observability — cluster ke andar dikhta kya hai</h2></div>
+
+        <div class="card p" id="monitoring">
+          <div class="card-head">
+            <div class="card-icon">📊</div>
+            <div class="card-title">Prometheus & Grafana</div>
+            <div class="card-kind">metrics + dashboards</div>
+          </div>
+          <p class="card-lead"><b>Prometheus</b> har service se metrics kheenchta (scrape) hai — kitne requests, kitne errors, kitni latency. <b>Grafana</b> unhe sundar dashboards/graphs mein dikhata hai. Alert bhi bhejta hai.</p>
+          <div class="card-body">
+            <ul>
+              <li><b>ServiceMonitor</b> — Prometheus ko batata hai "is service ko <code>/metrics</code> pe scrape karo".</li>
+              <li><b>PrometheusRule</b> — alert rules ("error rate 5% cross 5 min → critical alert").</li>
+              <li><b>RED metrics</b> — Rate (kitne req), Errors (kitne fail), Duration (kitna time). Har service ki sehat.</li>
+            </ul>
+          </div>
+          <div class="examples">
+            <div class="ex"><span class="ex-label v">VANTA</span><p>Optional Prometheus/Grafana setup — learning ke liye. PLATFORM.md runbook mein documented.</p></div>
+            <div class="ex"><span class="ex-label bf">BILLFREE</span><p>Har service chart mein <code>ServiceMonitor</code> + <code>PrometheusRule</code> built-in. Thresholds: error &gt;5% → critical, p95 &gt;1s → warning, memory &gt;90% → OOM warning. Full SLO monitoring.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ FINAL COMPARISON ============ -->
+      <section class="part">
+        <div class="part-head"><span class="part-num">08</span><h2>Dono projects — poora side-by-side</h2></div>
+        <p class="part-intro">Ek nazar mein donon ka farak. Yahi contrast interview mein sona hai — "maine simple bhi banaya (kind/Kustomize) aur production-grade bhi (AWS/Helm/GitOps)".</p>
+
+        <div class="cmp-wrap" id="compare">
+          <table class="cmp-table">
+            <thead>
+              <tr>
+                <th>Cheez</th>
+                <th class="col-v">VANTA-Boutique · learning</th>
+                <th class="col-bf">Billfree-techops · production</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Cluster</td><td>kind (local Docker)</td><td>AWS EC2 + <code>kubeadm</code></td></tr>
+              <tr><td>Infra banata</td><td>Manual / kind config</td><td>Terraform (compute, network, cloud-init)</td></tr>
+              <tr><td>App type</td><td>E-commerce, 12 microservices</td><td>Billing SaaS, 7 services + web + monolith</td></tr>
+              <tr><td>Manifests</td><td>Kustomize (base + overlays)</td><td>Helm (reusable chart + values)</td></tr>
+              <tr><td>Environments</td><td>dev / staging / prod overlays</td><td>dev / staging / prod ApplicationSets</td></tr>
+              <tr><td>Bahar access</td><td>NodePort <code>:30080</code></td><td>Ingress-nginx + TLS</td></tr>
+              <tr><td>Database</td><td>redis-cart (+ optional postgres)</td><td>postgres StatefulSet + 5Gi EBS PVC</td></tr>
+              <tr><td>Labels</td><td><code>app: frontend</code></td><td><code>app.kubernetes.io/name</code></td></tr>
+              <tr><td>Autoscaling</td><td>Prod overlay mein optional HPA</td><td>Har service HPA (2→6, 70% CPU)</td></tr>
+              <tr><td>Disruption budget</td><td>Optional component</td><td>Har service PDB (minAvailable 1)</td></tr>
+              <tr><td>NetworkPolicy</td><td>Nahi (open, simple)</td><td>Haan — DB/service isolation</td></tr>
+              <tr><td>GitOps</td><td>ArgoCD Application</td><td>ArgoCD ApplicationSet + app-of-apps</td></tr>
+              <tr><td>Monitoring</td><td>Optional Prometheus/Grafana</td><td>ServiceMonitor + PrometheusRule + SLOs</td></tr>
+              <tr><td>Secrets</td><td>.gitignore, kuch nahi commit</td><td>Bootstrap-generated, out-of-band</td></tr>
+              <tr><td>Namespace</td><td><code>default</code></td><td><code>billfree</code>, <code>monitoring</code>, etc.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout tip" style="margin-top:24px;"><span class="co-i">★</span><div><b>Poori kahani ek line mein:</b> Terraform ne AWS pe machine banayi → kubeadm ne use Kubernetes cluster banaya → Calico ne networking di → Helm ne YAML generate ki → ArgoCD ne Git se padhke deploy ki → Service + Ingress ne traffic route kiya → HPA/PDB/Probes ne production-grade reliability di → Prometheus/Grafana ne sab monitor kiya. <b>Yahi poora Kubernetes hai.</b></div></div>
+      </section>
+
+      <div class="foot">
+        VANTA-Boutique + Billfree-techops · Kubernetes Complete Reference · Hinglish<br>
+        Banaya seekhne ke liye — har object real project se jodke.
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<script>
+  function toggleTheme() {
+    var root = document.documentElement;
+    var cur = root.getAttribute('data-theme');
+    if (!cur) {
+      // detect current effective theme
+      cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    var next = cur === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    document.getElementById('themeBtn').textContent = next === 'dark' ? '☀ light' : '☾ dark';
+  }
+  // active link highlight on scroll
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sb-link'));
+  var map = {};
+  links.forEach(function(l){ var id = l.getAttribute('href').slice(1); map[id] = l; });
+  var obs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (e.isIntersecting) {
+        links.forEach(function(l){ l.style.color=''; l.style.background=''; l.style.borderLeftColor='transparent'; });
+        var l = map[e.target.id];
+        if (l) { l.style.color='var(--text-bright)'; l.style.background='var(--surface)'; l.style.borderLeftColor='var(--cyan)'; }
+      }
+    });
+  }, { rootMargin: '-10% 0px -80% 0px' });
+  document.querySelectorAll('.card[id], .cmp-wrap[id]').forEach(function(el){ obs.observe(el); });
+</script>
+
+</body>
+</html>
