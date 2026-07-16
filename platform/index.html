@@ -4,10 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BillFree Labs · Internal Engineering Platform</title>
-<meta name="description" content="An interactive production engineering simulation — triage a real incident on a real microservices architecture.">
+<meta name="description" content="An interactive production engineering simulation — triage real incidents on a real microservices architecture.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛠️</text></svg>">
 <style>
-/* ============ tokens ============ */
 :root{
   --bg:#0a0b0f; --surface:#12141c; --surface-2:#171a24; --surface-3:#1e2230;
   --border:#262b3a; --border-lit:#333a4d;
@@ -27,79 +26,44 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
-body{
-  background:var(--bg);color:var(--fg);font-family:var(--sans);
-  font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;
-}
-/* ============ app shell ============ */
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
 .app{display:grid;grid-template-columns:232px 1fr;min-height:100vh}
-.sidebar{
-  background:var(--surface);border-right:1px solid var(--border);
-  padding:16px 12px;display:flex;flex-direction:column;gap:4px;
-  position:sticky;top:0;height:100vh;overflow-y:auto;
-}
-.brand{display:flex;align-items:center;gap:9px;padding:6px 8px 16px;}
-.brand-mark{
-  width:28px;height:28px;border-radius:8px;background:var(--grad);
-  display:grid;place-items:center;font-size:14px;flex:none;
-}
+.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:16px 12px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:9px;padding:6px 8px 16px}
+.brand-mark{width:28px;height:28px;border-radius:8px;background:var(--grad);display:grid;place-items:center;font-size:14px;flex:none}
 .brand-name{font-weight:700;font-size:13.5px;letter-spacing:-.01em;line-height:1.2}
 .brand-sub{font-size:10px;color:var(--fg-faint);letter-spacing:.06em;text-transform:uppercase}
 .nav-label{font-size:10px;color:var(--fg-faint);text-transform:uppercase;letter-spacing:.1em;padding:14px 8px 6px;font-weight:600}
-.nav-item{
-  display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:8px;
-  color:var(--fg-dim);cursor:pointer;font-size:13px;font-weight:500;
-  border:1px solid transparent;transition:.15s;user-select:none;
-}
+.nav-item{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:8px;color:var(--fg-dim);cursor:pointer;font-size:13px;font-weight:500;border:1px solid transparent;transition:.15s;user-select:none}
 .nav-item:hover{background:var(--surface-2);color:var(--fg)}
 .nav-item.active{background:var(--surface-3);color:var(--fg);border-color:var(--border-lit)}
 .nav-item .ico{width:16px;text-align:center;flex:none}
-.nav-item .badge{
-  margin-left:auto;background:var(--red);color:#fff;font-size:9.5px;font-weight:700;
-  padding:1px 6px;border-radius:999px;
-}
-.nav-item.locked{opacity:.4;cursor:not-allowed}
+.nav-item .badge{margin-left:auto;background:var(--red);color:#fff;font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:999px}
 .sidebar-foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--border)}
 .me{display:flex;align-items:center;gap:9px;padding:7px 8px}
 .avatar{width:28px;height:28px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;flex:none}
 .me-name{font-size:12.5px;font-weight:600;line-height:1.3}
 .me-role{font-size:10.5px;color:var(--fg-faint)}
-/* ============ main ============ */
 .main{display:flex;flex-direction:column;min-width:0}
-.topbar{
-  height:52px;border-bottom:1px solid var(--border);background:var(--surface);
-  display:flex;align-items:center;gap:12px;padding:0 20px;position:sticky;top:0;z-index:20;
-}
+.topbar{height:52px;border-bottom:1px solid var(--border);background:var(--surface);display:flex;align-items:center;gap:12px;padding:0 20px;position:sticky;top:0;z-index:20}
 .crumb{font-size:12.5px;color:var(--fg-dim)}
 .crumb b{color:var(--fg);font-weight:600}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.chip{
-  font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;
-  border:1px solid var(--border-lit);color:var(--fg-dim);background:var(--surface-2);
-}
+.chip{font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid var(--border-lit);color:var(--fg-dim);background:var(--surface-2)}
 .chip.live::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;margin-right:6px;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-.icon-btn{
-  width:30px;height:30px;border-radius:8px;border:1px solid var(--border-lit);
-  background:var(--surface-2);color:var(--fg-dim);cursor:pointer;display:grid;place-items:center;font-size:13px;
-}
+.icon-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--border-lit);background:var(--surface-2);color:var(--fg-dim);cursor:pointer;display:grid;place-items:center;font-size:13px}
 .icon-btn:hover{color:var(--fg);border-color:var(--violet)}
 .content{padding:24px 28px 60px;max-width:1180px;width:100%}
-/* ============ typography ============ */
 h1{font-size:24px;font-weight:700;letter-spacing:-.02em;line-height:1.2}
 h2{font-size:16px;font-weight:650;letter-spacing:-.01em;margin-bottom:2px}
 h3{font-size:13px;font-weight:650}
 .dim{color:var(--fg-dim)}
 .faint{color:var(--fg-faint);font-size:12px}
 .mono{font-family:var(--mono)}
-/* ============ primitives ============ */
 .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px}
 .card-h{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-.btn{
-  font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:8px;
-  border:1px solid var(--border-lit);background:var(--surface-2);color:var(--fg);
-  cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:7px;
-}
+.btn{font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:8px;border:1px solid var(--border-lit);background:var(--surface-2);color:var(--fg);cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:7px}
 .btn:hover:not(:disabled){border-color:var(--violet);transform:translateY(-1px)}
 .btn:disabled{opacity:.4;cursor:not-allowed}
 .btn-primary{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 10px 24px -12px rgba(99,102,241,.8)}
@@ -112,12 +76,8 @@ h3{font-size:13px;font-weight:650}
 .sev-warn{background:rgba(245,158,11,.13);color:#fcd34d;border:1px solid rgba(245,158,11,.32)}
 .sev-ok{background:rgba(16,185,129,.13);color:#6ee7b7;border:1px solid rgba(16,185,129,.32)}
 [data-theme="light"] .sev-crit{color:#b91c1c}[data-theme="light"] .sev-warn{color:#b45309}[data-theme="light"] .sev-ok{color:#047857}
-/* ============ service grid ============ */
 .svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(184px,1fr));gap:10px}
-.svc{
-  background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;
-  transition:.18s;cursor:default;position:relative;overflow:hidden;
-}
+.svc{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;transition:.18s;position:relative;overflow:hidden}
 .svc:hover{border-color:var(--border-lit);transform:translateY(-2px)}
 .svc.bad{border-color:rgba(239,68,68,.5)}
 .svc.bad::before{content:"";position:absolute;inset:0 0 auto 0;height:2px;background:var(--red)}
@@ -128,31 +88,18 @@ h3{font-size:13px;font-weight:650}
 .dot.bad{background:var(--red);box-shadow:0 0 0 3px rgba(239,68,68,.15);animation:pulse 1.4s infinite}
 .svc-meta{display:flex;gap:10px;margin-top:9px;font-size:10.5px;color:var(--fg-faint);font-family:var(--mono)}
 .svc-meta b{color:var(--fg-dim);font-weight:600}
-/* ============ metric tiles ============ */
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
 .tile{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px}
 .tile-l{font-size:10px;color:var(--fg-faint);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
 .tile-v{font-size:21px;font-weight:700;font-family:var(--mono);letter-spacing:-.02em;margin-top:3px}
 .tile-d{font-size:10.5px;margin-top:2px}
 .up{color:var(--red)}.good{color:var(--green)}
-/* ============ alert banner ============ */
-.alert-banner{
-  border:1px solid rgba(239,68,68,.4);background:linear-gradient(90deg,rgba(239,68,68,.12),transparent 60%);
-  border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:14px;
-  animation:slideIn .4s ease;
-}
+.alert-banner{border:1px solid rgba(239,68,68,.4);background:linear-gradient(90deg,rgba(239,68,68,.12),transparent 60%);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:14px;animation:slideIn .4s ease}
 @keyframes slideIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
 .alert-icon{font-size:20px;animation:pulse 1.5s infinite}
-/* ============ terminal ============ */
-.term{
-  background:#07080c;border:1px solid var(--border-lit);border-radius:10px;overflow:hidden;
-  font-family:var(--mono);font-size:12px;
-}
+.term{background:#07080c;border:1px solid var(--border-lit);border-radius:10px;overflow:hidden;font-family:var(--mono);font-size:12px}
 [data-theme="light"] .term{background:#0d1017}
-.term-bar{
-  background:var(--surface-2);border-bottom:1px solid var(--border);padding:7px 12px;
-  display:flex;align-items:center;gap:7px;
-}
+.term-bar{background:var(--surface-2);border-bottom:1px solid var(--border);padding:7px 12px;display:flex;align-items:center;gap:7px}
 [data-theme="light"] .term-bar{background:#1a1f2e;border-color:#2a3140}
 .tdot{width:9px;height:9px;border-radius:50%}
 .term-title{font-size:10.5px;color:var(--fg-faint);margin-left:6px}
@@ -168,81 +115,48 @@ h3{font-size:13px;font-weight:650}
 .term-input-row{display:flex;align-items:center;gap:7px;border-top:1px solid var(--border);padding:9px 12px;background:#0b0d13}
 [data-theme="light"] .term-input-row{background:#12161f;border-color:#2a3140}
 .term-prompt{color:#10b981;font-weight:700;flex:none}
-.term-input{
-  flex:1;background:none;border:none;outline:none;color:#e6e9f2;
-  font-family:var(--mono);font-size:12px;
-}
+.term-input{flex:1;background:none;border:none;outline:none;color:#e6e9f2;font-family:var(--mono);font-size:12px}
 .term-input::placeholder{color:#4b5468}
 .hints{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
-.hint{
-  font-family:var(--mono);font-size:10.5px;padding:4px 8px;border-radius:6px;
-  border:1px dashed var(--border-lit);color:var(--fg-dim);cursor:pointer;background:var(--surface-2);
-}
+.hint{font-family:var(--mono);font-size:10.5px;padding:4px 8px;border-radius:6px;border:1px dashed var(--border-lit);color:var(--fg-dim);cursor:pointer;background:var(--surface-2)}
 .hint:hover{border-style:solid;border-color:var(--violet);color:var(--fg)}
 .hint.done{opacity:.4;text-decoration:line-through}
-/* ============ steps ============ */
 .steps{display:flex;gap:0;margin-bottom:20px;flex-wrap:wrap}
 .step{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--fg-faint);font-weight:600}
 .step:not(:last-child)::after{content:"";width:26px;height:1px;background:var(--border-lit);margin:0 9px}
-.step-n{
-  width:20px;height:20px;border-radius:50%;border:1px solid var(--border-lit);
-  display:grid;place-items:center;font-size:10px;flex:none;
-}
+.step-n{width:20px;height:20px;border-radius:50%;border:1px solid var(--border-lit);display:grid;place-items:center;font-size:10px;flex:none}
 .step.active{color:var(--fg)}
 .step.active .step-n{background:var(--grad);border-color:transparent;color:#fff}
 .step.done{color:var(--green)}
 .step.done .step-n{background:rgba(16,185,129,.18);border-color:var(--green);color:var(--green)}
-/* ============ choices ============ */
-.choice{
-  display:flex;gap:11px;padding:13px;border:1px solid var(--border);border-radius:10px;
-  background:var(--surface);cursor:pointer;transition:.15s;align-items:flex-start;
-}
+.choice{display:flex;gap:11px;padding:13px;border:1px solid var(--border);border-radius:10px;background:var(--surface);cursor:pointer;transition:.15s;align-items:flex-start}
 .choice:hover{border-color:var(--violet);transform:translateX(3px)}
 .choice.correct{border-color:var(--green);background:rgba(16,185,129,.07)}
 .choice.wrong{border-color:var(--red);background:rgba(239,68,68,.07);opacity:.75}
 .choice.disabled{pointer-events:none}
-.choice-k{
-  width:22px;height:22px;border-radius:6px;background:var(--surface-3);border:1px solid var(--border-lit);
-  display:grid;place-items:center;font-size:10.5px;font-weight:700;flex:none;font-family:var(--mono);
-}
-/* ============ code ============ */
-.code{
-  background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:11px 13px;
-  font-family:var(--mono);font-size:11.5px;white-space:pre;overflow-x:auto;color:var(--fg-dim);line-height:1.6;
-}
+.choice-k{width:22px;height:22px;border-radius:6px;background:var(--surface-3);border:1px solid var(--border-lit);display:grid;place-items:center;font-size:10.5px;font-weight:700;flex:none;font-family:var(--mono)}
+.code{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:11px 13px;font-family:var(--mono);font-size:11.5px;white-space:pre;overflow-x:auto;color:var(--fg-dim);line-height:1.6}
 .code .add{color:var(--green)}.code .del{color:var(--red)}.code .k{color:var(--violet)}
-/* ============ misc ============ */
 .xpbar{height:6px;background:var(--surface-3);border-radius:99px;overflow:hidden;margin-top:6px}
 .xpfill{height:100%;background:var(--grad);border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1)}
-textarea{
-  width:100%;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;
-  padding:11px;color:var(--fg);font-family:var(--mono);font-size:12px;resize:vertical;outline:none;
-}
+textarea{width:100%;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:11px;color:var(--fg);font-family:var(--mono);font-size:12px;resize:vertical;outline:none}
 textarea:focus{border-color:var(--violet)}
-.toast{
-  position:fixed;bottom:22px;right:22px;background:var(--surface);border:1px solid var(--green);
-  border-radius:10px;padding:12px 16px;box-shadow:var(--shadow);z-index:99;
-  animation:slideIn .3s ease;max-width:300px;
-}
+.toast{position:fixed;bottom:22px;right:22px;background:var(--surface);border:1px solid var(--green);border-radius:10px;padding:12px 16px;box-shadow:var(--shadow);z-index:99;animation:slideIn .3s ease;max-width:300px}
 .hidden{display:none!important}
 .screen{animation:fade .35s ease}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-/* ============ onboarding ============ */
+.inc-row{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface);cursor:pointer;transition:.15s}
+.inc-row:hover{border-color:var(--violet);transform:translateX(3px)}
+.inc-row.done{opacity:.6}
+.inc-row.done:hover{opacity:.85}
 .onb{min-height:100vh;display:grid;place-items:center;padding:24px;position:relative;overflow:hidden}
-.onb::before{
-  content:"";position:absolute;top:-30%;left:50%;transform:translateX(-50%);
-  width:700px;height:700px;background:radial-gradient(circle,rgba(99,102,241,.16),transparent 62%);
-}
+.onb::before{content:"";position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(99,102,241,.16),transparent 62%)}
 .onb-card{max-width:520px;position:relative;text-align:center}
 .onb h1{font-size:30px;margin:16px 0 8px;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .prov{text-align:left;margin:22px 0;display:grid;gap:7px}
-.prov-item{
-  display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid var(--border);
-  border-radius:8px;background:var(--surface);font-size:12.5px;opacity:.25;transition:.4s;
-}
+.prov-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface);font-size:12.5px;opacity:.25;transition:.4s}
 .prov-item.on{opacity:1;border-color:rgba(16,185,129,.4)}
 .prov-check{color:var(--green);font-weight:700}
-/* ============ responsive ============ */
 @media(max-width:880px){
   .app{grid-template-columns:1fr}
   .sidebar{position:static;height:auto;flex-direction:row;overflow-x:auto;align-items:center;padding:10px}
@@ -255,37 +169,32 @@ textarea:focus{border-color:var(--violet)}
 </head>
 <body>
 
-<!-- ============ ONBOARDING ============ -->
 <div id="onboarding" class="onb">
   <div class="onb-card">
     <div style="font-size:44px">🛠️</div>
     <h1>Welcome to BillFree Labs</h1>
     <p class="dim" style="font-size:14px">You've been hired as a <b style="color:var(--fg)">DevOps Engineer</b>. This is your first day. Your workstation is being provisioned.</p>
-    <div class="prov" id="prov">
-      <div class="prov-item" data-i="0"><span class="prov-check">✓</span> Laptop imaged · kubectl, helm, terraform, awscli</div>
-      <div class="prov-item" data-i="1"><span class="prov-check">✓</span> SSO · Okta → GitHub, ArgoCD, Grafana</div>
-      <div class="prov-item" data-i="2"><span class="prov-check">✓</span> Repo access · <span class="mono">billfree-techops</span></div>
-      <div class="prov-item" data-i="3"><span class="prov-check">✓</span> Cluster · kubeconfig for <span class="mono">billfree-prod</span> (read + deploy)</div>
-      <div class="prov-item" data-i="4"><span class="prov-check">✓</span> On-call · added to <span class="mono">#platform-oncall</span></div>
+    <div class="prov">
+      <div class="prov-item"><span class="prov-check">✓</span> Laptop imaged · kubectl, helm, terraform, awscli</div>
+      <div class="prov-item"><span class="prov-check">✓</span> SSO · Okta → GitHub, ArgoCD, Grafana</div>
+      <div class="prov-item"><span class="prov-check">✓</span> Repo access · <span class="mono">billfree-techops</span></div>
+      <div class="prov-item"><span class="prov-check">✓</span> Cluster · kubeconfig for <span class="mono">billfree-prod</span></div>
+      <div class="prov-item"><span class="prov-check">✓</span> On-call · added to <span class="mono">#platform-oncall</span></div>
     </div>
     <button class="btn btn-primary" id="enterBtn" disabled style="width:100%;justify-content:center">Provisioning…</button>
-    <p class="faint" style="margin-top:12px">A simulation running on a real microservices architecture — real Helm chart, real alert rules.</p>
+    <p class="faint" style="margin-top:12px">A simulation on a real microservices architecture — real Helm chart, real alert rules.</p>
   </div>
 </div>
 
-<!-- ============ APP ============ -->
 <div class="app hidden" id="app">
   <aside class="sidebar">
     <div class="brand">
       <div class="brand-mark">🛠️</div>
-      <div>
-        <div class="brand-name">BillFree Labs</div>
-        <div class="brand-sub">Platform</div>
-      </div>
+      <div><div class="brand-name">BillFree Labs</div><div class="brand-sub">Platform</div></div>
     </div>
     <div class="nav-label">Workspace</div>
     <div class="nav-item active" data-screen="dashboard"><span class="ico">▦</span> Dashboard</div>
-    <div class="nav-item" data-screen="incident"><span class="ico">🔥</span> Incidents <span class="badge" id="incBadge">1</span></div>
+    <div class="nav-item" data-screen="queue"><span class="ico">🔥</span> Incidents <span class="badge" id="incBadge">4</span></div>
     <div class="nav-item" data-screen="runbook"><span class="ico">📕</span> Runbooks</div>
     <div class="nav-item" data-screen="career"><span class="ico">📈</span> Your Career</div>
     <div class="nav-label">Services</div>
@@ -293,19 +202,16 @@ textarea:focus{border-color:var(--violet)}
     <div class="sidebar-foot">
       <div class="me">
         <div class="avatar">GP</div>
-        <div>
-          <div class="me-name">Gaurav P.</div>
-          <div class="me-role" id="roleLabel">DevOps Engineer</div>
-        </div>
+        <div><div class="me-name">Gaurav P.</div><div class="me-role" id="roleLabel">DevOps Engineer</div></div>
       </div>
     </div>
   </aside>
-
   <div class="main">
     <div class="topbar">
       <div class="crumb" id="crumb"><b>Dashboard</b></div>
       <div class="topbar-right">
-        <span class="chip live" id="envChip">billfree-prod</span>
+        <span class="chip live">billfree-prod</span>
+        <button class="icon-btn" id="resetBtn" title="Reset progress">↺</button>
         <button class="icon-btn" id="themeBtn" title="Toggle theme">◐</button>
       </div>
     </div>
@@ -314,298 +220,87 @@ textarea:focus{border-color:var(--violet)}
 </div>
 
 <script>
-/* ================= state ================= */
-const S = {
-  screen:'dashboard', xp:0, step:0,
-  ran:new Set(), rootCause:null, fixed:false, rcaDone:false,
-  startedAt:Date.now()
-};
-const XP_MAX = 500;
-const $ = s => document.querySelector(s);
-const el = (h) => { const d=document.createElement('div'); d.innerHTML=h.trim(); return d.firstElementChild; };
-
-/* ================= onboarding ================= */
-const provItems = document.querySelectorAll('.prov-item');
-provItems.forEach((it,i)=> setTimeout(()=> it.classList.add('on'), 450 + i*420));
-setTimeout(()=>{
-  const b = $('#enterBtn');
-  b.disabled = false;
-  b.textContent = 'Enter the platform →';
-}, 450 + provItems.length*420);
-$('#enterBtn').onclick = ()=>{
-  $('#onboarding').classList.add('hidden');
-  $('#app').classList.remove('hidden');
-  render();
-};
-
-/* ================= theme ================= */
-$('#themeBtn').onclick = ()=>{
-  const r = document.documentElement;
-  r.dataset.theme = r.dataset.theme === 'dark' ? 'light' : 'dark';
-};
-
-/* ================= nav ================= */
-document.querySelectorAll('.nav-item').forEach(n=>{
-  n.onclick = ()=>{
-    if(n.classList.contains('locked')) return;
-    document.querySelectorAll('.nav-item').forEach(x=>x.classList.remove('active'));
-    n.classList.add('active');
-    S.screen = n.dataset.screen;
-    render();
-  };
-});
-
-/* ================= data (REAL from billfree-techops) ================= */
-const SERVICES = [
-  {n:'api-gateway',      rep:'2/2', mem:'118Mi', cpu:'62m',  ok:true},
-  {n:'auth-service',     rep:'1/2', mem:'254Mi', cpu:'41m',  ok:false},
-  {n:'ticket-service',   rep:'2/2', mem:'104Mi', cpu:'38m',  ok:true},
-  {n:'analytics-service',rep:'2/2', mem:'131Mi', cpu:'55m',  ok:true},
-  {n:'calllog-service',  rep:'2/2', mem:'99Mi',  cpu:'27m',  ok:true},
-  {n:'report-service',   rep:'2/2', mem:'112Mi', cpu:'33m',  ok:true},
-  {n:'web',              rep:'2/2', mem:'87Mi',  cpu:'19m',  ok:true},
-  {n:'postgres',         rep:'1/1', mem:'201Mi', cpu:'88m',  ok:true},
-];
-
-/* ================= terminal engine ================= */
-const CMDS = {
-  'kubectl get pods -n billfree': {
-    id:'get',
-    out:[
+/* ==================== INCIDENT REGISTRY (data, not code) ==================== */
+const INCIDENTS = [
+{
+  id:'INC-2891', sev:'critical', alert:'PodCrashLooping', svc:'auth-service',
+  title:'auth-service CrashLoopBackOff',
+  paged:'03:14 IST', mttr:'14m', skill:'Resource limits · exit codes',
+  teaches:'Reading exit 137 as an external kill, not an app bug',
+  impact:{
+    business:'~48% of login requests failing. Support tickets rising.',
+    customer:"Users intermittently can't sign in. Retry sometimes works (1 of 2 pods healthy).",
+    rule:'PodCrashLooping · restarts > 3 in 15m · severity: critical'
+  },
+  cmds:{
+    'kubectl get pods -n billfree':{id:'get',out:[
       ['NAME                                READY   STATUS             RESTARTS      AGE','out'],
       ['api-gateway-7d4b9c6f8-xk2pq         1/1     Running            0             6d','out'],
       ['auth-service-5f8c7d9b4-9fm3l        0/1     CrashLoopBackOff   7 (42s ago)   6d','hi'],
       ['auth-service-5f8c7d9b4-p2wqz        1/1     Running            0             6d','out'],
       ['ticket-service-6b9d8c5f7-mn4rt      1/1     Running            0             6d','out'],
-      ['analytics-service-84c6f9d5b-vk8sx   1/1     Running            0             6d','out'],
       ['postgres-0                          1/1     Running            0             12d','out'],
-    ]
-  },
-  'kubectl describe pod auth-service-5f8c7d9b4-9fm3l -n billfree': {
-    id:'describe',
-    out:[
+    ]},
+    'kubectl describe pod auth-service-5f8c7d9b4-9fm3l -n billfree':{id:'describe',out:[
       ['Name:         auth-service-5f8c7d9b4-9fm3l','out'],
-      ['Namespace:    billfree','out'],
-      ['Containers:','out'],
-      ['  auth-service:','out'],
+      ['Containers:','out'],['  auth-service:','out'],
       ['    State:          Waiting','out'],
       ['      Reason:       CrashLoopBackOff','warn'],
       ['    Last State:     Terminated','out'],
       ['      Reason:       OOMKilled','hi'],
       ['      Exit Code:    137','hi'],
-      ['      Started:      Thu, 16 Jul 2026 03:14:02 +0530','out'],
-      ['      Finished:     Thu, 16 Jul 2026 03:14:47 +0530','out'],
       ['    Restart Count:  7','warn'],
-      ['    Limits:','out'],
-      ['      cpu:     500m','out'],
-      ['      memory:  256Mi','hi'],
-      ['    Requests:','out'],
-      ['      cpu:     50m','out'],
-      ['      memory:  96Mi','out'],
+      ['    Limits:','out'],['      cpu:     500m','out'],['      memory:  256Mi','hi'],
+      ['    Requests:','out'],['      cpu:     50m','out'],['      memory:  96Mi','out'],
       ['Events:','out'],
       ['  Warning  BackOff  42s (x7)  kubelet  Back-off restarting failed container','warn'],
-    ]
-  },
-  'kubectl logs auth-service-5f8c7d9b4-9fm3l -n billfree --previous': {
-    id:'logs',
-    out:[
+    ]},
+    'kubectl logs auth-service-5f8c7d9b4-9fm3l -n billfree --previous':{id:'logs',out:[
       ['{"level":"info","msg":"auth-service starting","port":8080}','out'],
       ['{"level":"info","msg":"connected to postgres","host":"postgres:5432"}','out'],
       ['{"level":"info","msg":"jwt keys loaded"}','out'],
       ['{"level":"info","msg":"listening","addr":":8080"}','out'],
-      ['{"level":"info","msg":"GET /readyz 200"}','out'],
       ['','out'],
       ['── log ends abruptly · no error, no stack trace ──','warn'],
       ['💡 The app did NOT crash itself. Something killed it from outside.','hi'],
-    ]
-  },
-  'kubectl top pod -n billfree': {
-    id:'top',
-    out:[
+    ]},
+    'kubectl top pod -n billfree':{id:'top',out:[
       ['NAME                                CPU(cores)   MEMORY(bytes)','out'],
       ['api-gateway-7d4b9c6f8-xk2pq         62m          118Mi','out'],
       ['auth-service-5f8c7d9b4-p2wqz        41m          254Mi','hi'],
-      ['ticket-service-6b9d8c5f7-mn4rt      38m          104Mi','out'],
       ['postgres-0                          88m          201Mi','out'],
       ['','out'],
       ['💡 auth-service at 254Mi — its limit is 256Mi. Sitting at 99%.','hi'],
-    ]
-  },
-  'kubectl get events -n billfree --sort-by=.lastTimestamp': {
-    id:'events',
-    out:[
+    ]},
+    'kubectl get events -n billfree --sort-by=.lastTimestamp':{id:'events',out:[
       ['LAST SEEN   TYPE      REASON      OBJECT                             MESSAGE','out'],
       ['4m          Warning   BackOff     pod/auth-service-5f8c7d9b4-9fm3l   Back-off restarting failed container','warn'],
       ['12m         Warning   Unhealthy   pod/auth-service-5f8c7d9b4-9fm3l   Readiness probe failed','warn'],
-      ['12m         Normal    Killing     pod/auth-service-5f8c7d9b4-9fm3l   Stopping container auth-service','out'],
       ['','out'],
       ['💡 No image, scheduling, or DB errors — this is a runtime kill.','hi'],
-    ]
+    ]},
   },
-};
-const ALIASES = {
-  'kubectl get pods':'kubectl get pods -n billfree',
-  'kubectl get po -n billfree':'kubectl get pods -n billfree',
-  'kubectl top pod':'kubectl top pod -n billfree',
-  'kubectl get events -n billfree':'kubectl get events -n billfree --sort-by=.lastTimestamp',
-  'kubectl logs auth-service-5f8c7d9b4-9fm3l --previous':'kubectl logs auth-service-5f8c7d9b4-9fm3l -n billfree --previous',
-  'kubectl describe pod auth-service-5f8c7d9b4-9fm3l':'kubectl describe pod auth-service-5f8c7d9b4-9fm3l -n billfree',
-};
-function runCmd(raw){
-  const body = $('#termBody'); if(!body) return;
-  const cmd = (ALIASES[raw.trim()] || raw.trim());
-  body.appendChild(el(`<div class="term-line term-cmd">${esc(raw)}</div>`));
-  const hit = CMDS[cmd];
-  if(hit){
-    hit.out.forEach(([t,cls])=>{
-      const c = cls==='hi'?'term-hi':cls==='warn'?'term-warn':cls==='ok'?'term-ok':'term-out';
-      body.appendChild(el(`<div class="term-line ${c}">${esc(t)||'&nbsp;'}</div>`));
-    });
-    if(!S.ran.has(hit.id)){ S.ran.add(hit.id); addXp(25); }
-    document.querySelectorAll('.hint').forEach(h=>{
-      if((ALIASES[h.dataset.cmd]||h.dataset.cmd)===cmd) h.classList.add('done');
-    });
-    if(S.ran.size >= 3 && S.step === 0){ S.step = 1; setTimeout(render, 700); }
-  } else if(cmd === 'clear'){ body.innerHTML=''; }
-  else {
-    body.appendChild(el(`<div class="term-line term-warn">command not recognised in this simulation — try a hint below</div>`));
-  }
-  body.scrollTop = body.scrollHeight;
-}
-const esc = s => String(s).replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-
-/* ================= xp ================= */
-function addXp(n){
-  S.xp = Math.min(XP_MAX, S.xp + n);
-  toast(`+${n} XP`);
-  const f = $('#xpfill'); if(f) f.style.width = (S.xp/XP_MAX*100)+'%';
-}
-function toast(msg){
-  const t = el(`<div class="toast"><b>${msg}</b></div>`);
-  document.body.appendChild(t);
-  setTimeout(()=>t.remove(), 1800);
-}
-
-/* ================= screens ================= */
-function render(){
-  const c = $('#content');
-  $('#crumb').innerHTML = `<b>${({dashboard:'Dashboard',incident:'Incidents',runbook:'Runbooks',career:'Your Career',architecture:'Architecture'})[S.screen]}</b>`;
-  c.innerHTML = '';
-  c.appendChild(el(`<div class="screen">${VIEWS[S.screen]()}</div>`));
-  wire();
-}
-
-const VIEWS = {
-/* ---------- DASHBOARD ---------- */
-dashboard: () => `
-  <h1>Good morning, Gaurav 👋</h1>
-  <p class="dim" style="margin-bottom:20px">Here's what's happening in <span class="mono">billfree-prod</span> right now.</p>
-
-  ${!S.fixed ? `
-  <div class="alert-banner" style="margin-bottom:20px">
-    <div class="alert-icon">🚨</div>
-    <div style="flex:1">
-      <div class="row" style="gap:8px"><span class="sev sev-crit">Critical</span><b>PodCrashLooping</b><span class="faint">· firing 4m · auth-service</span></div>
-      <div class="dim" style="font-size:12.5px;margin-top:3px">A auth-service container has restarted more than 3 times in 15m. You are on-call.</div>
-    </div>
-    <button class="btn btn-primary" data-go="incident">Investigate →</button>
-  </div>` : `
-  <div class="alert-banner" style="margin-bottom:20px;border-color:rgba(16,185,129,.4);background:linear-gradient(90deg,rgba(16,185,129,.1),transparent 60%)">
-    <div class="alert-icon" style="animation:none">✅</div>
-    <div style="flex:1"><b>All systems operational</b><div class="dim" style="font-size:12.5px">PodCrashLooping resolved · MTTR 14m</div></div>
-  </div>`}
-
-  <div class="tiles" style="margin-bottom:20px">
-    <div class="tile"><div class="tile-l">Requests / sec</div><div class="tile-v">1,284</div><div class="tile-d good">▲ 3.2% vs 1h</div></div>
-    <div class="tile"><div class="tile-l">Error rate</div><div class="tile-v" style="color:${S.fixed?'var(--green)':'var(--red)'}">${S.fixed?'0.14%':'4.8%'}</div><div class="tile-d ${S.fixed?'good':'up'}">${S.fixed?'▼ within SLO':'▲ SLO breach'}</div></div>
-    <div class="tile"><div class="tile-l">p95 latency</div><div class="tile-v">${S.fixed?'214ms':'890ms'}</div><div class="tile-d ${S.fixed?'good':'up'}">${S.fixed?'▼ healthy':'▲ degraded'}</div></div>
-    <div class="tile"><div class="tile-l">Pods ready</div><div class="tile-v">${S.fixed?'15/15':'14/15'}</div><div class="tile-d ${S.fixed?'good':'up'}">${S.fixed?'all healthy':'1 crashlooping'}</div></div>
-  </div>
-
-  <div class="card-h"><h2>Services</h2><span class="faint">namespace: billfree</span></div>
-  <div class="svc-grid">
-    ${SERVICES.map(s=>{
-      const bad = !s.ok && !S.fixed;
-      return `<div class="svc ${bad?'bad':''}">
-        <div class="svc-top">
-          <span class="svc-name">${s.n}</span>
-          <span class="dot ${bad?'bad':'ok'}"></span>
-        </div>
-        <div class="svc-meta">
-          <span><b>${bad?s.rep:(s.n==='postgres'?'1/1':'2/2')}</b> ready</span>
-          <span><b>${bad?s.mem:(s.n==='auth-service'?'171Mi':s.mem)}</b></span>
-          <span><b>${s.cpu}</b></span>
-        </div>
-      </div>`;
-    }).join('')}
-  </div>`,
-
-/* ---------- INCIDENT ---------- */
-incident: () => {
-  if(S.rcaDone) return VIEWS.review();
-  return `
-  <div class="row" style="justify-content:space-between;margin-bottom:6px">
-    <h1>INC-2891 · auth-service CrashLoopBackOff</h1>
-    <span class="sev ${S.fixed?'sev-ok':'sev-crit'}">${S.fixed?'Resolved':'Active'}</span>
-  </div>
-  <p class="dim" style="margin-bottom:20px">Paged at 03:14 IST · You are the responder</p>
-
-  <div class="steps">
-    <div class="step ${S.step===0?'active':S.step>0?'done':''}"><span class="step-n">${S.step>0?'✓':'1'}</span> Triage</div>
-    <div class="step ${S.step===1?'active':S.step>1?'done':''}"><span class="step-n">${S.step>1?'✓':'2'}</span> Root cause</div>
-    <div class="step ${S.step===2?'active':S.step>2?'done':''}"><span class="step-n">${S.step>2?'✓':'3'}</span> Fix</div>
-    <div class="step ${S.step===3?'active':S.step>3?'done':''}"><span class="step-n">${S.step>3?'✓':'4'}</span> RCA</div>
-  </div>
-
-  <div class="grid" style="grid-template-columns:1fr;gap:14px">
-    <div class="card">
-      <div class="card-h"><h2>📋 Impact</h2></div>
-      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
-        <div><h3 class="dim">Business</h3><p class="faint">~48% of login requests failing. Support tickets rising.</p></div>
-        <div><h3 class="dim">Customer</h3><p class="faint">Users intermittently can't sign in. Retry sometimes works (1 of 2 pods healthy).</p></div>
-        <div><h3 class="dim">Alert rule</h3><p class="faint mono">PodCrashLooping · restarts > 3 in 15m · severity: critical</p></div>
-      </div>
-    </div>
-
-    ${S.step===0 ? `
-    <div class="card">
-      <div class="card-h"><h2>🔍 Step 1 · Triage</h2><span class="faint">run at least 3 commands to gather evidence</span></div>
-      <div class="term">
-        <div class="term-bar">
-          <span class="tdot" style="background:#ef4444"></span><span class="tdot" style="background:#f59e0b"></span><span class="tdot" style="background:#10b981"></span>
-          <span class="term-title">gaurav@workstation — billfree-prod</span>
-        </div>
-        <div class="term-body" id="termBody">
-          <div class="term-line term-out">Connected to cluster <span class="term-ok">billfree-prod</span>. Investigate the alert.</div>
-        </div>
-        <div class="term-input-row">
-          <span class="term-prompt">$</span>
-          <input class="term-input" id="termIn" placeholder="type a kubectl command… (or click a hint below)" autocomplete="off" spellcheck="false">
-        </div>
-      </div>
-      <div class="hints">
-        ${Object.keys(CMDS).map(c=>`<span class="hint" data-cmd="${c}">${c}</span>`).join('')}
-      </div>
-    </div>` : ''}
-
-    ${S.step===1 ? `
-    <div class="card">
-      <div class="card-h"><h2>🧠 Step 2 · What is the root cause?</h2></div>
-      <p class="faint" style="margin-bottom:12px">Evidence: exit code <b class="mono">137</b> · <b class="mono">Reason: OOMKilled</b> · logs end with no error · memory <b class="mono">254Mi</b> against a <b class="mono">256Mi</b> limit.</p>
-      <div class="grid" id="choices">
-        <div class="choice" data-c="a"><span class="choice-k">A</span><div><b>Bad image / wrong tag</b><div class="faint">The container image is broken or missing.</div></div></div>
-        <div class="choice" data-c="b"><span class="choice-k">B</span><div><b>Memory limit too low — container OOMKilled</b><div class="faint">The kernel killed it for exceeding its 256Mi limit.</div></div></div>
-        <div class="choice" data-c="c"><span class="choice-k">C</span><div><b>Postgres is down</b><div class="faint">The service can't reach its database and exits.</div></div></div>
-        <div class="choice" data-c="d"><span class="choice-k">D</span><div><b>Liveness probe timeout too aggressive</b><div class="faint">kubelet is killing a healthy-but-slow container.</div></div></div>
-      </div>
-      <div id="rcFeedback" style="margin-top:14px"></div>
-    </div>` : ''}
-
-    ${S.step===2 ? `
-    <div class="card">
-      <div class="card-h"><h2>🔧 Step 3 · Ship the fix</h2></div>
-      <p class="faint" style="margin-bottom:12px">This cluster is <b>GitOps-managed</b> — you do not <span class="mono">kubectl edit</span> production. Change the values in Git; Argo CD syncs it.</p>
-      <div class="code">deploy/apps/auth-service/values.yaml
+  aliases:{
+    'kubectl get pods':'kubectl get pods -n billfree',
+    'kubectl top pod':'kubectl top pod -n billfree',
+    'kubectl get events -n billfree':'kubectl get events -n billfree --sort-by=.lastTimestamp',
+    'kubectl describe pod auth-service-5f8c7d9b4-9fm3l':'kubectl describe pod auth-service-5f8c7d9b4-9fm3l -n billfree',
+    'kubectl logs auth-service-5f8c7d9b4-9fm3l --previous':'kubectl logs auth-service-5f8c7d9b4-9fm3l -n billfree --previous',
+  },
+  evidence:'exit code <b class="mono">137</b> · <b class="mono">Reason: OOMKilled</b> · logs end with no error · memory <b class="mono">254Mi</b> against a <b class="mono">256Mi</b> limit',
+  choices:[
+    {k:'A',t:'Bad image / wrong tag',d:'The container image is broken or missing.',ok:false,
+     why:"The image pulled fine — you'd see ImagePullBackOff, not a running-then-killed container. The logs show it started successfully."},
+    {k:'B',t:'Memory limit too low — container OOMKilled',d:'The kernel killed it for exceeding its 256Mi limit.',ok:true},
+    {k:'C',t:'Postgres is down',d:"The service can't reach its database and exits.",ok:false,
+     why:'The logs show <b class="mono">"connected to postgres"</b> — the DB is reachable. postgres-0 is Running 1/1.'},
+    {k:'D',t:'Liveness probe timeout too aggressive',d:'kubelet is killing a healthy-but-slow container.',ok:false,
+     why:'A probe kill shows <b class="mono">Reason: Error</b> with probe-failure events as the cause. Here <b class="mono">Reason: OOMKilled</b> is explicit.'},
+  ],
+  correctTitle:'✓ Correct — OOMKilled',
+  correctBody:'Exit <b class="mono">137</b> = SIGKILL. Paired with <b class="mono">Reason: OOMKilled</b>, the kernel killed the container for breaching its 256Mi limit. The silent log is the giveaway: the app never errored — it was killed mid-breath. Memory at 254/256Mi confirms it.',
+  fixNote:'This cluster is <b>GitOps-managed</b> — you do not <span class="mono">kubectl edit</span> production. Change the values in Git; Argo CD syncs it.',
+  fixDiff:`deploy/apps/auth-service/values.yaml
 
  resources:
    requests:
@@ -614,18 +309,633 @@ incident: () => {
    limits:
      cpu: 500m
 <span class="del">-    memory: 256Mi</span>
-<span class="add">+    memory: 512Mi</span></div>
+<span class="add">+    memory: 512Mi</span>`,
+  shipLabel:'⬆ Commit &amp; push → Argo CD sync',
+  shipOut:`$ git commit -m "fix(auth): raise memory limit 256Mi → 512Mi (OOMKilled)"
+$ git push
+<span class="add">→ Argo CD  auth-service  OutOfSync → Syncing → Synced ✓</span>
+<span class="add">→ rolling update  maxUnavailable: 0  · zero downtime</span>
+<span class="add">→ auth-service-6c9d8f2a1-k4mzp   1/1   Running   0   18s</span>
+<span class="add">→ alert PodCrashLooping  RESOLVED</span>`,
+  shipNote:'Git stayed the source of truth, so the change is reviewed, audited, and reproducible.',
+  wrongLabel:'✎ kubectl edit deployment (hotfix)',
+  wrongTitle:'⚠ It works… for about 90 seconds',
+  wrongOut:`$ kubectl edit deployment auth-service -n billfree
+deployment.apps/auth-service edited
+<span class="del">→ Argo CD  auth-service  OutOfSync (manual change detected)</span>
+<span class="del">→ selfHeal: true  → reverting to Git state…</span>
+<span class="del">→ memory limit back to 256Mi · OOMKill returns</span>`,
+  wrongNote:'This cluster runs Argo CD with <b class="mono">selfHeal: true</b>. Git is the source of truth — anything you hand-patch gets reverted. <b>Fix it in Git.</b>',
+  rcaModel:`What happened: From 03:14–03:28 IST, ~48% of login requests failed. One of two auth-service pods was in CrashLoopBackOff (7 restarts).
+
+Root cause: auth-service memory grew to its 256Mi limit; the kernel OOMKilled the container (exit 137). It restarted, refilled memory, and was killed again — a loop. Not an application bug; a capacity misconfiguration.
+
+Detection: PodCrashLooping alert (restarts > 3 in 15m) paged on-call. Detected in 4m.
+
+Resolution: Raised the memory limit to 512Mi via deploy/apps/auth-service/values.yaml; Argo CD synced; rolling update restored both pods. MTTR 14m.
+
+Prevention:
+1. BILL-482 — profile the memory growth (suspected unbounded JWT cache). A limit bump is a bandage, not a cure.
+2. BILL-483 — alert at 90% of memory limit so we catch it BEFORE the OOMKill.
+3. Review requests/limits headroom across all services — auth ran at 99% of limit in steady state.`,
+  feedback:'"You followed the evidence instead of guessing — <b>describe → logs --previous → top</b> is exactly the order I want to see. You correctly read <span class="mono">exit 137</span> as an external kill rather than an app bug, and you shipped through Git instead of hot-patching prod.<br><br>Next level: raising the limit stopped the bleeding, but <b>you didn\'t answer <i>why</i> memory grew</b>. A Senior would open a follow-up ticket to profile the leak — a limit bump is a bandage, not a cure."',
+  tickets:[
+    ['P2','BILL-482','Profile auth-service memory growth — suspect JWT cache unbounded'],
+    ['P3','BILL-483','Add HighMemoryUtilization alert at 90% — catch it before OOM'],
+  ]
+},
+{
+  id:'INC-2904', sev:'critical', alert:'TargetDown', svc:'ticket-service',
+  title:'ticket-service ImagePullBackOff after deploy',
+  paged:'11:02 IST', mttr:'9m', skill:'Supply chain · CI → registry → Git',
+  teaches:'The image must exist in the registry BEFORE its tag lands in Git',
+  impact:{
+    business:'Ticket creation down. Field agents cannot log customer issues.',
+    customer:'"Create ticket" returns 503. Complete outage of the ticketing feature.',
+    rule:'TargetDown · up == 0 for 2m · severity: critical'
+  },
+  cmds:{
+    'kubectl get pods -n billfree':{id:'get',out:[
+      ['NAME                                READY   STATUS             RESTARTS   AGE','out'],
+      ['api-gateway-7d4b9c6f8-xk2pq         1/1     Running            0          6d','out'],
+      ['ticket-service-9c4f2a1b8-t7xkm      0/1     ImagePullBackOff   0          4m','hi'],
+      ['ticket-service-9c4f2a1b8-w3nlp      0/1     ImagePullBackOff   0          4m','hi'],
+      ['postgres-0                          1/1     Running            0          12d','out'],
+      ['','out'],
+      ['💡 Both new pods failing to pull. The old ReplicaSet was already scaled down.','hi'],
+    ]},
+    'kubectl describe pod ticket-service-9c4f2a1b8-t7xkm -n billfree':{id:'describe',out:[
+      ['Name:         ticket-service-9c4f2a1b8-t7xkm','out'],
+      ['Containers:','out'],['  ticket-service:','out'],
+      ['    Image:  ghcr.io/grvtech1/billfree-techops/ticket-service:9f3c1a8e2b','hi'],
+      ['    State:  Waiting','out'],
+      ['      Reason: ImagePullBackOff','warn'],
+      ['Events:','out'],
+      ['  Normal   Pulling  4m   kubelet  Pulling image "ghcr.io/.../ticket-service:9f3c1a8e2b"','out'],
+      ['  Warning  Failed   4m   kubelet  Failed to pull image: manifest unknown','hi'],
+      ['  Warning  Failed   4m   kubelet  Error: ErrImagePull','warn'],
+      ['  Warning  Failed   3m   kubelet  Error: ImagePullBackOff','warn'],
+      ['','out'],
+      ['💡 "manifest unknown" = the registry answered, but that TAG does not exist.','hi'],
+    ]},
+    'crane ls ghcr.io/grvtech1/billfree-techops/ticket-service':{id:'registry',out:[
+      ['48b3805d1ef943b0fc52fbcbdd5e172edb706f16','out'],
+      ['7a2e5c9d3f1b8a6e4c2d0b9f7e5a3c1d8b6f4e2a','out'],
+      ['latest','out'],
+      ['','out'],
+      ['💡 Tag 9f3c1a8e2b is NOT in the registry. It was never pushed.','hi'],
+    ]},
+    'gh run list --repo grvtech1/billfree-techops --limit 3':{id:'ci',out:[
+      ['STATUS   TITLE                          WORKFLOW   BRANCH  ID','out'],
+      ['X        fix(ticket): add SLA field     ci.yml     main    9f3c1a8e2b','hi'],
+      ['✓        chore: bump deps               ci.yml     main    7a2e5c9d3f','out'],
+      ['','out'],
+      ['💡 The CI run for 9f3c1a8e2b FAILED — but the image tag still reached Git.','hi'],
+    ]},
+    'kubectl get events -n billfree --sort-by=.lastTimestamp':{id:'events',out:[
+      ['LAST SEEN   TYPE      REASON   OBJECT                              MESSAGE','out'],
+      ['3m          Warning   Failed   pod/ticket-service-9c4f2a1b8-t7xkm  Error: ImagePullBackOff','warn'],
+      ['4m          Warning   Failed   pod/ticket-service-9c4f2a1b8-t7xkm  Failed to pull image: manifest unknown','hi'],
+      ['','out'],
+      ['💡 No OOM, no crash — the container never started at all.','hi'],
+    ]},
+  },
+  aliases:{
+    'kubectl get pods':'kubectl get pods -n billfree',
+    'kubectl describe pod ticket-service-9c4f2a1b8-t7xkm':'kubectl describe pod ticket-service-9c4f2a1b8-t7xkm -n billfree',
+    'kubectl get events -n billfree':'kubectl get events -n billfree --sort-by=.lastTimestamp',
+  },
+  evidence:'<b class="mono">manifest unknown</b> · <b class="mono">ImagePullBackOff</b> · tag <b class="mono">9f3c1a8e2b</b> missing from the registry · that CI run <b>failed</b>',
+  choices:[
+    {k:'A',t:'Registry auth / imagePullSecret expired',d:'The cluster can no longer authenticate to ghcr.io.',ok:false,
+     why:'An auth failure returns <b class="mono">unauthorized</b> or <b class="mono">denied</b>, and it would break <i>every</i> service. Here only ticket-service fails, and the error is <b class="mono">manifest unknown</b> — the registry answered us fine, it just has no such tag.'},
+    {k:'B',t:'The image tag never existed — CI failed at the push step, but the tag still landed in Git',d:'Git points at an image that was never published.',ok:true},
+    {k:'C',t:'Node disk is full — kubelet cannot unpack the image',d:'No space to store image layers.',ok:false,
+     why:'Disk pressure shows as <b class="mono">no space left on device</b> plus node <b class="mono">DiskPressure</b> taints and pod evictions. Nothing here says that, and other pods pull fine.'},
+    {k:'D',t:'NetworkPolicy is blocking egress to ghcr.io',d:'The cluster cannot reach the registry.',ok:false,
+     why:'A blocked network times out (<b class="mono">i/o timeout</b> / <b class="mono">connection refused</b>). We got a real HTTP answer — <b class="mono">manifest unknown</b> — so we reached the registry.'},
+  ],
+  correctTitle:'✓ Correct — the image was never pushed',
+  correctBody:'<b class="mono">manifest unknown</b> means the registry replied "that tag isn\'t here." The CI run for <b class="mono">9f3c1a8e2b</b> failed — but the tag was still committed to the config repo, so Argo CD dutifully deployed a pointer to nothing. <b>This is a broken pipeline contract:</b> the image must exist in the registry <i>before</i> its tag is allowed into Git.',
+  fixNote:'The cluster is fine — <b>Git is wrong.</b> Roll the tag back to the last known-good SHA and let Argo CD restore service. Then fix the pipeline so this cannot recur.',
+  fixDiff:`deploy/apps/ticket-service/values.yaml
+
+ image:
+   repository: ghcr.io/grvtech1/billfree-techops/ticket-service
+<span class="del">-  tag: "9f3c1a8e2b"          # ← image never pushed (CI failed)</span>
+<span class="add">+  tag: "48b3805d1ef943b0fc52fbcbdd5e172edb706f16"   # last known-good</span>`,
+  shipLabel:'⬆ git revert → push → Argo CD sync',
+  shipOut:`$ git revert a91f4c2 --no-edit
+$ git push
+<span class="add">→ Argo CD  ticket-service  OutOfSync → Syncing → Synced ✓</span>
+<span class="add">→ ticket-service-6b9d8c5f7-mn4rt   1/1   Running   0   22s</span>
+<span class="add">→ ticket-service-6b9d8c5f7-qp8vz   1/1   Running   0   19s</span>
+<span class="add">→ alert TargetDown  RESOLVED</span>`,
+  shipNote:'<b class="mono">git revert</b> (not <b class="mono">reset</b>) — it keeps history intact and is safe on a shared branch. Service restored in under a minute.',
+  wrongLabel:'🔄 kubectl delete pod (force a re-pull)',
+  wrongTitle:'⚠ Nothing changes — the tag still doesn\'t exist',
+  wrongOut:`$ kubectl delete pod ticket-service-9c4f2a1b8-t7xkm -n billfree
+pod "ticket-service-9c4f2a1b8-t7xkm" deleted
+<span class="del">→ ReplicaSet creates a replacement…</span>
+<span class="del">→ new pod pulls the SAME tag 9f3c1a8e2b</span>
+<span class="del">→ Failed to pull image: manifest unknown</span>
+<span class="del">→ ImagePullBackOff (again)</span>`,
+  wrongNote:'Restarting only helps when the failure is <i>transient</i>. A missing tag is <b>deterministic</b> — it will fail identically, forever. Fix the pointer, not the pod.',
+  rcaModel:`What happened: From 11:02–11:11 IST, ticket creation was fully down (503). Both ticket-service pods sat in ImagePullBackOff.
+
+Root cause: CI run 9f3c1a8e2b failed at the image-push step, but the workflow still committed that image tag to the config repo. Argo CD synced Git faithfully and deployed a tag that was never published — the registry returned "manifest unknown". Kubernetes behaved correctly; our pipeline lied to it.
+
+Detection: TargetDown alert (up == 0 for 2m) paged on-call. Detected in 2m.
+
+Resolution: git revert of the tag commit back to the last known-good SHA; Argo CD synced; both pods Running. MTTR 9m.
+
+Prevention:
+1. BILL-501 — make the tag-bump job depend on push success (needs: build-push) so a failed build can never update Git.
+2. BILL-502 — verify the manifest exists in the registry before committing the tag (crane manifest check in CI).
+3. BILL-503 — keep the previous ReplicaSet available during rollout so a bad tag cannot take all pods down at once.`,
+  feedback:'"Excellent read. You didn\'t stop at <span class="mono">ImagePullBackOff</span> — you asked <b>why</b> the pull failed and distinguished <span class="mono">manifest unknown</span> (tag missing) from an auth or network failure. That distinction is the whole incident.<br><br>Best part: you checked the <b>CI run</b>. Most engineers stay inside the cluster; you followed the chain back to where the lie originated. That\'s platform thinking.<br><br>Next level: you restored service — now make it structurally impossible. Git should never be able to reference an unpublished image."',
+  tickets:[
+    ['P1','BILL-501','Gate the tag-bump job on push success (needs: build-push)'],
+    ['P2','BILL-502','Verify manifest exists in registry before committing a tag'],
+    ['P3','BILL-503','Keep previous ReplicaSet available during rollout'],
+  ]
+},
+{
+  id:'INC-2915', sev:'critical', alert:'TargetDown', svc:'report-service',
+  title:'report-service up but serving nothing',
+  paged:'16:45 IST', mttr:'11m', skill:'Labels · selectors · endpoints',
+  teaches:'"Running" ≠ "receiving traffic" — the Service finds pods by LABELS',
+  impact:{
+    business:'All report generation failing. Month-end close blocked for finance.',
+    customer:'Reports page returns 503. Pods look perfectly healthy in the dashboard.',
+    rule:'TargetDown · up == 0 for 2m · severity: critical'
+  },
+  cmds:{
+    'kubectl get pods -n billfree':{id:'get',out:[
+      ['NAME                                READY   STATUS    RESTARTS   AGE','out'],
+      ['report-service-7f9c2d4a6-h5jkl      1/1     Running   0          8m','ok'],
+      ['report-service-7f9c2d4a6-r2mnb      1/1     Running   0          8m','ok'],
+      ['api-gateway-7d4b9c6f8-xk2pq         1/1     Running   0          6d','out'],
+      ['','out'],
+      ['💡 Pods look PERFECT. 1/1 Running, no restarts. Yet traffic is dying.','hi'],
+    ]},
+    'kubectl get svc,endpoints -n billfree':{id:'endpoints',out:[
+      ['NAME                        TYPE        CLUSTER-IP      PORT(S)','out'],
+      ['service/report-service      ClusterIP   10.96.142.87    80/TCP','out'],
+      ['service/api-gateway         ClusterIP   10.96.201.14    8080/TCP','out'],
+      ['','out'],
+      ['NAME                          ENDPOINTS','out'],
+      ['endpoints/report-service      <none>','hi'],
+      ['endpoints/api-gateway         10.244.1.7:8080,10.244.2.4:8080','out'],
+      ['','out'],
+      ['💡 report-service has ZERO endpoints. The Service is pointing at nothing.','hi'],
+    ]},
+    'kubectl describe svc report-service -n billfree':{id:'describe',out:[
+      ['Name:       report-service','out'],
+      ['Selector:   app.kubernetes.io/instance=report-service,app.kubernetes.io/name=report-service','hi'],
+      ['Type:       ClusterIP','out'],
+      ['IP:         10.96.142.87','out'],
+      ['Port:       http  80/TCP','out'],
+      ['Endpoints:  <none>','hi'],
+      ['','out'],
+      ['💡 The Service is LOOKING for name=report-service. Are the pods wearing that label?','hi'],
+    ]},
+    'kubectl get pods -n billfree --show-labels':{id:'labels',out:[
+      ['NAME                             READY   STATUS    LABELS','out'],
+      ['report-service-7f9c2d4a6-h5jkl   1/1     Running   app.kubernetes.io/instance=report-service,app.kubernetes.io/name=reports','hi'],
+      ['report-service-7f9c2d4a6-r2mnb   1/1     Running   app.kubernetes.io/instance=report-service,app.kubernetes.io/name=reports','hi'],
+      ['api-gateway-7d4b9c6f8-xk2pq      1/1     Running   app.kubernetes.io/instance=api-gateway,app.kubernetes.io/name=api-gateway','out'],
+      ['','out'],
+      ['💡 FOUND IT. Pods say name=reports. Service wants name=report-service. Mismatch.','hi'],
+    ]},
+    'git log --oneline -3 -- deploy/apps/report-service/values.yaml':{id:'git',out:[
+      ['c4e91a2 refactor: shorten nameOverride to "reports"','hi'],
+      ['a71b3f8 chore: bump image tag','out'],
+      ['9e2d5c1 feat: add report-service','out'],
+      ['','out'],
+      ['💡 A "harmless" rename 8 minutes ago changed the pod labels.','hi'],
+    ]},
+  },
+  aliases:{
+    'kubectl get pods':'kubectl get pods -n billfree',
+    'kubectl get endpoints -n billfree':'kubectl get svc,endpoints -n billfree',
+    'kubectl describe svc report-service':'kubectl describe svc report-service -n billfree',
+    'kubectl get pods --show-labels':'kubectl get pods -n billfree --show-labels',
+  },
+  evidence:'pods <b class="mono">1/1 Running</b> · Service endpoints <b class="mono">&lt;none&gt;</b> · selector wants <b class="mono">name=report-service</b> · pods wear <b class="mono">name=reports</b>',
+  choices:[
+    {k:'A',t:'Pods are crashing',d:'The containers keep restarting so traffic fails.',ok:false,
+     why:'They are <b class="mono">1/1 Running</b> with <b class="mono">0</b> restarts and have been up 8m. Nothing is crashing — that is exactly what makes this incident sneaky.'},
+    {k:'B',t:'Service selector no longer matches pod labels — endpoints are empty',d:'A rename changed the pod labels; the Service is looking for a label nobody wears.',ok:true},
+    {k:'C',t:'NetworkPolicy is blocking traffic to the pods',d:'A firewall rule dropped the packets.',ok:false,
+     why:'A NetworkPolicy blocks packets <i>after</i> routing — the Service would still list endpoints. Here <b class="mono">Endpoints: &lt;none&gt;</b>, so traffic has nowhere to be sent in the first place.'},
+    {k:'D',t:'Ingress is misconfigured',d:'The route to the Service is wrong.',ok:false,
+     why:'Ingress sits <i>in front of</i> the Service. Even a perfect Ingress cannot help a Service with zero endpoints — you would just move the 503 one hop upstream.'},
+  ],
+  correctTitle:'✓ Correct — selector/label mismatch',
+  correctBody:'A Service does not know about Deployments or pod names. It finds pods by <b>label selector</b> → builds an <b>EndpointSlice</b> of ready pod IPs. Someone shortened <b class="mono">nameOverride</b> to <b class="mono">reports</b>, which changed the pod labels — but the Service still selects <b class="mono">name=report-service</b>. Zero matches → zero endpoints → every request 503s, while the pods sit there perfectly healthy. <b>Labels are the glue. Break the glue and healthy pods become invisible.</b>',
+  fixNote:'Nothing is wrong with the pods or the Service individually — the <b>glue between them</b> is broken. Restore the name so labels and selector agree again.',
+  fixDiff:`deploy/apps/report-service/values.yaml
+
+<span class="del">-nameOverride: reports</span>
+<span class="add">+nameOverride: report-service</span>
+
+ image:
+   repository: ghcr.io/grvtech1/billfree-techops/report-service`,
+  shipLabel:'⬆ git revert → push → Argo CD sync',
+  shipOut:`$ git revert c4e91a2 --no-edit
+$ git push
+<span class="add">→ Argo CD  report-service  OutOfSync → Syncing → Synced ✓</span>
+<span class="add">→ pods re-created with label app.kubernetes.io/name=report-service</span>
+<span class="add">→ endpoints/report-service   10.244.1.9:8080,10.244.2.6:8080</span>
+<span class="add">→ alert TargetDown  RESOLVED</span>`,
+  shipNote:'Endpoints repopulated the instant the labels matched again. No pod was ever unhealthy.',
+  wrongLabel:'🔄 kubectl rollout restart deployment',
+  wrongTitle:'⚠ New pods, same wrong labels',
+  wrongOut:`$ kubectl rollout restart deployment report-service -n billfree
+deployment.apps/report-service restarted
+<span class="del">→ 2 new pods created… 1/1 Running</span>
+<span class="del">→ labels: app.kubernetes.io/name=reports   (unchanged — it comes from Git)</span>
+<span class="del">→ endpoints/report-service   &lt;none&gt;</span>
+<span class="del">→ still 503</span>`,
+  wrongNote:'Restarting recreates pods from the <i>same template</i> — the labels come from the chart values, so they come back identical. When the pods are healthy, restarting them is never the fix.',
+  rcaModel:`What happened: From 16:45–16:56 IST, report generation returned 503 for all users. Month-end close was blocked. Pods were 1/1 Running the entire time — nothing looked wrong on the dashboard.
+
+Root cause: A refactor commit shortened nameOverride from "report-service" to "reports". That value feeds the pod labels via the chart helpers, so pods were re-created with app.kubernetes.io/name=reports. The Service selector still targeted name=report-service, so it matched zero pods and its EndpointSlice went empty. Healthy pods, no route to them.
+
+Detection: TargetDown alert (up == 0 for 2m) — Prometheus scrapes through the Service, so empty endpoints look identical to "service is down". Detected in 2m.
+
+Resolution: git revert of the rename; Argo CD synced; pods re-created with matching labels; endpoints repopulated immediately. MTTR 11m.
+
+Prevention:
+1. BILL-517 — CI check: fail if any Service selector matches zero pods in the rendered manifests (helm template + selector diff).
+2. BILL-518 — treat nameOverride as an immutable field; document that it drives labels, not just display names.
+3. BILL-519 — add an alert on Service endpoints == 0, which names the failure precisely instead of the generic TargetDown.`,
+  feedback:'"This is the one that fools most engineers, and you didn\'t take the bait. The pods were green — the natural instinct is to restart them and hope. You went to <span class="mono">get endpoints</span> and found the truth in one command.<br><br><b>Running ≠ reachable.</b> You now understand that a Service is just a label query, and labels are the glue holding the whole cluster together. Then you traced it to the exact commit — that\'s root cause, not symptom.<br><br>Next level: your prevention idea (CI failing on a zero-match selector) is genuinely senior thinking. Build it."',
+  tickets:[
+    ['P1','BILL-517','CI check: fail build if a Service selector matches zero pods'],
+    ['P2','BILL-518','Document nameOverride as label-driving / effectively immutable'],
+    ['P3','BILL-519','Alert on Service endpoints == 0 (more precise than TargetDown)'],
+  ]
+},
+{
+  id:'INC-2938', sev:'critical', alert:'HighErrorRate', svc:'postgres',
+  title:'postgres-0 disk full — writes failing platform-wide',
+  paged:'02:38 IST', mttr:'23m', skill:'StatefulSet · PVC · storage',
+  teaches:'Stateful debugging — and why a single-replica DB is a SPOF',
+  impact:{
+    business:'All writes failing platform-wide. Revenue-affecting: no new tickets, no new users.',
+    customer:'Reads work, every save fails with 500. Data being lost at the edge.',
+    rule:'HighErrorRate · 5xx > 5% for 5m · severity: critical'
+  },
+  cmds:{
+    'kubectl get pods -n billfree':{id:'get',out:[
+      ['NAME                             READY   STATUS    RESTARTS   AGE','out'],
+      ['postgres-0                       1/1     Running   0          12d','warn'],
+      ['auth-service-5f8c7d9b4-p2wqz     1/1     Running   0          6d','out'],
+      ['ticket-service-6b9d8c5f7-mn4rt   1/1     Running   0          6d','out'],
+      ['','out'],
+      ['💡 Everything Running — including postgres. But 5xx is at 31%.','hi'],
+    ]},
+    'kubectl logs postgres-0 -n billfree --tail=20':{id:'logs',out:[
+      ['2026-07-16 02:36:11 UTC [1] LOG:  checkpoint starting: time','out'],
+      ['2026-07-16 02:37:44 UTC [412] ERROR:  could not extend file "base/16384/2601": No space left on device','hi'],
+      ['2026-07-16 02:37:44 UTC [412] HINT:  Check free disk space.','hi'],
+      ['2026-07-16 02:38:02 UTC [418] FATAL:  could not write to file "pg_wal/xlogtemp.418": No space left on device','hi'],
+      ['2026-07-16 02:38:09 UTC [1] LOG:  database system is shut down request ignored','warn'],
+      ['','out'],
+      ['💡 The database is UP but cannot WRITE. Reads succeed, writes 500.','hi'],
+    ]},
+    'kubectl exec postgres-0 -n billfree -- df -h /var/lib/postgresql/data':{id:'df',out:[
+      ['Filesystem      Size  Used Avail Use% Mounted on','out'],
+      ['/dev/nvme1n1    4.9G  4.9G     0 100% /var/lib/postgresql/data','hi'],
+      ['','out'],
+      ['💡 100% full. Zero bytes available. This is the whole incident.','hi'],
+    ]},
+    'kubectl get pvc -n billfree':{id:'pvc',out:[
+      ['NAME             STATUS   VOLUME       CAPACITY   ACCESS MODES   STORAGECLASS   AGE','out'],
+      ['data-postgres-0  Bound    pvc-8f2a...  5Gi        RWO            gp3            12d','hi'],
+      ['','out'],
+      ['💡 5Gi PVC — created by the StatefulSet volumeClaimTemplates 12 days ago.','hi'],
+    ]},
+    'kubectl get storageclass gp3 -o jsonpath="{.allowVolumeExpansion}"':{id:'sc',out:[
+      ['true','ok'],
+      ['','out'],
+      ['💡 allowVolumeExpansion: true → we can grow this PVC in place, no data loss.','hi'],
+    ]},
+  },
+  aliases:{
+    'kubectl get pods':'kubectl get pods -n billfree',
+    'kubectl logs postgres-0':'kubectl logs postgres-0 -n billfree --tail=20',
+    'kubectl exec postgres-0 -- df -h':'kubectl exec postgres-0 -n billfree -- df -h /var/lib/postgresql/data',
+    'kubectl get pvc':'kubectl get pvc -n billfree',
+  },
+  evidence:'<b class="mono">No space left on device</b> · disk <b class="mono">100%</b> (4.9G/4.9G) · PVC is <b class="mono">5Gi</b> · postgres is <b class="mono">Running</b> but cannot write',
+  choices:[
+    {k:'A',t:'Postgres crashed and needs a restart',d:'The database process died.',ok:false,
+     why:'postgres-0 is <b class="mono">1/1 Running</b> with 0 restarts and is still serving reads. It is alive — it simply cannot write a single byte.'},
+    {k:'B',t:'The 5Gi PVC is full — no space left on device',d:'The volume backing postgres has no free space, so every write fails.',ok:true},
+    {k:'C',t:'Network partition between services and postgres',d:'The services cannot reach the database.',ok:false,
+     why:'If the network were down you would see connection timeouts, and <i>reads</i> would fail too. Reads work fine — we are connected and getting real errors back from postgres.'},
+    {k:'D',t:'Connection pool exhausted — too many clients',d:'Postgres is refusing new connections.',ok:false,
+     why:'That raises <b class="mono">FATAL: sorry, too many clients already</b>. Our logs say <b class="mono">No space left on device</b> — an unambiguous disk error.'},
+  ],
+  correctTitle:'✓ Correct — the PVC is full',
+  correctBody:'Postgres is <i>running</i> but its 5Gi volume has zero free bytes, so every write — including the WAL — fails. That is why reads succeed and writes 500: a uniquely confusing signature that only makes sense once you look at the disk. <b>This is the StatefulSet reality:</b> pods are disposable, but that PVC is the one thing that is not. Deleting the pod changes nothing — the same full disk gets re-mounted.',
+  fixNote:'The StorageClass has <b class="mono">allowVolumeExpansion: true</b>, so we can grow the volume in place with no data loss. Note: <b class="mono">volumeClaimTemplates</b> in a StatefulSet is immutable — you patch the <b>PVC</b> directly, then update Git so the next re-create matches.',
+  fixDiff:`# 1) Expand the live PVC (immediate relief, no data loss)
+$ kubectl patch pvc data-postgres-0 -n billfree \\
+    -p '{"spec":{"resources":{"requests":{"storage":"20Gi"}}}}'
+
+# 2) Update Git so a future re-create matches reality
+deploy/platform/postgres.yaml
+
+   volumeClaimTemplates:
+     - metadata:
+         name: data
+       spec:
+         accessModes: ["ReadWriteOnce"]
+         resources:
+           requests:
+<span class="del">-            storage: 5Gi</span>
+<span class="add">+            storage: 20Gi</span>`,
+  shipLabel:'⬆ Patch PVC + commit to Git',
+  shipOut:`$ kubectl patch pvc data-postgres-0 -n billfree -p '{"spec":{"resources":{"requests":{"storage":"20Gi"}}}}'
+persistentvolumeclaim/data-postgres-0 patched
+<span class="add">→ Condition: FileSystemResizePending → Resizing → resized ✓</span>
+<span class="add">→ df -h  /var/lib/postgresql/data   20G  4.9G  15G  25%</span>
+<span class="add">→ postgres: checkpoint completed · WAL writing again</span>
+<span class="add">→ 5xx rate 31% → 0.2%</span>
+$ git commit -m "fix(platform): grow postgres PVC 5Gi → 20Gi (disk full)" &amp;&amp; git push
+<span class="add">→ Argo CD  platform  Synced ✓</span>
+<span class="add">→ alert HighErrorRate  RESOLVED</span>`,
+  shipNote:'Online expansion — no downtime, no data loss. Git updated so the cluster and the repo agree again (no drift).',
+  wrongLabel:'🔄 kubectl delete pod postgres-0',
+  wrongTitle:'⚠ Dangerous — and it fixes nothing',
+  wrongOut:`$ kubectl delete pod postgres-0 -n billfree
+pod "postgres-0" deleted
+<span class="del">→ StatefulSet re-creates postgres-0…</span>
+<span class="del">→ re-mounts the SAME PVC data-postgres-0 (that is the point of a StatefulSet)</span>
+<span class="del">→ df -h  →  4.9G  4.9G  0  100%</span>
+<span class="del">→ still: No space left on device</span>
+<span class="del">→ …and you just took the ONLY database replica down mid-incident</span>`,
+  wrongNote:'The pod was never the problem — the <b>volume</b> is. A StatefulSet deliberately re-attaches the same PVC to the same ordinal, so the full disk comes right back. Worse: with <b class="mono">replicas: 1</b> you just caused a hard outage on top of a soft one.',
+  rcaModel:`What happened: From 02:38–03:01 IST, every write across the platform failed with 500 (5xx peaked at 31%). Reads continued to work, which delayed diagnosis. postgres-0 was Running 1/1 the whole time.
+
+Root cause: The postgres PVC (5Gi, provisioned 12 days ago from the StatefulSet volumeClaimTemplates) reached 100% utilisation. Postgres could not extend its data files or write WAL — "No space left on device" — so all writes failed while reads served fine from existing pages. We had no alert on volume utilisation, so we learned about it from the customer-facing error rate instead.
+
+Detection: HighErrorRate alert (5xx > 5% for 5m). Detected in 5m — too slow. The disk had been filling for days with no warning.
+
+Resolution: Expanded the PVC in place to 20Gi (StorageClass gp3 has allowVolumeExpansion: true) — online, no data loss. Committed the new size to deploy/platform/postgres.yaml so Git matches the cluster. MTTR 23m.
+
+Prevention:
+1. BILL-534 — alert on kubelet_volume_stats_available_bytes < 20%. This should have paged us days ago, not at 100%.
+2. BILL-535 — postgres runs replicas: 1 with no automated backup verification. It is a single point of failure for the entire platform. Evaluate CloudNativePG (the chart comment already suggests it) or a managed RDS.
+3. BILL-536 — set a WAL retention/archive policy; unbounded WAL was a large share of the growth.
+4. BILL-537 — capacity review: 5Gi was chosen at bootstrap and never revisited against real growth.`,
+  feedback:'"Strong work under pressure at 2:38 AM. The reads-work/writes-fail signature confuses most people into hunting for an application bug — you went to the logs, saw <span class="mono">No space left on device</span>, and confirmed it with <span class="mono">df</span> inside the pod. Evidence, then action.<br><br>The best decision you made was the one you <b>didn\'t</b>: you didn\'t delete the pod. With <span class="mono">replicas: 1</span>, that would have turned a write outage into a total outage — and the PVC would have come back just as full.<br><br>Next level: this incident was <b>predictable</b>. A disk fills gradually — it should page us at 80%, not at 100% via customer 5xx. And it is time to have the honest conversation about a single-replica database holding the whole platform."',
+  tickets:[
+    ['P1','BILL-534','Alert on PVC utilisation > 80% (kubelet_volume_stats_available_bytes)'],
+    ['P1','BILL-535','postgres replicas:1 is a SPOF — evaluate CloudNativePG or managed RDS'],
+    ['P2','BILL-536','Set WAL retention / archive policy'],
+    ['P3','BILL-537','Capacity review — 5Gi never revisited since bootstrap'],
+  ]
+},
+];
+
+/* ==================== state ==================== */
+const KEY = 'billfree_platform_v2';
+const XP = {evidence:20, root:75, fix:75, rca:100};
+const ROLES = [
+  ['Junior DevOps Engineer',0],['DevOps Engineer',300],['Platform Engineer',650],
+  ['Senior Platform Engineer',1000],['Site Reliability Engineer',1300],['Principal Engineer',1400]
+];
+const MAXXP = 1400;
+let S = {screen:'dashboard', xp:0, done:[], active:null, step:0, ran:[], fixed:false, rcaDone:false};
+try{ const raw = localStorage.getItem(KEY); if(raw) S = Object.assign(S, JSON.parse(raw)); }catch(e){}
+const save = ()=>{ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} };
+const $ = s => document.querySelector(s);
+const el = h => { const d=document.createElement('div'); d.innerHTML=h.trim(); return d.firstElementChild; };
+const esc = s => String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const INC = id => INCIDENTS.find(i=>i.id===id);
+const cur = () => INC(S.active);
+const roleOf = xp => ROLES.filter(r=>xp>=r[1]).pop()[0];
+
+/* ==================== onboarding ==================== */
+const provItems = document.querySelectorAll('.prov-item');
+if(S.done.length || S.xp){       // returning user — skip the ceremony
+  $('#onboarding').classList.add('hidden'); $('#app').classList.remove('hidden');
+}else{
+  provItems.forEach((it,i)=> setTimeout(()=> it.classList.add('on'), 450+i*420));
+  setTimeout(()=>{ const b=$('#enterBtn'); b.disabled=false; b.textContent='Enter the platform →'; }, 450+provItems.length*420);
+}
+$('#enterBtn').onclick = ()=>{ $('#onboarding').classList.add('hidden'); $('#app').classList.remove('hidden'); render(); };
+
+/* ==================== chrome ==================== */
+$('#themeBtn').onclick = ()=>{ const r=document.documentElement; r.dataset.theme = r.dataset.theme==='dark'?'light':'dark'; };
+$('#resetBtn').onclick = ()=>{
+  if(!confirm('Reset all progress and start over as a new hire?')) return;
+  localStorage.removeItem(KEY); location.reload();
+};
+document.querySelectorAll('.nav-item').forEach(n=> n.onclick = ()=> go(n.dataset.screen));
+function go(screen){
+  S.screen = screen; save();
+  document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active', x.dataset.screen===screen));
+  render();
+}
+
+/* ==================== xp ==================== */
+function addXp(n){
+  S.xp = Math.min(MAXXP, S.xp+n); save();
+  toast(`+${n} XP`);
+  const f=$('#xpfill'); if(f) f.style.width=(S.xp/MAXXP*100)+'%';
+  const rl=$('#roleLabel'); if(rl) rl.textContent = roleOf(S.xp);
+}
+function toast(msg){
+  const t = el(`<div class="toast"><b>${msg}</b></div>`);
+  document.body.appendChild(t); setTimeout(()=>t.remove(),1800);
+}
+
+/* ==================== terminal ==================== */
+function runCmd(raw){
+  const body=$('#termBody'); if(!body) return;
+  const I=cur(); const t=raw.trim();
+  const cmd = I.aliases[t] || t;
+  body.appendChild(el(`<div class="term-line term-cmd">${esc(raw)}</div>`));
+  const hit = I.cmds[cmd];
+  if(hit){
+    hit.out.forEach(([txt,cls])=>{
+      const c = cls==='hi'?'term-hi':cls==='warn'?'term-warn':cls==='ok'?'term-ok':'term-out';
+      body.appendChild(el(`<div class="term-line ${c}">${esc(txt)||'&nbsp;'}</div>`));
+    });
+    if(!S.ran.includes(hit.id)){ S.ran.push(hit.id); save(); addXp(XP.evidence); }
+    document.querySelectorAll('.hint').forEach(h=>{
+      if((I.aliases[h.dataset.cmd]||h.dataset.cmd)===cmd) h.classList.add('done');
+    });
+    if(S.ran.length>=3 && S.step===0){ S.step=1; save(); setTimeout(render,700); }
+  } else if(cmd==='clear'){ body.innerHTML=''; }
+  else body.appendChild(el(`<div class="term-line term-warn">command not recognised in this simulation — try a hint below</div>`));
+  body.scrollTop = body.scrollHeight;
+}
+
+/* ==================== render ==================== */
+function render(){
+  const titles={dashboard:'Dashboard',queue:'Incidents',incident:'Incidents',runbook:'Runbooks',career:'Your Career',architecture:'Architecture'};
+  $('#crumb').innerHTML = S.screen==='incident' && cur()
+    ? `<b>Incidents</b> <span class="dim">/ ${cur().id}</span>` : `<b>${titles[S.screen]||'Dashboard'}</b>`;
+  const open = INCIDENTS.length - S.done.length;
+  const b=$('#incBadge');
+  if(open>0){ b.textContent=open; b.classList.remove('hidden'); } else b.classList.add('hidden');
+  $('#roleLabel').textContent = roleOf(S.xp);
+  const c=$('#content'); c.innerHTML='';
+  c.appendChild(el(`<div class="screen">${(VIEWS[S.screen]||VIEWS.dashboard)()}</div>`));
+  wire();
+}
+
+const SERVICES = [
+  {n:'api-gateway',rep:'2/2',mem:'118Mi',cpu:'62m'},
+  {n:'auth-service',rep:'2/2',mem:'171Mi',cpu:'41m'},
+  {n:'ticket-service',rep:'2/2',mem:'104Mi',cpu:'38m'},
+  {n:'analytics-service',rep:'2/2',mem:'131Mi',cpu:'55m'},
+  {n:'calllog-service',rep:'2/2',mem:'99Mi',cpu:'27m'},
+  {n:'report-service',rep:'2/2',mem:'112Mi',cpu:'33m'},
+  {n:'web',rep:'2/2',mem:'87Mi',cpu:'19m'},
+  {n:'postgres',rep:'1/1',mem:'201Mi',cpu:'88m'},
+];
+
+const VIEWS = {
+/* ---------- DASHBOARD ---------- */
+dashboard: ()=>{
+  const open = INCIDENTS.filter(i=>!S.done.includes(i.id));
+  const bad = new Set(open.map(i=>i.svc));
+  const allClear = open.length===0;
+  return `
+  <h1>Good morning, Gaurav 👋</h1>
+  <p class="dim" style="margin-bottom:20px">Here's what's happening in <span class="mono">billfree-prod</span> right now.</p>
+  ${allClear ? `
+  <div class="alert-banner" style="margin-bottom:20px;border-color:rgba(16,185,129,.4);background:linear-gradient(90deg,rgba(16,185,129,.1),transparent 60%)">
+    <div class="alert-icon" style="animation:none">✅</div>
+    <div style="flex:1"><b>All systems operational</b><div class="dim" style="font-size:12.5px">${INCIDENTS.length} incidents resolved · you cleared the queue</div></div>
+    <button class="btn btn-primary" data-go="career">See your progression →</button>
+  </div>` : `
+  <div class="alert-banner" style="margin-bottom:20px">
+    <div class="alert-icon">🚨</div>
+    <div style="flex:1">
+      <div class="row" style="gap:8px"><span class="sev sev-crit">${open.length} active</span><b>${open[0].alert}</b><span class="faint">· ${open[0].svc}</span></div>
+      <div class="dim" style="font-size:12.5px;margin-top:3px">${open[0].impact.business} You are on-call.</div>
+    </div>
+    <button class="btn btn-primary" data-inc="${open[0].id}">Investigate →</button>
+  </div>`}
+  <div class="tiles" style="margin-bottom:20px">
+    <div class="tile"><div class="tile-l">Requests / sec</div><div class="tile-v">1,284</div><div class="tile-d good">▲ 3.2% vs 1h</div></div>
+    <div class="tile"><div class="tile-l">Error rate</div><div class="tile-v" style="color:${allClear?'var(--green)':'var(--red)'}">${allClear?'0.14%':'4.8%'}</div><div class="tile-d ${allClear?'good':'up'}">${allClear?'▼ within SLO':'▲ SLO breach'}</div></div>
+    <div class="tile"><div class="tile-l">p95 latency</div><div class="tile-v">${allClear?'214ms':'890ms'}</div><div class="tile-d ${allClear?'good':'up'}">${allClear?'▼ healthy':'▲ degraded'}</div></div>
+    <div class="tile"><div class="tile-l">Incidents open</div><div class="tile-v">${open.length}</div><div class="tile-d ${allClear?'good':'up'}">${S.done.length} resolved</div></div>
+  </div>
+  <div class="card-h"><h2>Services</h2><span class="faint">namespace: billfree</span></div>
+  <div class="svc-grid">
+    ${SERVICES.map(s=>{
+      const b = bad.has(s.n);
+      return `<div class="svc ${b?'bad':''}">
+        <div class="svc-top"><span class="svc-name">${s.n}</span><span class="dot ${b?'bad':'ok'}"></span></div>
+        <div class="svc-meta"><span><b>${b?'1/2':s.rep}</b> ready</span><span><b>${s.mem}</b></span><span><b>${s.cpu}</b></span></div>
+      </div>`;
+    }).join('')}
+  </div>`;
+},
+
+/* ---------- QUEUE ---------- */
+queue: ()=>`
+  <h1>Incident queue</h1>
+  <p class="dim" style="margin-bottom:20px">You are on-call for <span class="mono">billfree-prod</span>. Each incident teaches a different diagnostic skill.</p>
+  <div class="grid">
+    ${INCIDENTS.map(i=>{
+      const done = S.done.includes(i.id);
+      return `<div class="inc-row ${done?'done':''}" data-inc="${i.id}">
+        <span class="sev ${done?'sev-ok':'sev-crit'}">${done?'Resolved':i.sev}</span>
+        <div style="flex:1;min-width:180px">
+          <div class="row" style="gap:8px"><b style="font-size:13px">${i.title}</b><span class="mono faint">${i.id}</span></div>
+          <div class="faint" style="margin-top:2px">${i.alert} · ${i.svc} · paged ${i.paged}</div>
+        </div>
+        <div style="text-align:right;min-width:150px">
+          <div class="faint" style="font-size:11px">${i.skill}</div>
+          <div class="faint" style="font-size:10.5px;opacity:.75">${done?'✓ MTTR '+i.mttr:'unresolved'}</div>
+        </div>
+      </div>`;
+    }).join('')}
+  </div>
+  <div class="card" style="margin-top:18px">
+    <div class="card-h"><h2>🎓 What each one teaches</h2></div>
+    <div class="grid" style="gap:8px">
+      ${INCIDENTS.map(i=>`<div class="row" style="gap:9px"><span class="mono faint" style="min-width:74px;font-size:11px">${i.id}</span><span class="dim" style="font-size:12.5px">${i.teaches}</span></div>`).join('')}
+    </div>
+  </div>`,
+
+/* ---------- INCIDENT ---------- */
+incident: ()=>{
+  const I = cur(); if(!I) return VIEWS.queue();
+  if(S.rcaDone) return VIEWS.review();
+  return `
+  <div class="row" style="justify-content:space-between;margin-bottom:6px">
+    <h1>${I.id} · ${I.title}</h1>
+    <span class="sev ${S.fixed?'sev-ok':'sev-crit'}">${S.fixed?'Mitigated':'Active'}</span>
+  </div>
+  <p class="dim" style="margin-bottom:20px">Paged at ${I.paged} · You are the responder · alert: <span class="mono">${I.alert}</span></p>
+  <div class="steps">
+    <div class="step ${S.step===0?'active':S.step>0?'done':''}"><span class="step-n">${S.step>0?'✓':'1'}</span> Triage</div>
+    <div class="step ${S.step===1?'active':S.step>1?'done':''}"><span class="step-n">${S.step>1?'✓':'2'}</span> Root cause</div>
+    <div class="step ${S.step===2?'active':S.step>2?'done':''}"><span class="step-n">${S.step>2?'✓':'3'}</span> Fix</div>
+    <div class="step ${S.step===3?'active':S.step>3?'done':''}"><span class="step-n">${S.step>3?'✓':'4'}</span> RCA</div>
+  </div>
+  <div class="grid" style="grid-template-columns:1fr;gap:14px">
+    <div class="card">
+      <div class="card-h"><h2>📋 Impact</h2></div>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(200px,1fr))">
+        <div><h3 class="dim">Business</h3><p class="faint">${I.impact.business}</p></div>
+        <div><h3 class="dim">Customer</h3><p class="faint">${I.impact.customer}</p></div>
+        <div><h3 class="dim">Alert rule</h3><p class="faint mono">${I.impact.rule}</p></div>
+      </div>
+    </div>
+    ${S.step===0?`
+    <div class="card">
+      <div class="card-h"><h2>🔍 Step 1 · Triage</h2><span class="faint">gather evidence — 3 commands minimum</span></div>
+      <div class="term">
+        <div class="term-bar">
+          <span class="tdot" style="background:#ef4444"></span><span class="tdot" style="background:#f59e0b"></span><span class="tdot" style="background:#10b981"></span>
+          <span class="term-title">gaurav@workstation — billfree-prod</span>
+        </div>
+        <div class="term-body" id="termBody">
+          <div class="term-line term-out">Connected to <span class="term-ok">billfree-prod</span>. Alert <span class="term-warn">${I.alert}</span> firing on <span class="term-warn">${I.svc}</span>. Investigate.</div>
+        </div>
+        <div class="term-input-row"><span class="term-prompt">$</span>
+          <input class="term-input" id="termIn" placeholder="type a command… (or click a hint below)" autocomplete="off" spellcheck="false"></div>
+      </div>
+      <div class="hints">${Object.keys(I.cmds).map(c=>`<span class="hint" data-cmd="${esc(c)}">${esc(c)}</span>`).join('')}</div>
+    </div>`:''}
+    ${S.step===1?`
+    <div class="card">
+      <div class="card-h"><h2>🧠 Step 2 · What is the root cause?</h2></div>
+      <p class="faint" style="margin-bottom:12px">Evidence: ${I.evidence}.</p>
+      <div class="grid" id="choices">
+        ${I.choices.map(c=>`<div class="choice" data-k="${c.k}"><span class="choice-k">${c.k}</span><div><b>${c.t}</b><div class="faint">${c.d}</div></div></div>`).join('')}
+      </div>
+      <div id="rcFeedback" style="margin-top:14px"></div>
+    </div>`:''}
+    ${S.step===2?`
+    <div class="card">
+      <div class="card-h"><h2>🔧 Step 3 · Ship the fix</h2></div>
+      <p class="faint" style="margin-bottom:12px">${I.fixNote}</p>
+      <div class="code">${I.fixDiff}</div>
       <div class="row" style="margin-top:14px">
-        <button class="btn btn-primary" id="shipBtn">⬆ Commit &amp; push → Argo CD sync</button>
-        <button class="btn btn-ghost" id="editBtn">✎ kubectl edit deployment (hotfix)</button>
+        <button class="btn btn-primary" id="shipBtn">${I.shipLabel}</button>
+        <button class="btn btn-ghost" id="wrongBtn">${I.wrongLabel}</button>
       </div>
       <div id="fixFeedback" style="margin-top:14px"></div>
-    </div>` : ''}
-
-    ${S.step===3 ? `
+    </div>`:''}
+    ${S.step===3?`
     <div class="card">
       <div class="card-h"><h2>📝 Step 4 · Write the RCA</h2><span class="faint">blameless · what broke, why, how we prevent it</span></div>
-      <p class="faint" style="margin-bottom:10px">Every Sev-1 needs a postmortem within 48h. Fill the summary — this goes to the whole engineering org.</p>
+      <p class="faint" style="margin-bottom:10px">Every Sev-1 needs a postmortem within 48h. This goes to the whole engineering org.</p>
       <textarea id="rcaText" rows="7" placeholder="What happened:
 Root cause:
 Detection (how did we find out):
@@ -635,49 +945,51 @@ Prevention (so it never repeats):"></textarea>
         <button class="btn btn-primary" id="rcaBtn">Publish postmortem</button>
         <button class="btn btn-ghost" id="rcaFill">✨ Show a model answer</button>
       </div>
-    </div>` : ''}
+    </div>`:''}
   </div>`;
 },
 
 /* ---------- REVIEW ---------- */
-review: () => `
-  <h1>✅ INC-2891 resolved</h1>
-  <p class="dim" style="margin-bottom:20px">Nice work. Here's your incident scorecard.</p>
+review: ()=>{
+  const I = cur();
+  const left = INCIDENTS.filter(i=>!S.done.includes(i.id));
+  return `
+  <h1>✅ ${I.id} resolved</h1>
+  <p class="dim" style="margin-bottom:20px">${I.title} · here's your scorecard.</p>
   <div class="tiles" style="margin-bottom:20px">
-    <div class="tile"><div class="tile-l">MTTR</div><div class="tile-v">14m</div><div class="tile-d good">▼ under 30m target</div></div>
-    <div class="tile"><div class="tile-l">Evidence gathered</div><div class="tile-v">${S.ran.size}/5</div><div class="tile-d good">commands run</div></div>
-    <div class="tile"><div class="tile-l">Root cause</div><div class="tile-v" style="font-size:15px">Correct</div><div class="tile-d good">OOMKilled</div></div>
-    <div class="tile"><div class="tile-l">XP earned</div><div class="tile-v">${S.xp}</div><div class="tile-d good">this incident</div></div>
+    <div class="tile"><div class="tile-l">MTTR</div><div class="tile-v">${I.mttr}</div><div class="tile-d good">▼ under 30m target</div></div>
+    <div class="tile"><div class="tile-l">Evidence</div><div class="tile-v">${S.ran.length}/${Object.keys(I.cmds).length}</div><div class="tile-d good">commands run</div></div>
+    <div class="tile"><div class="tile-l">Root cause</div><div class="tile-v" style="font-size:15px">Correct</div><div class="tile-d good">${I.skill}</div></div>
+    <div class="tile"><div class="tile-l">Total XP</div><div class="tile-v">${S.xp}</div><div class="tile-d good">${roleOf(S.xp)}</div></div>
   </div>
   <div class="card" style="margin-bottom:14px">
     <div class="card-h"><h2>👔 Manager feedback</h2></div>
-    <p class="dim" style="font-size:13px">"You followed the evidence instead of guessing — <b>describe → logs --previous → top</b> is exactly the order I want to see. You correctly read <span class="mono">exit 137</span> as an external kill rather than an app bug, and you shipped through Git instead of hot-patching prod.
-    <br><br>Next level: raising the limit stopped the bleeding, but <b>you didn't answer <i>why</i> memory grew</b>. A Senior would open a follow-up ticket to profile the leak — a limit bump is a bandage, not a cure."</p>
+    <p class="dim" style="font-size:13px">${I.feedback}</p>
   </div>
   <div class="card">
     <div class="card-h"><h2>🎯 Follow-up tickets created</h2></div>
     <div class="grid">
-      <div class="row" style="gap:9px"><span class="sev sev-warn">P2</span><span class="mono" style="font-size:12px">BILL-482</span><span class="dim" style="font-size:12.5px">Profile auth-service memory growth — suspect JWT cache unbounded</span></div>
-      <div class="row" style="gap:9px"><span class="sev sev-warn">P3</span><span class="mono" style="font-size:12px">BILL-483</span><span class="dim" style="font-size:12.5px">Add HighMemoryUtilization alert at 90% — catch it before OOM</span></div>
+      ${I.tickets.map(([p,id,t])=>`<div class="row" style="gap:9px"><span class="sev ${p==='P1'?'sev-crit':'sev-warn'}">${p}</span><span class="mono" style="font-size:12px">${id}</span><span class="dim" style="font-size:12.5px">${t}</span></div>`).join('')}
     </div>
   </div>
   <div class="row" style="margin-top:18px">
-    <button class="btn btn-primary" data-go="career">See your progression →</button>
-  </div>`,
+    ${left.length?`<button class="btn btn-primary" data-inc="${left[0].id}">Next incident: ${left[0].title} →</button>
+    <button class="btn btn-ghost" data-go="queue">Back to queue</button>`
+    :`<button class="btn btn-primary" data-go="career">🎉 Queue cleared — see your progression →</button>`}
+  </div>`;
+},
 
 /* ---------- CAREER ---------- */
-career: () => {
-  const pct = Math.round(S.xp/XP_MAX*100);
-  const roles = [
-    ['Intern','done'],['Junior DevOps Engineer','done'],['DevOps Engineer','current'],
-    ['Platform Engineer','next'],['Senior Platform Engineer','lock'],['SRE','lock'],['Principal Engineer','lock']
-  ];
+career: ()=>{
+  const pct = Math.round(S.xp/MAXXP*100);
+  const role = roleOf(S.xp);
+  const next = ROLES.find(r=>r[1]>S.xp);
   return `
   <h1>Your career at BillFree Labs</h1>
-  <p class="dim" style="margin-bottom:20px">Progression is earned through shipped work and handled incidents — not chapters read.</p>
+  <p class="dim" style="margin-bottom:20px">Progression is earned through handled incidents — not chapters read.</p>
   <div class="card" style="margin-bottom:16px">
     <div class="row" style="justify-content:space-between">
-      <div><h2>DevOps Engineer</h2><div class="faint">Level 3 · ${S.xp} / ${XP_MAX} XP to Platform Engineer</div></div>
+      <div><h2>${role}</h2><div class="faint">${S.xp} / ${MAXXP} XP${next?` · ${next[1]-S.xp} XP to ${next[0]}`:' · max level'}</div></div>
       <span class="chip">${pct}%</span>
     </div>
     <div class="xpbar"><div class="xpfill" id="xpfill" style="width:${pct}%"></div></div>
@@ -686,52 +998,76 @@ career: () => {
     <div class="card">
       <div class="card-h"><h2>🪜 Ladder</h2></div>
       <div class="grid" style="gap:7px">
-        ${roles.map(([r,st])=>`
-          <div class="row" style="gap:9px">
-            <span style="width:16px">${st==='done'?'✅':st==='current'?'🔵':st==='next'?'⭕':'🔒'}</span>
-            <span style="font-size:12.5px;${st==='current'?'font-weight:700':st==='lock'?'opacity:.45':''}">${r}</span>
-            ${st==='current'?'<span class="chip" style="margin-left:auto">you</span>':''}
-          </div>`).join('')}
+        ${ROLES.map(([r,x])=>{
+          const has = S.xp>=x, isCur = r===role;
+          return `<div class="row" style="gap:9px">
+            <span style="width:16px">${isCur?'🔵':has?'✅':'🔒'}</span>
+            <span style="font-size:12.5px;${isCur?'font-weight:700':!has?'opacity:.45':''}">${r}</span>
+            <span class="faint" style="margin-left:auto;font-size:10.5px">${x} XP</span>
+          </div>`;
+        }).join('')}
       </div>
     </div>
     <div class="card">
-      <div class="card-h"><h2>🎖️ Unlocked by promotion</h2></div>
+      <div class="card-h"><h2>📊 Incidents handled</h2></div>
       <div class="grid" style="gap:7px">
-        <div class="faint">→ Multi-region infrastructure</div>
-        <div class="faint">→ Terraform apply on prod (no approval)</div>
-        <div class="faint">→ Architecture review authority</div>
-        <div class="faint">→ Sev-1 incident command</div>
-        <div class="faint">→ Chaos engineering game-days</div>
+        ${INCIDENTS.map(i=>`<div class="row" style="gap:9px">
+          <span style="width:16px">${S.done.includes(i.id)?'✅':'⭕'}</span>
+          <span style="font-size:12.5px;${!S.done.includes(i.id)?'opacity:.5':''}">${i.id} · ${i.skill}</span>
+        </div>`).join('')}
       </div>
     </div>
-  </div>`;
+  </div>
+  ${S.done.length===INCIDENTS.length?`
+  <div class="card" style="margin-top:14px;border-color:var(--green);background:rgba(16,185,129,.06)">
+    <div class="card-h"><h2 style="color:var(--green)">🎉 Promotion — Principal Engineer</h2></div>
+    <p class="dim" style="font-size:13px">You handled every incident in the queue: resource limits, supply chain, label/selector glue, and stateful storage. More importantly, you shipped through Git every time and wrote prevention into each RCA.<br><br><b>Unlocked:</b> multi-region infrastructure · Terraform apply on prod · architecture review authority · Sev-1 incident command · chaos game-days.</p>
+  </div>`:''}`;
 },
 
 /* ---------- RUNBOOK ---------- */
-runbook: () => `
+runbook: ()=>`
   <h1>Runbooks</h1>
   <p class="dim" style="margin-bottom:20px">What every on-call engineer reaches for at 3 AM.</p>
   <div class="card" style="margin-bottom:14px">
-    <div class="card-h"><h2>🔥 CrashLoopBackOff</h2><span class="sev sev-crit">Sev-1</span></div>
-    <div class="code">1. kubectl get pods -n &lt;ns&gt;                     → confirm + restart count
-2. kubectl describe pod &lt;pod&gt;                  → Last State + Reason + Exit Code
+    <div class="card-h"><h2>🧭 The universal triage order</h2></div>
+    <div class="code">1. kubectl get pods -n &lt;ns&gt;                     → what state, how many restarts
+2. kubectl describe pod &lt;pod&gt;                  → Last State + Reason + Exit Code + Events
 3. kubectl logs &lt;pod&gt; --previous               → the crashed run's logs
-4. kubectl get events --sort-by=.lastTimestamp → cluster-side story
-5. kubectl top pod                             → resource pressure
-
-<span class="k">Exit code decoder</span>
-  137 → SIGKILL  · OOMKilled or liveness kill  (check Reason)
-  143 → SIGTERM  · graceful shutdown
-  1   → app error · read the logs
-  0   → clean exit · wrong restartPolicy?</div>
+4. kubectl get svc,endpoints                   → is anything actually routed there?
+5. kubectl get events --sort-by=.lastTimestamp → cluster-side story
+6. kubectl top pod                             → resource pressure</div>
+  </div>
+  <div class="card" style="margin-bottom:14px">
+    <div class="card-h"><h2>🔢 Exit code decoder</h2></div>
+    <div class="code"><span class="k">137</span> → SIGKILL  · OOMKilled or liveness kill  (check Reason)
+<span class="k">143</span> → SIGTERM  · graceful shutdown
+<span class="k">1</span>   → app error · read the logs
+<span class="k">0</span>   → clean exit · wrong restartPolicy?</div>
+  </div>
+  <div class="card" style="margin-bottom:14px">
+    <div class="card-h"><h2>🔍 Symptom → first move</h2></div>
+    <div class="code"><span class="k">CrashLoopBackOff</span>    describe → Last State/Reason → logs --previous
+<span class="k">ImagePullBackOff</span>    describe → the exact pull error:
+                      manifest unknown → tag doesn't exist (check CI!)
+                      unauthorized     → imagePullSecret
+                      i/o timeout      → network/egress
+<span class="k">Running but 503</span>     get endpoints → if &lt;none&gt;, it's LABELS
+<span class="k">Reads ok, writes 500</span> logs → "No space left on device" → df -h in the pod
+<span class="k">Pending</span>             describe → scheduling (resources / taints / PVC)</div>
   </div>
   <div class="card">
-    <div class="card-h"><h2>🧠 The rule that saves you</h2></div>
-    <p class="dim" style="font-size:13px">Logs end with <b>no error</b> = the app didn't kill itself — <b>something external did</b>. That's your OOM / probe-kill signal. An app that crashes itself leaves a stack trace; an app that gets killed leaves silence.</p>
+    <div class="card-h"><h2>🧠 Four rules that save you</h2></div>
+    <div class="grid" style="gap:10px">
+      <p class="dim" style="font-size:13px"><b>1. Silent logs = external kill.</b> An app that crashes itself leaves a stack trace; an app that gets killed leaves silence. That's your OOM/probe signal.</p>
+      <p class="dim" style="font-size:13px"><b>2. Running ≠ reachable.</b> Healthy pods with zero endpoints serve nothing. Labels are the glue.</p>
+      <p class="dim" style="font-size:13px"><b>3. Restarting only fixes transient failures.</b> Missing tags, wrong labels, and full disks are deterministic — they come back identical.</p>
+      <p class="dim" style="font-size:13px"><b>4. In GitOps, fix Git.</b> <span class="mono">kubectl edit</span> gets reverted by <span class="mono">selfHeal</span>. If the cluster is wrong, the repo is wrong.</p>
+    </div>
   </div>`,
 
 /* ---------- ARCHITECTURE ---------- */
-architecture: () => `
+architecture: ()=>`
   <h1>Architecture</h1>
   <p class="dim" style="margin-bottom:20px">billfree-prod · what you're on-call for.</p>
   <div class="card">
@@ -740,7 +1076,6 @@ architecture: () => `
                     ┌───────▼────────┐
                     │  ingress-nginx │
                     └───────┬────────┘
-                            │
                     ┌───────▼────────┐
                     │  api-gateway   │  ← rate-limit, CORS, JWT verify
                     └───┬────┬───┬───┘
@@ -753,109 +1088,86 @@ architecture: () => `
                        │ postgres-0 │  ← StatefulSet + PVC 5Gi (self-managed)
                        └────────────┘
 
-  <span class="k">Deploy path</span>   git push → CI (test·build·scan) → image tag in Git → Argo CD sync → rolling update
+  <span class="k">Deploy path</span>    git push → CI (test·build·scan) → image tag in Git → Argo CD sync → rolling update
   <span class="k">Observability</span>  ServiceMonitor → Prometheus → 6 alert rules → Alertmanager → #platform-oncall
   <span class="k">Failure points</span> postgres-0 is a single replica · auth memory limit 256Mi · HPA ceiling 8</div>
+  </div>
+  <div class="card" style="margin-top:14px">
+    <div class="card-h"><h2>⚠️ Known risks (each one has bitten us)</h2></div>
+    <div class="grid" style="gap:8px">
+      <div class="row" style="gap:9px"><span class="sev sev-crit">SPOF</span><span class="dim" style="font-size:12.5px">postgres runs <span class="mono">replicas: 1</span> — the whole platform depends on one pod and one PVC</span></div>
+      <div class="row" style="gap:9px"><span class="sev sev-warn">Capacity</span><span class="dim" style="font-size:12.5px">Several services run near their memory limit in steady state</span></div>
+      <div class="row" style="gap:9px"><span class="sev sev-warn">Pipeline</span><span class="dim" style="font-size:12.5px">CI can commit an image tag even when the push step failed</span></div>
+    </div>
   </div>`
 };
 
-/* ================= wiring ================= */
+/* ==================== wiring ==================== */
 function wire(){
-  document.querySelectorAll('[data-go]').forEach(b=> b.onclick = ()=>{
-    S.screen = b.dataset.go;
-    document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active', x.dataset.screen===S.screen));
+  document.querySelectorAll('[data-go]').forEach(b=> b.onclick = ()=> go(b.dataset.go));
+  document.querySelectorAll('[data-inc]').forEach(b=> b.onclick = ()=>{
+    const id = b.dataset.inc;
+    if(S.done.includes(id)){ toast('Already resolved — reset to replay'); return; }
+    S.active=id; S.step=0; S.ran=[]; S.fixed=false; S.rcaDone=false; S.screen='incident'; save();
+    document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active', x.dataset.screen==='queue'));
     render();
   });
 
-  const inp = $('#termIn');
-  if(inp){
-    inp.focus();
-    inp.onkeydown = e => { if(e.key==='Enter' && inp.value.trim()){ runCmd(inp.value); inp.value=''; } };
-  }
+  const inp=$('#termIn');
+  if(inp){ inp.focus(); inp.onkeydown = e=>{ if(e.key==='Enter'&&inp.value.trim()){ runCmd(inp.value); inp.value=''; } }; }
   document.querySelectorAll('.hint').forEach(h=> h.onclick = ()=> runCmd(h.dataset.cmd));
 
   document.querySelectorAll('.choice').forEach(ch=> ch.onclick = ()=>{
-    const ok = ch.dataset.c === 'b';
+    const I=cur(); const c=I.choices.find(x=>x.k===ch.dataset.k);
     document.querySelectorAll('.choice').forEach(x=>x.classList.add('disabled'));
-    ch.classList.add(ok?'correct':'wrong');
-    if(ok){
-      document.querySelector('[data-c="b"]').classList.add('correct');
-      S.rootCause='oom'; addXp(100);
+    ch.classList.add(c.ok?'correct':'wrong');
+    if(c.ok){
+      addXp(XP.root);
       $('#rcFeedback').innerHTML = `<div class="card" style="border-color:var(--green);background:rgba(16,185,129,.06)">
-        <b style="color:var(--green)">✓ Correct — OOMKilled</b>
-        <p class="dim" style="font-size:12.5px;margin-top:6px">Exit <b class="mono">137</b> = SIGKILL. Paired with <b class="mono">Reason: OOMKilled</b>, the kernel killed the container for breaching its 256Mi limit. The silent log is the giveaway: the app never errored — it was killed mid-breath. Memory at 254/256Mi confirms it.</p>
-        <button class="btn btn-primary" style="margin-top:12px" id="toFix">Ship the fix →</button>
-      </div>`;
-      $('#toFix').onclick = ()=>{ S.step=2; render(); };
+        <b style="color:var(--green)">${I.correctTitle}</b>
+        <p class="dim" style="font-size:12.5px;margin-top:6px">${I.correctBody}</p>
+        <button class="btn btn-primary" style="margin-top:12px" id="toFix">Ship the fix →</button></div>`;
+      $('#toFix').onclick = ()=>{ S.step=2; save(); render(); };
     } else {
-      const why = {
-        a:'The image pulled fine — you\'d see ImagePullBackOff, not a running-then-killed container. And the logs show it started successfully.',
-        c:'The logs show <b class="mono">"connected to postgres"</b> — the DB is reachable. postgres-0 is Running 1/1.',
-        d:'A probe kill shows <b class="mono">Reason: Error</b> with probe-failure events as the cause. Here <b class="mono">Reason: OOMKilled</b> is explicit.'
-      }[ch.dataset.c];
       $('#rcFeedback').innerHTML = `<div class="card" style="border-color:var(--red);background:rgba(239,68,68,.06)">
         <b style="color:var(--red)">✗ Not quite</b>
-        <p class="dim" style="font-size:12.5px;margin-top:6px">${why}</p>
-        <p class="dim" style="font-size:12.5px;margin-top:8px">Look again at <b class="mono">Reason: OOMKilled</b> + <b class="mono">Exit Code: 137</b> + memory <b class="mono">254Mi / 256Mi</b>.</p>
-        <button class="btn" style="margin-top:12px" id="retry">Try again</button>
-      </div>`;
+        <p class="dim" style="font-size:12.5px;margin-top:6px">${c.why}</p>
+        <p class="dim" style="font-size:12.5px;margin-top:8px">Look again at the evidence: ${I.evidence}.</p>
+        <button class="btn" style="margin-top:12px" id="retry">Try again</button></div>`;
       $('#retry').onclick = ()=> render();
     }
   });
 
-  const ship = $('#shipBtn');
+  const ship=$('#shipBtn');
   if(ship) ship.onclick = ()=>{
-    S.fixed = true; addXp(100);
+    const I=cur(); S.fixed=true; save(); addXp(XP.fix);
     $('#fixFeedback').innerHTML = `<div class="card" style="border-color:var(--green);background:rgba(16,185,129,.06)">
       <b style="color:var(--green)">✓ Shipped the right way</b>
-      <div class="code" style="margin-top:9px">$ git commit -m "fix(auth): raise memory limit 256Mi → 512Mi (OOMKilled)"
-$ git push
-<span class="add">→ Argo CD  auth-service  OutOfSync → Syncing → Synced ✓</span>
-<span class="add">→ rolling update  maxUnavailable: 0  · zero downtime</span>
-<span class="add">→ auth-service-6c9d8f2a1-k4mzp   1/1   Running   0   18s</span>
-<span class="add">→ alert PodCrashLooping  RESOLVED</span></div>
-      <p class="dim" style="font-size:12.5px;margin-top:9px">Git stayed the source of truth, so the change is reviewed, audited, and reproducible.</p>
-      <button class="btn btn-primary" style="margin-top:12px" id="toRca">Write the RCA →</button>
-    </div>`;
-    $('#toRca').onclick = ()=>{ S.step=3; render(); };
+      <div class="code" style="margin-top:9px">${I.shipOut}</div>
+      <p class="dim" style="font-size:12.5px;margin-top:9px">${I.shipNote}</p>
+      <button class="btn btn-primary" style="margin-top:12px" id="toRca">Write the RCA →</button></div>`;
+    $('#toRca').onclick = ()=>{ S.step=3; save(); render(); };
   };
-  const edit = $('#editBtn');
-  if(edit) edit.onclick = ()=>{
+  const wrong=$('#wrongBtn');
+  if(wrong) wrong.onclick = ()=>{
+    const I=cur();
     $('#fixFeedback').innerHTML = `<div class="card" style="border-color:var(--amber);background:rgba(245,158,11,.06)">
-      <b style="color:var(--amber)">⚠ It works… for about 90 seconds</b>
-      <div class="code" style="margin-top:9px">$ kubectl edit deployment auth-service -n billfree
-deployment.apps/auth-service edited
-<span class="del">→ Argo CD  auth-service  OutOfSync (manual change detected)</span>
-<span class="del">→ selfHeal: true  → reverting to Git state…</span>
-<span class="del">→ memory limit back to 256Mi · OOMKill returns</span></div>
-      <p class="dim" style="font-size:12.5px;margin-top:9px">This cluster runs Argo CD with <b class="mono">selfHeal: true</b>. Git is the source of truth — anything you hand-patch gets reverted. <b>Fix it in Git.</b></p>
-    </div>`;
+      <b style="color:var(--amber)">${I.wrongTitle}</b>
+      <div class="code" style="margin-top:9px">${I.wrongOut}</div>
+      <p class="dim" style="font-size:12.5px;margin-top:9px">${I.wrongNote}</p></div>`;
   };
 
-  const rcaFill = $('#rcaFill');
-  if(rcaFill) rcaFill.onclick = ()=>{
-    $('#rcaText').value =
-`What happened: From 03:14–03:28 IST, ~48% of login requests failed. One of two auth-service pods was in CrashLoopBackOff (7 restarts).
-
-Root cause: auth-service memory grew to its 256Mi limit; the kernel OOMKilled the container (exit 137). It restarted, refilled memory, and was killed again — a loop. Not an application bug; a capacity misconfiguration.
-
-Detection: PodCrashLooping alert (restarts > 3 in 15m) paged on-call. Detected in 4m.
-
-Resolution: Raised the memory limit to 512Mi via deploy/apps/auth-service/values.yaml; Argo CD synced; rolling update restored both pods. MTTR 14m.
-
-Prevention:
-1. BILL-482 — profile the memory growth (suspected unbounded JWT cache). A limit bump is a bandage, not a cure.
-2. BILL-483 — alert at 90% of memory limit so we catch it BEFORE the OOMKill.
-3. Review requests/limits headroom across all services — auth ran at 99% of limit in steady state.`;
-  };
-  const rcaBtn = $('#rcaBtn');
-  if(rcaBtn) rcaBtn.onclick = ()=>{
-    const t = $('#rcaText').value.trim();
-    if(t.length < 40){ toast('Add more detail first'); return; }
-    S.rcaDone = true; S.step = 4; addXp(150);
-    render();
+  const fill=$('#rcaFill');
+  if(fill) fill.onclick = ()=> { $('#rcaText').value = cur().rcaModel; };
+  const rca=$('#rcaBtn');
+  if(rca) rca.onclick = ()=>{
+    if($('#rcaText').value.trim().length<40){ toast('Add more detail first'); return; }
+    S.rcaDone=true; S.step=4;
+    if(!S.done.includes(S.active)) S.done.push(S.active);
+    save(); addXp(XP.rca); render();
   };
 }
+render();
 </script>
 </body>
 </html>
