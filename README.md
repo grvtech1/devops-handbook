@@ -3,7 +3,7 @@
 **A free, zero-to-job-ready DevOps course** — from *"what is a terminal?"* all the way to **production- and interview-ready**. Systems thinking (not a tool tour), hands-on labs, two capstone projects, ~190 flashcards, and a study plan that gets you to the finish line.
 
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-blue.svg)](LICENSE)
-![Chapters](https://img.shields.io/badge/chapters-29-brightgreen)
+![Chapters](https://img.shields.io/badge/chapters-32-brightgreen)
 ![Level](https://img.shields.io/badge/level-zero%20%E2%86%92%20job--ready-orange)
 ![Cost](https://img.shields.io/badge/cost-free-success)
 
