@@ -8,9 +8,9 @@
 Stop collecting tutorials. <strong>Build the mental model</strong>, run the labs, break production on purpose — and walk into the interview able to <strong>explain the whole stack</strong>.
 </p>
 
-[:material-rocket-launch: Start from zero](00a-preflight.md){ .md-button .md-button--primary }
+[:material-console: Enter the simulator](platform/){ .md-button .md-button--primary }
+[:material-rocket-launch: Start from zero](00a-preflight.md){ .md-button }
 [:material-map: See the curriculum](00-INDEX.md){ .md-button }
-[:material-github: Star on GitHub](https://github.com/grvtech1/devops-handbook){ .md-button }
 
 <div class="dhb-stats">
   <div class="dhb-stat"><b>32</b><span>Chapters</span></div>
