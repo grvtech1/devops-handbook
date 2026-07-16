@@ -1,17 +1,27 @@
+<div class="dhb-hero" markdown>
+
+<span class="dhb-eyebrow">Free · open source · zero to job-ready</span>
+
 # The DevOps Engineer's Handbook
 
-<p style="font-size:1.15rem; color:var(--md-default-fg-color--light); margin-top:-.4rem;">
-<strong>Zero to production- and interview-ready.</strong> Free, self-paced, hands-on — systems thinking, not a tool tour.
+<p class="dhb-sub">
+Stop collecting tutorials. <strong>Build the mental model</strong>, run the labs, break production on purpose — and walk into the interview able to <strong>explain the whole stack</strong>.
 </p>
 
 [:material-rocket-launch: Start from zero](00a-preflight.md){ .md-button .md-button--primary }
 [:material-map: See the curriculum](00-INDEX.md){ .md-button }
 [:material-github: Star on GitHub](https://github.com/grvtech1/devops-handbook){ .md-button }
 
-![Chapters](https://img.shields.io/badge/chapters-28-4051b5) &nbsp;
-![Level](https://img.shields.io/badge/level-zero%20→%20job--ready-f57c00) &nbsp;
-![Cost](https://img.shields.io/badge/cost-free-43a047) &nbsp;
-![License](https://img.shields.io/badge/license-CC%20BY%204.0-1e88e5)
+<div class="dhb-stats">
+  <div class="dhb-stat"><b>32</b><span>Chapters</span></div>
+  <div class="dhb-stat"><b>190</b><span>Flashcards</span></div>
+  <div class="dhb-stat"><b>26</b><span>Real incidents</span></div>
+  <div class="dhb-stat"><b>12</b><span>Chaos drills</span></div>
+  <div class="dhb-stat"><b>2</b><span>Capstones</span></div>
+  <div class="dhb-stat"><b>₹0</b><span>Cost</span></div>
+</div>
+
+</div>
 
 ---
 
