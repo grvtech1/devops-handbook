@@ -1,6 +1,291 @@
-/* ---- DevOps Handbook — site polish + interactive widgets ---- */
+/* =============================================================
+   The DevOps Engineer's Handbook — design system
+   Modern dev-tool aesthetic. Light + dark safe.
+   ============================================================= */
 
-/* Progress meter (injected on the Progress page and any tracker-like page) */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap');
+
+/* ---------- 1. Design tokens ---------- */
+:root {
+  --dhb-indigo: #6366f1;
+  --dhb-violet: #8b5cf6;
+  --dhb-cyan:   #06b6d4;
+  --dhb-grad:   linear-gradient(135deg, #6366f1 0%, #8b5cf6 55%, #06b6d4 100%);
+  --dhb-grad-soft: linear-gradient(135deg, rgba(99,102,241,.12), rgba(6,182,212,.12));
+  --dhb-display: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+  --dhb-radius: 14px;
+  --dhb-glow: 0 12px 34px -14px rgba(99, 102, 241, .55);
+  --dhb-border: rgba(120, 120, 160, .22);
+}
+[data-md-color-scheme="slate"] {
+  --dhb-border: rgba(160, 170, 220, .18);
+  --dhb-grad-soft: linear-gradient(135deg, rgba(99,102,241,.18), rgba(6,182,212,.14));
+}
+
+/* ---------- 2. Typography ---------- */
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3,
+.md-typeset h4,
+.md-nav__title,
+.md-header__topic {
+  font-family: var(--dhb-display);
+  letter-spacing: -.02em;
+}
+.md-typeset h1 {
+  font-weight: 700;
+  font-size: 2.1rem;
+  line-height: 1.15;
+  margin-bottom: .6rem;
+}
+.md-typeset h2 {
+  font-weight: 700;
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-top: 2.6rem;
+  position: relative;
+  padding-left: .75rem;
+}
+/* H2 gets a gradient rail instead of a dull underline */
+.md-typeset h2::before {
+  content: "";
+  position: absolute;
+  left: 0; top: .16em; bottom: .16em;
+  width: 4px;
+  border-radius: 4px;
+  background: var(--dhb-grad);
+}
+.md-typeset h3 { font-weight: 600; margin-top: 1.9rem; }
+.md-typeset { line-height: 1.72; }
+.md-typeset p { margin: .8rem 0; }
+
+/* ---------- 3. Hero (landing page) ---------- */
+.dhb-hero {
+  position: relative;
+  margin: .5rem 0 2.2rem;
+  padding: 2.6rem 2rem 2.4rem;
+  border-radius: 22px;
+  border: 1px solid var(--dhb-border);
+  background: var(--dhb-grad-soft), var(--md-default-bg-color);
+  overflow: hidden;
+  text-align: center;
+}
+.dhb-hero::after {   /* soft glow orb */
+  content: "";
+  position: absolute;
+  top: -55%; left: 50%;
+  width: 520px; height: 520px;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, rgba(99,102,241,.20) 0%, transparent 62%);
+  pointer-events: none;
+}
+.dhb-hero > * { position: relative; z-index: 1; }
+.dhb-hero .dhb-eyebrow {
+  display: inline-block;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  padding: .34rem .85rem;
+  border-radius: 999px;
+  border: 1px solid var(--dhb-border);
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color--light);
+  margin-bottom: 1.1rem;
+}
+.md-typeset .dhb-hero h1 {
+  font-size: 2.9rem;
+  line-height: 1.08;
+  margin: 0 0 .7rem;
+  background: var(--dhb-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+.dhb-hero .dhb-sub {
+  font-size: 1.1rem;
+  max-width: 44rem;
+  margin: 0 auto 1.6rem;
+  color: var(--md-default-fg-color--light);
+  line-height: 1.6;
+}
+.dhb-hero .dhb-sub strong { color: var(--md-default-fg-color); }
+
+@media screen and (max-width: 44.98em) {
+  .dhb-hero { padding: 1.9rem 1.1rem; }
+  .md-typeset .dhb-hero h1 { font-size: 2.05rem; }
+  .dhb-hero .dhb-sub { font-size: 1rem; }
+}
+
+/* ---------- 4. Stat tiles ---------- */
+.dhb-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(112px, 1fr));
+  gap: .7rem;
+  margin: 1.6rem 0 .2rem;
+}
+.dhb-stat {
+  padding: .85rem .5rem;
+  border-radius: var(--dhb-radius);
+  border: 1px solid var(--dhb-border);
+  background: var(--md-default-bg-color);
+  text-align: center;
+  transition: transform .18s ease, border-color .18s ease;
+}
+.dhb-stat:hover { transform: translateY(-3px); border-color: var(--dhb-violet); }
+.dhb-stat b {
+  display: block;
+  font-family: var(--dhb-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.1;
+  background: var(--dhb-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.dhb-stat span {
+  display: block;
+  margin-top: .2rem;
+  font-size: .68rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--md-default-fg-color--light);
+}
+
+/* ---------- 5. Buttons ---------- */
+.md-typeset .md-button {
+  border-radius: 10px;
+  font-weight: 650;
+  border-width: 1px;
+  padding: .55em 1.2em;
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+.md-typeset .md-button:hover { transform: translateY(-2px); }
+.md-typeset .md-button--primary {
+  background: var(--dhb-grad);
+  border-color: transparent;
+  color: #fff;
+  box-shadow: var(--dhb-glow);
+}
+.md-typeset .md-button--primary:hover { filter: brightness(1.08); color: #fff; }
+.md-typeset .md-button + .md-button { margin-left: .4rem; }
+
+/* ---------- 6. Grid cards ---------- */
+.md-typeset .grid.cards > ul > li,
+.md-typeset .grid.cards > :is(ul, ol) > li {
+  border: 1px solid var(--dhb-border);
+  border-radius: var(--dhb-radius);
+  padding: 1.15rem 1.2rem;
+  background: var(--md-default-bg-color);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  position: relative;
+  overflow: hidden;
+}
+/* gradient top-rail reveals on hover */
+.md-typeset .grid.cards > ul > li::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--dhb-grad);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .25s ease;
+}
+.md-typeset .grid.cards > ul > li:hover::before { transform: scaleX(1); }
+.md-typeset .grid.cards > ul > li:hover {
+  transform: translateY(-4px);
+  border-color: transparent;
+  box-shadow: var(--dhb-glow);
+}
+.md-typeset .grid.cards :is(.lg) svg {
+  height: 1.9em; width: 1.9em;
+  fill: var(--dhb-violet);
+}
+
+/* ---------- 7. Admonitions + the Hinglish callout ---------- */
+.md-typeset :is(.admonition, details) {
+  border-radius: 12px;
+  border-left-width: 4px;
+  border-width: 1px 1px 1px 4px;
+  box-shadow: 0 4px 16px -10px rgba(0,0,0,.3);
+}
+.md-typeset .admonition-title { font-weight: 700; }
+
+/* Blockquotes — the 🇮🇳 Hinglish intuition boxes get real identity */
+.md-typeset blockquote {
+  border-left: 4px solid transparent;
+  border-image: var(--dhb-grad) 1;
+  background: var(--dhb-grad-soft);
+  border-radius: 0 12px 12px 0;
+  padding: .85rem 1.1rem;
+  color: var(--md-default-fg-color);
+}
+.md-typeset blockquote > :first-child { margin-top: 0; }
+.md-typeset blockquote > :last-child { margin-bottom: 0; }
+
+/* ---------- 8. Tables ---------- */
+.md-typeset table:not([class]) {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--dhb-border);
+  box-shadow: 0 2px 14px -10px rgba(0,0,0,.35);
+  font-size: .76rem;
+}
+.md-typeset table:not([class]) th {
+  background: var(--dhb-grad);
+  color: #fff;
+  font-family: var(--dhb-display);
+  font-weight: 600;
+  letter-spacing: .01em;
+  border: none;
+}
+.md-typeset table:not([class]) tr:hover td {
+  background: var(--dhb-grad-soft);
+}
+.md-typeset table:not([class]) td { border-color: var(--dhb-border); }
+
+/* ---------- 9. Code ---------- */
+.md-typeset pre > code { border-radius: 10px; }
+.md-typeset .highlight { border-radius: 10px; }
+.md-typeset code {
+  border-radius: 5px;
+  font-size: .84em;
+}
+.md-typeset :not(pre) > code {
+  background: var(--dhb-grad-soft);
+  padding: .12em .38em;
+}
+
+/* ---------- 10. Mermaid ---------- */
+.md-typeset .mermaid {
+  display: flex;
+  justify-content: center;
+  margin: 1.6rem 0;
+  padding: 1.2rem;
+  border: 1px solid var(--dhb-border);
+  border-radius: var(--dhb-radius);
+  background: var(--md-default-bg-color);
+  box-shadow: 0 4px 18px -12px rgba(0,0,0,.4);
+  overflow-x: auto;
+}
+
+/* ---------- 11. Header / nav polish ---------- */
+.md-header {
+  box-shadow: 0 1px 0 var(--dhb-border);
+  backdrop-filter: saturate(1.5) blur(6px);
+}
+.md-tabs { border-bottom: 1px solid rgba(255,255,255,.12); }
+.md-nav__item .md-nav__link--active {
+  font-weight: 700;
+  color: var(--dhb-violet);
+}
+.md-typeset .headerlink { opacity: .35; }
+
+/* ---------- 12. Existing widgets (progress, flashcards) ---------- */
 .dhb-progress {
   position: relative;
   height: 28px;
@@ -8,13 +293,13 @@
   border-radius: 14px;
   overflow: hidden;
   margin: 1rem 0 1.5rem;
-  box-shadow: inset 0 0 0 1px var(--md-default-fg-color--lightest);
+  box-shadow: inset 0 0 0 1px var(--dhb-border);
 }
 .dhb-progress-fill {
   position: absolute;
   top: 0; left: 0; bottom: 0;
   width: 0;
-  background: linear-gradient(90deg, var(--md-primary-fg-color), var(--md-accent-fg-color));
+  background: var(--dhb-grad);
   transition: width .35s ease;
 }
 .dhb-progress-label {
@@ -27,16 +312,9 @@
   letter-spacing: .02em;
   color: var(--md-default-fg-color);
 }
+.md-content .task-list-item input[type="checkbox"] { cursor: pointer; }
+.md-content .task-list-item input[type="checkbox"]:not(:disabled) { transform: scale(1.15); }
 
-/* Make task-list checkboxes feel clickable (progress.js enables them) */
-.md-content .task-list-item input[type="checkbox"] {
-  cursor: pointer;
-}
-.md-content .task-list-item input[type="checkbox"]:not(:disabled) {
-  transform: scale(1.15);
-}
-
-/* Flashcards — quiz mode (blur answers until clicked) */
 .dhb-fc-toggle { margin: .25rem 0 1.25rem; }
 .dhb-fc-answer { cursor: pointer; transition: filter .15s ease; }
 .dhb-fc-answer.dhb-hidden { filter: blur(5px); user-select: none; }
@@ -47,86 +325,10 @@
   margin: -.5rem 0 1rem;
 }
 
-/* A touch more breathing room in the chapter header callouts */
-.md-typeset blockquote { border-left-width: 3px; }
-
-/* ============================================================
-   VISUAL LEVEL-UP — cards, buttons, mermaid, admonitions, tables
-   ============================================================ */
-
-/* Grid cards — hover lift + accent, dark-mode safe */
-.md-typeset .grid.cards > ul > li,
-.md-typeset .grid.cards > :is(ul, ol) > li {
-  border: 1px solid var(--md-default-fg-color--lightest);
-  border-radius: 12px;
-  padding: 1rem 1.05rem;
-  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
-  background: var(--md-default-bg-color);
+/* ---------- 13. Motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
 }
-.md-typeset .grid.cards > ul > li:hover {
-  transform: translateY(-4px);
-  border-color: var(--md-accent-fg-color);
-  box-shadow: 0 10px 26px -12px rgba(63, 81, 181, .5);
-}
-.md-typeset .grid.cards .twemoji.lg svg,
-.md-typeset .grid.cards :is(.lg) svg { height: 1.9em; width: 1.9em; }
-
-/* Buttons — primary gets a gradient + lift */
-.md-typeset .md-button {
-  border-radius: 10px;
-  font-weight: 700;
-  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
-}
-.md-typeset .md-button:hover { transform: translateY(-2px); }
-.md-typeset .md-button--primary {
-  background: linear-gradient(135deg, var(--md-primary-fg-color), #6573ff);
-  border-color: transparent;
-  box-shadow: 0 8px 20px -8px rgba(63, 81, 181, .6);
-}
-.md-typeset .md-button--primary:hover { filter: brightness(1.06); }
-
-/* Mermaid — centered, framed, breathes */
-.md-typeset .mermaid {
-  display: flex;
-  justify-content: center;
-  margin: 1.4rem 0;
-  padding: 1rem;
-  border: 1px solid var(--md-default-fg-color--lightest);
-  border-radius: 12px;
-  background: var(--md-code-bg-color);
-  overflow-x: auto;
-}
-
-/* Admonitions — a little rounder + softer */
-.md-typeset :is(.admonition, details) {
-  border-radius: 10px;
-  border-left-width: 4px;
-  box-shadow: 0 2px 10px -6px rgba(0,0,0,.25);
-}
-
-/* Tables — header pops, rounded corners, row hover */
-.md-typeset table:not([class]) {
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 1px 8px -5px rgba(0,0,0,.3);
-}
-.md-typeset table:not([class]) th {
-  background: var(--md-primary-fg-color);
-  color: #fff;
-  font-weight: 700;
-}
-.md-typeset table:not([class]) tr:hover td {
-  background: var(--md-default-fg-color--lightest);
-}
-
-/* Section headings — subtle accent underline on H2 */
-.md-typeset h2 {
-  border-bottom: 2px solid var(--md-default-fg-color--lightest);
-  padding-bottom: .3rem;
-}
-
-/* Landing hero buttons row spacing */
-.md-typeset .md-button + .md-button { margin-left: .4rem; }
-
-/* Code blocks — a hair more rounding */
-.md-typeset pre > code { border-radius: 8px; }
