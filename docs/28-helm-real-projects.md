@@ -704,9 +704,20 @@ Tumhara box, dono patterns me:
 | **frontend → Service** | `microservice/templates/service.yaml` | `templates/frontend.yaml` (same file) |
 | **ConfigMap** | `envFrom` / `env` in values | per-service template me env |
 | **backend → Secret** | `envFrom: secretRef: billfree-app-secrets` | Google Secret Manager / values |
-| **backend → StatefulSet + DB** | (billfree DB = managed Postgres, in-cluster nahi) | `cartservice` → Redis; catalog data | 
+| **backend → StatefulSet + DB** | **in-cluster Postgres StatefulSet** — `deploy/platform/postgres.yaml` (replicas:1, PVC 5Gi) | `cartservice` → Redis; catalog data | 
 
-> 🇮🇳 **Note:** billfree me database **cluster ke bahar** (managed Postgres) hai — isliye StatefulSet nahi, sirf `secretRef` se connection string. VANTA me cart ka Redis in-cluster hai. **Yehi senior call hai** — DB in-cluster (StatefulSet+PV) ya managed (bahar)? Zyada real-world me managed DB choose hota hai (backup/failover cloud sambhalta).
+> 🇮🇳 **Note (real):** billfree **jaan-boojh ke self-managed in-cluster Postgres StatefulSet** chalata hai (`deploy/platform/postgres.yaml` — `serviceName: postgres`, `volumeClaimTemplates` 5Gi, `postgres:16-alpine`) — ye **skill showcase** hai (StatefulSet + PVC + migrate Job dikhane ke liye). File ka comment tak kehta *"for a heavier-duty setup, swap in the CloudNativePG operator"*.
+>
+> **Yehi senior call hai — trade-off samjho:**
+>
+> | | **Self-managed (billfree)** | **Managed (RDS/Cloud SQL)** |
+> |---|---|---|
+> | Control | poora (version, tuning, extensions) | seemित |
+> | Zimmedari | **tum** — backup/failover/patch khud | AWS sambhalta |
+> | Cost | sirf compute+disk | premium |
+> | Kab | learning/showcase, full control, cost-sensitive | zyadatar prod (kam overhead) |
+>
+> Zyada real-world prod mein **managed** choose hota (ops-bojh kam). billfree deliberately **ulta** karta — StatefulSet mastery dikhane ko. Dono valid; **jaante-boojhte** choose karo.
 
 ---
 

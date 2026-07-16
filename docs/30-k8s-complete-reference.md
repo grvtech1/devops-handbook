@@ -97,7 +97,16 @@ spec:
       resources: { requests: { storage: 20Gi } }
 ```
 
-> ⭐ **Senior call (interview gold):** Prod mein DB usually **managed** (RDS/Cloud SQL) hota — StatefulSet nahi. Kyun? Backup/failover/patching cloud sambhalta. **billfree exactly yahi** — pods stateless, Postgres managed (chart mein sirf `secretRef` se connection). StatefulSet tab jab DB khud K8s mein chalao (control/cost, par ops-bojh zyada).
+> ⭐ **Senior call (interview gold) — trade-off, na ki "hamesha X":**
+>
+> | | **Self-managed StatefulSet** | **Managed (RDS/Cloud SQL)** |
+> |---|---|---|
+> | Control | poora | seemित |
+> | Backup/failover/patch | **tum khud** | AWS sambhalta |
+> | Cost | compute+disk | premium |
+> | Kab | full control / cost-sensitive / showcase | zyadatar prod (ops-bojh kam) |
+>
+> **billfree = real self-managed example:** `deploy/platform/postgres.yaml` mein **Postgres StatefulSet** (replicas:1, `volumeClaimTemplates` 5Gi, `postgres:16-alpine`, `pg_isready` probes) — deliberately in-cluster, StatefulSet skill dikhane ko. Comment tak kehta *"heavier-duty ke liye CloudNativePG operator swap karo"*. Interview mein bolo: *"managed default hai (kam overhead), par maine in-cluster StatefulSet jaan-boojh ke chalaya control + StatefulSet mastery ke liye — trade-off ye hai ki backups/failover ki zimmedari meri."*
 
 ## A3 · DaemonSet — har node pe ek
 
@@ -167,7 +176,7 @@ spec:
 - `completions: 5` → 5 baar successfully chale
 - `parallelism: 2` → ek saath 2 pods (batch tez)
 
-> **billfree connection:** `docker-compose.yml` ka `migrate` service K8s mein **ye Job** banega — ya Helm ka `pre-upgrade` hook (deploy se pehle schema migrate).
+> **billfree = real Job example:** `deploy/platform/migrate-job.yaml` ek asli DB-migration **Job** hai — `restartPolicy: Never`, `backoffLimit: 5`, `ttlSecondsAfterFinished: 600`, `runAsNonRoot`, `DATABASE_URL` secret se. Aur ek **clever nuance** (interview gold): ye ArgoCD **`PostSync` hook** hai, **PreSync nahi** — kyunki PreSync Postgres banne se *pehle* chalega aur `postgres` host resolve na hone se **deadlock** ho jaayega. Migration idempotent hai (`schema_migrations` track), isliye re-run safe.
 
 ## A6 · CronJob — schedule pe Job
 
