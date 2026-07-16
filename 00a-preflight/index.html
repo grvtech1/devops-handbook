@@ -1,0 +1,4285 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free, zero-to-job-ready DevOps handbook — from "what is a terminal" to production- and interview-ready. Systems thinking, hands-on labs, capstones.">
+      
+      
+      
+        <link rel="canonical" href="https://grvtech1.github.io/devops-handbook/00a-preflight/">
+      
+      
+        <link rel="prev" href="../00-INDEX/">
+      
+      
+        <link rel="next" href="../00b-setup-runbook/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>00a · Pre-flight ground floor - The DevOps Engineer's Handbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%206a6%206%200%200%201%206%206c0%202.22-1.21%204.16-3%205.2V19a1%201%200%200%201-1%201h-4a1%201%200%200%201-1-1v-1.8c-1.79-1.04-3-2.98-3-5.2a6%206%200%200%201%206-6m2%2015v1a1%201%200%200%201-1%201h-2a1%201%200%200%201-1-1v-1zm6-10h3v2h-3zM1%2011h3v2H1zM13%201v3h-2V1zM4.92%203.5l2.13%202.14-1.42%201.41L3.5%204.93zm12.03%202.13%202.12-2.13%201.43%201.43-2.13%202.12z%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m13.13%2022.19-1.63-3.83c1.57-.58%203.04-1.36%204.4-2.27zM5.64%2012.5l-3.83-1.63%206.1-2.77C7%209.46%206.22%2010.93%205.64%2012.5M21.61%202.39S16.66.269%2011%205.93c-2.19%202.19-3.5%204.6-4.35%206.71-.28.75-.09%201.57.46%202.13l2.13%202.12c.55.56%201.37.74%202.12.46A19.1%2019.1%200%200%200%2018.07%2013c5.66-5.66%203.54-10.61%203.54-10.61m-7.07%207.07c-.78-.78-.78-2.05%200-2.83s2.05-.78%202.83%200c.77.78.78%202.05%200%202.83s-2.05.78-2.83%200m-5.66%207.07-1.41-1.41zM6.24%2022l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83%2022zM2%2022h1.41l4.77-4.76-1.42-1.41L2%2020.59zm0-2.83%204.09-4.08c-.21-.3-.36-.62-.45-.97L2%2017.76z%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M13%2014h-2V9h2m0%209h-2v-2h2M1%2021h22L12%202z%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M8%2015a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m2.5%202%201.5-3%201.5%203zm5.5-2a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m6-4A10%2010%200%200%200%2012%201%2010%2010%200%200%200%202%2011c0%202.8%201.2%205.3%203%207.1V22h14v-3.9c1.8-1.8%203-4.3%203-7.1m-5%209h-2v-2h-2v2h-2v-2H9v2H7v-2.8c-1.8-1.5-3-3.7-3-6.2a8%208%200%200%201%208-8%208%208%200%200%201%208%208c0%202.5-1.2%204.8-3%206.2z%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#module-00-pre-flight-the-ground-floor" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  🚀 <strong>26 chapters</strong> · rendered diagrams · hands-on labs · a 26-scenario incident playbook — all free (CC BY 4.0).
+  &nbsp;
+  <a href="https://github.com/grvtech1/devops-handbook" style="color: inherit; text-decoration: underline; font-weight: 700;">⭐ Star it on GitHub</a>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-header__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The DevOps Engineer's Handbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              00a · Pre-flight ground floor
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../study-plan/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Study Plan
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../progress/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  My Progress
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../00-INDEX/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Handbook
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-nav__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    The DevOps Engineer's Handbook
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../study-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    My Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handbook
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Handbook
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-INDEX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Curriculum (Index)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 0 — Pre-flight
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 0 — Pre-flight
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00a · Pre-flight ground floor
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00a · Pre-flight ground floor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#do-i-need-this-chapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Do I need this chapter?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-60-second-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 60-second version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-terminal-shell-command-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The terminal / shell / command line
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The terminal / shell / command line">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-it-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What it is
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anatomy-of-a-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anatomy of a command
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sudo-run-as-admin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sudo — run as admin
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stdout-stderr-and-exit-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        stdout, stderr, and exit codes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipes-and-redirects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipes and redirects
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filesystem-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filesystem paths
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getting-help" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getting help
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Windows note
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#package-managers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Package managers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linux-essentials-youll-actually-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linux essentials you'll actually use
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Linux essentials you&#39;ll actually use">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#files-and-directories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Files and directories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#root-vs-normal-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Root vs normal user
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#processes-daemons-and-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Processes, daemons, and services
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#yaml-the-language-of-every-config-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        YAML — the language of every config file
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="YAML — the language of every config file">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-five-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The five rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valid-vs-broken-spot-the-difference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Valid vs broken — spot the difference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yaml-vs-json-javascript-object-notation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        YAML vs JSON (JavaScript Object Notation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#git-the-spine-of-the-whole-book" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git — the spine of the whole book
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Git — the spine of the whole book">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core concepts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-four-commands-you-will-use-every-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The four commands you will use every day
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-commit-timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A commit timeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#undo-with-git-revert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Undo with git revert
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gitignore-never-commit-secrets-or-state-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        .gitignore — never commit secrets or state files
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#networking-from-zero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Networking from zero
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Networking from zero">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ip-address-and-port" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IP address and port
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localhost-127001-and-0000" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        localhost, 127.0.0.1, and 0.0.0.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns-the-phonebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS — the phonebook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cidr-notation-how-many-addresses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CIDR notation — how many addresses?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#public-vs-private-ip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public vs private IP
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http-apis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP &amp; APIs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HTTP &amp; APIs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#request-and-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Request and response
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status codes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rest-apis-and-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REST APIs and JSON
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#curl-your-api-test-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        curl — your API test tool
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-10-words-the-book-uses-before-defining-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 10 words the book uses before defining them
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beginner-mistakes-vs-senior-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beginner mistakes vs senior insights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-shortcuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory shortcuts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-check-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-check quiz
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hands-on lab
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where next
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00b-setup-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00b · Setup runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-linux-toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux · the ground everything runs on
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part I — Core toolchain
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part I — Core toolchain
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-M0-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M0 · Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-M1-terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M1 · Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-M2-ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M2 · Ansible
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-M3-docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M3 · Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-M4-kubernetes-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M4 · Kubernetes Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-M5-sizing-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M5 · Sizing & Cost
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-M6-cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M6 · CI/CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-M7-gitops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M7 · GitOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part II — Systems thinking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part II — Systems thinking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-connected-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Connected System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-k8s-objects-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Objects · How They Connect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-10-day-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Learning Plan (understand)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29-confidence-sprint/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Confidence Sprint (drill)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../28-helm-real-projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Helm in the Real World (your 2 projects)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-cicd-hands-on-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Follow One Commit (hands-on CI/CD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part III — Operate
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part III — Operate
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-M8-observability-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M8 · Observability & SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-M9-advanced-k8s-internals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M9 · Advanced K8s Internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30-k8s-complete-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Complete Reference (Workloads · Scheduling · Ops)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-production-incident-playbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Incident Playbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part IV — Capstones
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part IV — Capstones
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-capstone-url-shortener/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone I · URL Shortener
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-capstone-microshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone II · MicroShop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part V — Reference & career
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part V — Reference & career
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-interview-bank/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview Bank
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-confusions-and-tradeoffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Confusions & Trade-offs (X-vs-Y)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-command-cheatsheets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Command Cheat-Sheets & Labs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-roadmap-M11-M18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap · M11–M18
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-reference-appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Appendix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-career-job-ready/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Job-Ready
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part VI — The Production Gauntlet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part VI — The Production Gauntlet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-production-gauntlet-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build the Real System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-production-gauntlet-chaos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chaos Engineering · break & fix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#do-i-need-this-chapter" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Do I need this chapter?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-60-second-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 60-second version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-terminal-shell-command-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The terminal / shell / command line
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The terminal / shell / command line">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-it-is" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What it is
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#anatomy-of-a-command" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Anatomy of a command
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sudo-run-as-admin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sudo — run as admin
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stdout-stderr-and-exit-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        stdout, stderr, and exit codes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipes-and-redirects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipes and redirects
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#filesystem-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Filesystem paths
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#getting-help" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Getting help
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows-note" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Windows note
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#package-managers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Package managers
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linux-essentials-youll-actually-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linux essentials you'll actually use
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Linux essentials you&#39;ll actually use">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#files-and-directories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Files and directories
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#root-vs-normal-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Root vs normal user
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#processes-daemons-and-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Processes, daemons, and services
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#yaml-the-language-of-every-config-file" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        YAML — the language of every config file
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="YAML — the language of every config file">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-five-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The five rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valid-vs-broken-spot-the-difference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Valid vs broken — spot the difference
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#yaml-vs-json-javascript-object-notation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        YAML vs JSON (JavaScript Object Notation)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#git-the-spine-of-the-whole-book" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git — the spine of the whole book
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Git — the spine of the whole book">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core concepts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-four-commands-you-will-use-every-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The four commands you will use every day
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#a-commit-timeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        A commit timeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#undo-with-git-revert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Undo with git revert
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gitignore-never-commit-secrets-or-state-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        .gitignore — never commit secrets or state files
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#networking-from-zero" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Networking from zero
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Networking from zero">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ip-address-and-port" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IP address and port
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localhost-127001-and-0000" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        localhost, 127.0.0.1, and 0.0.0.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns-the-phonebook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS — the phonebook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cidr-notation-how-many-addresses" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CIDR notation — how many addresses?
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#public-vs-private-ip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public vs private IP
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#http-apis" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP &amp; APIs
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HTTP &amp; APIs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#request-and-response" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Request and response
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP methods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#status-codes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status codes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rest-apis-and-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        REST APIs and JSON
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#curl-your-api-test-tool" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        curl — your API test tool
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-10-words-the-book-uses-before-defining-them" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 10 words the book uses before defining them
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beginner-mistakes-vs-senior-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beginner mistakes vs senior insights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-shortcuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory shortcuts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-check-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-check quiz
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hands-on lab
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where next
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="module-00-pre-flight-the-ground-floor">Module 00 — Pre-flight: the ground floor<a class="headerlink" href="#module-00-pre-flight-the-ground-floor" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Core question:</strong> Before DevOps: what is a terminal, YAML, Git, an HTTP request — the
+plumbing every later chapter assumes but never stops to teach?</p>
+</blockquote>
+<p><strong>Module map:</strong> <a href="../00-INDEX/">00-INDEX</a> · <strong>00a-preflight (you are here)</strong> ·
+<a href="../00b-setup-runbook/">00b-setup-runbook</a> · <a href="../01-M0-foundations/">01-M0</a> ·
+<a href="../02-M1-terraform/">02-M1</a> · <a href="../03-M2-ansible/">03-M2</a> · <a href="../04-M3-docker/">04-M3</a> ·
+<a href="../05-M4-kubernetes-core/">05-M4-K8s</a> · <a href="../06-M5-sizing-and-cost/">06-M5</a> ·
+<a href="../07-M6-cicd/">07-M6-CI/CD</a> · <a href="../08-M7-gitops/">08-M7</a> · <a href="../09-connected-system/">09-connected</a> ·
+<a href="../10-M8-observability-sre/">10-M8</a> · <a href="../11-M9-advanced-k8s-internals/">11-M9</a> ·
+<a href="../12-capstone-url-shortener/">12-capstone-url</a> · <a href="../13-capstone-microshop/">13-capstone-shop</a> ·
+<a href="../14-interview-bank/">14-interview-bank</a> · <a href="../16-reference-appendix/">16-appendix</a></p>
+<hr />
+<blockquote>
+<p><strong>⏱️ Time:</strong> ~40 min padho + 20 min lab · <strong>🎚️ Level:</strong> Beginner · <strong>📋 Pehle chahiye:</strong> kuch nahi (yahin se shuru)</p>
+<p><strong>Is module ke baad tum kar paoge:</strong>
+- Terminal mein commands run karo — flags, arguments, pipes, aur redirects ke sath confidently
+- YAML mein valid config likho aur tab vs space ki invisible errors pakad ke fix karo
+- Git workflow samjho: add → commit → push — aur <code>.gitignore</code> se secrets protect karo</p>
+</blockquote>
+<h2 id="do-i-need-this-chapter">Do I need this chapter?<a class="headerlink" href="#do-i-need-this-chapter" title="Permanent link">&para;</a></h2>
+<p>Answer these six questions honestly — no googling:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Question</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Can you open a terminal and run a command with flags?</td>
+</tr>
+<tr>
+<td>2</td>
+<td>In YAML, does indentation use spaces or tabs — and does it matter?</td>
+</tr>
+<tr>
+<td>3</td>
+<td>What is the difference between <code>git commit</code> and <code>git push</code>?</td>
+</tr>
+<tr>
+<td>4</td>
+<td>You see a <code>502 Bad Gateway</code> on a website. Whose fault is it — the browser, the server, or something in between?</td>
+</tr>
+<tr>
+<td>5</td>
+<td>What does <code>10.0.0.0/24</code> mean — how many addresses does it cover?</td>
+</tr>
+<tr>
+<td>6</td>
+<td>What is the difference between <code>apt install</code> and <code>pip install</code>?</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sab aata hai → skip to <a href="../01-M0-foundations/">M0</a>.
+Ek bhi atka → yahin se shuru karo.</strong></p>
+<hr />
+<h2 id="the-60-second-version">The 60-second version<a class="headerlink" href="#the-60-second-version" title="Permanent link">&para;</a></h2>
+<p>Every DevOps lab in this book runs inside a <strong>terminal</strong> (a text window where you type commands).
+The configs it reads are written in <strong>YAML</strong> (a structured text format — indentation is
+everything). Every change is saved in <strong>Git</strong> (a version-control system that tracks every edit).
+The apps you deploy speak <strong>HTTP</strong> (the web's language of requests and responses) over a
+<strong>network</strong> (machines connected by IP addresses and ports). Software is installed via <strong>package
+managers</strong> (automated tools that download and wire up dependencies for you).</p>
+<p>This chapter gives you just enough of all five to follow every command in the book without
+stopping to Google the basics.</p>
+<hr />
+<h2 id="the-terminal-shell-command-line">The terminal / shell / command line<a class="headerlink" href="#the-terminal-shell-command-line" title="Permanent link">&para;</a></h2>
+<h3 id="what-it-is">What it is<a class="headerlink" href="#what-it-is" title="Permanent link">&para;</a></h3>
+<p>The <strong>terminal</strong> is a text window where you talk to the computer by typing instructions called
+<strong>commands</strong>. It runs a program called a <strong>shell</strong> — most commonly <strong>Bash</strong> (Bourne Again SHell)
+on Linux/Mac, or a Bash-compatible layer on Windows (see below). When people say "the command
+line" or "the CLI (Command-Line Interface)", they mean the same thing.</p>
+<p>The <strong>prompt</strong> is the text the shell prints while waiting for your next command. It typically
+looks like:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>gaurav@my-laptop:~$
+</span></code></pre></div>
+<p><code>gaurav</code> = your username · <code>my-laptop</code> = hostname · <code>~</code> = current directory (home) · <code>$</code> = you
+are a normal user (not root).</p>
+<h3 id="anatomy-of-a-command">Anatomy of a command<a class="headerlink" href="#anatomy-of-a-command" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>┌─────────────┬──────────────┬─────────────────────────────┐
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>│  COMMAND     │  FLAGS       │  ARGUMENT                   │
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│  (what to do)│  (how to do) │  (what to act on)           │
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│             │              │                             │
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│    ls        │  -l  -A      │  /etc                       │
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>└─────────────┴──────────────┴─────────────────────────────┘
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  ls -lA /etc
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>  ↑ list files, long format, include hidden, in /etc directory
+</span></code></pre></div>
+<ul>
+<li><strong>Flags / options</strong> modify the command's behaviour. Short flags use one dash (<code>-l</code>); long flags
+  use two (<code>--all</code>). They are often combined: <code>-lA</code> = <code>-l -A</code>.</li>
+<li><strong>Arguments</strong> are the thing the command acts on — a file path, a URL, a package name.</li>
+</ul>
+<h3 id="sudo-run-as-admin"><code>sudo</code> — run as admin<a class="headerlink" href="#sudo-run-as-admin" title="Permanent link">&para;</a></h3>
+<p><code>sudo</code> (Substitute User DO) runs the next command with root (administrator) privileges.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w">        </span><span class="c1"># why: apt needs root to modify system package lists</span>
+</span></code></pre></div>
+<p>Use <code>sudo</code> only when the command genuinely needs it. Mistakes run as root can delete the entire
+system. Never run your normal workflow as root.</p>
+<h3 id="stdout-stderr-and-exit-codes">stdout, stderr, and exit codes<a class="headerlink" href="#stdout-stderr-and-exit-codes" title="Permanent link">&para;</a></h3>
+<p>Every command writes output to two streams:</p>
+<table>
+<thead>
+<tr>
+<th>Stream</th>
+<th>Purpose</th>
+<th>Default destination</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>stdout</strong> (standard output)</td>
+<td>Normal results</td>
+<td>Your terminal screen</td>
+</tr>
+<tr>
+<td><strong>stderr</strong> (standard error)</td>
+<td>Error messages</td>
+<td>Your terminal screen (in red/mixed)</td>
+</tr>
+</tbody>
+</table>
+<p>Every command also exits with a <strong>exit code</strong> (a number). <code>0</code> means success. Any non-zero number
+means failure. CI/CD pipelines use exit codes to decide whether to continue or abort a pipeline.</p>
+<h3 id="pipes-and-redirects">Pipes and redirects<a class="headerlink" href="#pipes-and-redirects" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ls<span class="w"> </span>-l<span class="w"> </span>/etc<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;conf&quot;</span><span class="w">   </span><span class="c1"># pipe: send stdout of ls into grep&#39;s stdin</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>ls<span class="w"> </span>-l<span class="w"> </span>/etc<span class="w"> </span>&gt;<span class="w"> </span>listing.txt<span class="w">   </span><span class="c1"># redirect: write stdout to a file (overwrites)</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>ls<span class="w"> </span>-l<span class="w"> </span>/etc<span class="w"> </span>&gt;&gt;<span class="w"> </span>listing.txt<span class="w">  </span><span class="c1"># append: add stdout to end of file</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="nb">command</span><span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w">               </span><span class="c1"># merge stderr into stdout (useful in scripts)</span>
+</span></code></pre></div>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Pipe <code>|</code> matlab — pehle wale ka output seedha doosre ke
+muh mein. Jaise assembly line: ek kaam karo, result agle ko do.</p>
+</blockquote>
+<h3 id="filesystem-paths">Filesystem paths<a class="headerlink" href="#filesystem-paths" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Path form</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Absolute</strong></td>
+<td>Starts from root <code>/</code> — works from anywhere</td>
+<td><code>/etc/nginx/nginx.conf</code></td>
+</tr>
+<tr>
+<td><strong>Relative</strong></td>
+<td>Relative to current directory</td>
+<td><code>./scripts/deploy.sh</code></td>
+</tr>
+<tr>
+<td><strong>Home <code>~</code></strong></td>
+<td>Shorthand for your home directory</td>
+<td><code>~/.ssh/config</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="getting-help">Getting help<a class="headerlink" href="#getting-help" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>man<span class="w"> </span>ls<span class="w">          </span><span class="c1"># manual page for the ls command (press q to quit)</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>ls<span class="w"> </span>--help<span class="w">       </span><span class="c1"># shorter inline help for most commands</span>
+</span></code></pre></div>
+<h3 id="windows-note">Windows note<a class="headerlink" href="#windows-note" title="Permanent link">&para;</a></h3>
+<p>Windows CMD (Command Prompt) uses different syntax (<code>dir</code> not <code>ls</code>, backslashes, etc.). For this
+book, use <strong>WSL (Windows Subsystem for Linux)</strong> or <strong>Git Bash</strong> — both give you a real Linux/Bash
+environment on Windows so every command in the book works unchanged. See
+<a href="../00b-setup-runbook/">00b-setup-runbook</a> for installation.</p>
+<hr />
+<h2 id="package-managers">Package managers<a class="headerlink" href="#package-managers" title="Permanent link">&para;</a></h2>
+<p>A <strong>package manager</strong> downloads software, installs it, and resolves all its dependencies
+automatically — like an app store for developers, controlled from the terminal.</p>
+<table>
+<thead>
+<tr>
+<th>Manager</th>
+<th>Ecosystem</th>
+<th>Install a package</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>apt</strong> (Advanced Package Tool)</td>
+<td>Ubuntu/Debian Linux system packages</td>
+<td><code>sudo apt install nginx</code></td>
+</tr>
+<tr>
+<td><strong>pip</strong> (Pip Installs Packages)</td>
+<td>Python libraries</td>
+<td><code>pip install requests</code></td>
+</tr>
+<tr>
+<td><strong>npm</strong> (Node Package Manager)</td>
+<td>Node.js / JavaScript</td>
+<td><code>npm install express</code></td>
+</tr>
+<tr>
+<td><strong>brew</strong> (Homebrew)</td>
+<td>macOS system packages</td>
+<td><code>brew install git</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> <code>apt</code> = Ubuntu ka system-level app store. <code>pip</code> = Python ke liye
+extra books ki library. Dono alag dukaanein hain — <code>pip install nginx</code> kaam nahi karega.</p>
+</blockquote>
+<hr />
+<h2 id="linux-essentials-youll-actually-use">Linux essentials you'll actually use<a class="headerlink" href="#linux-essentials-youll-actually-use" title="Permanent link">&para;</a></h2>
+<h3 id="files-and-directories">Files and directories<a class="headerlink" href="#files-and-directories" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nb">pwd</span><span class="w">             </span><span class="c1"># Print Working Directory — where am I?</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>ls<span class="w"> </span>-lh<span class="w">          </span><span class="c1"># list files, human-readable sizes</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nb">cd</span><span class="w"> </span>/etc/nginx<span class="w">   </span><span class="c1"># Change Directory</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>cat<span class="w"> </span>file.txt<span class="w">    </span><span class="c1"># print a file to screen</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>less<span class="w"> </span>file.txt<span class="w">   </span><span class="c1"># scroll through a file (q to quit)</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>grep<span class="w"> </span><span class="s2">&quot;error&quot;</span><span class="w"> </span>app.log<span class="w">   </span><span class="c1"># search for &quot;error&quot; inside a file</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>src/app<span class="w">       </span><span class="c1"># make directories (including parents)</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>rm<span class="w"> </span>-rf<span class="w"> </span>old-dir/<span class="w">        </span><span class="c1"># remove directory and all contents (careful!)</span>
+</span></code></pre></div>
+<h3 id="root-vs-normal-user">Root vs normal user<a class="headerlink" href="#root-vs-normal-user" title="Permanent link">&para;</a></h3>
+<p>The <strong>root</strong> user (UID — User ID — 0) has unlimited system access. Normal users are restricted.
+On production servers you almost never log in as root directly — you use <code>sudo</code> for individual
+commands that need elevation.</p>
+<p><strong>File permissions</strong> in one paragraph: every file has three permission sets — owner, group,
+others — each with read (<code>r</code>), write (<code>w</code>), execute (<code>x</code>) flags. <code>chmod 755 script.sh</code> makes a
+script readable and executable by everyone, writable only by the owner. You will see this in
+Ansible and Docker labs; <code>ls -l</code> shows permissions in the first column.</p>
+<h3 id="processes-daemons-and-services">Processes, daemons, and services<a class="headerlink" href="#processes-daemons-and-services" title="Permanent link">&para;</a></h3>
+<p>A <strong>process</strong> is a running program. A <strong>daemon</strong> (background service) is a process that starts
+at boot and runs continuously without a terminal attached — <code>nginx</code>, <code>sshd</code> (SSH Daemon), and
+<code>kubelet</code> are all daemons. On modern Linux, <code>systemd</code> manages daemons.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>systemctl<span class="w"> </span>status<span class="w"> </span>nginx<span class="w">      </span><span class="c1"># is nginx running?</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>systemctl<span class="w"> </span>restart<span class="w"> </span>nginx<span class="w">     </span><span class="c1"># restart it</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>journalctl<span class="w"> </span>-u<span class="w"> </span>nginx<span class="w"> </span>-f<span class="w">      </span><span class="c1"># tail nginx logs in real time</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>ps<span class="w"> </span>aux<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>nginx<span class="w">         </span><span class="c1"># find nginx processes by name</span>
+</span></code></pre></div>
+<hr />
+<h2 id="yaml-the-language-of-every-config-file">YAML — the language of every config file<a class="headerlink" href="#yaml-the-language-of-every-config-file" title="Permanent link">&para;</a></h2>
+<p>YAML (YAML Ain't Markup Language — yes, a recursive name) is the format used by <strong>Docker Compose,
+Ansible playbooks, Kubernetes manifests, and every CI/CD pipeline file</strong> in this book. Mastering
+YAML means mastering half the frustration of DevOps config.</p>
+<h3 id="the-five-rules">The five rules<a class="headerlink" href="#the-five-rules" title="Permanent link">&para;</a></h3>
+<p><strong>Rule 1 — <code>key: value</code> pairs</strong></p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gaurav</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="nt">age</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">28</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nt">active</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span></code></pre></div>
+<p><strong>Rule 2 — Indentation = structure. 2 spaces. NEVER tabs.</strong></p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># CORRECT</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nt">server</span><span class="p">:</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="c1"># BROKEN — mixed indent or tab causes a parse error</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="nt">server</span><span class="p">:</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span><span class="w">    </span><span class="c1"># 4 spaces instead of 2 — may parse but inconsistent</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w w-Error">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8080</span><span class="w">          </span><span class="c1"># misaligned — YAML parser will reject or misread</span>
+</span></code></pre></div>
+<blockquote>
+<p>⚠️ <strong>Wrong indentation is the #1 YAML bug for beginners.</strong> Configure your editor to
+show tabs as errors and auto-indent with 2 spaces.</p>
+</blockquote>
+<p><strong>Rule 3 — <code>-</code> starts a list item</strong></p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">tools</span><span class="p">:</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">terraform</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ansible</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes</span>
+</span></code></pre></div>
+<p><strong>Rule 4 — Nesting is unlimited — just keep the 2-space rule</strong></p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nt">app</span><span class="p">:</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">url-shortener</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span><span class="nt">env</span><span class="p">:</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DB_HOST</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">      </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres.default.svc.cluster.local</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DB_PORT</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">      </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;5432&quot;</span>
+</span></code></pre></div>
+<p><strong>Rule 5 — <code>#</code> is a comment; data types matter</strong></p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># This whole line is a comment</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span><span class="w">         </span><span class="c1"># integer</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;5432&quot;</span><span class="w">       </span><span class="c1"># string — quotes force string type</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">      </span><span class="c1"># boolean — always use lowercase true/false; &quot;yes&quot;/&quot;no&quot; are booleans in YAML 1.1 parsers (e.g. PyYAML default) but plain strings in YAML 1.2 — avoid them</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span><span class="w">     </span><span class="c1"># multi-line string: | preserves newlines</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">  </span><span class="no">Line one.</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">  </span><span class="no">Line two.</span>
+</span></code></pre></div>
+<blockquote>
+<p>🔮 <strong>Predict pehle (socho, phir aage padho):</strong> Is YAML snippet mein tab character hai, spaces nahi — parser kya karega, aur error kahan dikhega?</p>
+</blockquote>
+<h3 id="valid-vs-broken-spot-the-difference">Valid vs broken — spot the difference<a class="headerlink" href="#valid-vs-broken-spot-the-difference" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># ✅ VALID</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nt">database</span><span class="p">:</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db.internal</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5432</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">  </span><span class="nt">credentials</span><span class="p">:</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">    </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">admin</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">    </span><span class="nt">password</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">secret</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="c1"># ❌ BROKEN — tab character used for indent (invisible but fatal)</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="nt">database</span><span class="p">:</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a><span class="w">    </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">db.internal</span><span class="w">    </span><span class="c1"># ← tab, not spaces — YAML will reject this</span>
+</span></code></pre></div>
+<h3 id="yaml-vs-json-javascript-object-notation">YAML vs JSON (JavaScript Object Notation)<a class="headerlink" href="#yaml-vs-json-javascript-object-notation" title="Permanent link">&para;</a></h3>
+<p>Kubernetes accepts both; CI tools almost always use YAML. JSON is what APIs return (see HTTP
+section). Knowing both is useful; YAML is what you write, JSON is often what you read from APIs.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>YAML</th>
+<th>JSON</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Human readability</td>
+<td>High</td>
+<td>Medium</td>
+</tr>
+<tr>
+<td>Comments</td>
+<td>Yes (<code>#</code>)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Indentation required</td>
+<td>Yes — strict</td>
+<td>No (uses <code>{}</code> and <code>[]</code>)</td>
+</tr>
+<tr>
+<td>Used for</td>
+<td>Config files</td>
+<td>API payloads</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> YAML ek to-do list ki tarah hai — indent se structure pata
+chalta hai. Tab aur space ka farak aankhon se nahi dikta, par computer ke liye zameen-aasmaan
+ka farak hai.</p>
+</blockquote>
+<hr />
+<h2 id="git-the-spine-of-the-whole-book">Git — the spine of the whole book<a class="headerlink" href="#git-the-spine-of-the-whole-book" title="Permanent link">&para;</a></h2>
+<p><strong>Git</strong> is a version-control system. Every file you write for DevOps — Terraform configs,
+Dockerfiles, Kubernetes manifests, Ansible playbooks — lives in a Git <strong>repository</strong> (repo). Git
+tracks every change, who made it, and when. It is also the trigger for every CI/CD pipeline.</p>
+<h3 id="core-concepts">Core concepts<a class="headerlink" href="#core-concepts" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Repository (repo)</strong></td>
+<td>A folder tracked by Git — contains your files + the full history of every change</td>
+</tr>
+<tr>
+<td><strong>Working directory</strong></td>
+<td>Files on your disk that you are currently editing</td>
+</tr>
+<tr>
+<td><strong>Staging area (index)</strong></td>
+<td>A holding area — you <code>git add</code> files here before committing</td>
+</tr>
+<tr>
+<td><strong>Commit</strong></td>
+<td>A saved snapshot of staged changes, with a unique ID (SHA — Secure Hash Algorithm)</td>
+</tr>
+<tr>
+<td><strong>Branch</strong></td>
+<td>A parallel line of development — <code>main</code> is the default; feature branches keep work isolated</td>
+</tr>
+<tr>
+<td><strong>Remote</strong></td>
+<td>A copy of the repo on a server, e.g. GitHub or GitLab — enables collaboration and is what CI reads</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-four-commands-you-will-use-every-day">The four commands you will use every day<a class="headerlink" href="#the-four-commands-you-will-use-every-day" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/org/repo.git<span class="w">   </span><span class="c1"># copy a remote repo to your machine</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>git<span class="w"> </span>add<span class="w"> </span>terraform/main.tf<span class="w">                   </span><span class="c1"># stage a specific file</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: add VPC module&quot;</span><span class="w">        </span><span class="c1"># save a snapshot with a message</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>main<span class="w">                        </span><span class="c1"># upload commits to the remote</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>git<span class="w"> </span>pull<span class="w">                                    </span><span class="c1"># download and merge remote changes</span>
+</span></code></pre></div>
+<h3 id="a-commit-timeline">A commit timeline<a class="headerlink" href="#a-commit-timeline" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>time ──────────────────────────────────────────────────────────►
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>  A───B───C───D      ← main branch
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>          │
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>          └───E───F  ← feature/add-cicd  (branch off from C)
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>  A = Initial commit (Terraform base)
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>  B = feat: add VPC
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>  C = feat: add EC2 module
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>  D = chore: update README            ← latest on main
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>  E = feat: add GitHub Actions file   ← your work-in-progress
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>  F = fix: correct image tag          ← pushed to PR, gets reviewed
+</span></code></pre></div>
+<h3 id="undo-with-git-revert">Undo with <code>git revert</code><a class="headerlink" href="#undo-with-git-revert" title="Permanent link">&para;</a></h3>
+<p><code>git revert &lt;commit-sha&gt;</code> creates a <strong>new commit</strong> that undoes the changes of the target commit.
+It does not delete history — it is the safe, production-friendly way to roll back. You will see
+this pattern in <a href="../08-M7-gitops/">M7 GitOps</a> and the capstone.</p>
+<h3 id="gitignore-never-commit-secrets-or-state-files"><code>.gitignore</code> — never commit secrets or state files<a class="headerlink" href="#gitignore-never-commit-secrets-or-state-files" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a># .gitignore
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>*.tfstate           # Terraform state — contains plaintext secrets
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>*.tfstate.backup
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>.env                # environment files — contain passwords and API keys
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>node_modules/       # dependency folder — can be 100k files; regenerate with npm install
+</span></code></pre></div>
+<blockquote>
+<p>⚠️ <strong>Once a secret is committed to Git history it is exposed — even if you delete the
+file in the next commit.</strong> Git history is permanent. Rotate any secret that ever touched a
+commit.</p>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Git ek time machine hai for your code. <code>commit</code> = ek save point
+banao. <code>push</code> = woh save point GitHub pe bhejo. <code>clone</code> = doosre ki machine se saari history
+apne paas laao. GitOps ka matlab: yeh time machine hi production ki "sach" ban jaati hai.</p>
+</blockquote>
+<hr />
+<h2 id="networking-from-zero">Networking from zero<a class="headerlink" href="#networking-from-zero" title="Permanent link">&para;</a></h2>
+<h3 id="ip-address-and-port">IP address and port<a class="headerlink" href="#ip-address-and-port" title="Permanent link">&para;</a></h3>
+<p>An <strong>IP (Internet Protocol) address</strong> is a machine's address on a network — like a postal
+address for computers. An <strong>IPv4</strong> address looks like <code>192.168.1.10</code> (four numbers, 0–255, dot
+separated).</p>
+<p>A <strong>port</strong> is a numbered doorway on that address. The same machine can run many services by
+putting each on a different port. Ports 0–1023 are reserved system ports; ports 1024–65535 are
+available for apps.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>  Machine at 10.0.0.5
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>  ┌────────────────────────────────┐
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>  │  :80   nginx (HTTP server)     │
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>  │  :443  nginx (HTTPS server)    │
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>  │  :5432 PostgreSQL database     │
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>  │  :8080 your app                │
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>  └────────────────────────────────┘
+</span></code></pre></div>
+<h3 id="localhost-127001-and-0000">localhost, 127.0.0.1, and 0.0.0.0<a class="headerlink" href="#localhost-127001-and-0000" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Address</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>localhost</code> / <code>127.0.0.1</code></td>
+<td>The machine itself — traffic never leaves the box</td>
+</tr>
+<tr>
+<td><code>0.0.0.0</code></td>
+<td>"Bind to all network interfaces" — used in server config to accept external traffic</td>
+</tr>
+<tr>
+<td><code>::1</code></td>
+<td>IPv6 localhost</td>
+</tr>
+</tbody>
+</table>
+<p>When a Kubernetes pod exposes port 8080 on <code>0.0.0.0</code>, it is reachable from outside the container.
+When it binds to <code>127.0.0.1</code> only, it is reachable only from within the same container.</p>
+<h3 id="dns-the-phonebook">DNS — the phonebook<a class="headerlink" href="#dns-the-phonebook" title="Permanent link">&para;</a></h3>
+<p><strong>DNS (Domain Name System)</strong> translates human-readable names (<code>google.com</code>) into IP addresses
+(<code>142.250.80.46</code>). Without DNS you would need to memorise IP addresses. In Kubernetes, DNS is
+also how services find each other: <code>postgres.default.svc.cluster.local</code> resolves to the IP of
+the Postgres Service inside the cluster.</p>
+<h3 id="cidr-notation-how-many-addresses">CIDR notation — how many addresses?<a class="headerlink" href="#cidr-notation-how-many-addresses" title="Permanent link">&para;</a></h3>
+<p><strong>CIDR (Classless Inter-Domain Routing)</strong> notation expresses a range of IP addresses as
+<code>address/prefix-length</code>. The prefix length (the number after <code>/</code>) tells you how many bits are
+fixed — the rest are free to vary.</p>
+<table>
+<thead>
+<tr>
+<th>CIDR</th>
+<th>Fixed bits</th>
+<th>Free bits</th>
+<th>Addresses</th>
+<th>Use case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>/32</code></td>
+<td>32</td>
+<td>0</td>
+<td>1</td>
+<td>A single host</td>
+</tr>
+<tr>
+<td><code>/24</code></td>
+<td>24</td>
+<td>8</td>
+<td>256</td>
+<td>A small subnet</td>
+</tr>
+<tr>
+<td><code>/16</code></td>
+<td>16</td>
+<td>16</td>
+<td>65,536</td>
+<td>A VPC (Virtual Private Cloud)</td>
+</tr>
+<tr>
+<td><code>/8</code></td>
+<td>8</td>
+<td>24</td>
+<td>16,777,216</td>
+<td>A very large block</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Rule of thumb:</strong> bigger number after <code>/</code> = smaller network. <code>/24</code> is smaller than <code>/16</code>.</p>
+<p>A typical AWS VPC uses <code>10.0.0.0/16</code> (65k addresses total), then carves it into subnets like
+<code>10.0.1.0/24</code> (256 addresses each, one per availability zone).</p>
+<h3 id="public-vs-private-ip">Public vs private IP<a class="headerlink" href="#public-vs-private-ip" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Private</th>
+<th>Public</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Range</td>
+<td><code>10.x.x.x</code>, <code>172.16-31.x.x</code>, <code>192.168.x.x</code></td>
+<td>Everything else</td>
+</tr>
+<tr>
+<td>Reachable from internet?</td>
+<td>No — only inside your network</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Cost on AWS</td>
+<td>Free</td>
+<td>Charged per hour (from Feb 2024)</td>
+</tr>
+</tbody>
+</table>
+<p>Nodes inside a VPC get private IPs. A load balancer or NAT (Network Address Translation) gateway
+mediates between them and the public internet.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> IP address = makaan ka pata. Port = ghar ka kamra number. DNS =
+phonebook jo naam se pata dhundh ke deta hai. CIDR <code>/24</code> = ek mohalla (256 ghar). <code>/16</code> =
+ek sheher (65k ghar). Bada number = chhota ilaqa.</p>
+</blockquote>
+<hr />
+<h2 id="http-apis">HTTP &amp; APIs<a class="headerlink" href="#http-apis" title="Permanent link">&para;</a></h2>
+<h3 id="request-and-response">Request and response<a class="headerlink" href="#request-and-response" title="Permanent link">&para;</a></h3>
+<p><strong>HTTP (HyperText Transfer Protocol)</strong> is the language of the web — and of most microservices.
+Every interaction is a <strong>request</strong> (client asks) and a <strong>response</strong> (server answers).</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>CLIENT                              SERVER
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>  │                                   │
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>  │  GET /health HTTP/1.1             │
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>  │  Host: api.example.com ──────────►│
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>  │                                   │
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>  │◄─────────────── HTTP/1.1 200 OK   │
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>  │                 {&quot;status&quot;:&quot;ok&quot;}   │
+</span></code></pre></div>
+<h3 id="http-methods">HTTP methods<a class="headerlink" href="#http-methods" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Method</th>
+<th>Meaning</th>
+<th>Typical use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GET</strong></td>
+<td>Read a resource</td>
+<td>Fetch a page, check <code>/health</code></td>
+</tr>
+<tr>
+<td><strong>POST</strong></td>
+<td>Create a resource</td>
+<td>Submit a form, create a record</td>
+</tr>
+<tr>
+<td><strong>PUT</strong></td>
+<td>Replace a resource</td>
+<td>Update a record completely</td>
+</tr>
+<tr>
+<td><strong>DELETE</strong></td>
+<td>Remove a resource</td>
+<td>Delete a record</td>
+</tr>
+</tbody>
+</table>
+<h3 id="status-codes">Status codes<a class="headerlink" href="#status-codes" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Range</th>
+<th>Category</th>
+<th>Key codes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>2xx</strong></td>
+<td>Success</td>
+<td><code>200 OK</code>, <code>201 Created</code>, <code>204 No Content</code></td>
+</tr>
+<tr>
+<td><strong>3xx</strong></td>
+<td>Redirect</td>
+<td><code>301 Moved Permanently</code>, <code>302 Found (temporary)</code></td>
+</tr>
+<tr>
+<td><strong>4xx</strong></td>
+<td>Client error (your fault)</td>
+<td><code>400 Bad Request</code>, <code>401 Unauthorised</code>, <code>403 Forbidden</code>, <code>404 Not Found</code></td>
+</tr>
+<tr>
+<td><strong>5xx</strong></td>
+<td>Server error (server's fault)</td>
+<td><code>500 Internal Server Error</code>, <code>502 Bad Gateway</code>, <code>503 Service Unavailable</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>502 Bad Gateway in Kubernetes context:</strong> the load balancer (Nginx Ingress or ALB — Application
+Load Balancer) received your request but got no valid response from the backend pod. The pod is
+crashing, not yet ready, or does not exist. Check <code>kubectl get pods</code> and <code>kubectl logs</code>.</p>
+<p><strong>503 Service Unavailable:</strong> the server is up but overloaded or in maintenance, or in Kubernetes
+there are zero healthy pods matching the Service selector. Usually a scaling or readiness-probe
+problem.</p>
+<h3 id="rest-apis-and-json">REST APIs and JSON<a class="headerlink" href="#rest-apis-and-json" title="Permanent link">&para;</a></h3>
+<p>A <strong>REST API (Representational State Transfer Application Programming Interface)</strong> is a convention
+for building HTTP services: resources are URLs, actions are HTTP methods, data travels as
+<strong>JSON (JavaScript Object Notation)</strong> — a lightweight key-value text format identical in
+structure to a Python dictionary.</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="p">{</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">  </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;abc123&quot;</span><span class="p">,</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span><span class="nt">&quot;url&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;https://example.com/very/long/path&quot;</span><span class="p">,</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">  </span><span class="nt">&quot;short_code&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;xyz9&quot;</span><span class="p">,</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">  </span><span class="nt">&quot;created_at&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2025-07-02T10:00:00Z&quot;</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="p">}</span>
+</span></code></pre></div>
+<h3 id="curl-your-api-test-tool"><code>curl</code> — your API test tool<a class="headerlink" href="#curl-your-api-test-tool" title="Permanent link">&para;</a></h3>
+<p><strong>curl</strong> (Client URL) makes HTTP requests from the terminal.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>curl<span class="w"> </span>https://api.github.com<span class="w">                          </span><span class="c1"># GET request, prints JSON</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>curl<span class="w"> </span>-I<span class="w"> </span>https://api.github.com<span class="w">                       </span><span class="c1"># headers only (shows status code)</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>https://api.example.com/shorten<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">  </span>-d<span class="w"> </span><span class="s1">&#39;{&quot;url&quot;:&quot;https://example.com&quot;}&#39;</span><span class="w">                 </span><span class="c1"># POST with JSON body</span>
+</span></code></pre></div>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> HTTP ek waiter-customer game hai. Customer (browser/curl) ek
+order deta hai (request). Waiter (server) khana laata hai (response). 2xx matlab khana aa
+gaya. 4xx matlab tumne galat order diya. 5xx matlab kitchen mein aag lagi. 502 matlab waiter
+ne kitchen ko dhundha hi nahi — pod crash hua hoga.</p>
+</blockquote>
+<hr />
+<h2 id="the-10-words-the-book-uses-before-defining-them">The 10 words the book uses before defining them<a class="headerlink" href="#the-10-words-the-book-uses-before-defining-them" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>⚠️ These words appear in the first few modules. This table prevents that "what did they just
+say?" moment.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Word</th>
+<th>What it means here</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>manifest</strong></td>
+<td>A YAML file that describes a desired Kubernetes object (Deployment, Service, etc.) — you write it; Kubernetes reconciles reality to match it</td>
+</tr>
+<tr>
+<td><strong>registry vs repository</strong></td>
+<td><strong>Registry</strong> = where Docker <em>images</em> live (e.g. AWS ECR — Elastic Container Registry, DockerHub). <strong>Repository</strong> = where <em>code</em> lives (e.g. GitHub). Different things — do not confuse them</td>
+</tr>
+<tr>
+<td><strong>node</strong></td>
+<td>A worker machine (physical or virtual) in a Kubernetes cluster — NOT Node.js. A 3-node cluster = 3 servers</td>
+</tr>
+<tr>
+<td><strong>namespace ⚠️ (two meanings)</strong></td>
+<td><strong>(1) Linux namespace:</strong> a kernel primitive that isolates a container's view of processes, network, and filesystem (see <a href="../04-M3-docker/">M3</a>). <strong>(2) Kubernetes namespace:</strong> a virtual folder that groups related K8s objects, like a project folder (see <a href="../05-M4-kubernetes-core/">M4</a>). Same word — completely unrelated ideas</td>
+</tr>
+<tr>
+<td><strong>daemon</strong></td>
+<td>A background process that starts at boot and runs continuously (nginx, sshd, kubelet). Managed by systemd on modern Linux</td>
+</tr>
+<tr>
+<td><strong>image vs container</strong></td>
+<td><strong>Image</strong> = a frozen blueprint (like a <code>.iso</code> file). <strong>Container</strong> = a running instance of that image. Many containers can run from one image</td>
+</tr>
+<tr>
+<td><strong>flag / option</strong></td>
+<td>A modifier you pass to a command: <code>-v</code> (short), <code>--verbose</code> (long). Flags change how a command behaves without changing what it acts on</td>
+</tr>
+<tr>
+<td><strong>environment variable</strong></td>
+<td>A named piece of config injected into a process at startup (e.g. <code>DB_HOST=postgres</code>). Set in shell with <code>export</code>, in Docker with <code>-e</code>, in K8s with <code>env:</code> in the manifest. The safe alternative to hardcoding config</td>
+</tr>
+<tr>
+<td><strong>endpoint</strong></td>
+<td>A specific URL and method that a service answers on (e.g. <code>GET /health</code>, <code>POST /shorten</code>). "The API endpoint for creating a URL" = the POST route</td>
+</tr>
+<tr>
+<td><strong>cluster</strong></td>
+<td>A group of machines (nodes) managed together as one system by Kubernetes — you deploy to the cluster; K8s decides which node runs your pod</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="beginner-mistakes-vs-senior-insights">Beginner mistakes vs senior insights<a class="headerlink" href="#beginner-mistakes-vs-senior-insights" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Beginner does</th>
+<th>Senior does</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Uses tabs in YAML</td>
+<td>Uses 2 spaces, enforced by editor</td>
+<td>Tab in YAML causes a parse error that is invisible to the eye</td>
+</tr>
+<tr>
+<td><code>git add .</code> every time</td>
+<td>Stages specific files: <code>git add file.tf</code></td>
+<td>Avoids accidentally committing <code>.env</code> or <code>*.tfstate</code></td>
+</tr>
+<tr>
+<td>Hardcodes passwords in config files</td>
+<td>Uses environment variables; <code>.gitignore</code> + secret manager</td>
+<td>Secrets in Git history are permanent leaks even if deleted later</td>
+</tr>
+<tr>
+<td>Runs everything as <code>sudo</code></td>
+<td>Uses <code>sudo</code> only for commands that need root</td>
+<td>One typo as root can delete the OS</td>
+</tr>
+<tr>
+<td>Ignores exit codes in scripts</td>
+<td>Adds <code>set -e</code> to bash scripts</td>
+<td>Without <code>set -e</code>, a failed command silently continues and causes data loss</td>
+</tr>
+<tr>
+<td>Calls <code>502</code> a "server error"</td>
+<td>Diagnoses: load balancer cannot reach a healthy backend pod</td>
+<td><code>502</code> is a proxy/LB issue; knowing this cuts debug time from 30 min to 2 min</td>
+</tr>
+<tr>
+<td>Treats <code>/24</code> as "bigger" than <code>/16</code></td>
+<td>Knows <code>/24</code> = 256 addresses, <code>/16</code> = 65k</td>
+<td>Bigger prefix = smaller network — counter-intuitive, worth memorising</td>
+</tr>
+<tr>
+<td>Confuses Docker registry with code repo</td>
+<td>Keeps them strictly separate in speech and config</td>
+<td>Wrong registry URL = broken pull in K8s, wrong push in CI</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="memory-shortcuts">Memory shortcuts<a class="headerlink" href="#memory-shortcuts" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Hook</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Exit code <code>0</code></td>
+<td>Zero = zero problems = success</td>
+</tr>
+<tr>
+<td>YAML indent</td>
+<td>2 spaces, never a tab — "two fingers, no tabs"</td>
+</tr>
+<tr>
+<td>Git flow</td>
+<td>add → commit → push = stage → snapshot → upload</td>
+</tr>
+<tr>
+<td><code>git revert</code></td>
+<td>Creates a new commit to undo — history stays intact; safe in production</td>
+</tr>
+<tr>
+<td><code>/24</code> vs <code>/16</code></td>
+<td>Bigger number = smaller neighbourhood</td>
+</tr>
+<tr>
+<td><code>127.0.0.1</code></td>
+<td>Always home — traffic never leaves the machine</td>
+</tr>
+<tr>
+<td><code>0.0.0.0</code></td>
+<td>"Open door" — listen on every network interface</td>
+</tr>
+<tr>
+<td><code>502</code> in K8s</td>
+<td>Proxy got no answer from pod — check <code>kubectl get pods</code></td>
+</tr>
+<tr>
+<td>image vs container</td>
+<td>Image = recipe card · Container = the dish on the table</td>
+</tr>
+<tr>
+<td>namespace ⚠️</td>
+<td>Linux namespace = container wall · K8s namespace = project folder — same word, opposite scale</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>The one thing to remember</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Terminal</td>
+<td><code>command [flags] [argument]</code> — exit 0 = success, non-zero = failure</td>
+</tr>
+<tr>
+<td>Package managers</td>
+<td>apt = OS packages · pip = Python · npm = Node — they are separate stores</td>
+</tr>
+<tr>
+<td>Linux essentials</td>
+<td><code>ls cd cat grep</code> + <code>systemctl</code> for services + <code>sudo</code> only when needed</td>
+</tr>
+<tr>
+<td>YAML</td>
+<td>2-space indent (NEVER tabs) — wrong indent is the #1 silent bug</td>
+</tr>
+<tr>
+<td>Git</td>
+<td>add → commit → push; never commit secrets; <code>.gitignore</code> is your safety net</td>
+</tr>
+<tr>
+<td>Networking</td>
+<td>IP = address, port = door, DNS = phonebook, <code>/24</code> &lt; <code>/16</code> in size</td>
+</tr>
+<tr>
+<td>HTTP</td>
+<td>GET/POST/PUT/DELETE; 2xx ok, 4xx your fault, 5xx server fault; 502 = no backend</td>
+</tr>
+<tr>
+<td>Glossary</td>
+<td>namespace means TWO things; registry ≠ repository; node ≠ Node.js</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="self-check-quiz">Self-check quiz<a class="headerlink" href="#self-check-quiz" title="Permanent link">&para;</a></h2>
+<p><strong>Pehle memory se jawab do, phir neeche kholo.</strong></p>
+<ol>
+<li>You run a command and get exit code <code>1</code>. What does that mean — and how would a CI pipeline
+   react?</li>
+<li>A colleague's YAML file fails to parse. You look at the indentation and it looks right.
+   What is the most likely invisible cause?</li>
+<li>What is the difference between <code>git commit</code> and <code>git push</code>? Which one is local?</li>
+<li>You open a website and see <code>503 Service Unavailable</code>. In a Kubernetes cluster, what is the
+   most likely cause?</li>
+<li>Your VPC CIDR is <code>10.0.0.0/16</code>. You carve a subnet as <code>10.0.1.0/24</code>. How many addresses
+   does the subnet have?</li>
+<li>An Ansible playbook stores the DB password as a YAML value and the file is committed to
+   GitHub. What should happen immediately?</li>
+<li>What does <code>curl -I https://api.github.com</code> do — and what output tells you the request
+   succeeded?</li>
+<li>A junior engineer says "I deployed the image to the repository." What two words are
+   confused, and what are the correct terms?</li>
+</ol>
+<details>
+<summary>Jawab dekho</summary>
+<ol>
+<li>
+<p>Exit code <code>1</code> (any non-zero) means failure. A CI pipeline with <code>set -e</code> or a standard
+   pipeline runner will stop the build, mark it failed, and not proceed to the next step —
+   preventing a broken change from reaching production.</p>
+</li>
+<li>
+<p>The most likely invisible cause is a <strong>tab character</strong> instead of spaces. Tabs look like
+   spaces in many editors but YAML parsers reject them. Enable "show whitespace" in your editor
+   to spot this.</p>
+</li>
+<li>
+<p><code>git commit</code> saves a snapshot <strong>locally</strong> — nothing leaves your machine. <code>git push</code> uploads
+   your local commits to the remote (GitHub/GitLab). You can have many commits locally before
+   you push once. <code>commit</code> is local; <code>push</code> is network.</p>
+</li>
+<li>
+<p>In Kubernetes, <code>503</code> usually means <strong>zero healthy pods</strong> match the Service's selector — the
+   Deployment has no running pods, all pods are crashing (CrashLoopBackOff), or readiness probes
+   are failing. Check <code>kubectl get pods -n &lt;namespace&gt;</code> and <code>kubectl describe service</code>.</p>
+</li>
+<li>
+<p>A <code>/24</code> subnet has <strong>256 addresses</strong> (2^8 = 256). AWS reserves 5 of them, leaving 251
+   usable for resources.</p>
+</li>
+<li>
+<p><strong>Immediately rotate the secret.</strong> Git history is permanent — even if you delete the file
+   in the next commit, the secret exists in every prior commit and any clone. Change the DB
+   password now, update it in a proper secret manager, and add <code>*.env</code> and credentials files to
+   <code>.gitignore</code>.</p>
+</li>
+<li>
+<p><code>curl -I</code> sends a HEAD request — it retrieves <strong>only the HTTP headers</strong>, not the body. The
+   first line of the output shows the status code: <code>HTTP/2 200</code> confirms the request succeeded.</p>
+</li>
+<li>
+<p>The junior confused <strong>image</strong> and <strong>registry</strong> with <strong>code</strong> and <strong>repository</strong>. Correct
+   usage: "I pushed the <strong>Docker image</strong> to the <strong>registry</strong> (ECR/DockerHub)." A repository is
+   where source code lives (GitHub). A registry is where container images live. Different
+   systems entirely.</p>
+</li>
+</ol>
+</details>
+<hr />
+<h2 id="hands-on-lab">Hands-on lab<a class="headerlink" href="#hands-on-lab" title="Permanent link">&para;</a></h2>
+<p>Zero cost. No cloud account needed. Do this in your terminal (WSL or Git Bash on Windows —
+see <a href="../00b-setup-runbook/">00b-setup-runbook</a> if you haven't installed these yet).</p>
+<p><strong>Step 1 — Orient yourself in the terminal</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nb">pwd</span><span class="w">                    </span><span class="c1"># print current directory</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>ls<span class="w"> </span>-lh<span class="w"> </span>~<span class="w">               </span><span class="c1"># list your home directory with sizes</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;Hello DevOps&quot;</span><span class="w">    </span><span class="c1"># print a string to stdout</span>
+</span></code></pre></div>
+<p><strong>Step 2 — Write a valid YAML file, then break it</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># Write a valid YAML config</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>/tmp/test.yaml<span class="w"> </span><span class="s">&lt;&lt; &#39;EOF&#39;</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="s">app:</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="s">  name: url-shortener</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="s">  port: 8080</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="s">  env:</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="s">    - name: DB_HOST</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="s">      value: localhost</span>
+</span><span id="__span-21-9"><a id="__codelineno-21-9" name="__codelineno-21-9" href="#__codelineno-21-9"></a><span class="s">EOF</span>
+</span><span id="__span-21-10"><a id="__codelineno-21-10" name="__codelineno-21-10" href="#__codelineno-21-10"></a>
+</span><span id="__span-21-11"><a id="__codelineno-21-11" name="__codelineno-21-11" href="#__codelineno-21-11"></a><span class="c1"># Validate it (python is available in WSL)</span>
+</span><span id="__span-21-12"><a id="__codelineno-21-12" name="__codelineno-21-12" href="#__codelineno-21-12"></a>python3<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;import yaml, sys; yaml.safe_load(open(&#39;/tmp/test.yaml&#39;)); print(&#39;YAML is valid&#39;)&quot;</span>
+</span><span id="__span-21-13"><a id="__codelineno-21-13" name="__codelineno-21-13" href="#__codelineno-21-13"></a>
+</span><span id="__span-21-14"><a id="__codelineno-21-14" name="__codelineno-21-14" href="#__codelineno-21-14"></a><span class="c1"># Now deliberately break the indent — change &quot;  port&quot; to &quot; port&quot; (1 space instead of 2)</span>
+</span><span id="__span-21-15"><a id="__codelineno-21-15" name="__codelineno-21-15" href="#__codelineno-21-15"></a><span class="c1"># Edit the file in any text editor, then re-run the python command.</span>
+</span><span id="__span-21-16"><a id="__codelineno-21-16" name="__codelineno-21-16" href="#__codelineno-21-16"></a><span class="c1"># You will see: yaml.scanner.ScannerError — that is the indent bug in action.</span>
+</span></code></pre></div>
+<p><strong>Step 3 — Git: init a repo and make your first commit</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>mkdir<span class="w"> </span>-p<span class="w"> </span>~/devops-lab<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>~/devops-lab
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>git<span class="w"> </span>init
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;# DevOps Lab&quot;</span><span class="w"> </span>&gt;<span class="w"> </span>README.md
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>git<span class="w"> </span>add<span class="w"> </span>README.md
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;chore: initial commit&quot;</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w">            </span><span class="c1"># should show exactly 1 commit</span>
+</span></code></pre></div>
+<p><strong>Step 4 — curl an API and read the response</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>curl<span class="w"> </span>-s<span class="w"> </span>https://api.github.com<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-20<span class="w">      </span><span class="c1"># JSON response, first 20 lines</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>curl<span class="w"> </span>-I<span class="w"> </span>https://api.github.com<span class="w">                 </span><span class="c1"># headers only — look for &quot;HTTP/2 200&quot;</span>
+</span></code></pre></div>
+<p><strong>✅ Sahi hua to aisa dikhega:</strong></p>
+<ul>
+<li><code>pwd</code> prints a path like <code>/home/gaurav</code> or <code>/c/Users/Gaurav</code></li>
+<li>Valid YAML check prints <code>YAML is valid</code>; broken-indent YAML shows a <code>ScannerError</code> with a line
+  number</li>
+<li><code>git log --oneline</code> shows one line like <code>a1b2c3d chore: initial commit</code></li>
+<li><code>curl -I</code> returns <code>HTTP/2 200</code> on the first line; <code>curl -s</code> returns a JSON object starting
+  with <code>{"current_user_url":...</code></li>
+</ul>
+<p>If any step fails, read the error message carefully — the terminal always tells you what went
+wrong. Getting comfortable with that habit is itself the lesson.</p>
+<hr />
+<h2 id="where-next">Where next<a class="headerlink" href="#where-next" title="Permanent link">&para;</a></h2>
+<p>You now have the ground floor. Two short stops before the real modules:</p>
+<ol>
+<li><strong><a href="../00b-setup-runbook/">00b-setup-runbook</a></strong> — install every tool the book uses (WSL, Git,
+   kubectl, Terraform, Helm, AWS CLI, etc.) in one sitting.</li>
+<li><strong><a href="../01-M0-foundations/">M0 — Foundations</a></strong> — the DevOps mental model: two loops, four
+   layers, stateful vs stateless, pets vs cattle. The conceptual frame every later tool hangs on.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../00-INDEX/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Curriculum (Index)">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Curriculum (Index)
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../00b-setup-runbook/" class="md-footer__link md-footer__link--next" aria-label="Next: 00b · Setup runbook">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                00b · Setup runbook
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 grvtech1 — licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/grvtech1/devops-handbook" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "announce.dismiss"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/progress.js"></script>
+      
+    
+  </body>
+</html>

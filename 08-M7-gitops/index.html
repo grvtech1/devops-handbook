@@ -1,0 +1,3888 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free, zero-to-job-ready DevOps handbook — from "what is a terminal" to production- and interview-ready. Systems thinking, hands-on labs, capstones.">
+      
+      
+      
+        <link rel="canonical" href="https://grvtech1.github.io/devops-handbook/08-M7-gitops/">
+      
+      
+        <link rel="prev" href="../07-M6-cicd/">
+      
+      
+        <link rel="next" href="../09-connected-system/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>M7 · GitOps - The DevOps Engineer's Handbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%206a6%206%200%200%201%206%206c0%202.22-1.21%204.16-3%205.2V19a1%201%200%200%201-1%201h-4a1%201%200%200%201-1-1v-1.8c-1.79-1.04-3-2.98-3-5.2a6%206%200%200%201%206-6m2%2015v1a1%201%200%200%201-1%201h-2a1%201%200%200%201-1-1v-1zm6-10h3v2h-3zM1%2011h3v2H1zM13%201v3h-2V1zM4.92%203.5l2.13%202.14-1.42%201.41L3.5%204.93zm12.03%202.13%202.12-2.13%201.43%201.43-2.13%202.12z%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m13.13%2022.19-1.63-3.83c1.57-.58%203.04-1.36%204.4-2.27zM5.64%2012.5l-3.83-1.63%206.1-2.77C7%209.46%206.22%2010.93%205.64%2012.5M21.61%202.39S16.66.269%2011%205.93c-2.19%202.19-3.5%204.6-4.35%206.71-.28.75-.09%201.57.46%202.13l2.13%202.12c.55.56%201.37.74%202.12.46A19.1%2019.1%200%200%200%2018.07%2013c5.66-5.66%203.54-10.61%203.54-10.61m-7.07%207.07c-.78-.78-.78-2.05%200-2.83s2.05-.78%202.83%200c.77.78.78%202.05%200%202.83s-2.05.78-2.83%200m-5.66%207.07-1.41-1.41zM6.24%2022l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83%2022zM2%2022h1.41l4.77-4.76-1.42-1.41L2%2020.59zm0-2.83%204.09-4.08c-.21-.3-.36-.62-.45-.97L2%2017.76z%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M13%2014h-2V9h2m0%209h-2v-2h2M1%2021h22L12%202z%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M8%2015a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m2.5%202%201.5-3%201.5%203zm5.5-2a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m6-4A10%2010%200%200%200%2012%201%2010%2010%200%200%200%202%2011c0%202.8%201.2%205.3%203%207.1V22h14v-3.9c1.8-1.8%203-4.3%203-7.1m-5%209h-2v-2h-2v2h-2v-2H9v2H7v-2.8c-1.8-1.5-3-3.7-3-6.2a8%208%200%200%201%208-8%208%208%200%200%201%208%208c0%202.5-1.2%204.8-3%206.2z%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#m7-gitops-argo-cd" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  🚀 <strong>26 chapters</strong> · rendered diagrams · hands-on labs · a 26-scenario incident playbook — all free (CC BY 4.0).
+  &nbsp;
+  <a href="https://github.com/grvtech1/devops-handbook" style="color: inherit; text-decoration: underline; font-weight: 700;">⭐ Star it on GitHub</a>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-header__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The DevOps Engineer's Handbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              M7 · GitOps
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../study-plan/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Study Plan
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../progress/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  My Progress
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../00-INDEX/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Handbook
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-nav__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    The DevOps Engineer's Handbook
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../study-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    My Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handbook
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Handbook
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-INDEX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Curriculum (Index)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 0 — Pre-flight
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 0 — Pre-flight
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00a-preflight/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00a · Pre-flight ground floor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00b-setup-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00b · Setup runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-linux-toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux · the ground everything runs on
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part I — Core toolchain
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part I — Core toolchain
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-M0-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M0 · Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-M1-terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M1 · Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-M2-ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M2 · Ansible
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-M3-docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M3 · Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-M4-kubernetes-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M4 · Kubernetes Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-M5-sizing-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M5 · Sizing & Cost
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-M6-cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M6 · CI/CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M7 · GitOps
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M7 · GitOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#recall-gate-shuru-karne-se-pehle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ↩️ Recall gate — shuru karne se pehle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-60-second-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 60-second version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists-what-it-replaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists / what it replaced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gitops-in-one-idea-git-is-the-desired-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitOps in one idea: Git is the desired state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#push-vs-pull-and-why-pull-is-safer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Push vs Pull, and why pull is safer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#argo-cd-the-application-object-the-reconciliation-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Argo CD: the Application object &amp; the reconciliation loop
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Argo CD: the Application object &amp; the reconciliation loop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#teaching-sized-applicationyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Teaching-sized application.yaml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-reconciliation-loop-step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The reconciliation loop (step by step)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sync-states-the-outofsync-keyword-trick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sync states &amp; the OutOfSync keyword trick
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sync states &amp; the OutOfSync keyword trick">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#status-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outofsync-only-2-root-causes-and-the-keyword-trick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OutOfSync — only 2 root causes, and the keyword trick
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selfheal-prune-and-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        selfHeal, prune, and rollback
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="selfHeal, prune, and rollback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selfheal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        selfHeal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prune" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        prune
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rollback-git-revert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rollback = git revert
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-actions-argo-partnership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Actions + Argo partnership
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Actions + Argo partnership">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#partnership-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Partnership table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branch-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        branch = environment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-production-example-incl-the-selfheal-hotfix-gotcha" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real production example (incl. the selfHeal hotfix gotcha)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Real production example (incl. the selfHeal hotfix gotcha)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#normal-deploy-flow-the-happy-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Normal deploy flow (the happy path)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-selfheal-production-gotcha" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The selfHeal production gotcha
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands, explained
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beginner-mistakes-vs-senior-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beginner mistakes vs Senior insights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-shortcuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory shortcuts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-check-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-check quiz
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hands-on lab
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hands-on lab">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lab-1-install-argo-cd-and-point-it-at-a-repo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 1 — Install Argo CD and point it at a repo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-2-create-an-application-and-watch-the-first-sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 2 — Create an Application and watch the first sync
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-3-trigger-a-deploy-by-updating-git" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 3 — Trigger a deploy by updating Git
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-4-manual-drift-and-selfheal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 4 — Manual drift and selfHeal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-5-rollback-with-git-revert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 5 — Rollback with git revert
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production challenge
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part II — Systems thinking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part II — Systems thinking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-connected-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Connected System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-k8s-objects-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Objects · How They Connect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-10-day-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Learning Plan (understand)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29-confidence-sprint/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Confidence Sprint (drill)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../28-helm-real-projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Helm in the Real World (your 2 projects)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-cicd-hands-on-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Follow One Commit (hands-on CI/CD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part III — Operate
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part III — Operate
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-M8-observability-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M8 · Observability & SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-M9-advanced-k8s-internals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M9 · Advanced K8s Internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30-k8s-complete-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Complete Reference (Workloads · Scheduling · Ops)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-production-incident-playbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Incident Playbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part IV — Capstones
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part IV — Capstones
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-capstone-url-shortener/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone I · URL Shortener
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-capstone-microshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone II · MicroShop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part V — Reference & career
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part V — Reference & career
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-interview-bank/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview Bank
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-confusions-and-tradeoffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Confusions & Trade-offs (X-vs-Y)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-command-cheatsheets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Command Cheat-Sheets & Labs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-roadmap-M11-M18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap · M11–M18
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-reference-appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Appendix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-career-job-ready/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Job-Ready
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part VI — The Production Gauntlet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part VI — The Production Gauntlet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-production-gauntlet-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build the Real System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-production-gauntlet-chaos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chaos Engineering · break & fix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#recall-gate-shuru-karne-se-pehle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ↩️ Recall gate — shuru karne se pehle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-60-second-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 60-second version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists-what-it-replaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists / what it replaced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gitops-in-one-idea-git-is-the-desired-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitOps in one idea: Git is the desired state
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#push-vs-pull-and-why-pull-is-safer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Push vs Pull, and why pull is safer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#argo-cd-the-application-object-the-reconciliation-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Argo CD: the Application object &amp; the reconciliation loop
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Argo CD: the Application object &amp; the reconciliation loop">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#teaching-sized-applicationyaml" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Teaching-sized application.yaml
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-reconciliation-loop-step-by-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The reconciliation loop (step by step)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sync-states-the-outofsync-keyword-trick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sync states &amp; the OutOfSync keyword trick
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sync states &amp; the OutOfSync keyword trick">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#status-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Status table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outofsync-only-2-root-causes-and-the-keyword-trick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        OutOfSync — only 2 root causes, and the keyword trick
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#selfheal-prune-and-rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        selfHeal, prune, and rollback
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="selfHeal, prune, and rollback">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#selfheal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        selfHeal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prune" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        prune
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rollback-git-revert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rollback = git revert
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-actions-argo-partnership" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Actions + Argo partnership
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The Actions + Argo partnership">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#partnership-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Partnership table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branch-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        branch = environment
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-production-example-incl-the-selfheal-hotfix-gotcha" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real production example (incl. the selfHeal hotfix gotcha)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Real production example (incl. the selfHeal hotfix gotcha)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#normal-deploy-flow-the-happy-path" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Normal deploy flow (the happy path)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-selfheal-production-gotcha" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The selfHeal production gotcha
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands, explained
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beginner-mistakes-vs-senior-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beginner mistakes vs Senior insights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-shortcuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory shortcuts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-check-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-check quiz
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hands-on lab
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hands-on lab">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lab-1-install-argo-cd-and-point-it-at-a-repo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 1 — Install Argo CD and point it at a repo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-2-create-an-application-and-watch-the-first-sync" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 2 — Create an Application and watch the first sync
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-3-trigger-a-deploy-by-updating-git" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 3 — Trigger a deploy by updating Git
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-4-manual-drift-and-selfheal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 4 — Manual drift and selfHeal
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-5-rollback-with-git-revert" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 5 — Rollback with git revert
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production challenge
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="m7-gitops-argo-cd">M7 — GitOps &amp; Argo CD<a class="headerlink" href="#m7-gitops-argo-cd" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Core question:</strong> CI just committed a new image tag into a Kubernetes manifest in Git.
+How does the cluster pull the right version from Git, and how does it heal itself when someone
+manually drifts it away?</p>
+<p><strong>⏱️ Time:</strong> ~45 min padho + 30 min lab · <strong>🎚️ Level:</strong> Intermediate · <strong>📋 Pehle chahiye:</strong> <a href="../05-M4-kubernetes-core/">M4</a>, <a href="../07-M6-cicd/">M6</a></p>
+<p><strong>Is module ke baad tum kar paoge:</strong>
+- Argo CD Application YAML likhkar ek repo ko cluster se wire karo — selfHeal aur prune explain karo
+- Sync states (Synced/OutOfSync/Healthy/Degraded) padhkar bata sako kya galat hai aur kyun
+- Push vs pull model ka security difference explain karo — interview mein ek line mein</p>
+</blockquote>
+<p><strong>Cross-links:</strong> This module picks up from <a href="../07-M6-cicd/">07-M6-cicd.md</a> (CI wrote the manifest)
+and feeds into <a href="../09-connected-system/">09-connected-system.md</a> (the full end-to-end chain).</p>
+<hr />
+<blockquote>
+<h3 id="recall-gate-shuru-karne-se-pehle">↩️ Recall gate — shuru karne se pehle<a class="headerlink" href="#recall-gate-shuru-karne-se-pehle" title="Permanent link">&para;</a></h3>
+<p>Pichhle modules se 3 sawaal. <strong>Pehle memory se jawab do, phir kholo.</strong> (Yeh retrieve karna hi lifetime yaad rakhta hai — dobara padhna nahi.)</p>
+<ol>
+<li><em>(M6)</em> CI ne naya Docker image ECR pe push kar diya. Ab cluster mein deploy karne ke liye CI kya karta hai — seedha <code>kubectl apply</code> chalaata hai ya kuch aur?</li>
+<li><em>(M4)</em> Kubernetes ka reconciliation loop kya compare karta hai, aur jab fark mile toh loop kya action leta hai?</li>
+<li><em>(M1)</em> <code>terraform apply</code> do baar lagatar chalao — doosri baar bhi nayi VPC banti hai kya? Is property ka naam kya hai?</li>
+</ol>
+<p><details markdown="1"><summary>Jawab</summary></p>
+<ol>
+<li>CI sirf k8s manifest mein image tag update karta hai aur Git mein commit+push karta hai — cluster ko seedha chhuta nahi. &nbsp; 2. Desired state (spec) vs current state (live pods/objects) — loop current ko desired tak drive karta hai, hamesha. &nbsp; 3. Nahi — already exist karta hai toh chhodh deta hai. Is property ko <strong>idempotency</strong> kehte hain.
+</details></li>
+</ol>
+</blockquote>
+<h2 id="the-60-second-version">The 60-second version<a class="headerlink" href="#the-60-second-version" title="Permanent link">&para;</a></h2>
+<p>GitOps is one idea stated cleanly: <strong>Git is the single source of truth for what the cluster should
+look like.</strong> An agent living <em>inside</em> the cluster continuously reads Git, compares what it finds
+there against live cluster state, and applies any difference. You never run <code>kubectl apply</code> from a
+laptop again. When something drifts — a developer scales a Deployment by hand, a pod restart resets
+a config — the agent puts it back.</p>
+<p><strong>Argo CD</strong> is the dominant implementation of this pattern. It watches a Git repo path on a branch,
+runs a three-way diff every ~3 minutes, and applies when the diff is non-empty. It ships as a
+Kubernetes controller — it runs <em>in</em> the cluster it manages.</p>
+<hr />
+<h2 id="why-this-exists-what-it-replaced">Why this exists / what it replaced<a class="headerlink" href="#why-this-exists-what-it-replaced" title="Permanent link">&para;</a></h2>
+<p>Before GitOps, deploying meant someone (or a CI job) running:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>k8s/deployment.yaml<span class="w">   </span><span class="c1"># from a laptop, or a CI runner</span>
+</span></code></pre></div>
+<p>That one line hides four problems:</p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Consequence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CI runner needs cluster credentials (kubeconfig)</td>
+<td>Leaked CI = leaked cluster</td>
+</tr>
+<tr>
+<td>No audit trail of who applied what</td>
+<td>"Who changed prod?" — no one knows</td>
+</tr>
+<tr>
+<td>Cluster drifts from what Git says</td>
+<td>"Works in staging" — because staging was never touched</td>
+</tr>
+<tr>
+<td>Rollback = someone remembers the old image tag</td>
+<td>Panic, not process</td>
+</tr>
+</tbody>
+</table>
+<p>GitOps closes all four gaps by making Git the authority and automating the apply step.</p>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Pehle deploy karna tha toh koi bhi chef kitchen mein ghus ke kuch bhi
+banata. Ab Git = menu, aur sirf ek head-waiter (Argo) kitchen dekh sakta. Menu badlo → khana badal
+jaata. Koi seedha ghusa → head-waiter menu wala wapas laga deta.</p>
+<hr />
+<h2 id="gitops-in-one-idea-git-is-the-desired-state">GitOps in one idea: Git is the desired state<a class="headerlink" href="#gitops-in-one-idea-git-is-the-desired-state" title="Permanent link">&para;</a></h2>
+<p>The K8s reconciliation loop (learned in M4) compares desired state with current state and fixes any
+gap. GitOps extends that same loop outward: <strong>Git holds the desired state; the cluster holds the
+current state; Argo CD is the loop that bridges them.</strong></p>
+<pre class="mermaid"><code>flowchart LR
+    CI["CI Runner&lt;br/&gt;no cluster creds"]:::shared
+    GIT[("Git Repo&lt;br/&gt;desired state")]:::shared
+    ARGO{{"Argo CD&lt;br/&gt;in-cluster"}}:::cd
+    DIFF{"OutOfSync?&lt;br/&gt;3-way diff"}:::cd
+    K8S[("Kubernetes&lt;br/&gt;live state")]:::run
+    DRIFT(["Cause B drift&lt;br/&gt;kubectl change"]):::warn
+
+    CI --&gt;|"git push"| GIT
+    ARGO -. "pull every ~3 min" .-&gt; GIT
+    ARGO --&gt;|"reads live state"| K8S
+    ARGO --&gt; DIFF
+    DIFF --&gt;|"No — Synced"| K8S
+    DIFF --&gt;|"Yes — apply"| K8S
+    K8S -. "drift detected" .-&gt; DRIFT
+    DRIFT -. "selfHeal: Git wins" .-&gt; K8S
+
+    classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;
+    classDef cd fill:#f3e5f5,stroke:#8e24aa,color:#4a148c;
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef obs fill:#f1f8e9,stroke:#689f38,color:#33691e;
+    classDef net fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef warn fill:#fdeeee,stroke:#d64545,color:#b23030;</code></pre>
+<p><em>GitOps reconcile loop: Argo CD polls Git from inside the cluster (pull model — CI never holds cluster credentials), compares desired vs live state, applies any diff, and auto-heals kubectl drift.</em></p>
+<details class="note">
+<summary>Text version (ASCII)</summary>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>GIT (desired state)                 CLUSTER (current state)
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>────────────────────                ──────────────────────
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>k8s/deployment.yaml   ←── Argo ──→  live Deployment object
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  image: app:a1b2c3    3-way diff    image: app:old-sha
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  replicas: 2          detects gap   replicas: 2
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>                                     (OutOfSync on image)
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>                          ↓
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>                    kubectl apply    ← Argo applies Git version
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>                          ↓
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>                    cluster matches Git → Synced
+</span></code></pre></div>
+</details>
+<p><strong>Three-way diff</strong> is the key mechanism. Argo compares:
+1. <strong>Git desired</strong> — what the YAML in the repo says
+2. <strong>Live cluster</strong> — what <code>kubectl get</code> would return today
+3. <strong>Last-applied annotation</strong> — what was applied last time (to detect drift vs intentional change)</p>
+<p>Any gap between (1) and (2) is an OutOfSync condition. Argo applies (1) to fix it.</p>
+<hr />
+<h2 id="push-vs-pull-and-why-pull-is-safer">Push vs Pull, and why pull is safer<a class="headerlink" href="#push-vs-pull-and-why-pull-is-safer" title="Permanent link">&para;</a></h2>
+<p>This is <strong>Golden Thread 4</strong> (Push vs Pull). Understand it once and it explains Ansible vs Argo, CI
+vs GitOps, and why GitOps is the production-safe pattern.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>PUSH model (old way / GitHub Actions direct deploy)
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>────────────────────────────────────────────────────
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>  CI runner ──[has kubeconfig]──► kubectl apply ──► Cluster
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>      ↑
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>  If CI is compromised, attacker has cluster access too.
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>  Credentials must live outside the cluster (GitHub Secrets).
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>PULL model (GitOps / Argo CD)
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>──────────────────────────────
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>  Git repo  ◄── Argo CD polls (inside cluster) ──► kubectl apply
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>                     ↑
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>             Argo runs AS A POD inside the cluster.
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>             Cluster credentials never leave the cluster.
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>             CI only writes to Git — it never touches the cluster.
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Push (CI direct)</th>
+<th>Pull (Argo CD)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Who holds cluster creds?</td>
+<td>CI runner (outside)</td>
+<td>Argo pod (inside cluster)</td>
+</tr>
+<tr>
+<td>Blast radius if CI is hacked</td>
+<td>Cluster exposed</td>
+<td>Only Git repo exposed</td>
+</tr>
+<tr>
+<td>Audit trail</td>
+<td>CI logs (ephemeral)</td>
+<td>Git commits (permanent)</td>
+</tr>
+<tr>
+<td>Rollback mechanism</td>
+<td>Re-run old CI job</td>
+<td><code>git revert</code></td>
+</tr>
+<tr>
+<td>Drift detection</td>
+<td>None — no one is watching</td>
+<td>Continuous (every ~3 min)</td>
+</tr>
+<tr>
+<td>Network requirement</td>
+<td>CI must reach cluster API</td>
+<td>Cluster reaches Git (outbound only)</td>
+</tr>
+</tbody>
+</table>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Push mein CI ke paas kitchen ki chaabi hai — CI hack hua toh kitchen
+gaya. Pull mein chaabi kitchen ke andar hi hai. Bahar wala sirf menu (Git) likh sakta, andar nahi
+ja sakta.</p>
+<p>Cross-link: M2 Ansible is also push-based — <code>ansible-playbook</code> pushes config from control node.
+GitOps chose pull deliberately because the security model is superior at cloud scale.</p>
+<hr />
+<h2 id="argo-cd-the-application-object-the-reconciliation-loop">Argo CD: the Application object &amp; the reconciliation loop<a class="headerlink" href="#argo-cd-the-application-object-the-reconciliation-loop" title="Permanent link">&para;</a></h2>
+<p>Argo CD is installed as a set of pods in an <code>argocd</code> namespace. Its core concept is the
+<strong>Application</strong> — a Custom Resource Definition (CRD, meaning a new object type Argo adds to
+Kubernetes) that says: "watch this Git repo path on this branch, and deploy it to this cluster
+namespace."</p>
+<h3 id="teaching-sized-applicationyaml">Teaching-sized application.yaml<a class="headerlink" href="#teaching-sized-applicationyaml" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">argoproj.io/v1alpha1</span><span class="w">       </span><span class="c1"># Argo&#39;s API group, not core K8s</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Application</span><span class="w">                      </span><span class="c1"># the CRD Argo adds to your cluster</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">url-shortener</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">argocd</span><span class="w">                    </span><span class="c1"># Argo lives here; your app deploys elsewhere</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="nt">project</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w">                     </span><span class="c1"># Argo project for access control (default = open)</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">  </span><span class="nt">source</span><span class="p">:</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="nt">repoURL</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://github.com/you/url-shortener.git</span><span class="w">   </span><span class="c1"># which repo to watch</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="nt">targetRevision</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span><span class="w">                                 </span><span class="c1"># which branch (branch = environment)</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">k8s</span><span class="w">                                            </span><span class="c1"># which folder inside the repo</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">  </span><span class="nt">destination</span><span class="p">:</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">    </span><span class="nt">server</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://kubernetes.default.svc</span><span class="w">   </span><span class="c1"># this cluster (in-cluster)</span>
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">    </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span><span class="w">                       </span><span class="c1"># target namespace for your app</span>
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">  </span><span class="nt">syncPolicy</span><span class="p">:</span>
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a><span class="w">    </span><span class="nt">automated</span><span class="p">:</span>
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">      </span><span class="nt">selfHeal</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">   </span><span class="c1"># if cluster drifts from Git, auto-revert (see section 8)</span>
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">      </span><span class="nt">prune</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">      </span><span class="c1"># if a manifest is deleted from Git, delete from cluster too</span>
+</span></code></pre></div>
+<p>Apply it once: <code>kubectl apply -f argocd/application.yaml</code>. Argo then runs the loop forever.</p>
+<h3 id="the-reconciliation-loop-step-by-step">The reconciliation loop (step by step)<a class="headerlink" href="#the-reconciliation-loop-step-by-step" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Every ~3 minutes (or on webhook from Git):
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>  1. Argo fetches latest commit from Git (targetRevision=main)
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  2. Renders the manifests (raw YAML, Helm, Kustomize, etc.)
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  3. Runs 3-way diff: Git desired vs live cluster vs last-applied
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>  4. If diff is empty  → status = Synced. Done.
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  5. If diff found     → status = OutOfSync
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>       └─ if automated sync enabled → kubectl apply (Git wins)
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>       └─ if manual sync           → wait for human to click Sync
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>  6. Checks pod health → Healthy or Degraded
+</span></code></pre></div>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Argo = rasoiya jo har 3 minute mein menu (Git) padhta hai, kitchen
+(cluster) dekhta hai, aur jo fark ho woh banata/hataata hai. Menu hamesha boss.</p>
+<hr />
+<h2 id="sync-states-the-outofsync-keyword-trick">Sync states &amp; the OutOfSync keyword trick<a class="headerlink" href="#sync-states-the-outofsync-keyword-trick" title="Permanent link">&para;</a></h2>
+<p>Argo reports two independent status dimensions. Read both — they answer different questions.</p>
+<h3 id="status-table">Status table<a class="headerlink" href="#status-table" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>Meaning</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Synced</strong></td>
+<td>Cluster matches Git exactly</td>
+<td>Deployment image matches Git tag</td>
+</tr>
+<tr>
+<td><strong>OutOfSync</strong></td>
+<td>Cluster differs from Git</td>
+<td>Someone <code>kubectl scale</code>d manually</td>
+</tr>
+<tr>
+<td><strong>Healthy</strong></td>
+<td>Pods are running and ready</td>
+<td>All replicas Ready, probes passing</td>
+</tr>
+<tr>
+<td><strong>Degraded</strong></td>
+<td>Pods are not ready</td>
+<td>CrashLoopBackOff, ImagePullBackOff</td>
+</tr>
+<tr>
+<td><strong>Progressing</strong></td>
+<td>Rolling update in flight</td>
+<td>New ReplicaSet starting up</td>
+</tr>
+<tr>
+<td><strong>Unknown</strong></td>
+<td>Argo cannot determine health</td>
+<td>Custom resource with no health check</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Critical nuance:</strong> Synced and Healthy are independent axes.
+A deploy can be <strong>Synced but Degraded</strong> — Argo applied the manifest successfully, but the pod
+itself is crashing (wrong image, bad env var, OOMKilled). Synced only means "cluster matches
+Git"; Healthy means "the workload is actually working."</p>
+</blockquote>
+<h3 id="outofsync-only-2-root-causes-and-the-keyword-trick">OutOfSync — only 2 root causes, and the keyword trick<a class="headerlink" href="#outofsync-only-2-root-causes-and-the-keyword-trick" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>OutOfSync = Git ≠ cluster. Exactly 2 causes:
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  Cause A: GIT changed     Keywords: &quot;git push&quot;, &quot;CI committed&quot;, &quot;PR merged&quot;
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>           → Git is ahead of cluster
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>           → Argo will APPLY (deploy the new version)
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>  Cause B: CLUSTER changed  Keywords: &quot;kubectl edit&quot;, &quot;kubectl scale&quot;, &quot;kubectl delete&quot;
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>           → Cluster drifted from Git
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>           → selfHeal will REVERT (put Git&#39;s version back)
+</span></code></pre></div>
+<p><strong>The trick:</strong> Scan the scenario for the keyword. If the story says <code>git push</code> or "CI updated the
+manifest" — that is Cause A, Argo <em>applies</em>. If it says <code>kubectl scale</code> or "someone edited the live
+object" — that is Cause B, selfHeal <em>reverts</em>. The words in the story tell you which side moved.</p>
+<p>🇮🇳 <strong>Hinglish intuition:</strong>
+- "git push" = menu pe naya likha → Argo kitchen ko update karta (apply).
+- "kubectl" = koi seedha kitchen mein ghusa → Argo menu wala wapas laata (selfHeal).
+- Git hamesha boss — cluster kabhi boss nahi.</p>
+<hr />
+<h2 id="selfheal-prune-and-rollback">selfHeal, prune, and rollback<a class="headerlink" href="#selfheal-prune-and-rollback" title="Permanent link">&para;</a></h2>
+<h3 id="selfheal">selfHeal<a class="headerlink" href="#selfheal" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>🔮 <strong>Predict pehle (socho, phir aage padho):</strong> selfHeal ON hai. Tum production me <code>kubectl scale</code> karke replicas 3→5 kar do. ~3 min baad kya hota hai?</p>
+</blockquote>
+<p><code>selfHeal: true</code> tells Argo: if the live cluster diverges from Git (Cause B above), automatically
+re-apply Git's version without waiting for a human.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Demo: create drift</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>kubectl<span class="w"> </span>scale<span class="w"> </span>deployment<span class="w"> </span>url-shortener<span class="w"> </span>--replicas<span class="o">=</span><span class="m">5</span><span class="w">   </span><span class="c1"># Git says replicas: 2</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># Within ~30 seconds:</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1"># Argo detects: live=5, Git=2 → OutOfSync (Cause B)</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="c1"># selfHeal: true → kubectl apply → replicas back to 2</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployment<span class="w"> </span>url-shortener<span class="w">   </span><span class="c1"># READY: 2/2</span>
+</span></code></pre></div>
+<blockquote>
+<p>🔧 <strong>War story:</strong> Production mein ek slow pod issue tha — engineer ne <code>kubectl scale deployment app --replicas=5</code> kiya quick hotfix ke liye (Git mein replicas: 3 tha). 3 minute baad pods wapas 3 ho gaye. Log confused: "Kisi ne mera change revert kiya kya?" Root cause: selfHeal:true — Argo cluster ko Git ki taraf wapas kheeench laata hai, silently. Lesson: Argo ke saath <code>kubectl</code> changes temporary hain — permanent change sirf Git se hoga. Poori kahani + lesson → <a href="../14-interview-bank/">Interview Bank</a>.</p>
+</blockquote>
+<h3 id="prune">prune<a class="headerlink" href="#prune" title="Permanent link">&para;</a></h3>
+<p><code>prune: true</code> tells Argo: if a manifest exists in the cluster but is no longer in Git, delete it.</p>
+<p>Without prune: you rename <code>service.yaml</code> to <code>api-service.yaml</code> in Git, push — Argo creates
+<code>api-service</code>, but the old <code>service</code> object stays as an orphan, potentially routing stale traffic.</p>
+<p>With prune: Argo deletes what Git no longer declares. Git is the complete desired state.</p>
+<blockquote>
+<p><strong>Risk:</strong> If you accidentally delete a manifest from Git (bad merge, wrong file), Argo will
+delete that object from the cluster. Always review what you're removing from the repo.</p>
+</blockquote>
+<h3 id="rollback-git-revert">Rollback = git revert<a class="headerlink" href="#rollback-git-revert" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Something broke after the last deploy. Roll back:</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>k8s/deployment.yaml<span class="w">   </span><span class="c1"># find the bad commit SHA</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>git<span class="w"> </span>revert<span class="w"> </span>&lt;bad-commit-sha&gt;<span class="w">             </span><span class="c1"># creates a new &quot;undo&quot; commit</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>git<span class="w"> </span>push<span class="w">                                </span><span class="c1"># Argo sees the revert, applies previous state</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="c1"># Cluster is back to the last good version. No manual kubectl, no panic.</span>
+</span></code></pre></div>
+<p>This is why Git history = deployment history. <code>git log</code> is your deployment timeline.
+<code>git revert</code> is your time machine. Argo is the mechanism that makes the revert actually run.</p>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Rollback = time machine ↩. Git history mein jaao, ek commit ulto
+karo, push karo — Argo purana version wapas deploy. Koi haath-pair marne ki zaroorat nahi.</p>
+<hr />
+<h2 id="the-actions-argo-partnership">The Actions + Argo partnership<a class="headerlink" href="#the-actions-argo-partnership" title="Permanent link">&para;</a></h2>
+<p>GitHub Actions and Argo CD are <strong>not competitors</strong>. They are partners with a clean division of
+responsibility separated by a Git commit.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>                    git push (your code)
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>                          │
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>                          ▼
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>              ┌─── GitHub Actions (CI) ──────────────────┐
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>              │  1. pytest / unit tests                   │
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>              │  2. docker build → ECR (SHA tag)          │
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>              │  3. sed image tag in k8s/deployment.yaml  │
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>              │  4. git commit + push (manifest update)   │
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>              └───────────────────────────────────────────┘
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a>                          │
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>                          │  Git now has new manifest commit
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a>                          │
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a>                          ▼
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a>              ┌─── Argo CD (CD) ──────────────────────────┐
+</span><span id="__span-8-15"><a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>              │  polls Git every ~3 min                   │
+</span><span id="__span-8-16"><a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a>              │  detects new image tag → OutOfSync        │
+</span><span id="__span-8-17"><a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a>              │  kubectl apply → new ReplicaSet           │
+</span><span id="__span-8-18"><a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a>              │  rolling update → new pods ready          │
+</span><span id="__span-8-19"><a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>              │  old pods terminate → Synced + Healthy    │
+</span><span id="__span-8-20"><a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a>              └───────────────────────────────────────────┘
+</span><span id="__span-8-21"><a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a>                          │
+</span><span id="__span-8-22"><a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a>                          ▼
+</span><span id="__span-8-23"><a id="__codelineno-8-23" name="__codelineno-8-23" href="#__codelineno-8-23"></a>                     cluster running new version
+</span></code></pre></div>
+<p><strong>CI cluster ko chhuta nahi.</strong> Actions writes to Git. Argo reads from Git and writes to the
+cluster. The cluster credentials live only inside the cluster, never in CI.</p>
+<h3 id="partnership-table">Partnership table<a class="headerlink" href="#partnership-table" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Concern</th>
+<th>GitHub Actions (CI)</th>
+<th>Argo CD (CD)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Model</td>
+<td>Push (event-driven)</td>
+<td>Pull (polling)</td>
+</tr>
+<tr>
+<td>Runs where</td>
+<td>GitHub-hosted runner (outside cluster)</td>
+<td>Pod inside cluster</td>
+</tr>
+<tr>
+<td>Cluster access</td>
+<td>None</td>
+<td>Yes (in-cluster ServiceAccount)</td>
+</tr>
+<tr>
+<td>Responsibility</td>
+<td>Build, test, package image, update manifest</td>
+<td>Watch Git, apply manifests</td>
+</tr>
+<tr>
+<td>Source of truth writes</td>
+<td>Git manifest (image tag)</td>
+<td>Does not write Git</td>
+</tr>
+<tr>
+<td>Trigger</td>
+<td><code>git push</code> event</td>
+<td>Git diff (polling or webhook)</td>
+</tr>
+<tr>
+<td>Rollback mechanism</td>
+<td>Re-run old workflow</td>
+<td><code>git revert</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="branch-environment">branch = environment<a class="headerlink" href="#branch-environment" title="Permanent link">&para;</a></h3>
+<p>The cleanest multi-environment pattern: one Argo Application per environment, each pointing at a
+different branch.</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># prod application</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nt">targetRevision</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">main</span><span class="w">        </span><span class="c1"># prod cluster watches main branch</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="c1"># staging application</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="nt">targetRevision</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">staging</span><span class="w">     </span><span class="c1"># staging cluster watches staging branch</span>
+</span></code></pre></div>
+<p>Promoting to production = merging staging into main. The prod cluster reconciles automatically.
+No separate deploy command, no env-specific scripts.</p>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> CI = menu likhne wala (Git pe). Argo = rasoiya jo menu padh ke banata.
+CI ko kitchen chaabi nahi chahiye — menu likhna hi uska kaam. Rasoiya menu padh ke khud banata.
+Dono partners hain, competitors nahi.</p>
+<hr />
+<h2 id="real-production-example-incl-the-selfheal-hotfix-gotcha">Real production example (incl. the selfHeal hotfix gotcha)<a class="headerlink" href="#real-production-example-incl-the-selfheal-hotfix-gotcha" title="Permanent link">&para;</a></h2>
+<h3 id="normal-deploy-flow-the-happy-path">Normal deploy flow (the happy path)<a class="headerlink" href="#normal-deploy-flow-the-happy-path" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>10:32  Developer pushes a bug fix to main
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>10:32  Actions triggered → tests pass → docker build → ECR push
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>10:33  Actions updates k8s/deployment.yaml: image: app:abc1234
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>10:33  Actions git push → new commit on main
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>10:36  Argo polls Git → detects image tag changed → OutOfSync (Cause A)
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>10:36  Argo applies manifest → new ReplicaSet starts
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>10:37  New pods pass readiness probe → old pods terminate
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>10:37  Argo status: Synced + Healthy
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>10:37  Users on new version. Zero manual steps after git push.
+</span></code></pre></div>
+<h3 id="the-selfheal-production-gotcha">The selfHeal production gotcha<a class="headerlink" href="#the-selfheal-production-gotcha" title="Permanent link">&para;</a></h3>
+<p>Imagine this scenario at 2 AM:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>02:14  Production alert: app response time spiking, requests queueing
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>02:15  On-call engineer: &quot;I&#39;ll scale replicas to 10 to absorb traffic&quot;
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>02:15  kubectl scale deployment url-shortener --replicas=10
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>02:15  replicas jump to 10 ... momentary relief ...
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>02:18  Argo reconciles: Git says replicas=2, cluster says 10 → OutOfSync (Cause B)
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>02:18  selfHeal: true → Argo applies Git manifest → replicas back to 2
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>02:18  Queue builds up again. Engineer is confused. 🔥
+</span></code></pre></div>
+<p><strong>Why this happens:</strong> selfHeal is always watching. It does not know that this was an emergency
+manual intervention — it only knows Git says 2 and the cluster says 10. Git wins.</p>
+<p><strong>The correct procedure for emergency manual changes with selfHeal enabled:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Step 1: Temporarily disable auto-sync for this application</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>argocd<span class="w"> </span>app<span class="w"> </span><span class="nb">set</span><span class="w"> </span>url-shortener<span class="w"> </span>--sync-policy<span class="w"> </span>none<span class="w">   </span><span class="c1"># or via UI: disable auto-sync</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># Step 2: Now your manual kubectl changes will stick</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>kubectl<span class="w"> </span>scale<span class="w"> </span>deployment<span class="w"> </span>url-shortener<span class="w"> </span>--replicas<span class="o">=</span><span class="m">10</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="c1"># Step 3: Fix the root cause (find and fix the performance issue)</span>
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="c1"># Step 4: Update Git to match your emergency change (reconcile with Git)</span>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="c1"># Edit k8s/deployment.yaml: replicas: 10 (or fix the real problem)</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>git<span class="w"> </span>add<span class="w"> </span>k8s/deployment.yaml<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;ops: scale up for incident X&quot;</span>
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>git<span class="w"> </span>push
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="c1"># Step 5: Re-enable auto-sync</span>
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>argocd<span class="w"> </span>app<span class="w"> </span><span class="nb">set</span><span class="w"> </span>url-shortener<span class="w"> </span>--sync-policy<span class="w"> </span>automated
+</span></code></pre></div>
+<p><strong>Senior insight:</strong> The real fix is to always go through Git, even in emergencies. If you need
+10 replicas, commit <code>replicas: 10</code> and push — Argo applies it in under 3 minutes. Only disable
+auto-sync when the time constraint is genuinely sub-3-minutes, and always reconcile Git afterward.</p>
+<blockquote>
+<p>A Git commit with message <code>"ops: emergency scale-up for latency incident 2024-01-15"</code> is both
+the fix and the audit trail. A manual <code>kubectl</code> is neither.</p>
+</blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> selfHeal = chowkidar jo 24/7 jaag ke manually ki gayi chhed-chhaad
+wapas theek karta. Emergency mein chowkidar ko thodi der ke liye baitha do (auto-sync off), kaam
+karo, phir Git ko sahi karo, phir chowkidar ko wapas khada karo.</p>
+<hr />
+<h2 id="commands-explained">Commands, explained<a class="headerlink" href="#commands-explained" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Install Argo CD into your cluster</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span class="w"> </span>argocd
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-n<span class="w"> </span>argocd<span class="w"> </span>-f<span class="w"> </span>https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1"># Why: Argo CD runs as pods inside the cluster it manages</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="c1"># Get the initial admin password</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>argocd<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>argocd-initial-admin-secret<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s2">&quot;{.data.password}&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="c1"># Why: Argo generates a random password on install; this retrieves it</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="c1"># Access the Argo CD UI locally (it has no external LoadBalancer by default)</span>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>kubectl<span class="w"> </span>port-forward<span class="w"> </span>svc/argocd-server<span class="w"> </span>-n<span class="w"> </span>argocd<span class="w"> </span><span class="m">8080</span>:443
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="c1"># Why: Forward localhost:8080 to the Argo server; visit https://localhost:8080</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="c1"># Register your Application (the CRD that tells Argo what to watch)</span>
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>argocd/application.yaml
+</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="c1"># Why: This is the one-time declaration — Argo loops on it forever after</span>
+</span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>
+</span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="c1"># Check application status</span>
+</span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a>argocd<span class="w"> </span>app<span class="w"> </span>get<span class="w"> </span>url-shortener
+</span><span id="__span-13-21"><a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a><span class="c1"># Why: Shows sync status, health, current image, recent events in one view</span>
+</span><span id="__span-13-22"><a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>
+</span><span id="__span-13-23"><a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="c1"># See what Argo would change before actually syncing (dry-run equivalent)</span>
+</span><span id="__span-13-24"><a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a>argocd<span class="w"> </span>app<span class="w"> </span>diff<span class="w"> </span>url-shortener
+</span><span id="__span-13-25"><a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a><span class="c1"># Why: &quot;Preview before apply&quot; — Golden Thread 3; confirm the diff is what you expect</span>
+</span><span id="__span-13-26"><a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a>
+</span><span id="__span-13-27"><a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a><span class="c1"># Manually trigger a sync (when automated sync is off, or to sync immediately)</span>
+</span><span id="__span-13-28"><a id="__codelineno-13-28" name="__codelineno-13-28" href="#__codelineno-13-28"></a>argocd<span class="w"> </span>app<span class="w"> </span>sync<span class="w"> </span>url-shortener
+</span><span id="__span-13-29"><a id="__codelineno-13-29" name="__codelineno-13-29" href="#__codelineno-13-29"></a><span class="c1"># Why: Forces Argo to apply Git state now, without waiting for the poll interval</span>
+</span><span id="__span-13-30"><a id="__codelineno-13-30" name="__codelineno-13-30" href="#__codelineno-13-30"></a>
+</span><span id="__span-13-31"><a id="__codelineno-13-31" name="__codelineno-13-31" href="#__codelineno-13-31"></a><span class="c1"># Rollback: create a revert commit in Git, then push</span>
+</span><span id="__span-13-32"><a id="__codelineno-13-32" name="__codelineno-13-32" href="#__codelineno-13-32"></a>git<span class="w"> </span>revert<span class="w"> </span>&lt;bad-commit-sha&gt;
+</span><span id="__span-13-33"><a id="__codelineno-13-33" name="__codelineno-13-33" href="#__codelineno-13-33"></a>git<span class="w"> </span>push
+</span><span id="__span-13-34"><a id="__codelineno-13-34" name="__codelineno-13-34" href="#__codelineno-13-34"></a><span class="c1"># Why: Argo detects the new commit, applies the reverted manifest; cluster returns to prior state</span>
+</span><span id="__span-13-35"><a id="__codelineno-13-35" name="__codelineno-13-35" href="#__codelineno-13-35"></a><span class="c1"># Do NOT use `argocd app rollback` in GitOps — it rolls back the cluster but not Git (split brain)</span>
+</span><span id="__span-13-36"><a id="__codelineno-13-36" name="__codelineno-13-36" href="#__codelineno-13-36"></a>
+</span><span id="__span-13-37"><a id="__codelineno-13-37" name="__codelineno-13-37" href="#__codelineno-13-37"></a><span class="c1"># Temporarily disable auto-sync (for emergency manual changes)</span>
+</span><span id="__span-13-38"><a id="__codelineno-13-38" name="__codelineno-13-38" href="#__codelineno-13-38"></a>argocd<span class="w"> </span>app<span class="w"> </span><span class="nb">set</span><span class="w"> </span>url-shortener<span class="w"> </span>--sync-policy<span class="w"> </span>none
+</span><span id="__span-13-39"><a id="__codelineno-13-39" name="__codelineno-13-39" href="#__codelineno-13-39"></a><span class="c1"># Why: Prevents selfHeal from fighting your manual kubectl changes during an incident</span>
+</span><span id="__span-13-40"><a id="__codelineno-13-40" name="__codelineno-13-40" href="#__codelineno-13-40"></a>
+</span><span id="__span-13-41"><a id="__codelineno-13-41" name="__codelineno-13-41" href="#__codelineno-13-41"></a><span class="c1"># Re-enable auto-sync after reconciling Git</span>
+</span><span id="__span-13-42"><a id="__codelineno-13-42" name="__codelineno-13-42" href="#__codelineno-13-42"></a>argocd<span class="w"> </span>app<span class="w"> </span><span class="nb">set</span><span class="w"> </span>url-shortener<span class="w"> </span>--sync-policy<span class="w"> </span>automated
+</span></code></pre></div>
+<hr />
+<h2 id="beginner-mistakes-vs-senior-insights">Beginner mistakes vs Senior insights<a class="headerlink" href="#beginner-mistakes-vs-senior-insights" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Beginner does</th>
+<th>Senior does</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kubectl apply</code> from laptop to deploy</td>
+<td><code>git push</code> (let Argo deploy)</td>
+<td>No audit trail, no drift detection on manual apply</td>
+</tr>
+<tr>
+<td>Treats Synced = Healthy</td>
+<td>Checks both axes separately</td>
+<td>Synced+Degraded = deployed but broken — very different</td>
+</tr>
+<tr>
+<td>Runs <code>argocd app rollback</code></td>
+<td>Runs <code>git revert</code> + <code>git push</code></td>
+<td><code>argocd rollback</code> rolls cluster back but leaves Git ahead — creates split brain</td>
+</tr>
+<tr>
+<td>Leaves <code>prune: false</code></td>
+<td>Sets <code>prune: true</code> intentionally</td>
+<td>Orphaned objects accumulate; stale Services can misroute traffic</td>
+</tr>
+<tr>
+<td>Disables <code>selfHeal</code> to allow manual fixes</td>
+<td>Keeps <code>selfHeal: true</code>, uses Git for all changes</td>
+<td>If it is not in Git it does not exist; selfHeal enforces that</td>
+</tr>
+<tr>
+<td>Points all environments at one branch</td>
+<td>Uses branch-per-environment or path-per-environment</td>
+<td>Staging deploy must not trigger production deploy</td>
+</tr>
+<tr>
+<td>Stores kubeconfig in CI for direct deploy</td>
+<td>Stores nothing; CI only writes Git</td>
+<td>Leaked CI credentials = leaked cluster if using push model</td>
+</tr>
+<tr>
+<td>Uses <code>argocd app sync --force</code> to fix a broken deploy</td>
+<td>Investigates why sync fails, fixes root cause</td>
+<td>Force-sync can apply a broken manifest — fix Git, not the symptom</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="memory-shortcuts">Memory shortcuts<a class="headerlink" href="#memory-shortcuts" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Argo = rasoiya</strong> who reads the Git menu and cooks. CI writes the menu. Argo cooks.</li>
+<li><strong>selfHeal = chowkidar</strong> who reverts unauthorized kitchen changes, 24/7.</li>
+<li><strong>rollback = time machine ↩</strong> — <code>git revert</code> takes you back; Argo is the engine.</li>
+<li><strong>OutOfSync keyword trick:</strong> "git push" in the story → apply; "kubectl" in the story → selfHeal.</li>
+<li><strong>Synced ≠ Healthy</strong> — know both axes; they fail independently.</li>
+<li><strong>Pull &gt; Push</strong> because cluster creds never leave the cluster.</li>
+<li><strong>branch = environment</strong> — main→prod, staging→staging. Merge to promote.</li>
+<li><strong>3-way diff:</strong> Git desired vs live cluster vs last-applied = Argo's source of decisions.</li>
+</ul>
+<hr />
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>One sentence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GitOps</td>
+<td>Git is the single source of truth; cluster reconciles to match it continuously</td>
+</tr>
+<tr>
+<td>Argo CD</td>
+<td>The pull-model agent (a pod inside the cluster) that runs the GitOps reconciliation loop</td>
+</tr>
+<tr>
+<td>Application object</td>
+<td>The CRD that tells Argo which repo/path/branch to watch and where to deploy</td>
+</tr>
+<tr>
+<td>Synced / OutOfSync</td>
+<td>Whether cluster matches Git right now</td>
+</tr>
+<tr>
+<td>Healthy / Degraded</td>
+<td>Whether the deployed workload is actually working</td>
+</tr>
+<tr>
+<td>selfHeal</td>
+<td>Auto-revert of manual cluster changes back to Git state</td>
+</tr>
+<tr>
+<td>prune</td>
+<td>Auto-delete of cluster objects that were removed from Git</td>
+</tr>
+<tr>
+<td>Rollback</td>
+<td><code>git revert</code> + <code>git push</code>; Argo applies the reverted manifest</td>
+</tr>
+<tr>
+<td>Push vs Pull</td>
+<td>CI/Ansible push (outside-in); Argo pull (inside-out, creds stay inside)</td>
+</tr>
+<tr>
+<td>branch = environment</td>
+<td>Each branch maps to an environment; merge = promote</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="self-check-quiz">Self-check quiz<a class="headerlink" href="#self-check-quiz" title="Permanent link">&para;</a></h2>
+<p>Pehle memory se jawab do, phir neeche kholo.</p>
+<ol>
+<li>
+<p>A developer runs <code>kubectl scale deployment app --replicas=0</code> on production. <code>selfHeal: true</code> is
+   set. What happens, and which OutOfSync cause is this?</p>
+</li>
+<li>
+<p>CI pushes a new image tag to <code>k8s/deployment.yaml</code> on the main branch. Argo is polling.
+   Describe the exact sequence from that commit to a Healthy cluster.</p>
+</li>
+<li>
+<p>What is the difference between <strong>Synced + Degraded</strong> and <strong>OutOfSync + Healthy</strong>? Give a
+   realistic scenario for each.</p>
+</li>
+<li>
+<p>Why does <code>git revert</code> produce a better rollback than <code>argocd app rollback</code>?</p>
+</li>
+<li>
+<p>An engineer wants to make an emergency change during an incident but <code>selfHeal</code> is on.
+   Walk through the correct procedure.</p>
+</li>
+<li>
+<p>You have three environments: dev, staging, prod. Design a Git branching strategy and three
+   Argo Application objects to serve them. Promotion to prod = one <code>git merge</code>.</p>
+</li>
+<li>
+<p>CI currently runs <code>kubectl apply</code> directly after build. What are the two security risks, and
+   how does the manifest-update + Argo pattern remove them?</p>
+</li>
+<li>
+<p>Explain the 3-way diff. Why does Argo need three inputs rather than just comparing Git to the
+   live cluster?</p>
+</li>
+</ol>
+<details>
+<summary>Jawab dekho</summary>
+<ol>
+<li>Cause B (cluster changed — <code>kubectl</code> ne kiya). selfHeal detects replicas=0 vs Git ka declared value aur ~30s–3min mein wapas Git wala count apply kar deta hai.</li>
+<li>Argo ~3 min poll ke baad naya image tag dekhta hai → OutOfSync (Cause A) → manifest apply karta hai → naya ReplicaSet starts → pods readiness probe pass karte hain → purane pods terminate → status: Synced + Healthy.</li>
+<li>Synced+Degraded: Argo ne manifest apply kar diya (cluster=Git) lekin pods crash ho rahe hain (e.g. bad image tag → ImagePullBackOff). OutOfSync+Healthy: kisi ne manually replicas badhaye (<code>kubectl scale</code>) — pods sab running hain (Healthy) lekin Git se alag hain (OutOfSync). Dono axes independent hain.</li>
+<li><code>git revert</code> ek naya commit banata hai — Git aur cluster dono sync rehte hain Argo ke apply ke baad. <code>argocd app rollback</code> cluster wapas le jaata hai lekin Git ko nahi — next Argo sync rollback undo kar deta hai (split brain).</li>
+<li>(1) Auto-sync band karo: <code>argocd app set &lt;app&gt; --sync-policy none</code>. (2) Manual <code>kubectl</code> change karo. (3) Root cause fix karo. (4) Git update karo desired state se match karne ke liye + push. (5) Auto-sync wapas on karo: <code>--sync-policy automated</code>.</li>
+<li>Teen branches: dev/staging/main(prod). Teen Argo Applications — har ek apni branch watch karta hai (<code>targetRevision: dev/staging/main</code>). <code>staging→main</code> merge = prod automatically deploy. No separate deploy command.</li>
+<li>(1) CI ke paas kubeconfig hai — CI hack = cluster exposed. (2) Koi permanent audit trail nahi. Manifest-update+Argo mein: CI sirf Git mein likhta hai; Argo (cluster ke andar) creds hold karta hai; Git commit = audit trail.</li>
+<li>Teen inputs: (1) Git desired, (2) live cluster, (3) last-applied annotation. Sirf (1) vs (2) se Argo intentional in-cluster change aur drift mein fark nahi kar sakta — teeno chahiye accurate diff ke liye.</li>
+</ol>
+</details>
+<hr />
+<h2 id="hands-on-lab">Hands-on lab<a class="headerlink" href="#hands-on-lab" title="Permanent link">&para;</a></h2>
+<p><strong>Environment:</strong> k3s or kind cluster, any public Git repo.</p>
+<h3 id="lab-1-install-argo-cd-and-point-it-at-a-repo">Lab 1 — Install Argo CD and point it at a repo<a class="headerlink" href="#lab-1-install-argo-cd-and-point-it-at-a-repo" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Start a local cluster (kind)</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>kind<span class="w"> </span>create<span class="w"> </span>cluster<span class="w"> </span>--name<span class="w"> </span>gitops-lab
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="c1"># Install Argo CD</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a>kubectl<span class="w"> </span>create<span class="w"> </span>namespace<span class="w"> </span>argocd
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-n<span class="w"> </span>argocd<span class="w"> </span>-f<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">  </span>https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>argocd<span class="w"> </span><span class="nb">wait</span><span class="w"> </span>pod<span class="w"> </span>--all<span class="w"> </span>--for<span class="o">=</span><span class="nv">condition</span><span class="o">=</span>Ready<span class="w"> </span>--timeout<span class="o">=</span>120s
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="c1"># Port-forward to UI</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a>kubectl<span class="w"> </span>port-forward<span class="w"> </span>svc/argocd-server<span class="w"> </span>-n<span class="w"> </span>argocd<span class="w"> </span><span class="m">8080</span>:443<span class="w"> </span><span class="p">&amp;</span>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="c1"># Get password</span>
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>kubectl<span class="w"> </span>-n<span class="w"> </span>argocd<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>argocd-initial-admin-secret<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="w">  </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s2">&quot;{.data.password}&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">echo</span>
+</span></code></pre></div>
+<h3 id="lab-2-create-an-application-and-watch-the-first-sync">Lab 2 — Create an Application and watch the first sync<a class="headerlink" href="#lab-2-create-an-application-and-watch-the-first-sync" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># Create a public GitHub repo with k8s/deployment.yaml:</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="c1">#   apiVersion: apps/v1</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="c1">#   kind: Deployment</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="c1">#   metadata: {name: demo}</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="c1">#   spec:</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="c1">#     replicas: 1</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="c1">#     selector: {matchLabels: {app: demo}}</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="c1">#     template:</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="c1">#       metadata: {labels: {app: demo}}</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="c1">#       spec:</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="c1">#         containers:</span>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="c1">#         - name: demo</span>
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="c1">#           image: nginx:1.25</span>
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>
+</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="c1"># Apply your Application CRD</span>
+</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>argocd/application.yaml<span class="w">   </span><span class="c1"># pointing at your repo&#39;s k8s/ folder</span>
+</span><span id="__span-15-17"><a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>
+</span><span id="__span-15-18"><a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="c1"># Watch sync happen</span>
+</span><span id="__span-15-19"><a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a>argocd<span class="w"> </span>app<span class="w"> </span>get<span class="w"> </span>demo-app<span class="w"> </span>--watch
+</span><span id="__span-15-20"><a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a><span class="c1"># Expected: OutOfSync → Synced → Healthy</span>
+</span></code></pre></div>
+<h3 id="lab-3-trigger-a-deploy-by-updating-git">Lab 3 — Trigger a deploy by updating Git<a class="headerlink" href="#lab-3-trigger-a-deploy-by-updating-git" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># Change nginx:1.25 to nginx:1.26 in your repo, commit, push</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>sed<span class="w"> </span>-i<span class="w"> </span><span class="s1">&#39;s/nginx:1.25/nginx:1.26/&#39;</span><span class="w"> </span>k8s/deployment.yaml
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>git<span class="w"> </span>add<span class="w"> </span>k8s/deployment.yaml
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat: bump nginx to 1.26&quot;</span>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>git<span class="w"> </span>push
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="c1"># Within ~3 minutes, watch Argo detect and apply</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>argocd<span class="w"> </span>app<span class="w"> </span>get<span class="w"> </span>demo-app<span class="w"> </span>--watch
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="c1"># Observe: OutOfSync (Cause A: Git changed) → Synced</span>
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w">   </span><span class="c1"># new pod with nginx:1.26</span>
+</span></code></pre></div>
+<h3 id="lab-4-manual-drift-and-selfheal">Lab 4 — Manual drift and selfHeal<a class="headerlink" href="#lab-4-manual-drift-and-selfheal" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># Cause drift: scale manually</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>kubectl<span class="w"> </span>scale<span class="w"> </span>deployment<span class="w"> </span>demo<span class="w"> </span>--replicas<span class="o">=</span><span class="m">4</span><span class="w">   </span><span class="c1"># Git says replicas: 1</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="c1"># Watch selfHeal kick in (within ~30 seconds to 3 minutes)</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployment<span class="w"> </span>demo<span class="w"> </span>--watch
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="c1"># Replicas: 4 ... then back to 1</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="c1"># Check Argo events</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>argocd<span class="w"> </span>app<span class="w"> </span>get<span class="w"> </span>demo-app
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="c1"># Event: &quot;Synced to &lt;commit&gt;&quot; — selfHeal fired</span>
+</span></code></pre></div>
+<h3 id="lab-5-rollback-with-git-revert">Lab 5 — Rollback with git revert<a class="headerlink" href="#lab-5-rollback-with-git-revert" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Record the &quot;bad&quot; commit SHA</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nv">BAD</span><span class="o">=</span><span class="k">$(</span>git<span class="w"> </span>rev-parse<span class="w"> </span>HEAD<span class="k">)</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="c1"># Revert it</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>git<span class="w"> </span>revert<span class="w"> </span><span class="nv">$BAD</span><span class="w"> </span>--no-edit
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>git<span class="w"> </span>push
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="c1"># Argo detects the revert commit → applies nginx:1.25 again</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>argocd<span class="w"> </span>app<span class="w"> </span>get<span class="w"> </span>demo-app<span class="w"> </span>--watch
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployment<span class="w"> </span>demo<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.template.spec.containers[0].image}&#39;</span>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="c1"># nginx:1.25 is back</span>
+</span></code></pre></div>
+<blockquote>
+<p><strong>Lab note (small nodes):</strong> Argo CD's full install (~1 GB RAM for all components) will stress a
+t3.micro or single-node kind cluster. Add swap on EC2: <code>fallocate -l 2G /swapfile &amp;&amp; chmod 600
+/swapfile &amp;&amp; mkswap /swapfile &amp;&amp; swapon /swapfile</code>. Make it permanent: add to <code>/etc/fstab</code>.
+Use <code>kubectl apply --validate=false</code> if the API server is slow under load. In production, size
+the Argo namespace to at least 2–4 GB RAM across its pods.</p>
+</blockquote>
+<p><strong>✅ Sahi hua to aisa dikhega:</strong> Argo UI mein app pehle OutOfSync dikhti hai, phir Synced+Healthy ho jaati hai nayi image commit ke baad (Lab 3); <code>kubectl scale</code> karte hi ~30s–3min mein replicas apne aap Git wali value pe wapas aa jaate hain — selfHeal ne revert kiya (Lab 4); <code>git revert</code> push karne par <code>argocd app get demo-app</code> mein purana nginx image tag wapas dikhta hai aur cluster match karta hai (Lab 5).</p>
+<hr />
+<h2 id="interview-questions">Interview questions<a class="headerlink" href="#interview-questions" title="Permanent link">&para;</a></h2>
+<p><strong>Q1: What are the two causes of OutOfSync in Argo CD, and how do you distinguish them in a
+scenario question?</strong></p>
+<p>Cause A: Git changed (CI pushed a new manifest) — Argo will apply it. Cause B: Cluster drifted
+from Git (someone ran kubectl) — selfHeal will revert it. Distinguish by keyword: "git push"
+or "CI committed" = Cause A; "kubectl edit/scale/delete" = Cause B.</p>
+<p><strong>Q2: Why is the pull model (Argo CD) more secure than the push model (CI running kubectl apply)?</strong></p>
+<p>In the pull model, cluster credentials never leave the cluster — Argo runs as a pod inside and uses
+its own ServiceAccount. In the push model, CI must hold a kubeconfig outside the cluster. If the CI
+system is compromised in push mode, the attacker gets cluster access. In pull mode, they only get
+access to the Git repo.</p>
+<p><strong>Q3: A developer says "I need to scale up immediately in production — I can't wait 3 minutes for
+Argo." How do you handle this with selfHeal enabled?</strong></p>
+<p>Disable auto-sync: <code>argocd app set &lt;app&gt; --sync-policy none</code>. Make the manual <code>kubectl</code> change.
+Fix the root cause. Then update Git to reflect the new desired state, push, and re-enable auto-sync.
+The better long-term answer: always go through Git so the change is audited and selfHeal is not
+fighting you.</p>
+<p><strong>Q4: What is the difference between Synced and Healthy in Argo CD, and give an example where they
+are in conflicting states?</strong></p>
+<p>Synced means cluster matches Git. Healthy means pods are running and ready. They are independent.
+Example of Synced + Degraded: CI pushed a manifest with a bad image tag. Argo applied it (Synced),
+but pods are in ImagePullBackOff (Degraded). Example of OutOfSync + Healthy: a developer manually
+increased replicas to 10; current pods all pass health checks (Healthy), but Git says replicas=2
+(OutOfSync).</p>
+<p><strong>Q5: Why should you use <code>git revert</code> for rollback rather than <code>argocd app rollback</code>?</strong></p>
+<p><code>argocd app rollback</code> rolls the cluster back to a previous Argo snapshot but does not create a Git
+commit. This leaves Git ahead of the cluster — a split-brain state where Git says one thing and the
+cluster is running something else. The next sync will undo your rollback. <code>git revert</code> creates a
+new commit that undoes the bad change; Argo syncs to that commit, and Git and cluster agree. Audit
+trail is preserved.</p>
+<p><strong>Q6: Explain the "branch = environment" pattern and how it enables safe promotion.</strong></p>
+<p>Each environment has its own Argo Application pointing at a different branch. Staging watches the
+<code>staging</code> branch; production watches <code>main</code>. A developer merges their feature branch into <code>staging</code>
+— the staging cluster reconciles. After QA passes, they merge <code>staging</code> into <code>main</code> — the prod
+cluster reconciles. Promotion is a <code>git merge</code>, not a separate deploy script. The Git history is
+the promotion history.</p>
+<p><strong>Q7: What does <code>prune: true</code> do, and what is the risk of setting it?</strong></p>
+<p>With <code>prune: true</code>, Argo deletes cluster objects that are no longer declared in Git. This is correct
+behavior — it prevents orphaned Services, ConfigMaps, and Deployments from accumulating. The risk:
+if someone accidentally removes a manifest from the Git repo (bad merge, wrong delete), Argo will
+delete that object from the cluster. Always review what you are removing from the repo before
+pushing.</p>
+<hr />
+<h2 id="production-challenge">Production challenge<a class="headerlink" href="#production-challenge" title="Permanent link">&para;</a></h2>
+<p>You are the platform engineer for a company running three microservices (api, worker, frontend)
+across dev, staging, and prod environments on AWS EKS.</p>
+<p><strong>Requirements:</strong>
+1. A single Git repo holds manifests for all three services and all three environments.
+2. A <code>git push</code> to the <code>dev</code> branch by any developer should deploy only to dev.
+3. Promotion from dev to staging requires a PR approval.
+4. Promotion to prod requires two approvals and a passing CI run.
+5. Any manual <code>kubectl</code> change to prod is automatically reverted within 5 minutes.
+6. Rollback to any prior version of any service must be possible in under 10 minutes, using only
+   Git operations.</p>
+<p>Design the Argo CD Application objects, the Git branching model, and the CI workflow triggers to
+satisfy all six requirements. Describe what happens at each stage when a developer pushes a bug fix
+that starts in dev and must reach prod by end of day.</p>
+<blockquote>
+<p><strong>Hint:</strong> This requires three Argo Applications (one per environment), branch protection rules,
+<code>selfHeal: true</code> on prod only, and the manifest-update pattern in CI. The app-of-apps pattern
+can help manage the three Applications as a single deployable unit.</p>
+</blockquote>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../07-M6-cicd/" class="md-footer__link md-footer__link--prev" aria-label="Previous: M6 · CI/CD">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                M6 · CI/CD
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../09-connected-system/" class="md-footer__link md-footer__link--next" aria-label="Next: The Connected System">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                The Connected System
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 grvtech1 — licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/grvtech1/devops-handbook" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "announce.dismiss"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/progress.js"></script>
+      
+    
+  </body>
+</html>

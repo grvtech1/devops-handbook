@@ -1,0 +1,3721 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free, zero-to-job-ready DevOps handbook — from "what is a terminal" to production- and interview-ready. Systems thinking, hands-on labs, capstones.">
+      
+      
+      
+        <link rel="canonical" href="https://grvtech1.github.io/devops-handbook/28-helm-real-projects/">
+      
+      
+        <link rel="prev" href="../29-confidence-sprint/">
+      
+      
+        <link rel="next" href="../19-cicd-hands-on-flow/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Helm in the Real World (your 2 projects) - The DevOps Engineer's Handbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%206a6%206%200%200%201%206%206c0%202.22-1.21%204.16-3%205.2V19a1%201%200%200%201-1%201h-4a1%201%200%200%201-1-1v-1.8c-1.79-1.04-3-2.98-3-5.2a6%206%200%200%201%206-6m2%2015v1a1%201%200%200%201-1%201h-2a1%201%200%200%201-1-1v-1zm6-10h3v2h-3zM1%2011h3v2H1zM13%201v3h-2V1zM4.92%203.5l2.13%202.14-1.42%201.41L3.5%204.93zm12.03%202.13%202.12-2.13%201.43%201.43-2.13%202.12z%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m13.13%2022.19-1.63-3.83c1.57-.58%203.04-1.36%204.4-2.27zM5.64%2012.5l-3.83-1.63%206.1-2.77C7%209.46%206.22%2010.93%205.64%2012.5M21.61%202.39S16.66.269%2011%205.93c-2.19%202.19-3.5%204.6-4.35%206.71-.28.75-.09%201.57.46%202.13l2.13%202.12c.55.56%201.37.74%202.12.46A19.1%2019.1%200%200%200%2018.07%2013c5.66-5.66%203.54-10.61%203.54-10.61m-7.07%207.07c-.78-.78-.78-2.05%200-2.83s2.05-.78%202.83%200c.77.78.78%202.05%200%202.83s-2.05.78-2.83%200m-5.66%207.07-1.41-1.41zM6.24%2022l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83%2022zM2%2022h1.41l4.77-4.76-1.42-1.41L2%2020.59zm0-2.83%204.09-4.08c-.21-.3-.36-.62-.45-.97L2%2017.76z%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M13%2014h-2V9h2m0%209h-2v-2h2M1%2021h22L12%202z%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M8%2015a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m2.5%202%201.5-3%201.5%203zm5.5-2a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m6-4A10%2010%200%200%200%2012%201%2010%2010%200%200%200%202%2011c0%202.8%201.2%205.3%203%207.1V22h14v-3.9c1.8-1.8%203-4.3%203-7.1m-5%209h-2v-2h-2v2h-2v-2H9v2H7v-2.8c-1.8-1.5-3-3.7-3-6.2a8%208%200%200%201%208-8%208%208%200%200%201%208%208c0%202.5-1.2%204.8-3%206.2z%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#28-helm-in-the-real-world-your-two-projects" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  🚀 <strong>26 chapters</strong> · rendered diagrams · hands-on labs · a 26-scenario incident playbook — all free (CC BY 4.0).
+  &nbsp;
+  <a href="https://github.com/grvtech1/devops-handbook" style="color: inherit; text-decoration: underline; font-weight: 700;">⭐ Star it on GitHub</a>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-header__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The DevOps Engineer's Handbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Helm in the Real World (your 2 projects)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../study-plan/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Study Plan
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../progress/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  My Progress
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../00-INDEX/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Handbook
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-nav__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    The DevOps Engineer's Handbook
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../study-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    My Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handbook
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Handbook
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-INDEX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Curriculum (Index)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 0 — Pre-flight
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 0 — Pre-flight
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00a-preflight/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00a · Pre-flight ground floor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00b-setup-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00b · Setup runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-linux-toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux · the ground everything runs on
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part I — Core toolchain
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part I — Core toolchain
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-M0-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M0 · Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-M1-terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M1 · Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-M2-ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M2 · Ansible
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-M3-docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M3 · Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-M4-kubernetes-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M4 · Kubernetes Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-M5-sizing-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M5 · Sizing & Cost
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-M6-cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M6 · CI/CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-M7-gitops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M7 · GitOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part II — Systems thinking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part II — Systems thinking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-connected-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Connected System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-k8s-objects-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Objects · How They Connect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-10-day-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Learning Plan (understand)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29-confidence-sprint/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Confidence Sprint (drill)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Helm in the Real World (your 2 projects)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Helm in the Real World (your 2 projects)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pehle-whiteboard-helm-ka-ek-line-me-sach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pehle: whiteboard → Helm ka ek line me sach
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#helm-ke-do-patterns-aur-tumhare-paas-dono-hain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Helm ke do patterns — aur tumhare paas dono hain
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-a-billfree-techops-ek-reusable-chart-n-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pattern A — billfree-techops: ek reusable chart, N services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern A — billfree-techops: ek reusable chart, N services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#folder-structure-real" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Folder structure (real)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chart-ek-box-values-uska-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chart = ek box; values = uska content
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#template-kaise-values-se-juda-hai-real-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Template kaise values se juda hai (real code)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_helperstpl-chhupi-hui-super-power" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _helpers.tpl — chhupi hui super-power
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#argocd-applicationset-ek-chart-se-7-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ArgoCD ApplicationSet — ek chart se 7 apps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-b-vanta-boutique-ek-umbrella-chart-template-per-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pattern B — VANTA-Boutique: ek umbrella chart, template per service
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern B — VANTA-Boutique: ek umbrella chart, template per service">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#folder-structure-real_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Folder structure (real)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ek-service-template-real" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ek service template (real)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#side-by-side-kab-kaunsa-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Side-by-side — kab kaunsa pattern?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-apne-hi-charts-render-karke-dekho" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hands-on — apne hi charts render karke dekho
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-lab-helm-templating-andar-se" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧪 Hands-on Lab — Helm templating, andar se
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧪 Hands-on Lab — Helm templating, andar se">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lab-0-templating-hai-kya-30-second-me-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 0 — templating hai kya? (30 second me core)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-1-helm-ke-4-magic-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 1 — Helm ke 4 "magic objects"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-2-pipes-aur-functions-aage-bhejo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 2 — pipes aur functions (| = "aage bhejo")
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-3-if-onoff-switch-sabse-powerful" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 3 — if = on/off switch (sabse powerful)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-4-with-aur-range-block-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 4 — with aur range (block + loop)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-5-_helperstpl-dry-ka-jaadu-define-include" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 5 — _helpers.tpl — DRY ka jaadu (define + include)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-6-helm-template-ke-saare-useful-flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 6 — helm template ke saare useful flags
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-7-debugging-aur-common-errors-ye-interview-me-poochte-hain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 7 — debugging aur common errors (ye interview me poochte hain)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-8-template-vs-install-vs-upgrade-kab-kya" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 8 — template vs install vs upgrade (kab kya)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-checkpoint-bina-dekhe-bolo-recall-drill" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Lab checkpoint — bina dekhe bolo (recall drill)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-values-template-cluster-flow-dono-patterns-ka-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The values → template → cluster flow (dono patterns ka core)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whiteboard-mapping-final-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Whiteboard mapping — final connection
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-second-recall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20-second recall
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-cicd-hands-on-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Follow One Commit (hands-on CI/CD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part III — Operate
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part III — Operate
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-M8-observability-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M8 · Observability & SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-M9-advanced-k8s-internals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M9 · Advanced K8s Internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30-k8s-complete-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Complete Reference (Workloads · Scheduling · Ops)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-production-incident-playbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Incident Playbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part IV — Capstones
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part IV — Capstones
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-capstone-url-shortener/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone I · URL Shortener
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-capstone-microshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone II · MicroShop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part V — Reference & career
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part V — Reference & career
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-interview-bank/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview Bank
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-confusions-and-tradeoffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Confusions & Trade-offs (X-vs-Y)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-command-cheatsheets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Command Cheat-Sheets & Labs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-roadmap-M11-M18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap · M11–M18
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-reference-appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Appendix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-career-job-ready/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Job-Ready
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part VI — The Production Gauntlet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part VI — The Production Gauntlet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-production-gauntlet-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build the Real System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-production-gauntlet-chaos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chaos Engineering · break & fix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#pehle-whiteboard-helm-ka-ek-line-me-sach" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pehle: whiteboard → Helm ka ek line me sach
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#helm-ke-do-patterns-aur-tumhare-paas-dono-hain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Helm ke do patterns — aur tumhare paas dono hain
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-a-billfree-techops-ek-reusable-chart-n-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pattern A — billfree-techops: ek reusable chart, N services
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern A — billfree-techops: ek reusable chart, N services">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#folder-structure-real" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Folder structure (real)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#chart-ek-box-values-uska-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chart = ek box; values = uska content
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#template-kaise-values-se-juda-hai-real-code" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Template kaise values se juda hai (real code)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_helperstpl-chhupi-hui-super-power" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        _helpers.tpl — chhupi hui super-power
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#argocd-applicationset-ek-chart-se-7-apps" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ArgoCD ApplicationSet — ek chart se 7 apps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pattern-b-vanta-boutique-ek-umbrella-chart-template-per-service" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pattern B — VANTA-Boutique: ek umbrella chart, template per service
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pattern B — VANTA-Boutique: ek umbrella chart, template per service">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#folder-structure-real_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Folder structure (real)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ek-service-template-real" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ek service template (real)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#side-by-side-kab-kaunsa-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Side-by-side — kab kaunsa pattern?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-apne-hi-charts-render-karke-dekho" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hands-on — apne hi charts render karke dekho
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-lab-helm-templating-andar-se" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧪 Hands-on Lab — Helm templating, andar se
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="🧪 Hands-on Lab — Helm templating, andar se">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lab-0-templating-hai-kya-30-second-me-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 0 — templating hai kya? (30 second me core)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-1-helm-ke-4-magic-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 1 — Helm ke 4 "magic objects"
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-2-pipes-aur-functions-aage-bhejo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 2 — pipes aur functions (| = "aage bhejo")
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-3-if-onoff-switch-sabse-powerful" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 3 — if = on/off switch (sabse powerful)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-4-with-aur-range-block-loop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 4 — with aur range (block + loop)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-5-_helperstpl-dry-ka-jaadu-define-include" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 5 — _helpers.tpl — DRY ka jaadu (define + include)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-6-helm-template-ke-saare-useful-flags" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 6 — helm template ke saare useful flags
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-7-debugging-aur-common-errors-ye-interview-me-poochte-hain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 7 — debugging aur common errors (ye interview me poochte hain)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-8-template-vs-install-vs-upgrade-kab-kya" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lab 8 — template vs install vs upgrade (kab kya)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#lab-checkpoint-bina-dekhe-bolo-recall-drill" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Lab checkpoint — bina dekhe bolo (recall drill)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-values-template-cluster-flow-dono-patterns-ka-core" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The values → template → cluster flow (dono patterns ka core)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#whiteboard-mapping-final-connection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Whiteboard mapping — final connection
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-second-recall" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20-second recall
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="28-helm-in-the-real-world-your-two-projects">28 — Helm in the Real World: Your Two Projects<a class="headerlink" href="#28-helm-in-the-real-world-your-two-projects" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Ye chapter kis liye:</strong> Whiteboard pe tumne boxes banaye — frontend (Service + ConfigMap + Deployment), backend (Service + Secret + StatefulSet) — aur poocha <em>"Helm me ye YAML kaise banti hai?"</em> Answer tumhare hi do repos me pada hai. <strong>VANTA-Boutique</strong> aur <strong>billfree-techops</strong> — dono me Helm chart hai, aur dono Helm ke <strong>do alag fundamental patterns</strong> dikhate hain. Ye chapter unhi ko cheer-phaad ke samjhaata hai.</p>
+<p><strong>10-day plan connection:</strong> Ye <a href="../27-10-day-plan/#day-8-gitops-helm-menu-board-manager">Day 8 (GitOps + Helm)</a> ka real-world extension hai.</p>
+</blockquote>
+<hr />
+<h2 id="pehle-whiteboard-helm-ka-ek-line-me-sach">Pehle: whiteboard → Helm ka ek line me sach<a class="headerlink" href="#pehle-whiteboard-helm-ka-ek-line-me-sach" title="Permanent link">&para;</a></h2>
+<p>Tumne jo box banaya:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─── frontend ───┐      ┌─── backend ────┐
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│   Service      │      │   Service      │
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│   ConfigMap    │      │   Secret       │
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│   Deployment   │      │   StatefulSet  │
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│     └─ App     │      │     └─ Database│
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>└────────────────┘      └────────────────┘
+</span></code></pre></div>
+<p><strong>Helm in boxes ko banata nahi — ye "kya" hai woh wahi rehta hai.</strong> Helm sirf teen kaam karta hai:</p>
+<ol>
+<li>In YAML ko ek <strong>folder (chart)</strong> me pack karta hai</li>
+<li>Values (image, replicas, config) ko ek <strong><code>values.yaml</code></strong> me bahar nikaal deta hai</li>
+<li>Ek command se poora bundle deploy/upgrade/rollback karta hai</li>
+</ol>
+<blockquote>
+<p>🇮🇳 <strong>Yaad rakho:</strong> Helm YAML ka <strong>structure wahi rakhta</strong> — Service, ConfigMap, Deployment, Secret, StatefulSet. Bas unhe <strong>template banake, values bahar nikaal ke, ek package</strong> bana deta. Kubernetes ko farq nahi padta ki tumne haath se likha ya Helm ne render kiya — dono se same object banta hai.</p>
+</blockquote>
+<hr />
+<h2 id="helm-ke-do-patterns-aur-tumhare-paas-dono-hain">Helm ke do patterns — aur tumhare paas dono hain<a class="headerlink" href="#helm-ke-do-patterns-aur-tumhare-paas-dono-hain" title="Permanent link">&para;</a></h2>
+<p>Yahi wo cheez hai jo confusion khatam kar deti hai. Helm charts do tarah se organize hote hain:</p>
+<pre class="mermaid"><code>flowchart TB
+  subgraph A["Pattern A · One chart per service-TYPE (reusable)"]
+    AC["ONE 'microservice' chart"]:::chart
+    AV1["auth-service/values.yaml"]:::vals
+    AV2["api-gateway/values.yaml"]:::vals
+    AV3["ticket-service/values.yaml"]:::vals
+    AC -.-&gt;|"+ values"| AV1
+    AC -.-&gt;|"+ values"| AV2
+    AC -.-&gt;|"+ values"| AV3
+  end
+  subgraph B["Pattern B · One umbrella chart, one template per service"]
+    BC["ONE 'onlineboutique' chart"]:::chart
+    BT1["templates/frontend.yaml"]:::tmpl
+    BT2["templates/cartservice.yaml"]:::tmpl
+    BT3["templates/paymentservice.yaml"]:::tmpl
+    BC --&gt; BT1 &amp; BT2 &amp; BT3
+  end
+  NOTE1["👉 billfree-techops&lt;br/&gt;uses THIS"]:::note
+  NOTE2["👉 VANTA-Boutique&lt;br/&gt;uses THIS"]:::note
+  A --- NOTE1
+  B --- NOTE2
+  classDef chart fill:#e8eaf6,stroke:#283593,color:#1a237e
+  classDef vals fill:#fff3e0,stroke:#e65100,color:#bf360c
+  classDef tmpl fill:#e0f2f1,stroke:#00897b,color:#004d40
+  classDef note fill:#fce4ec,stroke:#880e4f,color:#880e4f</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Pattern A — Reusable chart</strong></th>
+<th><strong>Pattern B — Umbrella chart</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Kaun</strong></td>
+<td><code>billfree-techops</code></td>
+<td><code>VANTA-Boutique</code></td>
+</tr>
+<tr>
+<td><strong>Idea</strong></td>
+<td>1 chart, N services (values se badalte)</td>
+<td>1 chart, har service ka apna template file</td>
+</tr>
+<tr>
+<td><strong>Kab best</strong></td>
+<td>services <strong>ek jaise</strong> hain (sab Node/Fastify)</td>
+<td>services <strong>alag-alag</strong> hain (Go, Python, Java, Redis…)</td>
+</tr>
+<tr>
+<td><strong>Naya service add</strong></td>
+<td>ek <code>values.yaml</code> file → done</td>
+<td>ek naya <code>templates/x.yaml</code> likho</td>
+</tr>
+<tr>
+<td><strong>DRY?</strong></td>
+<td>Bahut (ek hi template sabke liye)</td>
+<td>Kam (har service repeat)</td>
+</tr>
+<tr>
+<td><strong>Real-world naam</strong></td>
+<td>"library / reusable chart"</td>
+<td>"monolithic / app-of-services chart"</td>
+</tr>
+</tbody>
+</table>
+<p>Dono sahi hain — bas <strong>use-case alag</strong>. Chalo dono ko andar se dekhte hain.</p>
+<hr />
+<h2 id="pattern-a-billfree-techops-ek-reusable-chart-n-services">Pattern A — billfree-techops: ek reusable chart, N services<a class="headerlink" href="#pattern-a-billfree-techops-ek-reusable-chart-n-services" title="Permanent link">&para;</a></h2>
+<p>Ye <strong>modern best-practice</strong> hai jab tumhare saare microservices ek jaise ho (same runtime, same shape). billfree ke 7 services (auth, gateway, ticket, analytics, calllog, report, web) sab Node/Fastify hain → <strong>ek hi chart</strong> sabko chalata hai.</p>
+<h3 id="folder-structure-real">Folder structure (real)<a class="headerlink" href="#folder-structure-real" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>deploy/
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>├── charts/
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│   └── microservice/              ← ⭐ EK reusable chart (sabke liye)
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│       ├── Chart.yaml
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│       ├── values.yaml            ← safe defaults (har service inherit karta)
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>│       └── templates/
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>│           ├── _helpers.tpl       ← naam + labels ka logic (DRY)
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│           ├── deployment.yaml
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>│           ├── service.yaml
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>│           ├── hpa.yaml           ← auto-scaling
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>│           ├── ingress.yaml
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>│           ├── pdb.yaml           ← PodDisruptionBudget
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>│           ├── servicemonitor.yaml   ← Prometheus scrape
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>│           └── prometheusrule.yaml   ← alerts (RED method)
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>│
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>├── apps/                          ← per-service VALUES (chart nahi!)
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>│   ├── auth-service/values.yaml
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>│   ├── api-gateway/values.yaml
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>│   ├── ticket-service/values.yaml
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>│   └── …                          ← har service = sirf ek values file
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>│
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>└── envs/
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>    └── dev/applicationset.yaml    ← ArgoCD: sabhi services loop karke deploy
+</span></code></pre></div>
+<p><strong>Mental model:</strong> <code>charts/microservice/</code> = ek <strong>cookie-cutter (saancha)</strong>. <code>apps/&lt;service&gt;/values.yaml</code> = us saanche me kaunsa dough (image, config). Ek saancha, 7 cookies. 🍪</p>
+<h3 id="chart-ek-box-values-uska-content">Chart = ek box; values = uska content<a class="headerlink" href="#chart-ek-box-values-uska-content" title="Permanent link">&para;</a></h3>
+<p>Tumhare whiteboard ka <strong>frontend box</strong> = ek service. billfree me woh ban jaata hai: <code>deploy/apps/web/values.yaml</code> + shared <code>microservice</code> chart. Box ke andar Service + Deployment + (config via envFrom Secret) — sab chart ke templates se aate hain.</p>
+<h3 id="template-kaise-values-se-juda-hai-real-code">Template kaise values se juda hai (real code)<a class="headerlink" href="#template-kaise-values-se-juda-hai-real-code" title="Permanent link">&para;</a></h3>
+<p><code>templates/deployment.yaml</code> (chart) me hardcoded kuch nahi — sab <code>.Values</code> se:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># deploy/charts/microservice/templates/deployment.yaml (excerpt)</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">  </span><span class="p p-Indicator">{{</span><span class="nv">- if not .Values.autoscaling.enabled</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">.Values.replicaCount</span><span class="w"> </span><span class="p p-Indicator">}}</span><span class="w">        </span><span class="c1"># 👈 values se</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="p p-Indicator">{{</span><span class="nv">- end</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span><span class="nt">containers</span><span class="p">:</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">include &quot;microservice.name&quot; .</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">.Values.image.repository</span><span class="nv"> </span><span class="s">}}:{{</span><span class="nv"> </span><span class="s">.Values.image.tag</span><span class="nv"> </span><span class="s">}}&quot;</span><span class="w">   </span><span class="c1"># 👈 values se</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">      </span><span class="p p-Indicator">{{</span><span class="nv">- with .Values.envFrom</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">      </span><span class="nt">envFrom</span><span class="p">:</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">        </span><span class="p p-Indicator">{{</span><span class="nv">- toYaml . | nindent 12</span><span class="w"> </span><span class="p p-Indicator">}}</span><span class="w">           </span><span class="c1"># 👈 Secret yahan inject hota hai</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">      </span><span class="p p-Indicator">{{</span><span class="nv">- end</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span></code></pre></div>
+<p>Aur <code>auth-service/values.yaml</code> sirf <strong>differences</strong> deta hai — baaki chart defaults se:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># deploy/apps/auth-service/values.yaml (real)</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nt">nameOverride</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auth-service</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nt">image</span><span class="p">:</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/grvtech1/billfree-techops/auth-service</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="nt">tag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;48b3805d…&quot;</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="nt">replicaCount</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="nt">env</span><span class="p">:</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SERVICE_NAME</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auth-service</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="nt">envFrom</span><span class="p">:</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">secretRef</span><span class="p">:</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="w">      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">billfree-app-secrets</span><span class="w">      </span><span class="c1"># 👈 whiteboard ka &quot;Secret&quot; — yahin juda</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="nt">autoscaling</span><span class="p">:</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">  </span><span class="nt">minReplicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a><span class="w">  </span><span class="nt">maxReplicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span>
+</span></code></pre></div>
+<blockquote>
+<p>🇮🇳 <strong>Yehi magic hai:</strong> <code>values.yaml</code> sirf <strong>jo alag hai</strong> wo batata hai (naam, image, secret, scale). Baaki 90% (security context, probes, PDB, service, HPA structure) chart ke defaults se automatically aa jaata. Ek jagah fix karo → saare 7 services ko mil jaata. <strong>Yehi DRY hai.</strong></p>
+</blockquote>
+<h3 id="_helperstpl-chhupi-hui-super-power"><code>_helpers.tpl</code> — chhupi hui super-power<a class="headerlink" href="#_helperstpl-chhupi-hui-super-power" title="Permanent link">&para;</a></h3>
+<p>Ye file <strong>repeat hone wala logic</strong> ek jagah rakhti hai. Jaise naam aur labels:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># har template isko call karta hai — ek jagah define, sab jagah use</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p p-Indicator">{{</span><span class="nv">- define &quot;microservice.labels&quot; -</span><span class="p p-Indicator">}}</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nt">app.kubernetes.io/name</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">include &quot;microservice.name&quot; .</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="nt">app.kubernetes.io/instance</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">.Release.Name</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nt">app.kubernetes.io/part-of</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">billfree-techops</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p p-Indicator">{{</span><span class="nv">- end -</span><span class="p p-Indicator">}}</span>
+</span></code></pre></div>
+<p>Deployment, Service, HPA, PDB — sab <code>{{- include "microservice.labels" . }}</code> bulate hain. <strong>Labels ka format badalna ho? Ek jagah badlo, sab update.</strong> (Restaurant: ek hi "name-badge printer" — sab cooks ke badge same format me.)</p>
+<h3 id="argocd-applicationset-ek-chart-se-7-apps">ArgoCD ApplicationSet — ek chart se 7 apps<a class="headerlink" href="#argocd-applicationset-ek-chart-se-7-apps" title="Permanent link">&para;</a></h3>
+<p>Ye pattern ka <strong>taj</strong> hai. Ek file me service list, ArgoCD har ek ke liye ek Application bana deta:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># deploy/envs/dev/applicationset.yaml (real, trimmed)</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">generators</span><span class="p">:</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">list</span><span class="p">:</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">      </span><span class="nt">elements</span><span class="p">:</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api-gateway</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auth-service</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ticket-service</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">        </span><span class="c1"># …</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="nt">template</span><span class="p">:</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">  </span><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">    </span><span class="nt">sources</span><span class="p">:</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">deploy/charts/microservice</span><span class="w">        </span><span class="c1"># 👈 same chart har baar</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">        </span><span class="nt">helm</span><span class="p">:</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">          </span><span class="nt">releaseName</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{.service}}&quot;</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">          </span><span class="nt">valueFiles</span><span class="p">:</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$values/deploy/apps/{{.service}}/values.yaml</span><span class="w">   </span><span class="c1"># base</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">            </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">$values/deploy/envs/dev/values.yaml</span><span class="w">            </span><span class="c1"># dev overlay (last wins)</span>
+</span></code></pre></div>
+<p><strong>Flow ek line me:</strong> ArgoCD service-list pe loop → har service ke liye <code>microservice</code> chart lo → us service ki <code>values.yaml</code> + dev overlay lagao → cluster me deploy. <strong>7 services, 1 chart, 0 duplication.</strong></p>
+<pre class="mermaid"><code>flowchart LR
+  AS["ApplicationSet&lt;br/&gt;(service list)"]:::ship
+  CH["microservice chart&lt;br/&gt;(one template set)"]:::chart
+  V1["auth values"]:::vals
+  V2["gateway values"]:::vals
+  V3["ticket values"]:::vals
+  AS --&gt; CH
+  V1 &amp; V2 &amp; V3 -.-&gt;|"overlay"| CH
+  CH --&gt; K["7 Deployments+Services+HPA+PDB&lt;br/&gt;in the cluster"]:::run
+  classDef ship fill:#f3e5f5,stroke:#8e24aa,color:#4a148c
+  classDef chart fill:#e8eaf6,stroke:#283593,color:#1a237e
+  classDef vals fill:#fff3e0,stroke:#e65100,color:#bf360c
+  classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40</code></pre>
+<hr />
+<h2 id="pattern-b-vanta-boutique-ek-umbrella-chart-template-per-service">Pattern B — VANTA-Boutique: ek umbrella chart, template per service<a class="headerlink" href="#pattern-b-vanta-boutique-ek-umbrella-chart-template-per-service" title="Permanent link">&para;</a></h2>
+<p>VANTA (Google Online Boutique) ke 12 services <strong>alag-alag languages</strong> me hain (Go, C#, Python, Java, Node). Ek generic template inhe fit nahi kar sakta — isliye <strong>har service ka apna template file</strong>, sab ek chart me.</p>
+<h3 id="folder-structure-real_1">Folder structure (real)<a class="headerlink" href="#folder-structure-real_1" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>helm-chart/
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>├── Chart.yaml                      ← name: onlineboutique
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>├── values.yaml                     ← ⭐ EK bada values file, sab services ke toggle
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>└── templates/
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    ├── _common.yaml                ← shared NetworkPolicy/AuthorizationPolicy
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    ├── frontend.yaml               ← frontend ka SA+Deployment+Service (ek file me)
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    ├── cartservice.yaml            ← cart ka sab kuch
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    ├── paymentservice.yaml
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    ├── productcatalogservice.yaml
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    ├── recommendationservice.yaml
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>    ├── shippingservice.yaml
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>    └── … (har service ka ek file)
+</span></code></pre></div>
+<p><strong>Mental model:</strong> ek <strong>thali</strong> jisme har service ek alag katori hai. Ek hi thali (chart), par har dish ka apna container (template).</p>
+<h3 id="ek-service-template-real">Ek service template (real)<a class="headerlink" href="#ek-service-template-real" title="Permanent link">&para;</a></h3>
+<p><code>templates/frontend.yaml</code> me ek <code>if</code> gate se poora service on/off hota hai:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># helm-chart/templates/frontend.yaml (excerpt)</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="p p-Indicator">{{</span><span class="nv">- if .Values.frontend.create</span><span class="w"> </span><span class="p p-Indicator">}}</span><span class="w">          </span><span class="c1"># 👈 toggle from values</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="nn">...</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">.Values.frontend.name</span><span class="w"> </span><span class="p p-Indicator">}}</span><span class="w">         </span><span class="c1"># 👈 values se</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a><span class="w">      </span><span class="nt">containers</span><span class="p">:</span>
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">server</span>
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a><span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">.Values.images.repository</span><span class="w"> </span><span class="p p-Indicator">}}</span><span class="l l-Scalar l-Scalar-Plain">/{{ .Values.frontend.name }}:{{ .Values.images.tag | default .Chart.AppVersion }}</span>
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a><span class="w">          </span><span class="nt">securityContext</span><span class="p">:</span>
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a><span class="w">            </span><span class="nt">readOnlyRootFilesystem</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a><span class="w">            </span><span class="nt">capabilities</span><span class="p">:</span>
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a><span class="w">              </span><span class="nt">drop</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">ALL</span><span class="p p-Indicator">]</span>
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a><span class="p p-Indicator">{{</span><span class="nv">- end</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span></code></pre></div>
+<p>Aur <code>values.yaml</code> me ek jagah se saare services control:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># helm-chart/values.yaml (shape)</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="nt">images</span><span class="p">:</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">us-central1-docker.pkg.dev/google-samples/microservices-demo</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">  </span><span class="nt">tag</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&quot;</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="nt">frontend</span><span class="p">:</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">  </span><span class="nt">create</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w">          </span><span class="c1"># 👈 chahiye to true, nahi to false</span>
+</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">frontend</span>
+</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="nt">cartservice</span><span class="p">:</span>
+</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="w">  </span><span class="nt">create</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-8-10"><a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cartservice</span>
+</span><span id="__span-8-11"><a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a><span class="nt">securityContext</span><span class="p">:</span>
+</span><span id="__span-8-12"><a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="w">  </span><span class="nt">enable</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span><span id="__span-8-13"><a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="nt">networkPolicies</span><span class="p">:</span>
+</span><span id="__span-8-14"><a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="w">  </span><span class="nt">create</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w">         </span><span class="c1"># ek switch → sab services ki policy on/off</span>
+</span></code></pre></div>
+<blockquote>
+<p>🇮🇳 <strong>Difference dekha?</strong> billfree me <strong>ek template, N values files</strong>. VANTA me <strong>N templates, ek values file</strong>. Dono me <code>values</code> hi asli control hai — bas organize alag.</p>
+</blockquote>
+<hr />
+<h2 id="side-by-side-kab-kaunsa-pattern">Side-by-side — kab kaunsa pattern?<a class="headerlink" href="#side-by-side-kab-kaunsa-pattern" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart TD
+  Q{"Tumhare services&lt;br/&gt;ek jaise hain?"}:::q
+  Q --&gt;|"Haan — sab same runtime&lt;br/&gt;(sab Node, sab shape)"| A["Pattern A&lt;br/&gt;ONE reusable chart&lt;br/&gt;+ per-service values&lt;br/&gt;&lt;br/&gt;👉 billfree style"]:::a
+  Q --&gt;|"Nahi — alag languages,&lt;br/&gt;alag zaroorat"| B["Pattern B&lt;br/&gt;ONE umbrella chart&lt;br/&gt;+ template per service&lt;br/&gt;&lt;br/&gt;👉 VANTA style"]:::b
+  classDef q fill:#fff9c4,stroke:#f9a825,color:#4a3800
+  classDef a fill:#e8eaf6,stroke:#283593,color:#1a237e
+  classDef b fill:#e0f2f1,stroke:#00897b,color:#004d40</code></pre>
+<table>
+<thead>
+<tr>
+<th>Sawaal</th>
+<th>Pattern A (billfree)</th>
+<th>Pattern B (VANTA)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Services same shape?</strong></td>
+<td>✅ zaroori</td>
+<td>❌ zaroorat nahi</td>
+</tr>
+<tr>
+<td><strong>Naya service</strong></td>
+<td>1 values file</td>
+<td>1 template file</td>
+</tr>
+<tr>
+<td><strong>Ek change sabme</strong></td>
+<td>1 jagah (chart)</td>
+<td>har template me</td>
+</tr>
+<tr>
+<td><strong>Learning curve</strong></td>
+<td>thoda zyada (helpers, ApplicationSet)</td>
+<td>seedha (dekho aur samjho)</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>homogeneous microservices</td>
+<td>fixed heterogeneous set</td>
+</tr>
+<tr>
+<td><strong>Scale</strong></td>
+<td>50 services? easy</td>
+<td>50 templates? painful</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Senior judgement:</strong> naya greenfield microservices platform bana rahe ho jahan services ek jaise honge → <strong>Pattern A</strong>. Ek fixed demo/product jisme services bahut alag hain → <strong>Pattern B</strong> theek hai.</p>
+<hr />
+<h2 id="hands-on-apne-hi-charts-render-karke-dekho">Hands-on — apne hi charts render karke dekho<a class="headerlink" href="#hands-on-apne-hi-charts-render-karke-dekho" title="Permanent link">&para;</a></h2>
+<p>Deploy karne se pehle <strong>render</strong> karke dekho ki actual YAML kya banega (kuch break nahi hota — sirf print):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># ── billfree (Pattern A): auth-service ke liye render ──</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nb">cd</span><span class="w"> </span>billfree-techops
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>helm<span class="w"> </span>template<span class="w"> </span>auth-service<span class="w"> </span>deploy/charts/microservice<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span>-f<span class="w"> </span>deploy/apps/auth-service/values.yaml
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1"># → poori Deployment + Service + HPA + PDB + ServiceMonitor + PrometheusRule dikhegi</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="c1"># ── VANTA (Pattern B): poora boutique render ──</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="nb">cd</span><span class="w"> </span>VANTA-Boutique/helm-chart
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>helm<span class="w"> </span>template<span class="w"> </span>onlineboutique<span class="w"> </span>.<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-60
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="c1"># → saare 12 services ke objects</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="c1"># ── lint (galti pakdo deploy se pehle) ──</span>
+</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13" href="#__codelineno-9-13"></a>helm<span class="w"> </span>lint<span class="w"> </span>deploy/charts/microservice
+</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14" href="#__codelineno-9-14"></a>
+</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15" href="#__codelineno-9-15"></a><span class="c1"># ── actually deploy (agar cluster hai) ──</span>
+</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16" href="#__codelineno-9-16"></a>helm<span class="w"> </span>install<span class="w"> </span>auth-service<span class="w"> </span>deploy/charts/microservice<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17" href="#__codelineno-9-17"></a><span class="w">  </span>-f<span class="w"> </span>deploy/apps/auth-service/values.yaml<span class="w"> </span>-n<span class="w"> </span>billfree-dev<span class="w"> </span>--create-namespace
+</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18" href="#__codelineno-9-18"></a>
+</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19" href="#__codelineno-9-19"></a><span class="c1"># ── update (nayi image tag) ──</span>
+</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20" href="#__codelineno-9-20"></a>helm<span class="w"> </span>upgrade<span class="w"> </span>auth-service<span class="w"> </span>deploy/charts/microservice<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21" href="#__codelineno-9-21"></a><span class="w">  </span>-f<span class="w"> </span>deploy/apps/auth-service/values.yaml<span class="w"> </span>--set<span class="w"> </span>image.tag<span class="o">=</span>NEW_SHA
+</span><span id="__span-9-22"><a id="__codelineno-9-22" name="__codelineno-9-22" href="#__codelineno-9-22"></a>
+</span><span id="__span-9-23"><a id="__codelineno-9-23" name="__codelineno-9-23" href="#__codelineno-9-23"></a><span class="c1"># ── kuch toota? ek second me wapas ──</span>
+</span><span id="__span-9-24"><a id="__codelineno-9-24" name="__codelineno-9-24" href="#__codelineno-9-24"></a>helm<span class="w"> </span>rollback<span class="w"> </span>auth-service<span class="w"> </span><span class="m">1</span>
+</span><span id="__span-9-25"><a id="__codelineno-9-25" name="__codelineno-9-25" href="#__codelineno-9-25"></a>
+</span><span id="__span-9-26"><a id="__codelineno-9-26" name="__codelineno-9-26" href="#__codelineno-9-26"></a><span class="c1"># ── kya deployed hai ──</span>
+</span><span id="__span-9-27"><a id="__codelineno-9-27" name="__codelineno-9-27" href="#__codelineno-9-27"></a>helm<span class="w"> </span>list<span class="w"> </span>-n<span class="w"> </span>billfree-dev
+</span></code></pre></div>
+<blockquote>
+<p>💡 <strong><code>helm template</code> = tumhara best dost.</strong> Deploy se pehle hamesha render karke dekho — "values sahi jagah gaye?" YAML aankhon se verify karo. Confusion 90% yahin khatam ho jaati hai.</p>
+</blockquote>
+<hr />
+<h2 id="hands-on-lab-helm-templating-andar-se">🧪 Hands-on Lab — Helm templating, andar se<a class="headerlink" href="#hands-on-lab-helm-templating-andar-se" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Ye lab tumhare <strong>asli billfree chart</strong> pe chalta hai. Har command copy-paste karke output apni aankhon se dekho. Padhna nahi — <strong>karna</strong> hai. Har step ke saath <em>"kya hua aur kyun"</em> likha hai.</p>
+<p><strong>Setup:</strong> <code>helm version</code> (koi bhi v3/v4 chalega) + <code>cd billfree-techops</code>. Cluster ki <strong>zaroorat nahi</strong> — <code>helm template</code> sab local render karta hai.</p>
+</blockquote>
+<h3 id="lab-0-templating-hai-kya-30-second-me-core">Lab 0 — templating hai kya? (30 second me core)<a class="headerlink" href="#lab-0-templating-hai-kya-30-second-me-core" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>Template (<code>{{ }}</code> wali file) + values (settings) → Helm render → plain Kubernetes YAML.</strong>
+<code>helm template</code> cluster ko <strong>chhuata nahi</strong> — sirf print karta. "Deploy se pehle kya banega" dekhne ka safe microscope.</p>
+</blockquote>
+<p>Ek hi cheez ka <strong>BEFORE (template)</strong> vs <strong>AFTER (rendered)</strong>:</p>
+<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># BEFORE — templates/service.yaml (jaisa likha hai)</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">.Values.service.type</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">.Values.service.port</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span></code></pre></div>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># AFTER — helm template ... --show-only templates/service.yaml</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ClusterIP</span><span class="w">        </span><span class="c1"># ← .Values.service.type bhar gaya</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">  </span><span class="nt">ports</span><span class="p">:</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span><span class="w">           </span><span class="c1"># ← .Values.service.port bhar gaya</span>
+</span></code></pre></div></p>
+<p><strong>Bas yehi templating hai.</strong> <code>{{ ... }}</code> = "yahan value bharo". Baaki sab isi ka detail hai.</p>
+<p>Khud chalao:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>helm<span class="w"> </span>template<span class="w"> </span>auth-service<span class="w"> </span>deploy/charts/microservice<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span>-f<span class="w"> </span>deploy/apps/auth-service/values.yaml<span class="w"> </span>--show-only<span class="w"> </span>templates/service.yaml
+</span></code></pre></div></p>
+<hr />
+<h3 id="lab-1-helm-ke-4-magic-objects">Lab 1 — Helm ke 4 "magic objects"<a class="headerlink" href="#lab-1-helm-ke-4-magic-objects" title="Permanent link">&para;</a></h3>
+<p>Har template ke andar ye 4 built-in objects milte hain. Inhi se sab value aati hai:</p>
+<table>
+<thead>
+<tr>
+<th>Object</th>
+<th>Kahan se</th>
+<th>Example</th>
+<th>Render</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>.Values</code></strong></td>
+<td>tumhari <code>values.yaml</code> (+ <code>-f</code> / <code>--set</code>)</td>
+<td><code>{{ .Values.image.tag }}</code></td>
+<td><code>48b3805d…</code></td>
+</tr>
+<tr>
+<td><strong><code>.Release</code></strong></td>
+<td><code>helm install &lt;NAME&gt; -n &lt;NS&gt;</code></td>
+<td><code>{{ .Release.Name }}</code> · <code>{{ .Release.Namespace }}</code></td>
+<td><code>auth-service</code> · <code>billfree-dev</code></td>
+</tr>
+<tr>
+<td><strong><code>.Chart</code></strong></td>
+<td><code>Chart.yaml</code></td>
+<td><code>{{ .Chart.Name }}-{{ .Chart.Version }}</code></td>
+<td><code>microservice-0.1.0</code></td>
+</tr>
+<tr>
+<td><strong><code>.Capabilities</code></strong></td>
+<td>cluster ki API versions</td>
+<td><code>{{ .Capabilities.KubeVersion }}</code></td>
+<td><code>v1.29</code></td>
+</tr>
+</tbody>
+</table>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># .Release.Name badal ke dekho — sab jagah naam badal jaata</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>helm<span class="w"> </span>template<span class="w"> </span>MY-TEST-NAME<span class="w"> </span>deploy/charts/microservice<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span>-f<span class="w"> </span>deploy/apps/auth-service/values.yaml<span class="w"> </span>--show-only<span class="w"> </span>templates/service.yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>name:
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="c1"># → name: MY-TEST-NAME   (kyunki fullname = .Release.Name)</span>
+</span></code></pre></div>
+<blockquote>
+<p>🇮🇳 <strong>Yaad rakho:</strong> 90% waqt sirf <strong><code>.Values</code></strong> use hoga. <code>.Release</code>/<code>.Chart</code> naam aur labels ke liye.</p>
+</blockquote>
+<hr />
+<h3 id="lab-2-pipes-aur-functions-aage-bhejo">Lab 2 — pipes aur functions (<code>|</code> = "aage bhejo")<a class="headerlink" href="#lab-2-pipes-aur-functions-aage-bhejo" title="Permanent link">&para;</a></h3>
+<p>Template me <code>|</code> (pipe) matlab <em>"is value ko is function me daalo"</em> — bilkul Linux pipe jaisa. Ye tumhare chart me actually use ho rahe hain:</p>
+<table>
+<thead>
+<tr>
+<th>Syntax</th>
+<th>Kaam</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>{{ .Values.x \| default "abc" }}</code></td>
+<td>value na ho to fallback</td>
+<td><code>tag \| default .Chart.AppVersion</code></td>
+</tr>
+<tr>
+<td><code>{{ .Values.x \| quote }}</code></td>
+<td><code>" "</code> lagata (safe string)</td>
+<td><code>host: "api.billfree.example"</code></td>
+</tr>
+<tr>
+<td><code>{{ .Values.x \| upper }}</code></td>
+<td>UPPERCASE</td>
+<td>—</td>
+</tr>
+<tr>
+<td><code>{{ include "..." . \| nindent 4 }}</code></td>
+<td>block ko 4-space indent</td>
+<td>labels align karna</td>
+</tr>
+<tr>
+<td><code>{{ toYaml .Values.resources \| nindent 12 }}</code></td>
+<td>object ko YAML me badalna</td>
+<td>resources block</td>
+</tr>
+<tr>
+<td><code>{{ 0.05 \| float64 \| mulf 100 }}</code></td>
+<td>maths (5% → "5")</td>
+<td>alert thresholds</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>nindent</code> sabse zyada confuse karta</strong> — ye <strong>n</strong>ewline + <strong>indent</strong> hai. YAML me indentation galat = poora break. <code>nindent 4</code> bolta <em>"nayi line pe jaake 4 space indent karo"</em>:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># resources block dekho — toYaml + nindent se banta</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>helm<span class="w"> </span>template<span class="w"> </span>auth-service<span class="w"> </span>deploy/charts/microservice<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">  </span>-f<span class="w"> </span>deploy/apps/auth-service/values.yaml<span class="w"> </span>--show-only<span class="w"> </span>templates/deployment.yaml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A6<span class="w"> </span><span class="s2">&quot;resources:&quot;</span>
+</span></code></pre></div>
+<blockquote>
+<p>⚠️ <strong><code>indent</code> vs <code>nindent</code>:</strong> <code>nindent</code> pehle ek newline daalta phir indent; <code>indent</code> sirf indent. Galat choose karo → <code>mapping values are not allowed here</code> error. Confuse ho? <strong><code>nindent</code> use karo</strong> (99% cases).</p>
+</blockquote>
+<hr />
+<h3 id="lab-3-if-onoff-switch-sabse-powerful">Lab 3 — <code>if</code> = on/off switch (sabse powerful)<a class="headerlink" href="#lab-3-if-onoff-switch-sabse-powerful" title="Permanent link">&para;</a></h3>
+<p>Ek value se poora object aa/jaa sakta hai. Tumhare chart ka <code>autoscaling</code> isi ka best example hai. Live dekho:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># ── autoscaling ON (default) ──</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="c1"># deployment me &#39;replicas&#39; NAHI hota (HPA sambhalega):</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>helm<span class="w"> </span>template<span class="w"> </span>auth-service<span class="w"> </span>deploy/charts/microservice<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span>-f<span class="w"> </span>deploy/apps/auth-service/values.yaml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">  </span>--show-only<span class="w"> </span>templates/deployment.yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;replicas:&quot;</span><span class="w">      </span><span class="c1"># → 0</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="c1"># HPA object BANTA hai:</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>helm<span class="w"> </span>template<span class="w"> </span>auth-service<span class="w"> </span>deploy/charts/microservice<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">  </span>-f<span class="w"> </span>deploy/apps/auth-service/values.yaml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w">  </span>--show-only<span class="w"> </span>templates/hpa.yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>kind:<span class="w">                      </span><span class="c1"># → HorizontalPodAutoscaler</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="c1"># ── autoscaling OFF (--set se) ──</span>
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="c1"># ab &#39;replicas&#39; AA jaata:</span>
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>helm<span class="w"> </span>template<span class="w"> </span>auth-service<span class="w"> </span>deploy/charts/microservice<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="w">  </span>-f<span class="w"> </span>deploy/apps/auth-service/values.yaml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="w">  </span>--set<span class="w"> </span>autoscaling.enabled<span class="o">=</span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-17"><a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="w">  </span>--show-only<span class="w"> </span>templates/deployment.yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;replicas:&quot;</span><span class="w">         </span><span class="c1"># → replicas: 2</span>
+</span><span id="__span-15-18"><a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>
+</span><span id="__span-15-19"><a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="c1"># HPA GAYAB (khaali render → error normal hai):</span>
+</span><span id="__span-15-20"><a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>helm<span class="w"> </span>template<span class="w"> </span>auth-service<span class="w"> </span>deploy/charts/microservice<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-21"><a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a><span class="w">  </span>-f<span class="w"> </span>deploy/apps/auth-service/values.yaml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-22"><a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a><span class="w">  </span>--set<span class="w"> </span>autoscaling.enabled<span class="o">=</span><span class="nb">false</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-15-23"><a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a><span class="w">  </span>--show-only<span class="w"> </span>templates/hpa.yaml
+</span><span id="__span-15-24"><a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a><span class="c1"># → Error: could not find template ... hpa.yaml  ← ye SAHI hai (HPA bana hi nahi)</span>
+</span></code></pre></div>
+<p><strong>Result table:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th><code>replicas:</code> deployment me?</th>
+<th>HPA object?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>autoscaling.enabled: true</code></td>
+<td>❌ nahi</td>
+<td>✅ banaa</td>
+</tr>
+<tr>
+<td><code>autoscaling.enabled: false</code></td>
+<td>✅ <code>replicas: 2</code></td>
+<td>❌ gायab</td>
+</tr>
+</tbody>
+</table>
+<p>Iske peeche code (deployment.yaml):
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="p p-Indicator">{{</span><span class="nv">- if not .Values.autoscaling.enabled</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">.Values.replicaCount</span><span class="w"> </span><span class="p p-Indicator">}}</span><span class="w">     </span><span class="c1"># sirf jab autoscaling OFF ho</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="p p-Indicator">{{</span><span class="nv">- end</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span></code></pre></div>
+Aur poori hpa.yaml <code>{{- if .Values.autoscaling.enabled }} … {{- end }}</code> me lipti hai — off ho to <strong>kuch render hi nahi</strong>.</p>
+<blockquote>
+<p>🇮🇳 <strong>Aha moment:</strong> ek value (<code>autoscaling.enabled</code>) → <strong>do objects</strong> ka behaviour badla. Yehi Helm ki asli taakat hai — logic YAML me daal do.</p>
+</blockquote>
+<p><strong><code>{{-</code> aur <code>-}}</code> ka dash kya hai?</strong> Ye <strong>whitespace chatta</strong> hai — extra khaali lines hata deta taaki rendered YAML saaf rahe. <code>{{- if }}</code> = "is line se pehle ka whitespace kha jao".</p>
+<hr />
+<h3 id="lab-4-with-aur-range-block-loop">Lab 4 — <code>with</code> aur <code>range</code> (block + loop)<a class="headerlink" href="#lab-4-with-aur-range-block-loop" title="Permanent link">&para;</a></h3>
+<p><strong><code>with</code></strong> = "agar ye value hai to hi block likho" (aur <code>.</code> ko us par point kar do):</p>
+<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># deployment.yaml — env sirf tab jab values me ho</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="p p-Indicator">{{</span><span class="nv">- with .Values.env</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="nt">env</span><span class="p">:</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">  </span><span class="p p-Indicator">{{</span><span class="nv">- toYaml . | nindent 12</span><span class="w"> </span><span class="p p-Indicator">}}</span><span class="w">      </span><span class="c1"># yahan &#39;.&#39; = .Values.env</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="p p-Indicator">{{</span><span class="nv">- end</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># auth-service ke env vars dekho (with block se aaye)</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>helm<span class="w"> </span>template<span class="w"> </span>auth-service<span class="w"> </span>deploy/charts/microservice<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">  </span>-f<span class="w"> </span>deploy/apps/auth-service/values.yaml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">  </span>--show-only<span class="w"> </span>templates/deployment.yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A4<span class="w"> </span><span class="s2">&quot;env:&quot;</span>
+</span></code></pre></div></p>
+<p><strong><code>range</code></strong> = loop (list/map pe ghoomta). Agar tum ports ki list se multiple port banao:
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nt">ports</span><span class="p">:</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="p p-Indicator">{{</span><span class="nv">- range .Values.ports</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">.port</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">.name</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="p p-Indicator">{{</span><span class="nv">- end</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span></code></pre></div></p>
+<blockquote>
+<p>🇮🇳 <strong><code>with</code> = single value ka "agar hai to"</strong>, <strong><code>range</code> = list pe loop</strong>. Dono ke andar <code>.</code> ka matlab badal jaata (context shift). Confuse ho to bahar ka context <code>$</code> se paao: <code>$.Values.x</code>.</p>
+</blockquote>
+<hr />
+<h3 id="lab-5-_helperstpl-dry-ka-jaadu-define-include">Lab 5 — <code>_helpers.tpl</code> — DRY ka jaadu (<code>define</code> + <code>include</code>)<a class="headerlink" href="#lab-5-_helperstpl-dry-ka-jaadu-define-include" title="Permanent link">&para;</a></h3>
+<p>Tumne output me dekha — ek <code>include</code> se 5 labels aa gaye. Ye <code>_helpers.tpl</code> se hota hai. <code>_</code> se shuru file <strong>render nahi hoti</strong> (koi object nahi banti) — sirf reusable blocks rakhti hai.</p>
+<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1"># _helpers.tpl — ek baar DEFINE karo</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="p p-Indicator">{{</span><span class="nv">- define &quot;microservice.labels&quot; -</span><span class="p p-Indicator">}}</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="nt">app.kubernetes.io/name</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">include &quot;microservice.name&quot; .</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="nt">app.kubernetes.io/instance</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{{</span><span class="w"> </span><span class="nv">.Release.Name</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="nt">app.kubernetes.io/part-of</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">billfree-techops</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="p p-Indicator">{{</span><span class="nv">- end -</span><span class="p p-Indicator">}}</span>
+</span></code></pre></div>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># har template me INCLUDE karo (define ko bulao)</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="w">    </span><span class="p p-Indicator">{{</span><span class="nv">- include &quot;microservice.labels&quot; . | nindent 4</span><span class="w"> </span><span class="p p-Indicator">}}</span>
+</span></code></pre></div></p>
+<p><code>.</code> jo <code>include</code> ke aage hai = <strong>poora context pass karo</strong> (taaki block ke andar <code>.Values</code>/<code>.Release</code> mile). Bhool gaye to andar sab khaali aayega — common bug.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># same include, 3 alag templates me — sab jagah same labels</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="k">for</span><span class="w"> </span>t<span class="w"> </span><span class="k">in</span><span class="w"> </span>service<span class="w"> </span>deployment<span class="w"> </span>hpa<span class="p">;</span><span class="w"> </span><span class="k">do</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;== </span><span class="nv">$t</span><span class="s2"> ==&quot;</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">  </span>helm<span class="w"> </span>template<span class="w"> </span>auth-service<span class="w"> </span>deploy/charts/microservice<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span>-f<span class="w"> </span>deploy/apps/auth-service/values.yaml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="w">    </span>--show-only<span class="w"> </span>templates/<span class="nv">$t</span>.yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;part-of:&quot;</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="k">done</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="c1"># → teeno me: app.kubernetes.io/part-of: billfree-techops</span>
+</span></code></pre></div>
+<blockquote>
+<p>🇮🇳 <strong>Restaurant:</strong> <code>_helpers.tpl</code> = ek hi "badge-printer". Sab cooks ke name-badge same format me. Format badalna? Ek jagah (<code>define</code>), sab jagah update. <strong>Yehi DRY hai.</strong></p>
+</blockquote>
+<p><strong><code>include</code> vs <code>template</code>:</strong> dono block bulaate, par <code>include</code> ka output pipe (<code>| nindent</code>) ho sakta — isliye Helm me <strong>hamesha <code>include</code></strong> use hota, <code>template</code> nahi.</p>
+<hr />
+<h3 id="lab-6-helm-template-ke-saare-useful-flags">Lab 6 — <code>helm template</code> ke saare useful flags<a class="headerlink" href="#lab-6-helm-template-ke-saare-useful-flags" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># poora chart render</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>helm<span class="w"> </span>template<span class="w"> </span>auth-service<span class="w"> </span>deploy/charts/microservice<span class="w"> </span>-f<span class="w"> </span>VALUES.yaml
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="c1"># sirf ek file (bade output ko filter)</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">  </span>--show-only<span class="w"> </span>templates/deployment.yaml
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="c1"># command se value override (file chhue bina) — nested = dot</span>
+</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="w">  </span>--set<span class="w"> </span>image.tag<span class="o">=</span>v2-hotfix
+</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="w">  </span>--set<span class="w"> </span>autoscaling.enabled<span class="o">=</span><span class="nb">false</span>
+</span><span id="__span-23-10"><a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="w">  </span>--set-string<span class="w"> </span><span class="nv">replicaCount</span><span class="o">=</span><span class="m">3</span><span class="w">       </span><span class="c1"># force string (numbers ke liye)</span>
+</span><span id="__span-23-11"><a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a>
+</span><span id="__span-23-12"><a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a><span class="c1"># multiple values files — BAAD wali JEETTI hai (overlay pattern)</span>
+</span><span id="__span-23-13"><a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a><span class="w">  </span>-f<span class="w"> </span>base.yaml<span class="w"> </span>-f<span class="w"> </span>dev.yaml<span class="w">          </span><span class="c1"># dev, base ko override karta</span>
+</span><span id="__span-23-14"><a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a>
+</span><span id="__span-23-15"><a id="__codelineno-23-15" name="__codelineno-23-15" href="#__codelineno-23-15"></a><span class="c1"># computed values + poora error context</span>
+</span><span id="__span-23-16"><a id="__codelineno-23-16" name="__codelineno-23-16" href="#__codelineno-23-16"></a><span class="w">  </span>--debug
+</span><span id="__span-23-17"><a id="__codelineno-23-17" name="__codelineno-23-17" href="#__codelineno-23-17"></a>
+</span><span id="__span-23-18"><a id="__codelineno-23-18" name="__codelineno-23-18" href="#__codelineno-23-18"></a><span class="c1"># rendered YAML file me save → kubectl ko de do (Helm ke bina bhi chalta)</span>
+</span><span id="__span-23-19"><a id="__codelineno-23-19" name="__codelineno-23-19" href="#__codelineno-23-19"></a>helm<span class="w"> </span>template<span class="w"> </span>auth-service<span class="w"> </span>deploy/charts/microservice<span class="w"> </span>-f<span class="w"> </span>VALUES.yaml<span class="w"> </span>&gt;<span class="w"> </span>out.yaml
+</span><span id="__span-23-20"><a id="__codelineno-23-20" name="__codelineno-23-20" href="#__codelineno-23-20"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>--dry-run<span class="o">=</span>client<span class="w"> </span>-f<span class="w"> </span>out.yaml<span class="w">    </span><span class="c1"># K8s se bhi validate</span>
+</span><span id="__span-23-21"><a id="__codelineno-23-21" name="__codelineno-23-21" href="#__codelineno-23-21"></a>
+</span><span id="__span-23-22"><a id="__codelineno-23-22" name="__codelineno-23-22" href="#__codelineno-23-22"></a><span class="c1"># kaunse objects bane? (quick sanity)</span>
+</span><span id="__span-23-23"><a id="__codelineno-23-23" name="__codelineno-23-23" href="#__codelineno-23-23"></a>helm<span class="w"> </span>template<span class="w"> </span>...<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;kind:&quot;</span>
+</span></code></pre></div>
+<p><strong>Values precedence (kaun jeetta) — neeche wala upar ko harata:</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>chart ka values.yaml   (sabse kamzor — defaults)
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>      ↓
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>-f my-values.yaml
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a>      ↓
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a>-f overlay.yaml        (baad wali -f)
+</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a>      ↓
+</span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a>--set key=value        (sabse takatwar — command line)
+</span></code></pre></div></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># precedence live: values me tag=48b3…, --set se override</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>helm<span class="w"> </span>template<span class="w"> </span>auth-service<span class="w"> </span>deploy/charts/microservice<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">  </span>-f<span class="w"> </span>deploy/apps/auth-service/values.yaml<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="w">  </span>--set<span class="w"> </span>image.tag<span class="o">=</span>WINS<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="w">  </span>--show-only<span class="w"> </span>templates/deployment.yaml<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>image:
+</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a><span class="c1"># → image: &quot;...:WINS&quot;   (--set ne file ko haraaya)</span>
+</span></code></pre></div>
+<hr />
+<h3 id="lab-7-debugging-aur-common-errors-ye-interview-me-poochte-hain">Lab 7 — debugging aur common errors (ye interview me poochte hain)<a class="headerlink" href="#lab-7-debugging-aur-common-errors-ye-interview-me-poochte-hain" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Error</th>
+<th>Kya galat</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mapping values are not allowed here</code></td>
+<td>indent galat (aksar <code>indent</code> vs <code>nindent</code>)</td>
+<td><code>nindent</code> use karo; <code>helm template</code> se dekho</td>
+</tr>
+<tr>
+<td><code>nil pointer evaluating interface</code></td>
+<td>value hi nahi hai (<code>.Values.foo.bar</code> jab <code>foo</code> khaali)</td>
+<td><code>{{ .Values.foo.bar \| default "x" }}</code> ya <code>with</code></td>
+</tr>
+<tr>
+<td><code>could not find template x.yaml</code></td>
+<td>woh file <code>if</code> false hone se khaali render hui</td>
+<td>normal — object off hai</td>
+</tr>
+<tr>
+<td><code>YAML parse error</code></td>
+<td>rendered indentation toota</td>
+<td><code>helm template &gt; out.yaml</code> → aankh se dekho</td>
+</tr>
+<tr>
+<td><code>wrong type for value</code></td>
+<td>number ko string chahiye tha</td>
+<td><code>--set-string</code> ya <code>\| quote</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Debug ki 3 super-techniques:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="c1"># 1. --debug: error ke saath computed values dikhata</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>helm<span class="w"> </span>template<span class="w"> </span>auth-service<span class="w"> </span>deploy/charts/microservice<span class="w"> </span>-f<span class="w"> </span>VALUES.yaml<span class="w"> </span>--debug
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="c1"># 2. render karke file me → aankhon se YAML verify</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a>helm<span class="w"> </span>template<span class="w"> </span>...<span class="w"> </span>&gt;<span class="w"> </span>/tmp/out.yaml<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>less<span class="w"> </span>/tmp/out.yaml
+</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a>
+</span><span id="__span-26-7"><a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="c1"># 3. lint: deploy se pehle chart ki galtiyan pakdo</span>
+</span><span id="__span-26-8"><a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a>helm<span class="w"> </span>lint<span class="w"> </span>deploy/charts/microservice
+</span></code></pre></div></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="c1"># abhi apne chart pe lint chalao</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>helm<span class="w"> </span>lint<span class="w"> </span>deploy/charts/microservice
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="c1"># → &quot;1 chart(s) linted, 0 chart(s) failed&quot;  = clean</span>
+</span></code></pre></div>
+<hr />
+<h3 id="lab-8-template-vs-install-vs-upgrade-kab-kya">Lab 8 — <code>template</code> vs <code>install</code> vs <code>upgrade</code> (kab kya)<a class="headerlink" href="#lab-8-template-vs-install-vs-upgrade-kab-kya" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Kya karta</th>
+<th>Cluster chahiye?</th>
+<th>Kab</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>helm template</code></td>
+<td>render → <strong>print</strong></td>
+<td>❌</td>
+<td>verify / CI / debug</td>
+</tr>
+<tr>
+<td><code>helm lint</code></td>
+<td>chart me galti pakde</td>
+<td>❌</td>
+<td>commit se pehle</td>
+</tr>
+<tr>
+<td><code>helm install &lt;name&gt;</code></td>
+<td>render + <strong>apply</strong> + track</td>
+<td>✅</td>
+<td>pehli baar deploy</td>
+</tr>
+<tr>
+<td><code>helm upgrade &lt;name&gt;</code></td>
+<td>naye values se update</td>
+<td>✅</td>
+<td>image/config change</td>
+</tr>
+<tr>
+<td><code>helm rollback &lt;name&gt; N</code></td>
+<td>version N pe wapas</td>
+<td>✅</td>
+<td>deploy toota</td>
+</tr>
+<tr>
+<td><code>helm list</code></td>
+<td>kya-kya deployed hai</td>
+<td>✅</td>
+<td>audit</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🇮🇳 <strong>Golden habit:</strong> <code>template</code> → dekho → <code>lint</code> → <code>install/upgrade</code>. Kabhi andha <code>install</code> mat karo. Production me to ArgoCD ye khud karta (Git me change → render → apply).</p>
+</blockquote>
+<hr />
+<h3 id="lab-checkpoint-bina-dekhe-bolo-recall-drill">🎯 Lab checkpoint — bina dekhe bolo (recall drill)<a class="headerlink" href="#lab-checkpoint-bina-dekhe-bolo-recall-drill" title="Permanent link">&para;</a></h3>
+<ol>
+<li><code>helm template</code> cluster ko chhuata hai? <em>(Nahi — sirf print)</em></li>
+<li><code>{{ .Values.image.tag }}</code> value kahan se? <em>(values.yaml / -f / --set)</em></li>
+<li>Ek chart se 2 alag services kaise? <em>(2 alag values files)</em></li>
+<li><code>{{- if }}</code> kya karta? <em>(object/line on-off switch)</em></li>
+<li><code>nindent 4</code> kya? <em>(newline + 4-space indent, YAML valid rakhne ko)</em></li>
+<li><code>_helpers.tpl</code> render hoti? <em>(Nahi — <code>_</code> file sirf <code>define</code> rakhti)</em></li>
+<li><code>include "x" .</code> me aakhri <code>.</code> kyun? <em>(context pass — warna andar values khaali)</em></li>
+<li><code>-f base.yaml -f dev.yaml --set k=v</code> — kaun jeetta? <em>(--set &gt; dev &gt; base)</em></li>
+<li><code>with</code> aur <code>range</code> ka farq? <em>(with = single "agar hai to"; range = list loop)</em></li>
+<li>Deploy se pehle 3 verify commands? <em>(<code>helm template</code>, <code>helm lint</code>, <code>kubectl apply --dry-run</code>)</em></li>
+</ol>
+<blockquote>
+<p><strong>Pass = 8/10 bina dekhe.</strong> Ho gaya? Tum ab kisi bhi chart ko render karke, verify karke, confidently deploy kar sakte ho. 💪</p>
+</blockquote>
+<hr />
+<h2 id="the-values-template-cluster-flow-dono-patterns-ka-core">The values → template → cluster flow (dono patterns ka core)<a class="headerlink" href="#the-values-template-cluster-flow-dono-patterns-ka-core" title="Permanent link">&para;</a></h2>
+<p>Chahe A ho ya B — asli mental model ye hai:</p>
+<pre class="mermaid"><code>flowchart LR
+  V["values.yaml&lt;br/&gt;(kya badalna hai)"]:::vals
+  T["templates/*.yaml&lt;br/&gt;({{ }} placeholders)"]:::tmpl
+  R["helm render&lt;br/&gt;(values bharo)"]:::proc
+  Y["plain K8s YAML&lt;br/&gt;(rendered)"]:::yaml
+  K["kubectl apply&lt;br/&gt;(Helm/ArgoCD karta)"]:::proc
+  C["Running objects&lt;br/&gt;in cluster"]:::run
+  V --&gt; R
+  T --&gt; R
+  R --&gt; Y --&gt; K --&gt; C
+  classDef vals fill:#fff3e0,stroke:#e65100,color:#bf360c
+  classDef tmpl fill:#e0f2f1,stroke:#00897b,color:#004d40
+  classDef proc fill:#ede7f6,stroke:#5e35b1,color:#311b92
+  classDef yaml fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+  classDef run fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20</code></pre>
+<p><strong>Kubernetes ko Helm ka pata bhi nahi.</strong> Helm ka kaam sirf <code>values + templates</code> → <code>plain YAML</code> render karna hai. Uske baad wahi purana <code>kubectl apply</code>. Isliye tumhara whiteboard box (Service/ConfigMap/Deployment/Secret/StatefulSet) <strong>bilkul waise ka waisa</strong> cluster me banta — Helm sirf usse likhne ka <strong>smart tareeka</strong> hai.</p>
+<hr />
+<h2 id="whiteboard-mapping-final-connection">Whiteboard mapping — final connection<a class="headerlink" href="#whiteboard-mapping-final-connection" title="Permanent link">&para;</a></h2>
+<p>Tumhara box, dono patterns me:</p>
+<table>
+<thead>
+<tr>
+<th>Whiteboard box</th>
+<th>billfree (Pattern A)</th>
+<th>VANTA (Pattern B)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>frontend → Deployment</strong></td>
+<td><code>microservice/templates/deployment.yaml</code> + <code>apps/web/values.yaml</code></td>
+<td><code>templates/frontend.yaml</code></td>
+</tr>
+<tr>
+<td><strong>frontend → Service</strong></td>
+<td><code>microservice/templates/service.yaml</code></td>
+<td><code>templates/frontend.yaml</code> (same file)</td>
+</tr>
+<tr>
+<td><strong>ConfigMap</strong></td>
+<td><code>envFrom</code> / <code>env</code> in values</td>
+<td>per-service template me env</td>
+</tr>
+<tr>
+<td><strong>backend → Secret</strong></td>
+<td><code>envFrom: secretRef: billfree-app-secrets</code></td>
+<td>Google Secret Manager / values</td>
+</tr>
+<tr>
+<td><strong>backend → StatefulSet + DB</strong></td>
+<td><strong>in-cluster Postgres StatefulSet</strong> — <code>deploy/platform/postgres.yaml</code> (replicas:1, PVC 5Gi)</td>
+<td><code>cartservice</code> → Redis; catalog data</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🇮🇳 <strong>Note (real):</strong> billfree <strong>jaan-boojh ke self-managed in-cluster Postgres StatefulSet</strong> chalata hai (<code>deploy/platform/postgres.yaml</code> — <code>serviceName: postgres</code>, <code>volumeClaimTemplates</code> 5Gi, <code>postgres:16-alpine</code>) — ye <strong>skill showcase</strong> hai (StatefulSet + PVC + migrate Job dikhane ke liye). File ka comment tak kehta <em>"for a heavier-duty setup, swap in the CloudNativePG operator"</em>.</p>
+<p><strong>Yehi senior call hai — trade-off samjho:</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Self-managed (billfree)</strong></th>
+<th><strong>Managed (RDS/Cloud SQL)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Control</td>
+<td>poora (version, tuning, extensions)</td>
+<td>seemित</td>
+</tr>
+<tr>
+<td>Zimmedari</td>
+<td><strong>tum</strong> — backup/failover/patch khud</td>
+<td>AWS sambhalta</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td>sirf compute+disk</td>
+<td>premium</td>
+</tr>
+<tr>
+<td>Kab</td>
+<td>learning/showcase, full control, cost-sensitive</td>
+<td>zyadatar prod (kam overhead)</td>
+</tr>
+</tbody>
+</table>
+<p>Zyada real-world prod mein <strong>managed</strong> choose hota (ops-bojh kam). billfree deliberately <strong>ulta</strong> karta — StatefulSet mastery dikhane ko. Dono valid; <strong>jaante-boojhte</strong> choose karo.</p>
+</blockquote>
+<hr />
+<h2 id="20-second-recall">20-second recall<a class="headerlink" href="#20-second-recall" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>HELM = YAML ka structure wahi, bas: template banao + values bahar + ek package.
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>2 PATTERNS:
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>  A) ONE reusable chart + N values files   → billfree (services same shape)
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a>  B) ONE umbrella chart + template/service → VANTA  (services alag)
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a>CORE FLOW: values + templates → helm render → plain YAML → kubectl apply → cluster
+</span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a>VERIFY: `helm template` se render karke dekho (deploy se pehle).
+</span><span id="__span-28-7"><a id="__codelineno-28-7" name="__codelineno-28-7" href="#__codelineno-28-7"></a>K8s ko Helm ka pata nahi — object wahi banta jaise haath se likha ho.
+</span></code></pre></div>
+<blockquote>
+<p>🇮🇳 <strong>Ek line:</strong> Helm tumhare Service/ConfigMap/Deployment/Secret/StatefulSet ko banata nahi — sirf unhe <strong>template + values + package</strong> me smart tareeke se likhta hai, taaki ek chart se har environment aur har service ban jaye. billfree "ek saancha, N cookies"; VANTA "ek thali, N katori". 😊</p>
+</blockquote>
+<hr />
+<p><em>Connected: <a href="../27-10-day-plan/#day-8-gitops-helm-menu-board-manager">10-Day Plan · Day 8 (Helm)</a> · <a href="../26-k8s-objects-map/">K8s Objects Map</a> · <a href="../09-connected-system/">The Connected System</a> · <a href="../08-M7-gitops/">M7 GitOps</a></em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../29-confidence-sprint/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 10-Day Confidence Sprint (drill)">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                10-Day Confidence Sprint (drill)
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../19-cicd-hands-on-flow/" class="md-footer__link md-footer__link--next" aria-label="Next: Follow One Commit (hands-on CI/CD)">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Follow One Commit (hands-on CI/CD)
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 grvtech1 — licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/grvtech1/devops-handbook" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "announce.dismiss"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/progress.js"></script>
+      
+    
+  </body>
+</html>

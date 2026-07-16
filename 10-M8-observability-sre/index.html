@@ -1,0 +1,3868 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free, zero-to-job-ready DevOps handbook — from "what is a terminal" to production- and interview-ready. Systems thinking, hands-on labs, capstones.">
+      
+      
+      
+        <link rel="canonical" href="https://grvtech1.github.io/devops-handbook/10-M8-observability-sre/">
+      
+      
+        <link rel="prev" href="../19-cicd-hands-on-flow/">
+      
+      
+        <link rel="next" href="../11-M9-advanced-k8s-internals/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>M8 · Observability & SRE - The DevOps Engineer's Handbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%206a6%206%200%200%201%206%206c0%202.22-1.21%204.16-3%205.2V19a1%201%200%200%201-1%201h-4a1%201%200%200%201-1-1v-1.8c-1.79-1.04-3-2.98-3-5.2a6%206%200%200%201%206-6m2%2015v1a1%201%200%200%201-1%201h-2a1%201%200%200%201-1-1v-1zm6-10h3v2h-3zM1%2011h3v2H1zM13%201v3h-2V1zM4.92%203.5l2.13%202.14-1.42%201.41L3.5%204.93zm12.03%202.13%202.12-2.13%201.43%201.43-2.13%202.12z%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m13.13%2022.19-1.63-3.83c1.57-.58%203.04-1.36%204.4-2.27zM5.64%2012.5l-3.83-1.63%206.1-2.77C7%209.46%206.22%2010.93%205.64%2012.5M21.61%202.39S16.66.269%2011%205.93c-2.19%202.19-3.5%204.6-4.35%206.71-.28.75-.09%201.57.46%202.13l2.13%202.12c.55.56%201.37.74%202.12.46A19.1%2019.1%200%200%200%2018.07%2013c5.66-5.66%203.54-10.61%203.54-10.61m-7.07%207.07c-.78-.78-.78-2.05%200-2.83s2.05-.78%202.83%200c.77.78.78%202.05%200%202.83s-2.05.78-2.83%200m-5.66%207.07-1.41-1.41zM6.24%2022l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83%2022zM2%2022h1.41l4.77-4.76-1.42-1.41L2%2020.59zm0-2.83%204.09-4.08c-.21-.3-.36-.62-.45-.97L2%2017.76z%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M13%2014h-2V9h2m0%209h-2v-2h2M1%2021h22L12%202z%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M8%2015a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m2.5%202%201.5-3%201.5%203zm5.5-2a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m6-4A10%2010%200%200%200%2012%201%2010%2010%200%200%200%202%2011c0%202.8%201.2%205.3%203%207.1V22h14v-3.9c1.8-1.8%203-4.3%203-7.1m-5%209h-2v-2h-2v2h-2v-2H9v2H7v-2.8c-1.8-1.5-3-3.7-3-6.2a8%208%200%200%201%208-8%208%208%200%200%201%208%208c0%202.5-1.2%204.8-3%206.2z%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#m8-observability-sre" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  🚀 <strong>26 chapters</strong> · rendered diagrams · hands-on labs · a 26-scenario incident playbook — all free (CC BY 4.0).
+  &nbsp;
+  <a href="https://github.com/grvtech1/devops-handbook" style="color: inherit; text-decoration: underline; font-weight: 700;">⭐ Star it on GitHub</a>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-header__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The DevOps Engineer's Handbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              M8 · Observability & SRE
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../study-plan/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Study Plan
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../progress/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  My Progress
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../00-INDEX/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Handbook
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-nav__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    The DevOps Engineer's Handbook
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../study-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    My Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handbook
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Handbook
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-INDEX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Curriculum (Index)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 0 — Pre-flight
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 0 — Pre-flight
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00a-preflight/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00a · Pre-flight ground floor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00b-setup-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00b · Setup runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-linux-toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux · the ground everything runs on
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part I — Core toolchain
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part I — Core toolchain
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-M0-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M0 · Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-M1-terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M1 · Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-M2-ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M2 · Ansible
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-M3-docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M3 · Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-M4-kubernetes-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M4 · Kubernetes Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-M5-sizing-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M5 · Sizing & Cost
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-M6-cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M6 · CI/CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-M7-gitops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M7 · GitOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part II — Systems thinking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part II — Systems thinking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-connected-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Connected System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-k8s-objects-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Objects · How They Connect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-10-day-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Learning Plan (understand)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29-confidence-sprint/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Confidence Sprint (drill)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../28-helm-real-projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Helm in the Real World (your 2 projects)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-cicd-hands-on-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Follow One Commit (hands-on CI/CD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part III — Operate
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part III — Operate
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M8 · Observability & SRE
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M8 · Observability & SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#recall-gate-shuru-karne-se-pehle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ↩️ Recall gate — shuru karne se pehle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-60-second-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 60-second version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists-what-it-replaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists / what it replaced
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why this exists / what it replaced">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-before-state-flying-blind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The before state: flying blind
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoring-vs-observability-an-important-distinction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Monitoring vs observability — an important distinction
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-three-pillars" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The three pillars
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The three pillars">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metrics-prometheus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metrics — Prometheus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logs-loki-elk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logs — Loki / ELK
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#traces-opentelemetry-jaeger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Traces — OpenTelemetry + Jaeger
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slis-slos-slas-and-error-budgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SLIs, SLOs, SLAs, and error budgets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-four-golden-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Four Golden Signals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alerting-that-does-not-page-you-for-nothing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alerting that does not page you for nothing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alerting that does not page you for nothing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-alertmanager-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Alertmanager works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alert-on-symptoms-not-causes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alert on symptoms, not causes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-for-duration-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The for: duration rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#request-lifecycle-instrumented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Request lifecycle, instrumented
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-production-example-the-cardinality-explosion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real production example — the cardinality explosion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands, explained
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beginner-mistakes-vs-senior-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beginner mistakes vs senior insights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-shortcuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory shortcuts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-check-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-check quiz
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-lab-instrument-the-capstone-url-shortener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hands-on lab — instrument the capstone url-shortener
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hands-on lab — instrument the capstone url-shortener">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1-expose-metrics-from-the-app-3-lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — expose metrics from the app (3 lines)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-deploy-the-prometheus-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — deploy the Prometheus stack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-tell-prometheus-about-your-app-your-first-crd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — tell Prometheus about your app (your first CRD)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-build-one-grafana-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — build one Grafana panel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-write-one-alert-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — write one alert rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-route-to-slack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6 — route to Slack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-prove-it-fires" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7 — prove it fires
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-8-commit-to-gitops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 8 — commit to GitOps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production challenge
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-M9-advanced-k8s-internals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M9 · Advanced K8s Internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30-k8s-complete-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Complete Reference (Workloads · Scheduling · Ops)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-production-incident-playbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Incident Playbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part IV — Capstones
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part IV — Capstones
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-capstone-url-shortener/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone I · URL Shortener
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-capstone-microshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone II · MicroShop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part V — Reference & career
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part V — Reference & career
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-interview-bank/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview Bank
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-confusions-and-tradeoffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Confusions & Trade-offs (X-vs-Y)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-command-cheatsheets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Command Cheat-Sheets & Labs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-roadmap-M11-M18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap · M11–M18
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-reference-appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Appendix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-career-job-ready/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Job-Ready
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part VI — The Production Gauntlet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part VI — The Production Gauntlet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-production-gauntlet-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build the Real System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-production-gauntlet-chaos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chaos Engineering · break & fix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#recall-gate-shuru-karne-se-pehle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ↩️ Recall gate — shuru karne se pehle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-60-second-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 60-second version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists-what-it-replaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists / what it replaced
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Why this exists / what it replaced">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-before-state-flying-blind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The before state: flying blind
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monitoring-vs-observability-an-important-distinction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Monitoring vs observability — an important distinction
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-three-pillars" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The three pillars
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The three pillars">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metrics-prometheus" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metrics — Prometheus
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#logs-loki-elk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logs — Loki / ELK
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#traces-opentelemetry-jaeger" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Traces — OpenTelemetry + Jaeger
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#slis-slos-slas-and-error-budgets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SLIs, SLOs, SLAs, and error budgets
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-four-golden-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Four Golden Signals
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#alerting-that-does-not-page-you-for-nothing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alerting that does not page you for nothing
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Alerting that does not page you for nothing">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-alertmanager-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How Alertmanager works
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alert-on-symptoms-not-causes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Alert on symptoms, not causes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-for-duration-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The for: duration rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#request-lifecycle-instrumented" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Request lifecycle, instrumented
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-production-example-the-cardinality-explosion" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real production example — the cardinality explosion
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands, explained
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beginner-mistakes-vs-senior-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beginner mistakes vs senior insights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-shortcuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory shortcuts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-check-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-check quiz
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-lab-instrument-the-capstone-url-shortener" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hands-on lab — instrument the capstone url-shortener
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hands-on lab — instrument the capstone url-shortener">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prerequisites
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-1-expose-metrics-from-the-app-3-lines" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — expose metrics from the app (3 lines)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-deploy-the-prometheus-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — deploy the Prometheus stack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-tell-prometheus-about-your-app-your-first-crd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — tell Prometheus about your app (your first CRD)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-build-one-grafana-panel" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — build one Grafana panel
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-write-one-alert-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — write one alert rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-route-to-slack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6 — route to Slack
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-prove-it-fires" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7 — prove it fires
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-8-commit-to-gitops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 8 — commit to GitOps
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production challenge
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="m8-observability-sre">M8 — Observability &amp; SRE<a class="headerlink" href="#m8-observability-sre" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Core question: It is 2 a.m. and something is slow. How do you see inside a running system — without SSHing into every pod and grepping log files one by one?</strong></p>
+<p><strong>⏱️ Time:</strong> ~55 min padho · <strong>🎚️ Level:</strong> Advanced · <strong>📋 Pehle chahiye:</strong> <a href="../05-M4-kubernetes-core/">M4</a>, <a href="../08-M7-gitops/">M7</a></p>
+<p><strong>Is module ke baad tum kar paoge:</strong>
+- Prometheus metrics, Loki logs, aur OpenTelemetry traces ka fark explain karo aur ek production incident mein teeno use karo
+- SLI/SLO/error budget define karo aur yeh bolo ke error budget exhaust hone pe team kya karti hai
+- Cardinality explosion diagnose aur fix karo (high-cardinality label → Prometheus OOM)</p>
+<h3 id="recall-gate-shuru-karne-se-pehle">↩️ Recall gate — shuru karne se pehle<a class="headerlink" href="#recall-gate-shuru-karne-se-pehle" title="Permanent link">&para;</a></h3>
+<p>Pichhle modules se 3 sawaal. <strong>Pehle memory se jawab do, phir kholo.</strong> (Yeh retrieve karna hi lifetime yaad rakhta hai — dobara padhna nahi.)</p>
+<ol>
+<li><em>(M4)</em> K8s mein readiness probe aur liveness probe mein kya fark hai? Readiness probe fail hone par Service ka kya hota hai?</li>
+<li><em>(M7)</em> <code>selfHeal: true</code> set hai aur kisi ne <code>kubectl edit deployment</code> se live image tag change kar diya. Argo kya karega — Cause A ya Cause B, aur kitne time mein?</li>
+<li><em>(M6)</em> CI mein <code>github.sha</code> tag kyun use karte hain <code>latest</code> ki jagah? Ek concrete problem batao jo <code>latest</code> se production mein aata hai.</li>
+</ol>
+<p><details markdown="1"><summary>Jawab</summary></p>
+<ol>
+<li>Readiness fail → pod Service ke EndpointSlice se hata diya jaata hai (traffic nahi milta, restart nahi hota). Liveness fail → pod restart hota hai. Dono alag cheezein — alag problems ke liye. &nbsp; 2. Cause B (cluster drifted from Git). selfHeal ~30s–3min mein Git wala version wapas apply karta hai. &nbsp; 3. <code>latest</code> mutable hai — alag nodes pe alag images pull ho sakti hain, rollback mushkil. <code>github.sha</code> immutable hai — exactly wohi build deploy hota hai jo test se guzri.
+</details></li>
+</ol>
+</blockquote>
+<p><em>(Formerly tracked as M10 in the Principal Track; renumbered M8 here as the first Operate module.)</em></p>
+<hr />
+<p><strong>MODULE MAP</strong>
+<code>00-INDEX</code> · <code>01-M0-foundations</code> · <code>02-M1-terraform</code> · <code>03-M2-ansible</code> · <code>04-M3-docker</code> · <code>05-M4-kubernetes-core</code> · <code>06-M5-sizing-and-cost</code> · <code>07-M6-cicd</code> · <code>08-M7-gitops</code> · <code>09-connected-system</code> · <strong><code>10-M8-observability-sre</code></strong> · <code>11-M9-advanced-k8s-internals</code> · <code>12-capstone-url-shortener</code> · <code>13-capstone-microshop</code> · <code>14-interview-bank</code> · <code>15-roadmap-M11-M18</code> · <code>16-reference-appendix</code></p>
+<hr />
+<h2 id="the-60-second-version">The 60-second version<a class="headerlink" href="#the-60-second-version" title="Permanent link">&para;</a></h2>
+<p>Kubernetes tells you a pod is <code>Running</code>. It does not tell you that pod is answering in 3 seconds instead of 80 milliseconds, or silently returning errors on 2% of requests, or about to run out of memory in 20 minutes. That gap — between "process is alive" and "system is healthy" — is what observability fills.</p>
+<p>Observability has three pillars, each answering a different question:</p>
+<ul>
+<li><strong>Metrics</strong> (Prometheus): numbers over time — <em>"how much, how many, how fast?"</em></li>
+<li><strong>Logs</strong> (Loki / ELK): discrete events — <em>"what exactly happened on this request?"</em></li>
+<li><strong>Traces</strong> (OpenTelemetry + Jaeger): a request's journey across services — <em>"where did the time go?"</em></li>
+</ul>
+<p>The business layer on top is <strong>SRE</strong> — Site Reliability Engineering. It turns raw telemetry into a governance contract: an <strong>error budget</strong> that answers the question "are we reliable enough to ship this risky change right now?"</p>
+<p>You alert on metrics. You debug with logs and traces. You make deploy/freeze decisions with error budgets. Each tool has one job.</p>
+<hr />
+<h2 id="why-this-exists-what-it-replaced">Why this exists / what it replaced<a class="headerlink" href="#why-this-exists-what-it-replaced" title="Permanent link">&para;</a></h2>
+<h3 id="the-before-state-flying-blind">The before state: flying blind<a class="headerlink" href="#the-before-state-flying-blind" title="Permanent link">&para;</a></h3>
+<p>Before structured observability, the typical production investigation looked like this:</p>
+<ol>
+<li>Customer complains — or worse, nobody notices until a spike in support tickets.</li>
+<li>Engineer SSHes into a server and runs <code>tail -f /var/log/app.log</code>.</li>
+<li>Searches for <code>ERROR</code> with grep.</li>
+<li>Finds something, guesses a cause, restarts the service, hopes it goes away.</li>
+<li>Redeploys and watches manually for ten minutes.</li>
+</ol>
+<p>This approach has two fundamental problems:</p>
+<p><strong>You can only ask questions you thought of in advance.</strong> If you did not add that specific log line before the incident, the evidence you need does not exist. You are flying blind on every incident you did not predict.</p>
+<p><strong>Instinct is not evidence.</strong> "I think it's the database" is not scoped, not time-bound, and not reproducible. It is a guess. Guesses lead to wrong fixes and repeated incidents.</p>
+<h3 id="monitoring-vs-observability-an-important-distinction">Monitoring vs observability — an important distinction<a class="headerlink" href="#monitoring-vs-observability-an-important-distinction" title="Permanent link">&para;</a></h3>
+<p>These terms are often used interchangeably but they describe different capabilities:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Monitoring</th>
+<th>Observability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>What it handles</strong></td>
+<td>Known-unknowns — problems you anticipated</td>
+<td>Unknown-unknowns — questions you did not think to ask before the incident</td>
+</tr>
+<tr>
+<td><strong>Mental model</strong></td>
+<td>Set up dashboards and alerts for things you know can break</td>
+<td>Instrument the system so you can ask new questions of live data without redeploying</td>
+</tr>
+<tr>
+<td><strong>Example</strong></td>
+<td>"Alert if CPU &gt; 80%"</td>
+<td>"What was the p99 latency of <code>/shorten</code> for users in the <code>IN</code> region at 14:32 yesterday?"</td>
+</tr>
+<tr>
+<td><strong>Limitation</strong></td>
+<td>Only catches what you predicted</td>
+<td>Requires upfront instrumentation investment</td>
+</tr>
+</tbody>
+</table>
+<p>A well-instrumented system gives you <strong>both</strong>: pre-built dashboards for the things you expect, and raw queryable data for the things you did not.</p>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> M4 ka reconciliation loop ek chowkidar hai jo sirf ek sawaal poochta hai — <em>"kitne pod chahiye, kitne hain?"</em> Observability alag cheez hai: CCTV + ek logbook + ek GPS tracker. CCTV (metrics) counts everything always. Logbook (logs) records what each event was. GPS tracker (traces) follows one customer's complete journey end-to-end. Chowkidar ko in teeno ki zaroorat hai — sirf headcount kaafi nahi.</p>
+<hr />
+<h2 id="the-three-pillars">The three pillars<a class="headerlink" href="#the-three-pillars" title="Permanent link">&para;</a></h2>
+<p>Every production system must answer three structurally different questions. Each question needs a different data shape — which is why you run three separate tools, not one.</p>
+<pre class="mermaid"><code>flowchart LR
+    APP["App Pod&lt;br/&gt;/metrics endpoint"]:::run
+    PROM[("Prometheus&lt;br/&gt;TSDB")]:::obs
+    LOKI[("Loki&lt;br/&gt;log store")]:::obs
+    JAEGER[("Jaeger&lt;br/&gt;trace store")]:::obs
+    PTAIL["Promtail&lt;br/&gt;DaemonSet"]:::run
+    OTEL["OTel Collector"]:::shared
+    GRAFANA{{"Grafana&lt;br/&gt;dashboards"}}:::obs
+    ALERT{{"Alertmanager"}}:::warn
+    PAGE(["Slack&lt;br/&gt;PagerDuty"]):::warn
+
+    APP --&gt;|"scrape /metrics&lt;br/&gt;every 15s"| PROM
+    APP --&gt;|"stdout logs"| PTAIL
+    APP --&gt;|"spans"| OTEL
+    PTAIL --&gt;|"ship to"| LOKI
+    OTEL --&gt;|"forward"| JAEGER
+    PROM --&gt; GRAFANA
+    LOKI --&gt; GRAFANA
+    JAEGER --&gt; GRAFANA
+    PROM --&gt;|"alert rules"| ALERT
+    ALERT --&gt;|"route"| PAGE
+
+    classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;
+    classDef cd fill:#f3e5f5,stroke:#8e24aa,color:#4a148c;
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef obs fill:#f1f8e9,stroke:#689f38,color:#33691e;
+    classDef net fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef warn fill:#fdeeee,stroke:#d64545,color:#b23030;</code></pre>
+<p><em>Observability pipeline: metrics scrape → Prometheus → Grafana dashboards + Alertmanager pages; logs via Promtail → Loki → Grafana; traces via OTel Collector → Jaeger → Grafana. All three pillars converge in one pane.</em></p>
+<details class="note">
+<summary>Text version (ASCII)</summary>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────────────────────────────────────────────────────────────┐
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│                     THE THREE PILLARS                               │
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│                                                                     │
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│  QUESTION               PILLAR          TOOL          DATA SHAPE    │
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│  ─────────────────────────────────────────────────────────────────  │
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│  &quot;How much / how many   METRICS         Prometheus    Numeric       │
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│   over time?&quot;                                         time-series   │
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│                                                                     │
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│  &quot;What exactly          LOGS            Loki / ELK    Structured    │
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│   happened here?&quot;                                     text events   │
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│                                                                     │
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│  &quot;Where did the time    TRACES          OTel +        Timed span    │
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│   go across services?&quot;                 Jaeger         trees         │
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>└─────────────────────────────────────────────────────────────────────┘
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>  Metrics say SOMETHING is wrong.
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>  Logs say WHAT it was.
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a>  Traces say WHERE (which hop) it happened.
+</span></code></pre></div>
+</details>
+<table>
+<thead>
+<tr>
+<th>Pillar</th>
+<th>Question it answers</th>
+<th>Data shape</th>
+<th>Tool</th>
+<th>Cost at scale</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Metrics</strong></td>
+<td>How much / how many, over time?</td>
+<td>Numeric time-series, cheap to store for years</td>
+<td>Prometheus</td>
+<td>Low</td>
+</tr>
+<tr>
+<td><strong>Logs</strong></td>
+<td>What exactly happened on this one request?</td>
+<td>Unstructured / structured text</td>
+<td>Loki (or ELK)</td>
+<td>Medium–high</td>
+</tr>
+<tr>
+<td><strong>Traces</strong></td>
+<td>Where did the time go, across services?</td>
+<td>Tree of timed spans per request</td>
+<td>OpenTelemetry + Jaeger</td>
+<td>Medium</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The rule of thumb that saves hours at 2 a.m.:</strong> alert on metrics, debug with logs and traces. Alerting on logs directly (grep for ERROR every minute) does not scale past a handful of services — that is exactly what metrics exist to replace.</p>
+<hr />
+<h3 id="metrics-prometheus">Metrics — Prometheus<a class="headerlink" href="#metrics-prometheus" title="Permanent link">&para;</a></h3>
+<p><strong>Model.</strong> Prometheus is a fitness tracker that only counts numbers, never records why. It polls (scrapes) your app every N seconds — a PULL model, the same pattern as Argo CD in M7, where the system reaches out rather than waiting to be pushed to. Your app exposes a <code>/metrics</code> HTTP endpoint in plain text. Prometheus scrapes it on a configurable interval, stores it in a local time-series database (TSDB — Time Series DataBase), and makes it queryable via <strong>PromQL</strong> (Prometheus Query Language).</p>
+<p><strong>The four metric types:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Behavior</th>
+<th>Use for</th>
+<th>PromQL note</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Counter</strong></td>
+<td>Only goes up; resets on restart</td>
+<td>Total requests, total errors</td>
+<td>Always query <code>rate()</code>, never raw value</td>
+</tr>
+<tr>
+<td><strong>Gauge</strong></td>
+<td>Goes up and down</td>
+<td>Current memory, current queue depth</td>
+<td>Query raw value is fine</td>
+</tr>
+<tr>
+<td><strong>Histogram</strong></td>
+<td>Buckets of observations (e.g. <code>&lt;100ms</code>, <code>&lt;500ms</code>, <code>&lt;1s</code>)</td>
+<td>Request latency, response size</td>
+<td>Enables p50/p95/p99 queries</td>
+</tr>
+<tr>
+<td><strong>Summary</strong></td>
+<td>Pre-computed quantiles, client-side</td>
+<td>Legacy; rarely preferred now</td>
+<td>Less flexible than histogram</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Numbers to know:</strong>
+- Typical scrape interval: <code>15s</code> (Prometheus binary default is <code>1m</code>; kube-prometheus-stack and most production deployments configure <code>15s</code>)
+- Default local retention: <code>15d</code>
+- Prometheus is stateful (local TSDB) — in production, teams run <strong>Thanos</strong> or <strong>Mimir</strong> for high availability and long-term storage beyond 15 days</p>
+<blockquote>
+<p>🔮 <strong>Predict pehle (socho, phir aage padho):</strong> Tum ek metric mein <code>user_id</code> label add kar dete ho (lakhon unique values). Prometheus ka kya hota hai?</p>
+</blockquote>
+<p><strong>The number-one real incident in this space — cardinality explosion:</strong></p>
+<p>A <code>Counter</code> or <code>Histogram</code> with a label like <code>user_id</code> or <code>request_path</code> (when the path includes a dynamic ID) creates one new time-series per unique label value. Prometheus RAM usage scales with the <em>count of unique time-series</em>, not with data volume. 10,000 users × 5 metrics = 50,000 series. Add one high-cardinality label and that becomes millions.</p>
+<p>Teams have taken down their entire monitoring stack — Prometheus OOMing and getting killed by K8s — by adding a label with good intentions. The full war story is in the Real Production Example section below.</p>
+<blockquote>
+<p>🔧 <strong>War story:</strong> Prometheus pod baar baar OOMKilled ho raha tha — RAM double karne ke baad bhi; ek developer ne debugging ke liye <code>user_id</code> label add kiya tha jisse 2M+ unique time-series ban gaye. <code>curl .../api/v1/status/tsdb</code> se root cause mila, label hatate hi fix hua. Poori kahani + lesson → <a href="../14-interview-bank/">Interview Bank</a>.</p>
+</blockquote>
+<p><strong>Rule:</strong> labels must have a small, bounded, predictable set of values — <code>method</code>, <code>status_code</code>, <code>route_template</code> are fine. <code>user_id</code>, <code>order_id</code>, and raw <code>path</code> strings with dynamic segments are not.</p>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> metrics = har 15 second mein CCTV ki ek photo. Prometheus poochta hai "abhi kya count hai?" — wo history nahi samajhta, sirf current number likhta. Cardinality explosion = har user ke liye alag CCTV channel kholna. Ek building mein 50,000 channels ka CCTV system koi run nahi kar sakta — RAM khatam ho jaati hai.</p>
+<hr />
+<h3 id="logs-loki-elk">Logs — Loki / ELK<a class="headerlink" href="#logs-loki-elk" title="Permanent link">&para;</a></h3>
+<p><strong>Model.</strong> Logs are the discrete event record — what happened on each specific request. Loki is "Prometheus but for logs": same PromQL-style query language called <strong>LogQL</strong>, same label-based indexing, deliberately does <em>not</em> index full text (unlike Elasticsearch / ELK) to stay cheap at scale.</p>
+<p><strong>Mechanism.</strong> Your app writes logs to stdout — never to a file inside the container (containers are cattle, per M0; when the pod dies, so does any file written inside it). A node-level log-shipper agent runs as a DaemonSet: <strong>Promtail</strong> (Loki's native shipper) or <strong>Fluent Bit</strong> (more universal). It tails container stdout, attaches Kubernetes labels (<code>pod</code>, <code>namespace</code>, <code>app</code>), and ships to Loki. You then query:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>{app=&quot;urlshort&quot;} |= &quot;ERROR&quot;
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>{app=&quot;urlshort&quot;, namespace=&quot;prod&quot;} | json | latency_ms &gt; 500
+</span></code></pre></div>
+<p><strong>Structured logging vs <code>print()</code>:</strong></p>
+<p>This is one of the highest-leverage habits a senior engineer has. Consider:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Beginner: free-text print</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;shortened </span><span class="si">{</span><span class="n">code</span><span class="si">}</span><span class="s2"> for user </span><span class="si">{</span><span class="n">uid</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Senior: structured JSON log</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;url_shortened&quot;</span><span class="p">,</span> <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;code&quot;</span><span class="p">:</span> <span class="n">code</span><span class="p">,</span> <span class="s2">&quot;user_id&quot;</span><span class="p">:</span> <span class="n">uid</span><span class="p">,</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>            <span class="s2">&quot;trace_id&quot;</span><span class="p">:</span> <span class="n">trace_id</span><span class="p">,</span> <span class="s2">&quot;duration_ms&quot;</span><span class="p">:</span> <span class="n">elapsed</span><span class="p">})</span>
+</span></code></pre></div>
+<p>The first produces a string you have to regex-parse at 2 a.m. The second produces a JSON object with named fields you can filter, aggregate, and join to traces by <code>trace_id</code> — all in the query interface, without writing code.</p>
+<p>Senior engineers standardize a JSON log schema across every service on day one. This is not premature optimisation; it is baseline infrastructure.</p>
+<p><strong>Log levels — small but important.</strong> Every log line carries a <em>level</em> so you can separate signal from noise: <code>DEBUG</code> (dev detail, off in prod), <code>INFO</code> (normal events — "request served"), <code>WARN</code> (odd but handled — "retrying DB"), <code>ERROR</code> (a request failed), <code>FATAL/CRITICAL</code> (the process is dying). In production you run at <code>INFO</code> and alert on <code>ERROR</code>+ <em>rates</em> — not on raw log volume. Make the level a <strong>field</strong> in the JSON (<code>"level":"error"</code>), not just free text, so <code>LogQL</code>/queries can filter on it. A flood of <code>ERROR</code> right after a deploy is often your fastest incident signal — quicker than a metric alert's <code>for: 5m</code> window.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Log level = volume knob. <code>DEBUG</code> = sab kuch (dev me), <code>INFO</code> = normal, <code>WARN</code> = "dekh lena", <code>ERROR</code> = "ab dekho", <code>FATAL</code> = "mar gaya". Prod me <code>INFO</code> pe chalao, page sirf <code>ERROR</code>+ pe.</p>
+</blockquote>
+<p><strong>The stdout buffering pitfall.</strong> Some language runtimes buffer stdout when not attached to a TTY (a terminal). In production containers, there is no TTY. Logs appear in batches or not at all until the buffer flushes on process exit. Classic symptom: "the pod crashed but there are no logs." Fix: force unbuffered output — in Python, <code>PYTHONUNBUFFERED=1</code>; in Node, logs go to process.stdout which is synchronous; in Go, the standard library does not buffer stdout.</p>
+<hr />
+<h3 id="traces-opentelemetry-jaeger">Traces — OpenTelemetry + Jaeger<a class="headerlink" href="#traces-opentelemetry-jaeger" title="Permanent link">&para;</a></h3>
+<p><strong>Model.</strong> A trace is a relay race with a stopwatch at every handoff. One user request gets a <code>trace_id</code> — a unique identifier that travels with the request across every service it touches. Each service adds one or more timed <strong>spans</strong> — units of work with a start time, end time, and metadata. The result is a waterfall diagram showing exactly where the time went, down to the individual database query.</p>
+<p><strong>OpenTelemetry (OTel)</strong> is the vendor-neutral SDK and protocol for generating traces (and metrics and logs). You instrument once with OTel; you can send to Jaeger, Tempo, Zipkin, or a commercial backend without changing app code. <strong>Jaeger</strong> is the open-source backend for storing and visualising traces.</p>
+<p><strong>Mechanism:</strong></p>
+<ol>
+<li>OTel SDK auto-instruments your framework (FastAPI, Express, Spring Boot) with minimal config — often 3–5 lines.</li>
+<li>On each inbound request, the SDK checks for a <code>traceparent</code> HTTP header (W3C Trace Context standard). If present, it joins the existing trace. If absent, it creates a new <code>trace_id</code>.</li>
+<li>On each outbound call (HTTP, database, queue), the SDK injects <code>traceparent</code> into the request headers, propagating the trace downstream.</li>
+<li>Spans are collected by an OTel Collector sidecar or DaemonSet, then forwarded to Jaeger.</li>
+<li>In Jaeger's UI, you click one <code>trace_id</code> and see a full waterfall: which service took how long, where the tail latency lives.</li>
+</ol>
+<p><strong>The sampling cost.</strong> 100% trace sampling at high traffic is expensive — each span is stored, indexed, and queried. Production systems use sampling strategies:
+- <strong>Head-based sampling:</strong> decide at the start of the request (e.g. "sample 1% of all requests").
+- <strong>Tail-based sampling:</strong> collect all spans, but only <em>persist</em> the trace if it met a condition (was slow, had an error). More expensive to run but more useful — you keep the interesting traces, drop the boring ones.</p>
+<p><strong>Where traces earn their pay.</strong> Tracing a single-service app is low-value — a simple log gives you the same information. Tracing earns its keep the moment you have two or more services calling each other. When your metrics show p99 is 3 seconds but you cannot tell if the slowness is in your app code, the downstream Postgres query, or the Redis call — a trace for one of those slow requests shows the span breakdown immediately.</p>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> trace = ek grahak ka poora safar — restaurant mein ghusa, order diya, chef ne banaya, waiter ne laya. Har step pe stopwatch. Agar 20-minute delay hai to trace seedha batata: "chef ke paas 18 minute lage" — order lene ya lany nahi. Metrics sirf bolta "20 minute lage." Trace batata "kahan."</p>
+<hr />
+<h2 id="slis-slos-slas-and-error-budgets">SLIs, SLOs, SLAs, and error budgets<a class="headerlink" href="#slis-slos-slas-and-error-budgets" title="Permanent link">&para;</a></h2>
+<p>This section separates "I set up Grafana" from "I run production." It is how observability becomes a <strong>decision-making tool</strong>, not just a dashboard.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>┌──────────────────────────────────────────────────────────────────┐
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>│              SLI / SLO / SLA / ERROR BUDGET                      │
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>│                                                                  │
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>│  SLI ─────────── what you measure                               │
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>│  (e.g. % of /shorten requests returning &lt;500 in &lt;300ms)         │
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>│           │                                                      │
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>│           ▼                                                      │
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>│  SLO ─────────── your internal target for that SLI              │
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>│  (e.g. 99.5% of requests meet that bar, over 30 days)           │
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>│           │                                                      │
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>│           ▼                                                      │
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>│  ERROR BUDGET = 100% − SLO = 0.5% = ~3.6 hours/month           │
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>│  ┌────────────────────────────────────────────────────┐         │
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>│  │ BUDGET REMAINING &gt; 0  →  ship risky changes        │         │
+</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>│  │ BUDGET EXHAUSTED      →  reliability work only     │         │
+</span><span id="__span-3-16"><a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>│  └────────────────────────────────────────────────────┘         │
+</span><span id="__span-3-17"><a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>│           │                                                      │
+</span><span id="__span-3-18"><a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>│           ▼                                                      │
+</span><span id="__span-3-19"><a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>│  SLA ─────────── external / contractual promise                 │
+</span><span id="__span-3-20"><a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>│  (e.g. 99.0% uptime or customer gets a credit)                  │
+</span><span id="__span-3-21"><a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>│  Always looser than SLO — SLO is your internal buffer           │
+</span><span id="__span-3-22"><a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>└──────────────────────────────────────────────────────────────────┘
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+<th>Capstone example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>SLI</strong> — Service Level Indicator</td>
+<td>The actual measured signal</td>
+<td><code>% of /shorten requests returning non-5xx in &lt;300ms</code></td>
+</tr>
+<tr>
+<td><strong>SLO</strong> — Service Level Objective</td>
+<td>Your internal target for that SLI</td>
+<td><code>99.5% of requests meet that bar over 30 days</code></td>
+</tr>
+<tr>
+<td><strong>SLA</strong> — Service Level Agreement</td>
+<td>The external, often contractual promise — with financial penalty if missed</td>
+<td><code>99.0% uptime or customer gets credited</code></td>
+</tr>
+<tr>
+<td><strong>Error budget</strong></td>
+<td><code>100% − SLO</code> — how much failure you are allowed</td>
+<td><code>0.5% = ~3.6 hours/month of allowed degradation</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Why the SLO is always stricter than the SLA.</strong> You need a buffer between what you promise yourself and what you promise customers. If your SLO is 99.5% and you burn through it, your team goes into reliability-only mode — no risky deploys. By the time you hit your SLA (99.0%), you should have already fixed the problem. If your SLO and SLA were the same number, you would have no warning before breaching the customer contract.</p>
+<p><strong>The senior insight most training skips — the error budget as governance.</strong> The error budget turns "should we ship this risky change?" from a political argument into a number. If budget remains: ship. If budget is exhausted: only reliability work until the window resets. This is how Google SRE resolves the permanent tension between feature velocity and reliability — without either side winning by politics. The number decides.</p>
+<p><strong>p99 vs. average — why this matters for SLIs.</strong> Average latency hides the tail. If 95% of requests take 50ms and 5% take 5,000ms, the average is around 300ms — looks fine. 1 in 20 users has a terrible experience. A histogram-based SLI on <strong>p99</strong> would catch this; an average-based SLI would not. Always define SLIs using percentile latency, not mean.</p>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> error budget = kitni galti allowed hai. Agar 99.5% uptime ka SLO hai, to 0.5% — yaani mahine mein roughly 3.6 ghante — toot-phoot ka allowance hai. Jab tak budget hai, naya feature ship karo. Budget khatam? Rukjao — pehle system theek karo. Yeh rule politics ko hataata hai — number decide karta hai.</p>
+<hr />
+<h2 id="the-four-golden-signals">The Four Golden Signals<a class="headerlink" href="#the-four-golden-signals" title="Permanent link">&para;</a></h2>
+<p>Google SRE defined four signals that together describe the health of almost any service. If you can only instrument four things, instrument these:</p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>What it measures</th>
+<th>Example metric</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Latency</strong></td>
+<td>How long requests take — split by success and error</td>
+<td>p99 of <code>http_request_duration_seconds</code></td>
+<td>Slow is often worse than down — users tolerate brief downtime but abandon slow apps</td>
+</tr>
+<tr>
+<td><strong>Traffic</strong></td>
+<td>How much demand is hitting the system</td>
+<td><code>rate(http_requests_total[5m])</code></td>
+<td>Baseline for capacity decisions and anomaly detection</td>
+</tr>
+<tr>
+<td><strong>Errors</strong></td>
+<td>The rate of requests that fail</td>
+<td><code>rate(http_requests_total{status=~"5.."}[5m])</code></td>
+<td>The most direct signal that users are experiencing failures</td>
+</tr>
+<tr>
+<td><strong>Saturation</strong></td>
+<td>How "full" the system is — the resource closest to its limit</td>
+<td>CPU throttling, memory usage %, queue depth</td>
+<td>Predicts future failure before it becomes current failure</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Note on latency and errors:</strong> always track latency separately for successful and failed requests. A request that fails in 1ms inflates the "fast" bucket and masks a real problem if you are averaging across success and failure together.</p>
+<hr />
+<h2 id="alerting-that-does-not-page-you-for-nothing">Alerting that does not page you for nothing<a class="headerlink" href="#alerting-that-does-not-page-you-for-nothing" title="Permanent link">&para;</a></h2>
+<h3 id="how-alertmanager-works">How Alertmanager works<a class="headerlink" href="#how-alertmanager-works" title="Permanent link">&para;</a></h3>
+<p>Prometheus evaluates alert <strong>rules</strong> — PromQL expressions that should evaluate to false during normal operation. When an expression evaluates to true (e.g. error rate exceeds threshold), Prometheus fires an alert to <strong>Alertmanager</strong> (Alert Manager).</p>
+<p>Alertmanager's job is not to forward every alert. It does four things:</p>
+<ol>
+<li><strong>Deduplication:</strong> if 50 pods all fire the same alert at the same time, Alertmanager sends one page, not 50.</li>
+<li><strong>Grouping:</strong> related alerts (same service, same time window) arrive as one notification with context, not as a flood.</li>
+<li><strong>Routing:</strong> based on labels (<code>team="payments"</code>, <code>severity="critical"</code>), Alertmanager routes the alert to the right channel — Slack, PagerDuty, email, webhook.</li>
+<li><strong>Silences and inhibitions:</strong> a silence suppresses specific alerts during a known maintenance window. An <em>inhibition</em> rule suppresses downstream alerts when a higher-priority alert is already firing — do not page for "disk full" on a node when "node down" is already firing for the same node. The disk problem is not actionable while the node is unreachable.</li>
+</ol>
+<h3 id="alert-on-symptoms-not-causes">Alert on symptoms, not causes<a class="headerlink" href="#alert-on-symptoms-not-causes" title="Permanent link">&para;</a></h3>
+<p>This is the single most common mistake in on-call setups:</p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>Example</th>
+<th>Problem</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cause-based (bad)</strong></td>
+<td><code>CPU &gt; 80%</code></td>
+<td>CPU at 80% might be totally fine — high CPU during a batch job is expected. Users notice nothing.</td>
+</tr>
+<tr>
+<td><strong>Symptom-based (good)</strong></td>
+<td><code>error_rate &gt; 1% for 5m</code></td>
+<td>Users are receiving errors right now. This is unambiguously actionable.</td>
+</tr>
+</tbody>
+</table>
+<p>Alerting on causes produces <strong>alert fatigue</strong> — too many pages that require human judgement to determine whether they matter. Engineers start ignoring pages. Real incidents get lost in the noise.</p>
+<p><strong>The rule:</strong> page on what users feel (symptoms). Put everything else on a dashboard panel — visible but silent.</p>
+<h3 id="the-for-duration-rule">The <code>for:</code> duration rule<a class="headerlink" href="#the-for-duration-rule" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># BAD: a single scrape blip pages someone at 3 a.m.</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HighErrorRate</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rate(http_requests_total{status=~&quot;5..&quot;}[5m]) &gt; 0.01</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="c1"># GOOD: transient spikes self-resolve before anyone is paged</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HighErrorRate</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rate(http_requests_total{status=~&quot;5..&quot;}[5m]) &gt; 0.01</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span><span class="nt">for</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5m</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">    </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">critical</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">  </span><span class="nt">annotations</span><span class="p">:</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">    </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Error</span><span class="nv"> </span><span class="s">rate</span><span class="nv"> </span><span class="s">above</span><span class="nv"> </span><span class="s">1%</span><span class="nv"> </span><span class="s">for</span><span class="nv"> </span><span class="s">5</span><span class="nv"> </span><span class="s">minutes</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">$labels.service</span><span class="nv"> </span><span class="s">}}&quot;</span>
+</span></code></pre></div>
+<p>The <code>for: 5m</code> field tells Prometheus to hold the alert in a <code>pending</code> state for 5 minutes before it fires. A transient network blip that lasts 30 seconds resolves itself; a real problem persists. In practice, the duration threshold matters more than the numeric threshold — it is the difference between waking someone up for nothing and waking them up for a real incident.</p>
+<hr />
+<h2 id="request-lifecycle-instrumented">Request lifecycle, instrumented<a class="headerlink" href="#request-lifecycle-instrumented" title="Permanent link">&para;</a></h2>
+<p>This extends the request lifecycle from <code>09-connected-system.md</code> — same request, now with every telemetry emission point annotated.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>REQUEST LIFECYCLE WITH TELEMETRY EMISSION POINTS
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a> 1. User ──► POST :30080/shorten
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>                │
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a> 2. NodePort → kube-proxy → Service → EndpointSlice → Pod
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>                │
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>                │  [TRACE]  span started: trace_id=abc123, service=urlshort
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>                │
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a> 3. Pod (FastAPI) handles the request
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>                │
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>                │  [METRIC] http_requests_total{route=&quot;/shorten&quot;, method=&quot;POST&quot;} += 1
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>                │  [METRIC] http_request_duration_seconds histogram observes start
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>                │  [LOG]    {&quot;event&quot;:&quot;request_received&quot;,&quot;route&quot;:&quot;/shorten&quot;,
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>                │            &quot;trace_id&quot;:&quot;abc123&quot;,&quot;ts&quot;:&quot;2025-07-02T02:14:03Z&quot;}
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>                │
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a> 4. Pod ──────► Postgres :5432  INSERT INTO urls ...
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>                │
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>                │  [TRACE]  child span: db_insert
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>                │           trace_id=abc123, parent=span1, start=+002ms
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>                │
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a> 5. Postgres responds
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>                │
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>                │  [TRACE]  child span closed: db_insert duration=031ms
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>                │  [LOG]    {&quot;event&quot;:&quot;db_insert_ok&quot;,&quot;code&quot;:&quot;xyz7k&quot;,
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>                │            &quot;duration_ms&quot;:31,&quot;trace_id&quot;:&quot;abc123&quot;}
+</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>                │
+</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a> 6. Response ──► User  HTTP 201
+</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a>                │
+</span><span id="__span-5-29"><a id="__codelineno-5-29" name="__codelineno-5-29" href="#__codelineno-5-29"></a>                │  [TRACE]  root span closed: total_duration=043ms
+</span><span id="__span-5-30"><a id="__codelineno-5-30" name="__codelineno-5-30" href="#__codelineno-5-30"></a>                │  [METRIC] http_request_duration_seconds observes 0.043
+</span><span id="__span-5-31"><a id="__codelineno-5-31" name="__codelineno-5-31" href="#__codelineno-5-31"></a>                │  [LOG]    {&quot;event&quot;:&quot;request_complete&quot;,&quot;status&quot;:201,
+</span><span id="__span-5-32"><a id="__codelineno-5-32" name="__codelineno-5-32" href="#__codelineno-5-32"></a>                │            &quot;duration_ms&quot;:43,&quot;trace_id&quot;:&quot;abc123&quot;}
+</span><span id="__span-5-33"><a id="__codelineno-5-33" name="__codelineno-5-33" href="#__codelineno-5-33"></a>                │
+</span><span id="__span-5-34"><a id="__codelineno-5-34" name="__codelineno-5-34" href="#__codelineno-5-34"></a> 7. (async, every 15s)
+</span><span id="__span-5-35"><a id="__codelineno-5-35" name="__codelineno-5-35" href="#__codelineno-5-35"></a>    Prometheus scrapes Pod /metrics endpoint
+</span><span id="__span-5-36"><a id="__codelineno-5-36" name="__codelineno-5-36" href="#__codelineno-5-36"></a>    → TSDB records new counter and histogram values
+</span><span id="__span-5-37"><a id="__codelineno-5-37" name="__codelineno-5-37" href="#__codelineno-5-37"></a>
+</span><span id="__span-5-38"><a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a> 8. (continuous, via DaemonSet)
+</span><span id="__span-5-39"><a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a>    Promtail/Fluent Bit tails pod stdout
+</span><span id="__span-5-40"><a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a>    → ships structured log lines to Loki
+</span><span id="__span-5-41"><a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a>
+</span><span id="__span-5-42"><a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a> 9. (every 15–30s, rule evaluation)
+</span><span id="__span-5-43"><a id="__codelineno-5-43" name="__codelineno-5-43" href="#__codelineno-5-43"></a>    Prometheus evaluates: rate(http_requests_total{status=~&quot;5..&quot;}[5m]) &gt; 0.01 for 5m?
+</span><span id="__span-5-44"><a id="__codelineno-5-44" name="__codelineno-5-44" href="#__codelineno-5-44"></a>    → FALSE → nothing happens  ← this is the normal, silent case
+</span><span id="__span-5-45"><a id="__codelineno-5-45" name="__codelineno-5-45" href="#__codelineno-5-45"></a>    → TRUE  → Alertmanager fires → routes to Slack/PagerDuty → M9 incident begins
+</span></code></pre></div>
+<p>The <code>⤷</code> emissions at steps 3, 4, 5, 6 happen <strong>on every single request, always</strong> — they are not conditional debugging code turned on during incidents. This is the mental shift: instrumentation is baseline infrastructure you build in <em>before</em> anything breaks, so that when it does break you already have the evidence. Adding instrumentation after an incident to understand the last incident is too late.</p>
+<hr />
+<h2 id="real-production-example-the-cardinality-explosion">Real production example — the cardinality explosion<a class="headerlink" href="#real-production-example-the-cardinality-explosion" title="Permanent link">&para;</a></h2>
+<p>This is the most common class of observability incident across the industry. The pattern is documented widely and most teams encounter it eventually.</p>
+<p><strong>The setup.</strong> A team wants to debug a slow endpoint. They add a new metric:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">request_duration</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">elapsed</span><span class="p">)</span>
+</span></code></pre></div>
+<p>In staging, there are a handful of routes. Looks fine. In production, the path includes a dynamic resource ID:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>/users/8271/orders/49182
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>/users/8272/orders/49183
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>/users/8273/orders/49184
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>...
+</span></code></pre></div>
+<p>Each unique path value creates a new time-series. With thousands of users per hour, the series count goes from ~50,000 (healthy) to several million within 24 hours.</p>
+<p><strong>What happens next.</strong> Prometheus's in-memory series count explodes. RAM usage climbs. Kubernetes OOM-kills the Prometheus pod. The pod restarts, loads the on-disk TSDB, and OOMs again. <strong>Dashboards go blank during an unrelated ongoing incident</strong> — the observability layer became the outage, blinding the team at the worst possible moment.</p>
+<p><strong>The fix — two layers.</strong></p>
+<p>Layer 1 — fix the label immediately:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># WRONG: raw path with dynamic segment</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="n">request_duration</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">url</span><span class="o">.</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">elapsed</span><span class="p">)</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="c1"># CORRECT: route template — bounded set of values</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">request_duration</span><span class="o">.</span><span class="n">labels</span><span class="p">(</span><span class="n">route</span><span class="o">=</span><span class="s2">&quot;/users/</span><span class="si">{id}</span><span class="s2">/orders/</span><span class="si">{order_id}</span><span class="s2">&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">observe</span><span class="p">(</span><span class="n">elapsed</span><span class="p">)</span>
+</span></code></pre></div>
+<p>Layer 2 — add a cardinality guardrail in the Prometheus scrape config so no single bad label can repeat this:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># prometheus.yml scrape config</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="nt">scrape_configs</span><span class="p">:</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">job_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">urlshort</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="nt">metric_relabel_configs</span><span class="p">:</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">source_labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">__name__</span><span class="p p-Indicator">]</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">        </span><span class="nt">regex</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;http_request_duration_seconds&#39;</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">        </span><span class="nt">target_label</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">path</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">        </span><span class="nt">replacement</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="w">        </span><span class="c1"># drop the &#39;path&#39; label entirely on this metric</span>
+</span></code></pre></div>
+<p><strong>The lesson that generalises.</strong> Observability infrastructure is itself production infrastructure. It needs the same sizing and reliability discipline as the apps it watches (M5). A bug in the monitoring layer can blind you during the exact moment you need it most. Senior engineers ask "can my monitoring survive the incident it is supposed to help me see?" as a real design question — not an afterthought.</p>
+<hr />
+<h2 id="commands-explained">Commands, explained<a class="headerlink" href="#commands-explained" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Port-forward Prometheus to localhost:9090</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="c1"># Why: access the UI and HTTP API without a LoadBalancer; works in any cluster</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="c1"># Note: the exact Service name depends on the Helm release/chart used;</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># kube-prometheus-stack (used in the Hands-on Lab) names it as shown below.</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>kubectl<span class="w"> </span>port-forward<span class="w"> </span>svc/monitoring-kube-prometheus-prometheus<span class="w"> </span><span class="m">9090</span>:9090<span class="w"> </span>-n<span class="w"> </span>monitoring
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1"># Port-forward Grafana to localhost:3000</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="c1"># Why: same reason — dev and debugging access without exposing a public endpoint</span>
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>kubectl<span class="w"> </span>port-forward<span class="w"> </span>svc/grafana<span class="w"> </span><span class="m">3000</span>:80<span class="w"> </span>-n<span class="w"> </span>monitoring
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="c1"># Check what Prometheus is currently scraping and each target&#39;s last-scrape status</span>
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="c1"># Why: most &quot;I don&#39;t see my app&#39;s metrics&quot; problems are a misconfigured ServiceMonitor</span>
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;prometheus-pod&gt;<span class="w"> </span>-n<span class="w"> </span>monitoring<span class="w"> </span>--<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="w">  </span>wget<span class="w"> </span>-qO-<span class="w"> </span>localhost:9090/api/v1/targets<span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>json.tool<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s1">&#39;&quot;health&quot;|&quot;scrapeUrl&quot;&#39;</span>
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="c1"># Query Prometheus via HTTP (no UI needed) — 5xx rate over last 5 minutes</span>
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="c1"># Why: useful in CI, in scripts, or when port-forwarding Grafana is not convenient</span>
+</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>curl<span class="w"> </span>-s<span class="w"> </span><span class="s1">&#39;http://localhost:9090/api/v1/query&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="w">  </span>--data-urlencode<span class="w"> </span><span class="s1">&#39;query=rate(http_requests_total{status=~&quot;5..&quot;}[5m])&#39;</span>
+</span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>
+</span><span id="__span-10-21"><a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a><span class="c1"># Query Prometheus — p99 latency of /shorten</span>
+</span><span id="__span-10-22"><a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="c1"># Why: this is the SLI query; put it in your dashboard and alert rule</span>
+</span><span id="__span-10-23"><a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a>curl<span class="w"> </span>-s<span class="w"> </span><span class="s1">&#39;http://localhost:9090/api/v1/query&#39;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-24"><a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a><span class="w">  </span>--data-urlencode<span class="w"> </span><span class="s1">&#39;query=histogram_quantile(0.99, rate(http_request_duration_seconds_bucket{route=&quot;/shorten&quot;}[5m]))&#39;</span>
+</span><span id="__span-10-25"><a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a>
+</span><span id="__span-10-26"><a id="__codelineno-10-26" name="__codelineno-10-26" href="#__codelineno-10-26"></a><span class="c1"># Tail logs from your app via Loki CLI</span>
+</span><span id="__span-10-27"><a id="__codelineno-10-27" name="__codelineno-10-27" href="#__codelineno-10-27"></a><span class="c1"># Why: faster than the Grafana UI for quick label-filtered tailing in a terminal</span>
+</span><span id="__span-10-28"><a id="__codelineno-10-28" name="__codelineno-10-28" href="#__codelineno-10-28"></a>logcli<span class="w"> </span>query<span class="w"> </span><span class="s1">&#39;{app=&quot;urlshort&quot;, namespace=&quot;prod&quot;} |= &quot;ERROR&quot;&#39;</span><span class="w"> </span>--limit<span class="o">=</span><span class="m">50</span><span class="w"> </span>--tail
+</span><span id="__span-10-29"><a id="__codelineno-10-29" name="__codelineno-10-29" href="#__codelineno-10-29"></a>
+</span><span id="__span-10-30"><a id="__codelineno-10-30" name="__codelineno-10-30" href="#__codelineno-10-30"></a><span class="c1"># Evaluate what an alert rule currently resolves to</span>
+</span><span id="__span-10-31"><a id="__codelineno-10-31" name="__codelineno-10-31" href="#__codelineno-10-31"></a><span class="c1"># Why: before adding the rule, verify the PromQL expression returns the values you expect</span>
+</span><span id="__span-10-32"><a id="__codelineno-10-32" name="__codelineno-10-32" href="#__codelineno-10-32"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;prometheus-pod&gt;<span class="w"> </span>-n<span class="w"> </span>monitoring<span class="w"> </span>--<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-33"><a id="__codelineno-10-33" name="__codelineno-10-33" href="#__codelineno-10-33"></a><span class="w">  </span>promtool<span class="w"> </span>query<span class="w"> </span>instant<span class="w"> </span>http://localhost:9090<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-10-34"><a id="__codelineno-10-34" name="__codelineno-10-34" href="#__codelineno-10-34"></a><span class="w">  </span><span class="s1">&#39;rate(http_requests_total{status=~&quot;5..&quot;}[5m])&#39;</span>
+</span><span id="__span-10-35"><a id="__codelineno-10-35" name="__codelineno-10-35" href="#__codelineno-10-35"></a>
+</span><span id="__span-10-36"><a id="__codelineno-10-36" name="__codelineno-10-36" href="#__codelineno-10-36"></a><span class="c1"># Check Prometheus TSDB statistics including top series by metric name</span>
+</span><span id="__span-10-37"><a id="__codelineno-10-37" name="__codelineno-10-37" href="#__codelineno-10-37"></a><span class="c1"># Why: first diagnostic when suspecting cardinality explosion</span>
+</span><span id="__span-10-38"><a id="__codelineno-10-38" name="__codelineno-10-38" href="#__codelineno-10-38"></a>curl<span class="w"> </span>-s<span class="w"> </span><span class="s1">&#39;http://localhost:9090/api/v1/status/tsdb&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>python3<span class="w"> </span>-m<span class="w"> </span>json.tool<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-60
+</span></code></pre></div>
+<hr />
+<h2 id="beginner-mistakes-vs-senior-insights">Beginner mistakes vs senior insights<a class="headerlink" href="#beginner-mistakes-vs-senior-insights" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Beginner</th>
+<th>Senior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"I added Grafana, we are observable now."</td>
+<td>A dashboard nobody looks at until something is already broken is not observability — it is decoration. Observability means alerts that page <em>before</em> users complain.</td>
+</tr>
+<tr>
+<td>Alerts on every metric that <em>could</em> matter: CPU, memory, disk, queue depth, JVM heap...</td>
+<td>Alerts only on <strong>SLO burn rate</strong> (symptom). Everything else is a dashboard panel — visible, not loud.</td>
+</tr>
+<tr>
+<td>Alert rule with no <code>for:</code> duration — a single scrape blip pages on-call at 3 a.m.</td>
+<td>Always pair a threshold with a <code>for:</code> duration. Transient noise self-resolves; real problems persist.</td>
+</tr>
+<tr>
+<td>Adds a <code>user_id</code> label to a metric "to make debugging easier."</td>
+<td>Labels must have a bounded set of values. A <code>user_id</code> label in a high-traffic app destroys Prometheus in under 24 hours.</td>
+</tr>
+<tr>
+<td>"It's slow" (vague, unscoped).</td>
+<td>"p99 on <code>/shorten</code> went from 80ms to 1.2s starting at 14:32, correlates with the RDS CPU spike — likely a slow query. Here is a trace ID for one of the slow requests." Evidence-based, time-bound, actionable.</td>
+</tr>
+<tr>
+<td>Logs with <code>print(f"done {code}")</code> — free text.</td>
+<td>Structured JSON logs with a <code>trace_id</code> field on every line, so any log line can be joined to its full trace and correlated metric context without guessing.</td>
+</tr>
+<tr>
+<td>Builds observability in a "monitoring namespace" that has no resource limits, no alerts on Prometheus itself, no redundancy.</td>
+<td>Treats observability infra as production infra: resource requests/limits, a watchdog alert on Prometheus's own health, and (in large orgs) Thanos/Mimir for HA.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="memory-shortcuts">Memory shortcuts<a class="headerlink" href="#memory-shortcuts" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>One line to recall it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Metrics / logs / traces</td>
+<td>How much / what exactly / where did the time go</td>
+</tr>
+<tr>
+<td>Prometheus pull model</td>
+<td>Same PULL pattern as Argo — scrapes every 15s, never gets pushed to</td>
+</tr>
+<tr>
+<td>Counter vs Gauge</td>
+<td>Counter only goes up (query <code>rate()</code>); Gauge goes up and down (query raw)</td>
+</tr>
+<tr>
+<td>Histogram</td>
+<td>Buckets of observations → enables p99; this is why you use it for latency</td>
+</tr>
+<tr>
+<td>Cardinality</td>
+<td>Unique label combinations = RAM cost in Prometheus; keep labels bounded</td>
+</tr>
+<tr>
+<td>p99 &gt; average</td>
+<td>Average hides the tail that users feel; histogram quantile catches it</td>
+</tr>
+<tr>
+<td>SLI / SLO / SLA</td>
+<td>Measured / your target / contractual promise (SLA always looser than SLO)</td>
+</tr>
+<tr>
+<td>Error budget</td>
+<td><code>100% − SLO</code> = allowed failure; exhausted → freeze risky deploys</td>
+</tr>
+<tr>
+<td>Four Golden Signals</td>
+<td>Latency, Traffic, Errors, Saturation</td>
+</tr>
+<tr>
+<td>Alert on symptoms</td>
+<td>Error rate pages you; CPU-at-80% stays on a dashboard</td>
+</tr>
+<tr>
+<td><code>for: 5m</code></td>
+<td>Holds alert in pending — noise self-resolves, real problems do not</td>
+</tr>
+<tr>
+<td>Structured logging</td>
+<td>JSON with <code>trace_id</code> on every line — queryable, joinable, not regex'd</td>
+</tr>
+<tr>
+<td>Tail-based sampling</td>
+<td>Keep traces that errored or were slow; drop boring ones — cost control</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>Observability is the layer that turns "the pod is running" into "the system is healthy, and I have evidence." It has three pillars answering three structurally different questions: metrics (how much), logs (what exactly), traces (where). Each requires different infrastructure because each produces a different data shape.</p>
+<p>On top of the technical pillars sits the SRE model: SLIs define what you measure, SLOs define your target, the error budget (<code>100% − SLO</code>) defines how much failure you are allowed, and that number governs whether risky changes ship or freeze. This turns reliability from a vague aspiration into a concrete, daily decision input.</p>
+<p>Alerting done right pages on symptoms (error rate, SLO burn rate), not causes (CPU, disk). The <code>for:</code> duration is what separates a page that wakes someone up for nothing from one that wakes them up for a real incident.</p>
+<p>The cardinality lesson is the one that bites almost every team once: high-cardinality labels destroy Prometheus from the inside. The fix is label discipline upfront, plus a cardinality guardrail in the scrape config.</p>
+<p>Observability infrastructure is itself production infrastructure. If it goes down during an incident, you are flying blind exactly when you need it most.</p>
+<hr />
+<h2 id="self-check-quiz">Self-check quiz<a class="headerlink" href="#self-check-quiz" title="Permanent link">&para;</a></h2>
+<p>Pehle memory se jawab do, phir neeche kholo.</p>
+<details>
+<summary>Jawab dekho</summary>
+<ol>
+<li>Log-based alerting scale nahi karta — har rule ke liye ek grep/regex job chahiye, high-volume logs pe aggregate queries slow hoti hain, aur volume badhne par load bahut zyada hota hai. Metrics (pre-aggregated counters/histograms) isi liye exist karte hain — log-grepping replace karne ke liye alerting mein.</li>
+<li><code>{route, method, status, user_id}</code> — <code>user_id</code> ke millions of unique values hain → millions of unique time-series → Prometheus RAM explode → OOMKilled. Bounded labels (route, method, status) safe hain; unbounded labels (user_id, order_id) cardinality explosion laate hain.</li>
+<li>Majority requests fast hain lekin ek tail bahut slow hai (4.8s). p99 pe alert karo — yeh tail ko pakadta hai joh users feel karte hain. Average mein yeh problem chhup jaati hai, alert nahi aata.</li>
+<li>SLO internal target hai (99.5%); SLA external/contractual promise hai (99.0%). SLO hamesha stricter hota hai taake SLO breach hone par team pehle hi act kare — SLA breach se pehle warning buffer milta hai.</li>
+<li><strong>Deduplication</strong> (ek node se 40 alerts → 1 page) aur <strong>inhibition</strong> (downstream alerts suppress ho jaate hain jab higher-priority "node down" alert pehle se fire ho raha ho — disk-full page actionable nahi jab node hi unreachable ho).</li>
+<li>Threshold decide karta hai kab condition trigger ho; <code>for:</code> decide karta hai kab page jaaye. 30-second transient spike threshold meet karta hai — bina <code>for:</code> ke bhi 3am page. Real incidents persist karte hain; noise nahi karta. Duration zyada matter karta hai.</li>
+<li>Sabse zyada likely: cardinality explosion — high-cardinality label ne millions of unique time-series bana diye. Pehla diagnostic: <code>curl -s 'http://localhost:9090/api/v1/status/tsdb' | python3 -m json.tool | head -60</code> se series count aur top metrics dekho.</li>
+<li>Application code fast hai; bottleneck ek slow DB insert (1.9s) hai. Next: RDS slow query logs check karo, missing index dhundho, DB CPU/connections aur Prometheus mein connection pool saturation dekho.</li>
+</ol>
+</details>
+<ol>
+<li>Why can you not simply alert directly on raw log lines at scale? What breaks first?</li>
+<li>A metric has labels <code>{route, method, status}</code> versus <code>{route, method, status, user_id}</code>. Which risks cardinality explosion, and why specifically?</li>
+<li>Average latency is 120ms. p99 latency is 4.8 seconds. What is actually happening? Which number do you alert on and why?</li>
+<li>What is the practical difference between an SLO and an SLA, and why is the SLO always the stricter number?</li>
+<li>Alertmanager fires 40 pages in 90 seconds when one node goes down. Name the two Alertmanager features that would have prevented this.</li>
+<li>Why does the <code>for: 5m</code> field on an alert rule matter more than the threshold value in practice?</li>
+<li>Your Prometheus pod is OOMing every hour. No application incidents are occurring. What is the most likely root cause and what is the first diagnostic command you run?</li>
+<li>A trace shows that a <code>/shorten</code> request took 2.1 seconds total, with 1.9 seconds spent in a single child span labelled <code>db_insert</code>. What does this tell you, and what do you do next?</li>
+</ol>
+<hr />
+<h2 id="hands-on-lab-instrument-the-capstone-url-shortener">Hands-on lab — instrument the capstone url-shortener<a class="headerlink" href="#hands-on-lab-instrument-the-capstone-url-shortener" title="Permanent link">&para;</a></h2>
+<p>This lab bolts onto <code>url-shortener/</code> from <code>12-capstone-url-shortener.md</code>. No new project. You extend what you already built.</p>
+<h3 id="prerequisites">Prerequisites<a class="headerlink" href="#prerequisites" title="Permanent link">&para;</a></h3>
+<ul>
+<li>Working Kind cluster from the capstone</li>
+<li><code>helm</code> installed</li>
+<li>A free Slack workspace with an incoming webhook URL</li>
+</ul>
+<h3 id="step-1-expose-metrics-from-the-app-3-lines">Step 1 — expose metrics from the app (3 lines)<a class="headerlink" href="#step-1-expose-metrics-from-the-app-3-lines" title="Permanent link">&para;</a></h3>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># In url-shortener/app/main.py — add after imports</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">prometheus_fastapi_instrumentator</span><span class="w"> </span><span class="kn">import</span> <span class="n">Instrumentator</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1"># After `app = FastAPI()`</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="n">Instrumentator</span><span class="p">()</span><span class="o">.</span><span class="n">instrument</span><span class="p">(</span><span class="n">app</span><span class="p">)</span><span class="o">.</span><span class="n">expose</span><span class="p">(</span><span class="n">app</span><span class="p">)</span>
+</span></code></pre></div>
+<p>This auto-exposes <code>/metrics</code> with request count and latency histogram, labeled by <strong>route template</strong> (not raw path — the cardinality lesson, applied immediately).</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>pip<span class="w"> </span>install<span class="w"> </span>prometheus-fastapi-instrumentator
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="c1"># Rebuild your image and push</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>urlshort:v2-obs<span class="w"> </span>.
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>kind<span class="w"> </span>load<span class="w"> </span>docker-image<span class="w"> </span>urlshort:v2-obs
+</span></code></pre></div>
+<h3 id="step-2-deploy-the-prometheus-stack">Step 2 — deploy the Prometheus stack<a class="headerlink" href="#step-2-deploy-the-prometheus-stack" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>helm<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span>prometheus-community<span class="w"> </span>https://prometheus-community.github.io/helm-charts
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>helm<span class="w"> </span>repo<span class="w"> </span>update
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>helm<span class="w"> </span>install<span class="w"> </span>monitoring<span class="w"> </span>prometheus-community/kube-prometheus-stack<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">  </span>-n<span class="w"> </span>monitoring<span class="w"> </span>--create-namespace<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">  </span>--set<span class="w"> </span>grafana.adminPassword<span class="o">=</span>admin123
+</span></code></pre></div>
+<p>This single Helm release deploys Prometheus, Grafana, Alertmanager, and a set of default K8s dashboards.</p>
+<h3 id="step-3-tell-prometheus-about-your-app-your-first-crd">Step 3 — tell Prometheus about your app (your first CRD)<a class="headerlink" href="#step-3-tell-prometheus-about-your-app-your-first-crd" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># monitoring/servicemonitor.yaml</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">monitoring.coreos.com/v1</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ServiceMonitor</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">urlshort</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">monitoring</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">    </span><span class="nt">release</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">monitoring</span><span class="w">   </span><span class="c1"># must match the Helm release label</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">  </span><span class="nt">selector</span><span class="p">:</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">    </span><span class="nt">matchLabels</span><span class="p">:</span>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">      </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">urlshort</span>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="w">  </span><span class="nt">namespaceSelector</span><span class="p">:</span>
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="w">    </span><span class="nt">matchNames</span><span class="p">:</span>
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">default</span>
+</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="w">  </span><span class="nt">endpoints</span><span class="p">:</span>
+</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">http</span>
+</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="w">      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/metrics</span>
+</span><span id="__span-14-19"><a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15s</span>
+</span></code></pre></div>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>monitoring/servicemonitor.yaml
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="c1"># Verify: Prometheus UI → Status → Targets → urlshort should appear as UP</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>kubectl<span class="w"> </span>port-forward<span class="w"> </span>svc/monitoring-kube-prometheus-prometheus<span class="w"> </span><span class="m">9090</span>:9090<span class="w"> </span>-n<span class="w"> </span>monitoring
+</span></code></pre></div>
+<p>A <code>ServiceMonitor</code> is a Custom Resource Definition (CRD) — your first preview of the CRD/operator pattern covered in M9.</p>
+<h3 id="step-4-build-one-grafana-panel">Step 4 — build one Grafana panel<a class="headerlink" href="#step-4-build-one-grafana-panel" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>kubectl<span class="w"> </span>port-forward<span class="w"> </span>svc/monitoring-grafana<span class="w"> </span><span class="m">3000</span>:80<span class="w"> </span>-n<span class="w"> </span>monitoring
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="c1"># Open http://localhost:3000 — login admin / admin123</span>
+</span></code></pre></div>
+<p>Create a new dashboard. Add a panel with this PromQL:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>histogram_quantile(0.50, rate(http_request_duration_seconds_bucket{route=&quot;/shorten&quot;}[5m]))
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{route=&quot;/shorten&quot;}[5m]))
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>histogram_quantile(0.99, rate(http_request_duration_seconds_bucket{route=&quot;/shorten&quot;}[5m]))
+</span></code></pre></div>
+<p>Three lines on one panel: p50, p95, p99 latency of your endpoint. This is your SLI panel.</p>
+<h3 id="step-5-write-one-alert-rule">Step 5 — write one alert rule<a class="headerlink" href="#step-5-write-one-alert-rule" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># monitoring/alert-rules.yaml</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">monitoring.coreos.com/v1</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">PrometheusRule</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">urlshort-alerts</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">monitoring</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">    </span><span class="nt">release</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">monitoring</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">  </span><span class="nt">groups</span><span class="p">:</span>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">urlshort.rules</span>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="w">      </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30s</span>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="w">      </span><span class="nt">rules</span><span class="p">:</span>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">alert</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HighErrorRate</span>
+</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="w">          </span><span class="nt">expr</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="w">            </span><span class="no">rate(http_requests_total{job=&quot;urlshort&quot;, status=~&quot;5..&quot;}[5m])</span>
+</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="w">            </span><span class="no">/</span>
+</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="w">            </span><span class="no">rate(http_requests_total{job=&quot;urlshort&quot;}[5m])</span>
+</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="w">            </span><span class="no">&gt; 0.01</span>
+</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="w">          </span><span class="nt">for</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5m</span>
+</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="w">          </span><span class="nt">labels</span><span class="p">:</span>
+</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="w">            </span><span class="nt">severity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">critical</span>
+</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="w">            </span><span class="nt">team</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">backend</span>
+</span><span id="__span-18-24"><a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a><span class="w">          </span><span class="nt">annotations</span><span class="p">:</span>
+</span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a><span class="w">            </span><span class="nt">summary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Error</span><span class="nv"> </span><span class="s">rate</span><span class="nv"> </span><span class="s">above</span><span class="nv"> </span><span class="s">1%</span><span class="nv"> </span><span class="s">on</span><span class="nv"> </span><span class="s">urlshort&quot;</span>
+</span><span id="__span-18-26"><a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a><span class="w">            </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;{{</span><span class="nv"> </span><span class="s">$value</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">humanizePercentage</span><span class="nv"> </span><span class="s">}}</span><span class="nv"> </span><span class="s">of</span><span class="nv"> </span><span class="s">requests</span><span class="nv"> </span><span class="s">are</span><span class="nv"> </span><span class="s">failing.&quot;</span>
+</span></code></pre></div>
+<h3 id="step-6-route-to-slack">Step 6 — route to Slack<a class="headerlink" href="#step-6-route-to-slack" title="Permanent link">&para;</a></h3>
+<p>In Alertmanager's config (via the Helm values), add a Slack receiver:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nt">alertmanager</span><span class="p">:</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span><span class="nt">config</span><span class="p">:</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">    </span><span class="nt">route</span><span class="p">:</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">      </span><span class="nt">receiver</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">slack-notifications</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">    </span><span class="nt">receivers</span><span class="p">:</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">slack-notifications</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="w">        </span><span class="nt">slack_configs</span><span class="p">:</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">api_url</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;https://hooks.slack.com/services/YOUR/WEBHOOK/URL&#39;</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="w">            </span><span class="nt">channel</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;#alerts&#39;</span>
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="w">            </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">.GroupLabels.alertname</span><span class="nv"> </span><span class="s">}}&#39;</span>
+</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="w">            </span><span class="nt">text</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;{{</span><span class="nv"> </span><span class="s">range</span><span class="nv"> </span><span class="s">.Alerts</span><span class="nv"> </span><span class="s">}}{{</span><span class="nv"> </span><span class="s">.Annotations.description</span><span class="nv"> </span><span class="s">}}{{</span><span class="nv"> </span><span class="s">end</span><span class="nv"> </span><span class="s">}}&#39;</span>
+</span></code></pre></div>
+<h3 id="step-7-prove-it-fires">Step 7 — prove it fires<a class="headerlink" href="#step-7-prove-it-fires" title="Permanent link">&para;</a></h3>
+<p>Break the database connection string deliberately in a test branch:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>kubectl<span class="w"> </span><span class="nb">set</span><span class="w"> </span>env<span class="w"> </span>deployment/urlshort<span class="w"> </span><span class="nv">DATABASE_URL</span><span class="o">=</span><span class="s2">&quot;postgresql://wrong:wrong@nowhere/db&quot;</span>
+</span></code></pre></div>
+<p>Watch the error rate climb. Within approximately 5–6 minutes (scrape interval × <code>for:</code> window), the alert moves from <code>pending</code> to <code>firing</code> in the Prometheus UI and a message arrives in Slack.</p>
+<p>Then revert:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>kubectl<span class="w"> </span><span class="nb">set</span><span class="w"> </span>env<span class="w"> </span>deployment/urlshort<span class="w"> </span><span class="nv">DATABASE_URL</span><span class="o">=</span><span class="s2">&quot;postgresql://postgres:postgres@postgres-svc/urldb&quot;</span>
+</span></code></pre></div>
+<h3 id="step-8-commit-to-gitops">Step 8 — commit to GitOps<a class="headerlink" href="#step-8-commit-to-gitops" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>git<span class="w"> </span>add<span class="w"> </span>monitoring/servicemonitor.yaml<span class="w"> </span>monitoring/alert-rules.yaml
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;feat(obs): add Prometheus ServiceMonitor and error rate alert for urlshort&quot;</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>git<span class="w"> </span>push
+</span></code></pre></div>
+<p>Argo CD (from M7) picks this up and applies the monitoring config. Your alert rules are now <strong>declarative and drift-proof</strong> — they live in Git like everything else in the system.</p>
+<p><strong>✅ Sahi hua to aisa dikhega:</strong> Grafana panel mein <code>/shorten</code> ke p50/p95/p99 latency ki teen alag lines dikh rahi hain; jab <code>kubectl set env</code> se DB URL galat karo, Prometheus UI mein alert <code>PENDING</code> se <code>FIRING</code> mein jaata hai aur lagbhag 5–6 minute mein Slack channel mein <code>HighErrorRate</code> message aa jaata hai; DB URL revert karne par alert wapas resolve ho jaata hai aur Grafana mein error rate zero pe aa jaata hai.</p>
+<hr />
+<h2 id="interview-questions">Interview questions<a class="headerlink" href="#interview-questions" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p><strong>"Design the alerting strategy for a payments API. Walk me through what you page on versus what goes on a dashboard, and why."</strong>
+   <em>Expected direction:</em> page on SLO burn rate, success rate, and p99 latency crossing a threshold for a sustained duration. Dashboard-only: CPU, memory, queue depth, disk. Explain the symptom-vs-cause distinction and why cause-based alerts cause fatigue.</p>
+</li>
+<li>
+<p><strong>"Explain p99 latency versus average. Why is average a bad SLI for most services?"</strong>
+   <em>Expected direction:</em> average hides the tail. If 95% of requests are fast and 5% are very slow, the average looks fine while 1-in-20 users has a bad experience. p99 catches this; it represents the experience of the slowest 1% of users, which is often a canary for broader degradation. Histograms enable percentile queries; averages do not.</p>
+</li>
+<li>
+<p><strong>"Your error budget is exhausted 10 days into a 30-day window. What actually changes in how your team operates?"</strong>
+   <em>Expected direction:</em> no new risky feature deployments until the budget recovers. The team shifts to reliability work: fixing the root cause of the failures that burned the budget, improving test coverage, running postmortems. Describe how this is a governance decision, not a political one.</p>
+</li>
+<li>
+<p><strong>"A team adds a <code>user_id</code> label to their request counter metric and within 24 hours Prometheus is OOMing. What happened and how do you fix it, both immediately and structurally?"</strong>
+   <em>Expected direction:</em> cardinality explosion — millions of unique time-series from unique user IDs. Immediate fix: drop the label at the Prometheus scrape relabelling config. Structural fix: replace with a route template label, enforce cardinality limits at the scrape level, add a Prometheus self-monitoring alert on <code>prometheus_tsdb_head_series &gt; threshold</code>.</p>
+</li>
+<li>
+<p><strong>"Metrics, logs, and traces all show green, but a customer calls to say the app is down for them. Where do you look?"</strong>
+   <em>Expected direction:</em> your instrumentation only covers what it covers. Possible gaps: CDN or DNS issue outside your cluster, a client-side JavaScript error, a mobile network problem, a synthetic monitor that would have caught this vs real-user monitoring. The answer surfaces the limits of server-side telemetry and introduces the concept of synthetic monitoring.</p>
+</li>
+<li>
+<p><strong>"How would you prevent a single engineer's bad metric label from taking down Prometheus for the whole organisation?"</strong>
+   <em>Expected direction:</em> metric relabelling rules to drop or cap high-cardinality labels, per-job cardinality limits in Prometheus config, alerting on <code>prometheus_tsdb_head_series</code>, code review gates for any new <code>labels()</code> call in application metrics definitions, and in large orgs — a separate Prometheus per team so one team's explosion cannot affect another's.</p>
+</li>
+<li>
+<p><strong>"What is tail-based trace sampling and when would you use it over head-based sampling?"</strong>
+   <em>Expected direction:</em> tail-based sampling collects all spans but only persists a trace if it meets a post-hoc condition (slow, errored). More useful because you keep the interesting traces and drop the boring ones. More expensive to run (need to buffer spans before deciding). Use it when you need high fidelity on errors and outliers but cannot afford 100% sampling at production traffic volumes.</p>
+</li>
+</ol>
+<hr />
+<h2 id="production-challenge">Production challenge<a class="headerlink" href="#production-challenge" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Your <code>/shorten</code> endpoint's p99 latency has crept from 100ms to 1.5 seconds over two weeks. No alert fired — you are only alerting on error rate, not latency. A customer complained. Using only what M8 gives you — metrics, logs, and traces — design your investigation path in order and state what each step rules in or out. Then design the SLO and alert rule that would have caught this on day 3, not day 14.</p>
+</blockquote>
+<p><em>Guidance: start with the metric to scope the time range and whether it is request-wide or endpoint-specific; move to a trace for one of the slow requests to identify which span is slow; move to logs for that <code>trace_id</code> to see any warnings around the slow span. For the SLO design, define the SLI (p99 &lt; X ms), the SLO target, and write the PromQL for an alert with a <code>for:</code> duration that would have fired early enough to be useful.</em></p>
+<hr />
+<p><em>Next: <code>11-M9-advanced-k8s-internals.md</code> — when an alert fires and you need to investigate a running cluster deeply: node pressure, eviction thresholds, priority classes, and why your critical pod got evicted during a node memory spike.</em></p>
+<p><em>For the incident response flow that begins the moment an Alertmanager notification fires, see <code>15-roadmap-M11-M18.md</code> — M11 is the first module in that track.</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../19-cicd-hands-on-flow/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Follow One Commit (hands-on CI/CD)">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Follow One Commit (hands-on CI/CD)
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../11-M9-advanced-k8s-internals/" class="md-footer__link md-footer__link--next" aria-label="Next: M9 · Advanced K8s Internals">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                M9 · Advanced K8s Internals
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 grvtech1 — licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/grvtech1/devops-handbook" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "announce.dismiss"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/progress.js"></script>
+      
+    
+  </body>
+</html>

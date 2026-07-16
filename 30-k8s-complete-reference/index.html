@@ -1,0 +1,2883 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free, zero-to-job-ready DevOps handbook — from "what is a terminal" to production- and interview-ready. Systems thinking, hands-on labs, capstones.">
+      
+      
+      
+        <link rel="canonical" href="https://grvtech1.github.io/devops-handbook/30-k8s-complete-reference/">
+      
+      
+        <link rel="prev" href="../11-M9-advanced-k8s-internals/">
+      
+      
+        <link rel="next" href="../23-production-incident-playbook/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>K8s Complete Reference (Workloads · Scheduling · Ops) - The DevOps Engineer's Handbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%206a6%206%200%200%201%206%206c0%202.22-1.21%204.16-3%205.2V19a1%201%200%200%201-1%201h-4a1%201%200%200%201-1-1v-1.8c-1.79-1.04-3-2.98-3-5.2a6%206%200%200%201%206-6m2%2015v1a1%201%200%200%201-1%201h-2a1%201%200%200%201-1-1v-1zm6-10h3v2h-3zM1%2011h3v2H1zM13%201v3h-2V1zM4.92%203.5l2.13%202.14-1.42%201.41L3.5%204.93zm12.03%202.13%202.12-2.13%201.43%201.43-2.13%202.12z%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m13.13%2022.19-1.63-3.83c1.57-.58%203.04-1.36%204.4-2.27zM5.64%2012.5l-3.83-1.63%206.1-2.77C7%209.46%206.22%2010.93%205.64%2012.5M21.61%202.39S16.66.269%2011%205.93c-2.19%202.19-3.5%204.6-4.35%206.71-.28.75-.09%201.57.46%202.13l2.13%202.12c.55.56%201.37.74%202.12.46A19.1%2019.1%200%200%200%2018.07%2013c5.66-5.66%203.54-10.61%203.54-10.61m-7.07%207.07c-.78-.78-.78-2.05%200-2.83s2.05-.78%202.83%200c.77.78.78%202.05%200%202.83s-2.05.78-2.83%200m-5.66%207.07-1.41-1.41zM6.24%2022l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83%2022zM2%2022h1.41l4.77-4.76-1.42-1.41L2%2020.59zm0-2.83%204.09-4.08c-.21-.3-.36-.62-.45-.97L2%2017.76z%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M13%2014h-2V9h2m0%209h-2v-2h2M1%2021h22L12%202z%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M8%2015a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m2.5%202%201.5-3%201.5%203zm5.5-2a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m6-4A10%2010%200%200%200%2012%201%2010%2010%200%200%200%202%2011c0%202.8%201.2%205.3%203%207.1V22h14v-3.9c1.8-1.8%203-4.3%203-7.1m-5%209h-2v-2h-2v2h-2v-2H9v2H7v-2.8c-1.8-1.5-3-3.7-3-6.2a8%208%200%200%201%208-8%208%208%200%200%201%208%208c0%202.5-1.2%204.8-3%206.2z%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#30-kubernetes-complete-reference-workloads-scheduling-cluster-ops" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  🚀 <strong>26 chapters</strong> · rendered diagrams · hands-on labs · a 26-scenario incident playbook — all free (CC BY 4.0).
+  &nbsp;
+  <a href="https://github.com/grvtech1/devops-handbook" style="color: inherit; text-decoration: underline; font-weight: 700;">⭐ Star it on GitHub</a>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-header__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The DevOps Engineer's Handbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              K8s Complete Reference (Workloads · Scheduling · Ops)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../study-plan/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Study Plan
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../progress/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  My Progress
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../00-INDEX/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Handbook
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-nav__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    The DevOps Engineer's Handbook
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../study-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    My Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handbook
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Handbook
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-INDEX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Curriculum (Index)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 0 — Pre-flight
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 0 — Pre-flight
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00a-preflight/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00a · Pre-flight ground floor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00b-setup-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00b · Setup runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-linux-toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux · the ground everything runs on
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part I — Core toolchain
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part I — Core toolchain
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-M0-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M0 · Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-M1-terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M1 · Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-M2-ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M2 · Ansible
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-M3-docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M3 · Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-M4-kubernetes-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M4 · Kubernetes Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-M5-sizing-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M5 · Sizing & Cost
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-M6-cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M6 · CI/CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-M7-gitops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M7 · GitOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part II — Systems thinking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part II — Systems thinking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-connected-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Connected System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-k8s-objects-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Objects · How They Connect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-10-day-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Learning Plan (understand)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29-confidence-sprint/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Confidence Sprint (drill)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../28-helm-real-projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Helm in the Real World (your 2 projects)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-cicd-hands-on-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Follow One Commit (hands-on CI/CD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part III — Operate
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part III — Operate
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-M8-observability-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M8 · Observability & SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-M9-advanced-k8s-internals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M9 · Advanced K8s Internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Complete Reference (Workloads · Scheduling · Ops)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-production-incident-playbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Incident Playbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part IV — Capstones
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part IV — Capstones
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-capstone-url-shortener/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone I · URL Shortener
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-capstone-microshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone II · MicroShop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part V — Reference & career
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part V — Reference & career
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-interview-bank/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview Bank
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-confusions-and-tradeoffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Confusions & Trade-offs (X-vs-Y)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-command-cheatsheets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Command Cheat-Sheets & Labs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-roadmap-M11-M18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap · M11–M18
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-reference-appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Appendix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-career-job-ready/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Job-Ready
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part VI — The Production Gauntlet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part VI — The Production Gauntlet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-production-gauntlet-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build the Real System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-production-gauntlet-chaos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chaos Engineering · break & fix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="30-kubernetes-complete-reference-workloads-scheduling-cluster-ops">30 — Kubernetes Complete Reference: Workloads, Scheduling &amp; Cluster Ops<a class="headerlink" href="#30-kubernetes-complete-reference-workloads-scheduling-cluster-ops" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Ye chapter kis liye:</strong> Tumne objects <em>connect</em> karna seekha (<a href="../26-k8s-objects-map/">ch26</a>) aur Helm <em>chalाना</em> (<a href="../28-helm-real-projects/">ch28</a>). Ab woh <strong>baaki surface</strong> jo har K8s syllabus/interview/CKA mein aata hai — <strong>Workloads (sab 6), Scheduling (kahan pod chale), Cluster Ops (RBAC/CRD/upgrade), aur Security tightening</strong> — ek jagah, tumhare style mein: analogy + real project + haath se + recall.</p>
+<p><strong>Kyun ye chapter:</strong> Ek "one-shot" video sirf inhe <em>mention</em> karta hai. Yahan har ek ka <strong>why→what→how→when + tumhare billfree/VANTA se example + lab</strong> hai. Isse tum sirf complete nahi — <strong>deep aur confident</strong> ho jaoge.</p>
+</blockquote>
+<hr />
+<h1 id="part-a-workloads-cheez-chalane-ke-6-tareeke">Part A — Workloads: cheez chalane ke 6 tareeke<a class="headerlink" href="#part-a-workloads-cheez-chalane-ke-6-tareeke" title="Permanent link">&para;</a></h1>
+<p>Har workload controller ek hi sawaal ka jawab hai: <strong>"tumhara kaam kaisa hai?"</strong> Kaam ki shakl se controller khud choose ho jaata hai.</p>
+<pre class="mermaid"><code>flowchart TD
+  Q1{"Kaam khatam hota hai?&lt;br/&gt;(ya hamesha chalta?)"}:::q
+  Q1 --&gt;|"khatam ho jaata"| Q2{"schedule pe&lt;br/&gt;baar-baar?"}:::q
+  Q2 --&gt;|"haan, time pe"| CRON["⏰ CronJob&lt;br/&gt;(nightly backup, report)"]:::job
+  Q2 --&gt;|"nahi, ek baar"| JOB["✅ Job&lt;br/&gt;(DB migration)"]:::job
+  Q1 --&gt;|"hamesha chalta"| Q3{"pod ki apni&lt;br/&gt;identity + storage&lt;br/&gt;chahiye?"}:::q
+  Q3 --&gt;|"nahi — sab barabar"| Q4{"har node pe&lt;br/&gt;ek chahiye?"}:::q
+  Q4 --&gt;|"haan — agent"| DS["🛰️ DaemonSet&lt;br/&gt;(log/metrics agent)"]:::ds
+  Q4 --&gt;|"nahi — N copies"| DEP["🟢 Deployment&lt;br/&gt;(web, API)"]:::dep
+  Q3 --&gt;|"haan — stable naam+disk"| SS["🟣 StatefulSet&lt;br/&gt;(database, Kafka)"]:::ss
+  classDef q fill:#fff9c4,stroke:#f9a825,color:#4a3800
+  classDef job fill:#fff3e0,stroke:#e65100,color:#bf360c
+  classDef ds fill:#e0f7fa,stroke:#006064,color:#004d40
+  classDef dep fill:#e0f2f1,stroke:#00897b,color:#004d40
+  classDef ss fill:#ede7f6,stroke:#5e35b1,color:#311b92</code></pre>
+<blockquote>
+<p>🇮🇳 <strong>Ek line se choose karo:</strong> hamesha chalta + sab barabar → <strong>Deployment</strong>. + apna disk/naam → <strong>StatefulSet</strong>. har node pe ek → <strong>DaemonSet</strong>. ek baar chalke ruk jao → <strong>Job</strong>. time pe → <strong>CronJob</strong>.</p>
+</blockquote>
+<h2 id="the-6-ek-table-mein">The 6, ek table mein<a class="headerlink" href="#the-6-ek-table-mein" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Controller</th>
+<th>Restaurant analogy</th>
+<th>Kaam</th>
+<th>Real example (tumhara)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Deployment</strong></td>
+<td>permanent interchangeable cooks</td>
+<td>stateless, N identical, self-heal</td>
+<td>billfree <code>auth-service</code>, VANTA <code>frontend</code></td>
+</tr>
+<tr>
+<td><strong>StatefulSet</strong></td>
+<td>cook with own locker + fixed naam</td>
+<td>stateful, stable identity + PVC</td>
+<td>Postgres, Redis, Kafka</td>
+</tr>
+<tr>
+<td><strong>DaemonSet</strong></td>
+<td>har floor pe ek safai-wala</td>
+<td>har node pe exactly ek</td>
+<td>log agent, CNI, node-exporter</td>
+</tr>
+<tr>
+<td><strong>ReplicaSet</strong></td>
+<td>shift-supervisor (count rakhta)</td>
+<td>N pods maintain (Deployment ke andar)</td>
+<td>Deployment khud banata</td>
+</tr>
+<tr>
+<td><strong>Job</strong></td>
+<td>ek party ka kaam wala</td>
+<td>run-to-completion, restart nahi</td>
+<td>DB migration (billfree <code>migrate</code>)</td>
+</tr>
+<tr>
+<td><strong>CronJob</strong></td>
+<td>roz subah aane wala baker</td>
+<td>schedule pe Job banata</td>
+<td>nightly backup, report</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="a1-deployment-stateless-sabse-common">A1 · Deployment (stateless) — sabse common<a class="headerlink" href="#a1-deployment-stateless-sabse-common" title="Permanent link">&para;</a></h2>
+<p><strong>WHY:</strong> zyadatar apps (web/API) ki state bahar (DB/Redis) hoti — pods <strong>interchangeable</strong> hote. Inhe manage + heal + scale + rolling-update chahiye.</p>
+<p><strong>Behaviour:</strong> random naam (<code>auth-7d4b-xk2p</code>), koi personal storage nahi, koi bhi pod koi bhi request, freely scale, parallel start.</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deployment</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">auth-service</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">strategy</span><span class="p">:</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RollingUpdate</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">    </span><span class="nt">rollingUpdate</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> maxUnavailable</span><span class="p">:</span><span class="w"> </span><span class="nv">0</span><span class="p p-Indicator">,</span><span class="nt"> maxSurge</span><span class="p">:</span><span class="w"> </span><span class="nv">1</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">   </span><span class="c1"># zero-downtime</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> matchLabels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> app</span><span class="p">:</span><span class="w"> </span><span class="nv">auth-service</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> app</span><span class="p">:</span><span class="w"> </span><span class="nv">auth-service</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="w">      </span><span class="nt">containers</span><span class="p">:</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">auth</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/grvtech1/billfree-techops/auth-service:v1</span>
+</span></code></pre></div>
+<blockquote>
+<p><strong>billfree connection:</strong> iska pura reusable Helm template <code>deploy/charts/microservice/templates/deployment.yaml</code> hai — 7 services usi se chalte (<a href="../28-helm-real-projects/">ch28</a>).</p>
+</blockquote>
+<h2 id="a2-statefulset-stateful-databases-ke-liye">A2 · StatefulSet (stateful) — databases ke liye<a class="headerlink" href="#a2-statefulset-stateful-databases-ke-liye" title="Permanent link">&para;</a></h2>
+<p><strong>WHY:</strong> database pods ko <strong>stable naam</strong> (<code>db-0</code> = primary, <code>db-1</code> = replica) + <strong>apna permanent disk</strong> chahiye. Random naam/shared disk = data corruption.</p>
+<p><strong>Signature feature:</strong> <code>volumeClaimTemplates</code> → har pod ko apna PVC (<code>data-db-0</code>, <code>data-db-1</code>). Ordered start (0→1→2), headless Service se stable DNS (<code>db-0.svc.ns</code>).</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">StatefulSet</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">postgres</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">serviceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres-headless</span><span class="w">      </span><span class="c1"># clusterIP: None → stable per-pod DNS</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">replicas</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> matchLabels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> app</span><span class="p">:</span><span class="w"> </span><span class="nv">postgres</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> app</span><span class="p">:</span><span class="w"> </span><span class="nv">postgres</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">      </span><span class="nt">containers</span><span class="p">:</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres:15</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">        </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[{</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">data</span><span class="p p-Indicator">,</span><span class="nt"> mountPath</span><span class="p">:</span><span class="w"> </span><span class="nv">/var/lib/postgresql/data</span><span class="w"> </span><span class="p p-Indicator">}]</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">  </span><span class="nt">volumeClaimTemplates</span><span class="p">:</span><span class="w">               </span><span class="c1"># 👈 har pod ko apna PVC</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">data</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">      </span><span class="nt">accessModes</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;ReadWriteOnce&quot;</span><span class="p p-Indicator">]</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">      </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> requests</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> storage</span><span class="p">:</span><span class="w"> </span><span class="nv">20Gi</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span></code></pre></div>
+<blockquote>
+<p>⭐ <strong>Senior call (interview gold) — trade-off, na ki "hamesha X":</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Self-managed StatefulSet</strong></th>
+<th><strong>Managed (RDS/Cloud SQL)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Control</td>
+<td>poora</td>
+<td>seemित</td>
+</tr>
+<tr>
+<td>Backup/failover/patch</td>
+<td><strong>tum khud</strong></td>
+<td>AWS sambhalta</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td>compute+disk</td>
+<td>premium</td>
+</tr>
+<tr>
+<td>Kab</td>
+<td>full control / cost-sensitive / showcase</td>
+<td>zyadatar prod (ops-bojh kam)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>billfree = real self-managed example:</strong> <code>deploy/platform/postgres.yaml</code> mein <strong>Postgres StatefulSet</strong> (replicas:1, <code>volumeClaimTemplates</code> 5Gi, <code>postgres:16-alpine</code>, <code>pg_isready</code> probes) — deliberately in-cluster, StatefulSet skill dikhane ko. Comment tak kehta <em>"heavier-duty ke liye CloudNativePG operator swap karo"</em>. Interview mein bolo: <em>"managed default hai (kam overhead), par maine in-cluster StatefulSet jaan-boojh ke chalaya control + StatefulSet mastery ke liye — trade-off ye hai ki backups/failover ki zimmedari meri."</em></p>
+</blockquote>
+<h2 id="a3-daemonset-har-node-pe-ek">A3 · DaemonSet — har node pe ek<a class="headerlink" href="#a3-daemonset-har-node-pe-ek" title="Permanent link">&para;</a></h2>
+<p><strong>WHY:</strong> kuch cheezein <strong>har machine (node) pe</strong> chahiye — log collector, metrics agent, network plugin (CNI), security scanner. Manually har node pe pod dalna galat. DaemonSet <strong>automatically har node pe exactly ek</strong> pod rakhta — naya node aaya to usme bhi apne aap.</p>
+<p><strong>Restaurant:</strong> har floor (node) pe ek <strong>safai-wala</strong> (agent). Naya floor khula → wahan bhi ek safai-wala apne aap.</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apps/v1</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DaemonSet</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">node-exporter</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">  </span><span class="nt">selector</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> matchLabels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> app</span><span class="p">:</span><span class="w"> </span><span class="nv">node-exporter</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> labels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> app</span><span class="p">:</span><span class="w"> </span><span class="nv">node-exporter</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">      </span><span class="nt">tolerations</span><span class="p">:</span><span class="w">                    </span><span class="c1"># 👈 control-plane nodes pe bhi chale (taint tolerate)</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Exists</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="w">      </span><span class="nt">containers</span><span class="p">:</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">node-exporter</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">prom/node-exporter:latest</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[{</span><span class="nt"> containerPort</span><span class="p">:</span><span class="w"> </span><span class="nv">9100</span><span class="w"> </span><span class="p p-Indicator">}]</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Kab DaemonSet</th>
+<th>Real example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Node metrics chahiye</td>
+<td>Prometheus <strong>node-exporter</strong></td>
+</tr>
+<tr>
+<td>Har pod ke logs chahiye</td>
+<td>Fluent Bit / Promtail / Filebeat</td>
+</tr>
+<tr>
+<td>Network plugin</td>
+<td>Calico / Cilium (CNI)</td>
+</tr>
+<tr>
+<td>Node security</td>
+<td>Falco, image scanners</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🇮🇳 <strong>Deployment vs DaemonSet:</strong> Deployment kehta <em>"3 copies chahiye (kahin bhi)"</em>. DaemonSet kehta <em>"har node pe 1 chahiye"</em>. Node count badal jaye to DaemonSet count khud adjust.</p>
+</blockquote>
+<h2 id="a4-replicaset-deployment-ka-chhupa-engine">A4 · ReplicaSet — Deployment ka chhupa engine<a class="headerlink" href="#a4-replicaset-deployment-ka-chhupa-engine" title="Permanent link">&para;</a></h2>
+<p><strong>Tum ye seedhe kabhi nahi likhoge.</strong> Deployment andar-andar ReplicaSet banata — ReplicaSet ka ek hi kaam: <strong>"N pods hamesha chalein"</strong> (self-heal count). Deployment iske upar <strong>rolling update + rollback</strong> deta (naya RS banata, purana scale-down).</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>Deployment (rolling update/rollback)
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>   └── ReplicaSet (N pods maintain — self-heal)
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>          └── Pods
+</span></code></pre></div>
+<blockquote>
+<p><strong>Yaad rakho:</strong> self-heal (count) = ReplicaSet ka kaam. Rolling update/rollback = Deployment ka. Tum Deployment likho — RS free milta.</p>
+</blockquote>
+<h2 id="a5-job-ek-baar-ka-kaam">A5 · Job — ek baar ka kaam<a class="headerlink" href="#a5-job-ek-baar-ka-kaam" title="Permanent link">&para;</a></h2>
+<p><strong>WHY:</strong> kuch kaam <strong>ek baar</strong> chalke khatam — migration, backup, batch. Deployment galat (khatam hone pe restart = loop). Job pod <strong>exit 0 pe <code>Completed</code></strong>, restart nahi.</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">batch/v1</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Job</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">db-migrate</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nt">backoffLimit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">4</span><span class="w">               </span><span class="c1"># fail → 4 retry, phir haar</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">  </span><span class="nt">activeDeadlineSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">600</span><span class="w">    </span><span class="c1"># 10 min se zyada → kill (hang protection)</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="nt">ttlSecondsAfterFinished</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span><span class="w">  </span><span class="c1"># done ke 5 min baad pod auto-delete</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">  </span><span class="nt">template</span><span class="p">:</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">      </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Never</span><span class="w">       </span><span class="c1"># 👈 Job: Never/OnFailure (Always allowed NAHI)</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">      </span><span class="nt">containers</span><span class="p">:</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">migrate</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">        </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/grvtech1/billfree-techops/migrate:latest</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">        </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;npm&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;run&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;migrate&quot;</span><span class="p p-Indicator">]</span>
+</span></code></pre></div>
+<ul>
+<li><code>completions: 5</code> → 5 baar successfully chale</li>
+<li><code>parallelism: 2</code> → ek saath 2 pods (batch tez)</li>
+</ul>
+<blockquote>
+<p><strong>billfree = real Job example:</strong> <code>deploy/platform/migrate-job.yaml</code> ek asli DB-migration <strong>Job</strong> hai — <code>restartPolicy: Never</code>, <code>backoffLimit: 5</code>, <code>ttlSecondsAfterFinished: 600</code>, <code>runAsNonRoot</code>, <code>DATABASE_URL</code> secret se. Aur ek <strong>clever nuance</strong> (interview gold): ye ArgoCD <strong><code>PostSync</code> hook</strong> hai, <strong>PreSync nahi</strong> — kyunki PreSync Postgres banne se <em>pehle</em> chalega aur <code>postgres</code> host resolve na hone se <strong>deadlock</strong> ho jaayega. Migration idempotent hai (<code>schema_migrations</code> track), isliye re-run safe.</p>
+</blockquote>
+<h2 id="a6-cronjob-schedule-pe-job">A6 · CronJob — schedule pe Job<a class="headerlink" href="#a6-cronjob-schedule-pe-job" title="Permanent link">&para;</a></h2>
+<p><strong>WHY:</strong> kaam <strong>time pe repeat</strong> — nightly backup, weekly report, cleanup. CronJob khud kaam nahi karta — <strong>schedule pe Job banata</strong> (Linux cron jaisa).</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">batch/v1</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CronJob</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">nightly-backup</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="nt">schedule</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0</span><span class="nv"> </span><span class="s">2</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*</span><span class="nv"> </span><span class="s">*&quot;</span><span class="w">              </span><span class="c1"># roz 2am (min hr dom mon dow)</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="nt">concurrencyPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Forbid</span><span class="w">         </span><span class="c1"># pichhla chal raha → naya mat chalao</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="nt">startingDeadlineSeconds</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">300</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">  </span><span class="nt">successfulJobsHistoryLimit</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">  </span><span class="nt">jobTemplate</span><span class="p">:</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">    </span><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="w">      </span><span class="nt">template</span><span class="p">:</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">        </span><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="w">          </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OnFailure</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="w">          </span><span class="nt">containers</span><span class="p">:</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">backup</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="w">            </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">postgres:15</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="w">            </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;sh&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;-c&quot;</span><span class="p p-Indicator">,</span><span class="s">&quot;pg_dump</span><span class="nv"> </span><span class="s">$DB_URL</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">gzip</span><span class="nv"> </span><span class="s">|</span><span class="nv"> </span><span class="s">aws</span><span class="nv"> </span><span class="s">s3</span><span class="nv"> </span><span class="s">cp</span><span class="nv"> </span><span class="s">-</span><span class="nv"> </span><span class="s">s3://backups/$(date</span><span class="nv"> </span><span class="s">+%F).sql.gz&quot;</span><span class="p p-Indicator">]</span>
+</span></code></pre></div>
+<p><strong>Cron syntax:</strong> <code>"0 2 * * *"</code> = roz 2am · <code>"*/15 * * * *"</code> = har 15 min · <code>"0 1 * * 0"</code> = har Sunday 1am.</p>
+<blockquote>
+<p>⚠️ <strong>Interview trap — <code>concurrencyPolicy</code>:</strong> backup 3 ghante leta par schedule hourly → <code>Forbid</code> na ho to overlap (DB overload). <code>Forbid</code> = pichhla khatam tak naya nahi. <code>Replace</code> = purana kill. <code>Allow</code> = overlap OK (default).</p>
+</blockquote>
+<p><strong>4 real use cases:</strong> DB migration (Job) · nightly reports (CronJob) · DB backup (CronJob) · purane data cleanup (CronJob).</p>
+<hr />
+<h2 id="lab-a-saare-workloads-kind-pe">🧪 Lab A — saare workloads kind pe<a class="headerlink" href="#lab-a-saare-workloads-kind-pe" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Job — ek baar chalke Completed</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>job<span class="w"> </span>hello<span class="w"> </span>--image<span class="o">=</span>busybox<span class="w"> </span>--<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;migration done&quot;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w">            </span><span class="c1"># STATUS: Completed (restart NAHI)</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>job/hello
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="c1"># CronJob — har minute (test ke liye)</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>kubectl<span class="w"> </span>create<span class="w"> </span>cronjob<span class="w"> </span>ping<span class="w"> </span>--image<span class="o">=</span>busybox<span class="w"> </span>--schedule<span class="o">=</span><span class="s2">&quot;*/1 * * * *&quot;</span><span class="w"> </span>--<span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;tick&quot;</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>kubectl<span class="w"> </span>get<span class="w"> </span>cronjob,jobs<span class="w"> </span>-w<span class="w">   </span><span class="c1"># har minute naya Job</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="c1"># DaemonSet — count = node count</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>kubectl<span class="w"> </span>get<span class="w"> </span>nodes<span class="w">             </span><span class="c1"># kitne nodes?</span>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>kubectl<span class="w"> </span>get<span class="w"> </span>daemonset<span class="w"> </span>-A<span class="w">      </span><span class="c1"># kube-proxy/CNI already DaemonSet hain — count = nodes</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="c1"># Deployment vs StatefulSet naam ka farak</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>kubectl<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>web<span class="w"> </span>--image<span class="o">=</span>nginx<span class="w"> </span>--replicas<span class="o">=</span><span class="m">3</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>web<span class="w">   </span><span class="c1"># random naam: web-xxxx-yyyy</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="c1"># (StatefulSet ke pods hote: web-0, web-1, web-2)</span>
+</span></code></pre></div>
+<p><strong>Recall (bina dekhe):</strong> 6 workloads + har ek "kab". Job ka <code>restartPolicy</code>? DaemonSet count kis se? StatefulSet ka signature field?</p>
+<hr />
+<h1 id="part-b-scheduling-pod-kahan-chalega">Part B — Scheduling: pod <strong>kahan</strong> chalega<a class="headerlink" href="#part-b-scheduling-pod-kahan-chalega" title="Permanent link">&para;</a></h1>
+<p>Default: scheduler <strong>koi bhi fit node</strong> choose kar leta. Par kabhi tumhe <strong>control</strong> chahiye — <em>"ye GPU node pe hi chale"</em>, <em>"ye do pods alag nodes pe"</em>, <em>"is node pe sirf special pods"</em>. Ye Part uske 4 tools deta.</p>
+<pre class="mermaid"><code>flowchart LR
+  POD["Naya Pod"]:::pod --&gt; SCHED["kube-scheduler&lt;br/&gt;node choose karta"]:::sched
+  SCHED --&gt;|"nodeSelector / affinity&lt;br/&gt;(pod: mujhe ye node chahiye)"| PULL["🧲 Pod node ko&lt;br/&gt;KHEENCHTA"]:::pull
+  SCHED --&gt;|"taint / toleration&lt;br/&gt;(node: sirf tolerate karne wale)"| PUSH["🚫 Node pod ko&lt;br/&gt;DHAKELTA"]:::push
+  classDef pod fill:#e8eaf6,stroke:#283593,color:#1a237e
+  classDef sched fill:#fff9c4,stroke:#f9a825,color:#4a3800
+  classDef pull fill:#e0f2f1,stroke:#00897b,color:#004d40
+  classDef push fill:#ffebee,stroke:#c62828,color:#b71c1c</code></pre>
+<blockquote>
+<p>🇮🇳 <strong>Poori scheduling do dishaon mein:</strong> <strong>Affinity/nodeSelector = Pod node ko kheenchta</strong> ("mujhe ye node chahiye"). <strong>Taint = Node pod ko dhakelta</strong> ("sirf tolerate karne wale aao"). Ye ek line yaad rakho — 90% confusion khatam.</p>
+</blockquote>
+<h2 id="b1-nodeselector-sabse-simple">B1 · nodeSelector — sabse simple<a class="headerlink" href="#b1-nodeselector-sabse-simple" title="Permanent link">&para;</a></h2>
+<p>Node pe label lagao, pod mein bolo <em>"is label wale node pe hi"</em>.</p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>kubectl<span class="w"> </span>label<span class="w"> </span>node<span class="w"> </span>worker-1<span class="w"> </span><span class="nv">disktype</span><span class="o">=</span>ssd<span class="w">     </span><span class="c1"># node pe label</span>
+</span></code></pre></div>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="nt">disktype</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ssd</span><span class="w">        </span><span class="c1"># 👈 sirf ssd node pe</span>
+</span></code></pre></div></p>
+<p>Simple par <strong>rigid</strong> — exact match ya kuch nahi.</p>
+<h2 id="b2-node-affinity-flexible-nodeselector">B2 · Node Affinity — flexible nodeSelector<a class="headerlink" href="#b2-node-affinity-flexible-nodeselector" title="Permanent link">&para;</a></h2>
+<p>Zyada control: "chahiye" (hard) vs "preferably" (soft), aur operators (<code>In</code>, <code>NotIn</code>, <code>Exists</code>).</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">affinity</span><span class="p">:</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nt">nodeAffinity</span><span class="p">:</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">      </span><span class="nt">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span><span class="w">   </span><span class="c1"># HARD — warna schedule nahi</span>
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">        </span><span class="nt">nodeSelectorTerms</span><span class="p">:</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">matchExpressions</span><span class="p">:</span>
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> key</span><span class="p">:</span><span class="w"> </span><span class="nv">disktype</span><span class="p p-Indicator">,</span><span class="nt"> operator</span><span class="p">:</span><span class="w"> </span><span class="nv">In</span><span class="p p-Indicator">,</span><span class="nt"> values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">ssd</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">nvme</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">      </span><span class="nt">preferredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span><span class="w">  </span><span class="c1"># SOFT — koshish karo</span>
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">weight</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a><span class="w">        </span><span class="nt">preference</span><span class="p">:</span>
+</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a><span class="w">          </span><span class="nt">matchExpressions</span><span class="p">:</span>
+</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a><span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> key</span><span class="p">:</span><span class="w"> </span><span class="nv">zone</span><span class="p p-Indicator">,</span><span class="nt"> operator</span><span class="p">:</span><span class="w"> </span><span class="nv">In</span><span class="p p-Indicator">,</span><span class="nt"> values</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">ap-south-1a</span><span class="p p-Indicator">]</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span></code></pre></div>
+<ul>
+<li><strong>required</strong> = zaroori (na mile to <code>Pending</code>)</li>
+<li><strong>preferred</strong> = try karo (na mile to bhi chal jaayega)</li>
+</ul>
+<h2 id="b3-pod-affinity-anti-affinity-pods-ko-saathalag">B3 · Pod Affinity / Anti-affinity — pods ko saath/alag<a class="headerlink" href="#b3-pod-affinity-anti-affinity-pods-ko-saathalag" title="Permanent link">&para;</a></h2>
+<p>Node se nahi — <strong>doosre pods</strong> se relation:</p>
+<ul>
+<li><strong>podAffinity</strong> = "us pod ke paas rakho" (jaise cache ke paas app — latency kam)</li>
+<li><strong>podAntiAffinity</strong> = "us pod se door rakho" (jaise 3 DB replicas <strong>alag nodes</strong> pe — ek node gire to sab na gire)</li>
+</ul>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># HA: 3 replicas ko alag nodes pe faila do</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nt">affinity</span><span class="p">:</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">  </span><span class="nt">podAntiAffinity</span><span class="p">:</span>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="nt">requiredDuringSchedulingIgnoredDuringExecution</span><span class="p">:</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">labelSelector</span><span class="p">:</span>
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">        </span><span class="nt">matchLabels</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> app</span><span class="p">:</span><span class="w"> </span><span class="nv">postgres</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">      </span><span class="nt">topologyKey</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubernetes.io/hostname</span><span class="w">     </span><span class="c1"># 👈 &quot;hostname alag ho&quot; = alag node</span>
+</span></code></pre></div>
+<blockquote>
+<p>🇮🇳 <strong>Real use:</strong> production mein 3 replicas ek hi node pe aa jayein aur woh node gire → poora down. <strong>podAntiAffinity</strong> se force karo "alag nodes pe" → ek node gire, baaki chalein. Yehi HA (high availability) hai.</p>
+</blockquote>
+<h2 id="b4-taints-tolerations-node-ka-bouncer">B4 · Taints &amp; Tolerations — node ka bouncer 🚪<a class="headerlink" href="#b4-taints-tolerations-node-ka-bouncer" title="Permanent link">&para;</a></h2>
+<p><strong>Ulta concept:</strong> upar wale (affinity) mein <strong>pod</strong> node choose karta. Taint mein <strong>node</strong> decide karta <em>"mere paas sirf khaas pod aayenge"</em>.</p>
+<p><strong>Bouncer analogy:</strong> node pe <strong>taint</strong> = club ke bahar bouncer. Normal pod (guest) andar nahi ja sakta. Sirf jis pod ke paas <strong>toleration</strong> (VIP pass) hai woh andar.</p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Node pe taint lagao — ab normal pods yahan nahi aayenge</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>kubectl<span class="w"> </span>taint<span class="w"> </span>nodes<span class="w"> </span>gpu-node<span class="w"> </span><span class="nv">dedicated</span><span class="o">=</span>gpu:NoSchedule
+</span></code></pre></div>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Sirf ye pod us node pe ja sakta (VIP pass)</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">  </span><span class="nt">tolerations</span><span class="p">:</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dedicated</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Equal</span>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">    </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NoSchedule</span>
+</span></code></pre></div></p>
+<p><strong>3 taint effects:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Effect</th>
+<th>Matlab</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NoSchedule</code></td>
+<td>naye pods nahi (jo hain rahenge)</td>
+</tr>
+<tr>
+<td><code>PreferNoSchedule</code></td>
+<td>koshish karo mat bhejo (soft)</td>
+</tr>
+<tr>
+<td><code>NoExecute</code></td>
+<td>naye nahi + <strong>jo hain unhe bhi nikaalo</strong></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Kahan dikhta rozana:</strong> control-plane nodes pe by-default taint hota (<code>node-role.kubernetes.io/control-plane:NoSchedule</code>) — isliye tumhare app pods master pe nahi jaate. DaemonSet (jaise node-exporter) us par bhi chale isliye <code>tolerations: [{operator: Exists}]</code> lagta (Lab A daekha).</p>
+<blockquote>
+<p>⭐ <strong>Taint vs Affinity — ek line:</strong> <strong>Taint = node kehta "door raho" (repel).</strong> <strong>Affinity = pod kehta "wahan jaana hai" (attract).</strong> Dedicated GPU node chahiye to <strong>dono</strong> lagao: taint (baaki sab bhagao) + toleration/affinity (GPU pod ko bhejo).</p>
+</blockquote>
+<h2 id="b5-vpa-vs-hpa-up-vs-out">B5 · VPA vs HPA — up vs out<a class="headerlink" href="#b5-vpa-vs-hpa-up-vs-out" title="Permanent link">&para;</a></h2>
+<p>Dono autoscale karte, par <strong>ulta</strong>:</p>
+<pre class="mermaid"><code>flowchart LR
+  subgraph HPA["HPA — scale OUT (zyada pods)"]
+    direction LR
+    H1["1 pod"]:::h --&gt; H2["1+1+1 = 3 pods\n(same size)"]:::h
+  end
+  subgraph VPA["VPA — scale UP (bada pod)"]
+    direction LR
+    V1["pod: 100m/128Mi"]:::v --&gt; V2["same pod: 500m/512Mi\n(bada)"]:::v
+  end
+  classDef h fill:#e0f2f1,stroke:#00897b,color:#004d40
+  classDef v fill:#ede7f6,stroke:#5e35b1,color:#311b92</code></pre>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>HPA</strong> (Horizontal)</th>
+<th><strong>VPA</strong> (Vertical)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kya badhata</td>
+<td><strong>pod count</strong> (2→10)</td>
+<td><strong>pod size</strong> (CPU/mem requests)</td>
+</tr>
+<tr>
+<td>Restaurant</td>
+<td>aur cooks bulao</td>
+<td>ek cook ko bada stove do</td>
+</tr>
+<tr>
+<td>Best for</td>
+<td>stateless web/API (traffic spike)</td>
+<td>jinhe scale-out mushkil (DB, JVM)</td>
+</tr>
+<tr>
+<td>Metric</td>
+<td>CPU/mem/custom vs requests</td>
+<td>usage history</td>
+</tr>
+<tr>
+<td>Catch</td>
+<td>app stateless hona chahiye</td>
+<td>pod <strong>restart</strong> karta size badalne ko</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ <strong>HPA + VPA ek saath CPU/mem pe = conflict</strong> (dono replicas/size ladenge). VPA sirf requests-recommendation mode mein, ya HPA custom metric pe. <strong>billfree HPA use karta</strong> (<code>autoscaling.enabled</code>, CPU 70% — <a href="../28-helm-real-projects/">ch28</a>). VPA tab jab sahi size hi na pata ho.</p>
+</blockquote>
+<hr />
+<h2 id="lab-b-scheduling-haath-se">🧪 Lab B — scheduling haath se<a class="headerlink" href="#lab-b-scheduling-haath-se" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Taint lagao → normal pod Pending</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>kubectl<span class="w"> </span>taint<span class="w"> </span>nodes<span class="w"> </span>&lt;node&gt;<span class="w"> </span><span class="nv">demo</span><span class="o">=</span>true:NoSchedule
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>kubectl<span class="w"> </span>run<span class="w"> </span><span class="nb">test</span><span class="w"> </span>--image<span class="o">=</span>nginx
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span><span class="nb">test</span><span class="w">          </span><span class="c1"># Pending! (koi node tolerate nahi karta)</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span><span class="nb">test</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A3<span class="w"> </span>Events<span class="w">   </span><span class="c1"># &quot;untolerated taint&quot; dikhega</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="c1"># Toleration do → schedule ho jaata</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span><span class="nb">test</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>cat<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39; | kubectl apply -f -</span>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="s">apiVersion: v1</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="s">kind: Pod</span>
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="s">metadata: { name: test }</span>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="s">spec:</span>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="s">  tolerations: [{ key: demo, operator: Equal, value: &quot;true&quot;, effect: NoSchedule }]</span>
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="s">  containers: [{ name: c, image: nginx }]</span>
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="s">EOF</span>
+</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span><span class="nb">test</span><span class="w">          </span><span class="c1"># Running ✓</span>
+</span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>
+</span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="c1"># cleanup</span>
+</span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a>kubectl<span class="w"> </span>taint<span class="w"> </span>nodes<span class="w"> </span>&lt;node&gt;<span class="w"> </span><span class="nv">demo</span><span class="o">=</span>true:NoSchedule-<span class="w">   </span><span class="c1"># taint hatao (trailing -)</span>
+</span></code></pre></div>
+<p><strong>Recall:</strong> Taint vs Affinity ka farak 1 line? 3 taint effects? podAntiAffinity kis liye? HPA vs VPA?</p>
+<hr />
+<h1 id="part-c-cluster-ops-jo-seniors-karte">Part C — Cluster Ops (jo seniors karte)<a class="headerlink" href="#part-c-cluster-ops-jo-seniors-karte" title="Permanent link">&para;</a></h1>
+<h2 id="c1-rbac-kaun-kya-kar-sakta">C1 · RBAC — kaun kya kar sakta<a class="headerlink" href="#c1-rbac-kaun-kya-kar-sakta" title="Permanent link">&para;</a></h2>
+<p><strong>WHY:</strong> cluster mein har banda/service sab kuch nahi kar sakta. Dev sirf apne namespace mein, CI sirf deploy, ArgoCD sab jagah. <strong>RBAC</strong> ye "kaun kya" decide karta.</p>
+<p><strong>4 pieces:</strong></p>
+<pre class="mermaid"><code>flowchart LR
+  SUB["👤 Subject\n(User / ServiceAccount)"]:::a
+  RB["RoleBinding\n(jodta)"]:::b
+  ROLE["Role\n(kya allowed)"]:::c
+  SUB --&gt; RB --&gt; ROLE
+  ROLE -.-&gt;|"verbs: get,list,create\non: pods,services"| RES["Resources"]:::d
+  classDef a fill:#e8eaf6,stroke:#283593,color:#1a237e
+  classDef b fill:#fff3e0,stroke:#e65100,color:#bf360c
+  classDef c fill:#e0f2f1,stroke:#00897b,color:#004d40
+  classDef d fill:#ede7f6,stroke:#5e35b1,color:#311b92</code></pre>
+<table>
+<thead>
+<tr>
+<th>Piece</th>
+<th>Kya</th>
+<th>Scope</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Role</strong></td>
+<td>permissions ka set (verbs × resources)</td>
+<td>ek namespace</td>
+</tr>
+<tr>
+<td><strong>ClusterRole</strong></td>
+<td>wahi, par poore cluster mein</td>
+<td>cluster-wide</td>
+</tr>
+<tr>
+<td><strong>RoleBinding</strong></td>
+<td>Role ko subject se jodta</td>
+<td>ek namespace</td>
+</tr>
+<tr>
+<td><strong>ClusterRoleBinding</strong></td>
+<td>ClusterRole ko subject se</td>
+<td>cluster-wide</td>
+</tr>
+<tr>
+<td><strong>ServiceAccount</strong></td>
+<td>pod ki identity (app ke liye "user")</td>
+<td>namespace</td>
+</tr>
+</tbody>
+</table>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Role: is namespace mein pods read kar sakte</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">rbac.authorization.k8s.io/v1</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Role</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> namespace</span><span class="p">:</span><span class="w"> </span><span class="nv">billfree-dev</span><span class="p p-Indicator">,</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">pod-reader</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="nt">rules</span><span class="p">:</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">apiGroups</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;&quot;</span><span class="p p-Indicator">]</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">  </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;pods&quot;</span><span class="p p-Indicator">]</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">  </span><span class="nt">verbs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;get&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;list&quot;</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="s">&quot;watch&quot;</span><span class="p p-Indicator">]</span><span class="w">      </span><span class="c1"># sirf read (create/delete NAHI)</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="nn">---</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="c1"># Binding: developer ko woh Role do</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">RoleBinding</span>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> namespace</span><span class="p">:</span><span class="w"> </span><span class="nv">billfree-dev</span><span class="p p-Indicator">,</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">read-pods</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="nt">subjects</span><span class="p">:</span>
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">User</span>
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gaurav</span>
+</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="nt">roleRef</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> kind</span><span class="p">:</span><span class="w"> </span><span class="nv">Role</span><span class="p p-Indicator">,</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">pod-reader</span><span class="p p-Indicator">,</span><span class="nt"> apiGroup</span><span class="p">:</span><span class="w"> </span><span class="nv">rbac.authorization.k8s.io</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span></code></pre></div>
+<blockquote>
+<p>🇮🇳 <strong>Least privilege:</strong> har kisi ko utna hi do jitna chahiye. CI ko <code>create deployment</code> do, <code>delete namespace</code> nahi. <strong>ServiceAccount</strong> app ke liye — pod ko sirf woh API access jitni zaroori (jaise ArgoCD ko sync ke liye).</p>
+</blockquote>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># &quot;Main ye kar sakta hoon?&quot; — RBAC test</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>kubectl<span class="w"> </span>auth<span class="w"> </span>can-i<span class="w"> </span>create<span class="w"> </span>deployments<span class="w"> </span>-n<span class="w"> </span>billfree-dev
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>kubectl<span class="w"> </span>auth<span class="w"> </span>can-i<span class="w"> </span>delete<span class="w"> </span>nodes<span class="w"> </span>--as<span class="o">=</span>gaurav<span class="w">      </span><span class="c1"># kisi aur ke roop mein check</span>
+</span></code></pre></div>
+<h2 id="c2-crds-operators-k8s-ko-extend-karna">C2 · CRDs &amp; Operators — K8s ko extend karna<a class="headerlink" href="#c2-crds-operators-k8s-ko-extend-karna" title="Permanent link">&para;</a></h2>
+<p><strong>WHY:</strong> K8s ke built-in objects (Pod, Service…) kaafi nahi jab tumhe <strong>apna</strong> object chahiye — jaise <code>Certificate</code>, <code>Application</code> (ArgoCD), <code>PrometheusRule</code>. <strong>CRD</strong> naya object-type add karta; <strong>Operator</strong> us object ko manage karne ka dimaag.</p>
+<p><strong>CRD (Custom Resource Definition):</strong> K8s API mein ek <strong>naya kind</strong> register karo. Iske baad <code>kubectl get certificates</code> chalega jaise built-in ho.</p>
+<p><strong>Operator:</strong> ek pod jo us custom object ko <strong>watch</strong> karta aur real kaam karta. Jaise:
+- <strong>cert-manager</strong> → <code>Certificate</code> CRD dekhta → Let's Encrypt se cert le aata, auto-renew
+- <strong>ArgoCD</strong> → <code>Application</code> CRD dekhta → Git se sync karta
+- <strong>Prometheus Operator</strong> → <code>ServiceMonitor</code>/<code>PrometheusRule</code> CRD → scrape config banata</p>
+<pre class="mermaid"><code>flowchart LR
+  CRD["CRD\n(naya kind: Certificate)"]:::crd --&gt; CR["tum banao:\nkind: Certificate"]:::cr
+  CR --&gt; OP["Operator (pod)\nwatch karta"]:::op
+  OP --&gt;|"real kaam"| ACT["Let's Encrypt se cert\n+ Secret banao + renew"]:::act
+  classDef crd fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+  classDef cr fill:#e8eaf6,stroke:#283593,color:#1a237e
+  classDef op fill:#fff3e0,stroke:#e65100,color:#bf360c
+  classDef act fill:#e0f2f1,stroke:#00897b,color:#004d40</code></pre>
+<blockquote>
+<p>🇮🇳 <strong>Ek line:</strong> CRD = <strong>naya object-type</strong> (naya "kind"). Operator = us object ko <strong>chalane wala dimaag</strong> (ek pod jo watch karke kaam karta). Tumne dono use kiye hain — billfree ke <code>ServiceMonitor</code>/<code>PrometheusRule</code> <strong>CRDs</strong> hain (Prometheus Operator), aur ArgoCD <code>Application</code> ek CRD hai. <strong>Restaurant:</strong> CRD = menu mein nayi dish-category add karna; Operator = us dish ka specialist chef.</p>
+</blockquote>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>crds<span class="w">                          </span><span class="c1"># cluster ke saare custom types</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>crds<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">&quot;argo|cert|monitoring&quot;</span><span class="w">   </span><span class="c1"># tumhare operators ke</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>kubectl<span class="w"> </span>api-resources<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span><span class="s2">&quot;true&quot;</span><span class="w">    </span><span class="c1"># kaunse cluster-scoped</span>
+</span></code></pre></div>
+<h2 id="c3-cluster-upgrade-version-skew">C3 · Cluster Upgrade &amp; version skew<a class="headerlink" href="#c3-cluster-upgrade-version-skew" title="Permanent link">&para;</a></h2>
+<p><strong>WHY:</strong> K8s har ~4 mahine nayi version. Security patch + features ke liye upgrade zaroori. Par <strong>galat order</strong> = downtime.</p>
+<p><strong>Sahi order (yaad rakho):</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>1. Control plane pehle   (apiserver → controller → scheduler)
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>2. Phir nodes (kubelet)  — ek-ek karke: drain → upgrade → uncordon
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>3. Ek minor version at a time (1.28 → 1.29 → 1.30, jump NAHI)
+</span></code></pre></div>
+<p><strong>Version skew rule:</strong> kubelet (node) apiserver se <strong>zyada nayi nahi</strong> ho sakti, aur ~2 minor peeche tak chal sakti. Isliye <strong>control plane pehle</strong>.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Node safely upgrade karne ka flow</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>kubectl<span class="w"> </span>drain<span class="w"> </span>worker-1<span class="w"> </span>--ignore-daemonsets<span class="w"> </span>--delete-emptydir-data<span class="w">  </span><span class="c1"># pods hatao</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="c1"># ... us node pe kubelet/kubeadm upgrade ...</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>kubectl<span class="w"> </span>uncordon<span class="w"> </span>worker-1<span class="w">        </span><span class="c1"># wapas schedulable</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>kubectl<span class="w"> </span>get<span class="w"> </span>nodes<span class="w">                </span><span class="c1"># VERSION column check</span>
+</span></code></pre></div>
+<blockquote>
+<p>⚠️ <strong><code>drain</code> = node khaali karo</strong> (pods doosre nodes pe shift, PDB respect karte hue). Isliye <a href="../28-helm-real-projects/">PDB</a> (billfree chart mein <code>minAvailable: 1</code>) matter karta — upgrade ke waqt service down na ho.</p>
+<p><strong>Managed (EKS/GKE) mein:</strong> ye zyadatar cloud karta — tum bas version choose karte, node-groups rolling-replace ho jaate. <strong>billfree/VANTA EKS</strong> pe isiliye ye asaan.</p>
+</blockquote>
+<hr />
+<h1 id="part-d-security-tightening-unke-security-section-ka-jawab">Part D — Security tightening (unke "Security" section ka jawab)<a class="headerlink" href="#part-d-security-tightening-unke-security-section-ka-jawab" title="Permanent link">&para;</a></h1>
+<h2 id="d1-pod-security-standards-pss">D1 · Pod Security Standards (PSS)<a class="headerlink" href="#d1-pod-security-standards-pss" title="Permanent link">&para;</a></h2>
+<p><strong>WHY:</strong> by-default pod bahut kuch kar sakta — root chalna, host access, privileged. Ek hacked container poore node ko khatra. <strong>PSS</strong> namespace-level policy jo restrict karti.</p>
+<p><strong>3 levels:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Matlab</th>
+<th>Kab</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>privileged</strong></td>
+<td>sab allowed (koi restriction nahi)</td>
+<td>trusted system workloads</td>
+</tr>
+<tr>
+<td><strong>baseline</strong></td>
+<td>known-bad block (host access, privileged)</td>
+<td>zyadatar apps</td>
+</tr>
+<tr>
+<td><strong>restricted</strong></td>
+<td>sabse tight (non-root, no-privesc, drop caps)</td>
+<td>🎯 production target</td>
+</tr>
+</tbody>
+</table>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Namespace pe PSS enforce karo (label se)</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Namespace</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="nt">metadata</span><span class="p">:</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">billfree-prod</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">  </span><span class="nt">labels</span><span class="p">:</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="w">    </span><span class="nt">pod-security.kubernetes.io/enforce</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">restricted</span><span class="w">   </span><span class="c1"># block agar tootey</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="w">    </span><span class="nt">pod-security.kubernetes.io/warn</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">restricted</span><span class="w">       </span><span class="c1"># warning bhi</span>
+</span></code></pre></div>
+<blockquote>
+<p><strong>billfree already tight hai:</strong> chart ke <code>securityContext</code> mein <code>runAsNonRoot: true</code>, <code>readOnlyRootFilesystem: true</code>, <code>capabilities: drop [ALL]</code> — yehi <strong>restricted</strong> profile pass karne ke liye chahiye (<a href="../28-helm-real-projects/">ch28</a> mein dekha). Namespace pe <code>restricted</code> enforce karo → koi galti se privileged pod na daale.</p>
+</blockquote>
+<h2 id="d2-secrets-base64-encryption">D2 · Secrets — base64 ≠ encryption<a class="headerlink" href="#d2-secrets-base64-encryption" title="Permanent link">&para;</a></h2>
+<p><strong>Sabse bada misconception.</strong> K8s Secret <strong>base64</strong> hai — jo <strong>encoding hai, encryption NAHI</strong>. Koi bhi <code>base64 -d</code> se padh le.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>secret<span class="w"> </span>app-secret<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.password}&#39;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d<span class="w">   </span><span class="c1"># plain text!</span>
+</span></code></pre></div>
+<p><strong>Teen level ki safety (badhte hue):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Level</th>
+<th>Kya</th>
+<th>Effort</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. RBAC</strong></td>
+<td>Secret read karne ki permission kam do</td>
+<td>zaroori minimum</td>
+</tr>
+<tr>
+<td><strong>2. Encryption at rest</strong></td>
+<td>etcd mein secrets encrypted store (<code>EncryptionConfiguration</code>)</td>
+<td>apiserver config</td>
+</tr>
+<tr>
+<td><strong>3. External secrets</strong></td>
+<td>Vault / AWS Secrets Manager / Sealed Secrets — K8s ke bahar</td>
+<td>best for prod</td>
+</tr>
+</tbody>
+</table>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># apiserver EncryptionConfiguration (etcd mein encrypted store)</span>
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">apiserver.config.k8s.io/v1</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EncryptionConfiguration</span>
+</span><span id="__span-21-4"><a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="nt">resources</span><span class="p">:</span>
+</span><span id="__span-21-5"><a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">resources</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&quot;secrets&quot;</span><span class="p p-Indicator">]</span>
+</span><span id="__span-21-6"><a id="__codelineno-21-6" name="__codelineno-21-6" href="#__codelineno-21-6"></a><span class="w">  </span><span class="nt">providers</span><span class="p">:</span>
+</span><span id="__span-21-7"><a id="__codelineno-21-7" name="__codelineno-21-7" href="#__codelineno-21-7"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">aescbc</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> keys</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[{</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">key1</span><span class="p p-Indicator">,</span><span class="nt"> secret</span><span class="p">:</span><span class="w"> </span><span class="nv">&lt;base64-32byte-key&gt;</span><span class="w"> </span><span class="p p-Indicator">}]</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-21-8"><a id="__codelineno-21-8" name="__codelineno-21-8" href="#__codelineno-21-8"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">identity</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{}</span>
+</span></code></pre></div>
+<blockquote>
+<p>🇮🇳 <strong>Prod best-practice:</strong> Secret Git mein kabhi nahi. Options: <strong>Sealed Secrets</strong> (encrypted Git mein safe), <strong>External Secrets Operator</strong> (Vault/AWS se pull), ya cloud KMS. <strong>billfree</strong> <code>billfree-app-secrets</code> use karta (<code>secretRef</code>) — isse External Secrets se feed karo, hardcode kabhi nahi.</p>
+</blockquote>
+<h2 id="d3-image-scanning">D3 · Image scanning<a class="headerlink" href="#d3-image-scanning" title="Permanent link">&para;</a></h2>
+<p>Deploy se pehle image mein <strong>known vulnerabilities (CVE)</strong> check karo. <strong>Trivy</strong> standard:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>trivy<span class="w"> </span>image<span class="w"> </span>ghcr.io/grvtech1/billfree-techops/auth-service:v1
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="c1"># HIGH/CRITICAL CVEs list → fix (base image update / patch)</span>
+</span></code></pre></div>
+<p>CI mein daalo (fail on CRITICAL) — <a href="../07-M6-cicd/">ch7 CI/CD</a> ka part.</p>
+<hr />
+<h2 id="complete-recall-drill-bina-dekhe-bolo">🎯 Complete recall drill (bina dekhe bolo)<a class="headerlink" href="#complete-recall-drill-bina-dekhe-bolo" title="Permanent link">&para;</a></h2>
+<p><strong>Workloads:</strong>
+1. 6 workloads + har ek "kab"?
+2. StatefulSet ka signature field? <em>(volumeClaimTemplates)</em>
+3. Job ka <code>restartPolicy</code>? <em>(Never/OnFailure)</em>
+4. DaemonSet count kis se? <em>(node count)</em></p>
+<p><strong>Scheduling:</strong>
+5. Taint vs Affinity — ek line? <em>(node repel vs pod attract)</em>
+6. 3 taint effects? <em>(NoSchedule/PreferNoSchedule/NoExecute)</em>
+7. podAntiAffinity kis liye? <em>(replicas alag nodes — HA)</em>
+8. HPA vs VPA? <em>(out/count vs up/size)</em></p>
+<p><strong>Cluster Ops:</strong>
+9. RBAC ke 4 pieces? <em>(Role/ClusterRole/RoleBinding/ServiceAccount)</em>
+10. CRD vs Operator? <em>(naya kind vs use chalane wala pod)</em>
+11. Upgrade order? <em>(control-plane → nodes, ek minor at a time)</em></p>
+<p><strong>Security:</strong>
+12. Secret encrypted hai? <em>(Nahi — base64; RBAC + encryption-at-rest + external chahiye)</em>
+13. PSS ka prod target? <em>(restricted)</em></p>
+<blockquote>
+<p><strong>Pass = 10/13 bina dekhe.</strong> Ye aa gaya → tum kisi bhi "K8s one-shot" se <strong>complete AND deep</strong> ho. 💪</p>
+</blockquote>
+<hr />
+<h2 id="20-second-recall">20-second recall<a class="headerlink" href="#20-second-recall" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>WORKLOADS: Deployment(stateless) · StatefulSet(stateful+PVC) · DaemonSet(per-node)
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>           · ReplicaSet(count) · Job(once) · CronJob(scheduled)
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>SCHEDULING: Affinity/nodeSelector = pod node ko KHEENCHTA
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>            Taint/Toleration = node pod ko DHAKELTA (bouncer + VIP pass)
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>            HPA = zyada pods (out) · VPA = bada pod (up)
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>CLUSTER OPS: RBAC(kaun kya) · CRD(naya kind)+Operator(dimaag) · upgrade: CP→nodes
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>SECURITY: PSS restricted · Secret = base64 (NOT encrypted) → RBAC+at-rest+external
+</span></code></pre></div>
+<blockquote>
+<p>🇮🇳 <strong>Ek line:</strong> Ye chapter woh "baaki surface" hai jo ek video sirf naam-le ke chhod deta — yahan har ek ka <strong>why + real example + haath se</strong>. Ab tum sirf syllabus-complete nahi, <strong>samajh ke confident</strong> ho. 😊</p>
+</blockquote>
+<hr />
+<p><em>Connected: <a href="../26-k8s-objects-map/">K8s Objects Map</a> · <a href="../05-M4-kubernetes-core/">M4 K8s Core</a> · <a href="../11-M9-advanced-k8s-internals/">M9 Internals</a> · <a href="../28-helm-real-projects/">Helm Real World</a> · <a href="../29-confidence-sprint/">Confidence Sprint</a> · <a href="../23-production-incident-playbook/">Incident Playbook</a></em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../11-M9-advanced-k8s-internals/" class="md-footer__link md-footer__link--prev" aria-label="Previous: M9 · Advanced K8s Internals">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                M9 · Advanced K8s Internals
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../23-production-incident-playbook/" class="md-footer__link md-footer__link--next" aria-label="Next: Production Incident Playbook">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Production Incident Playbook
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 grvtech1 — licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/grvtech1/devops-handbook" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "announce.dismiss"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/progress.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,3951 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free, zero-to-job-ready DevOps handbook — from "what is a terminal" to production- and interview-ready. Systems thinking, hands-on labs, capstones.">
+      
+      
+      
+        <link rel="canonical" href="https://grvtech1.github.io/devops-handbook/02-M1-terraform/">
+      
+      
+        <link rel="prev" href="../01-M0-foundations/">
+      
+      
+        <link rel="next" href="../03-M2-ansible/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>M1 · Terraform - The DevOps Engineer's Handbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%206a6%206%200%200%201%206%206c0%202.22-1.21%204.16-3%205.2V19a1%201%200%200%201-1%201h-4a1%201%200%200%201-1-1v-1.8c-1.79-1.04-3-2.98-3-5.2a6%206%200%200%201%206-6m2%2015v1a1%201%200%200%201-1%201h-2a1%201%200%200%201-1-1v-1zm6-10h3v2h-3zM1%2011h3v2H1zM13%201v3h-2V1zM4.92%203.5l2.13%202.14-1.42%201.41L3.5%204.93zm12.03%202.13%202.12-2.13%201.43%201.43-2.13%202.12z%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m13.13%2022.19-1.63-3.83c1.57-.58%203.04-1.36%204.4-2.27zM5.64%2012.5l-3.83-1.63%206.1-2.77C7%209.46%206.22%2010.93%205.64%2012.5M21.61%202.39S16.66.269%2011%205.93c-2.19%202.19-3.5%204.6-4.35%206.71-.28.75-.09%201.57.46%202.13l2.13%202.12c.55.56%201.37.74%202.12.46A19.1%2019.1%200%200%200%2018.07%2013c5.66-5.66%203.54-10.61%203.54-10.61m-7.07%207.07c-.78-.78-.78-2.05%200-2.83s2.05-.78%202.83%200c.77.78.78%202.05%200%202.83s-2.05.78-2.83%200m-5.66%207.07-1.41-1.41zM6.24%2022l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83%2022zM2%2022h1.41l4.77-4.76-1.42-1.41L2%2020.59zm0-2.83%204.09-4.08c-.21-.3-.36-.62-.45-.97L2%2017.76z%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M13%2014h-2V9h2m0%209h-2v-2h2M1%2021h22L12%202z%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M8%2015a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m2.5%202%201.5-3%201.5%203zm5.5-2a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m6-4A10%2010%200%200%200%2012%201%2010%2010%200%200%200%202%2011c0%202.8%201.2%205.3%203%207.1V22h14v-3.9c1.8-1.8%203-4.3%203-7.1m-5%209h-2v-2h-2v2h-2v-2H9v2H7v-2.8c-1.8-1.5-3-3.7-3-6.2a8%208%200%200%201%208-8%208%208%200%200%201%208%208c0%202.5-1.2%204.8-3%206.2z%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#m1-terraform-infrastructure-as-code" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  🚀 <strong>26 chapters</strong> · rendered diagrams · hands-on labs · a 26-scenario incident playbook — all free (CC BY 4.0).
+  &nbsp;
+  <a href="https://github.com/grvtech1/devops-handbook" style="color: inherit; text-decoration: underline; font-weight: 700;">⭐ Star it on GitHub</a>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-header__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The DevOps Engineer's Handbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              M1 · Terraform
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../study-plan/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Study Plan
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../progress/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  My Progress
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../00-INDEX/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Handbook
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-nav__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    The DevOps Engineer's Handbook
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../study-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    My Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handbook
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Handbook
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-INDEX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Curriculum (Index)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 0 — Pre-flight
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 0 — Pre-flight
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00a-preflight/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00a · Pre-flight ground floor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00b-setup-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00b · Setup runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-linux-toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux · the ground everything runs on
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part I — Core toolchain
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part I — Core toolchain
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-M0-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M0 · Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M1 · Terraform
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M1 · Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#recall-gate-shuru-karne-se-pehle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ↩️ Recall gate — shuru karne se pehle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-60-second-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 60-Second Version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists-what-it-replaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why This Exists — What It Replaced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Concepts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#infrastructure-as-code-iac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Infrastructure as Code (IaC)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#declarative-vs-imperative" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Declarative vs Imperative
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#state-the-diary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State — The Diary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idempotent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-command-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Command Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#providers-and-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Providers and Resources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#annotated-hcl-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Annotated HCL Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-the-thing-you-must-never-lose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State — The Thing You Must Never Lose
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="State — The Thing You Must Never Lose">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-remote-backend-lock" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Remote Backend + Lock
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#secrets-in-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secrets in State
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drift-vs-lost-state-the-critical-distinction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Drift vs Lost-State — The Critical Distinction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user_data-and-provisioners-where-to-draw-the-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_data and Provisioners — Where to Draw the Line
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-lifecycle-block-small-but-critical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The lifecycle block (small but critical)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modules-and-environment-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modules and Environment Isolation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Modules and Environment Isolation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-dry-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The DRY Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modules-black-box-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modules — Black Box Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-wiring-diagram-root-orchestrates-modules-do-not-talk-to-each-other" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Wiring Diagram — Root Orchestrates, Modules Do Not Talk to Each Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environment-isolation-separate-state-keys-per-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment Isolation — Separate State Keys Per Environment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dev-vs-prod-key-differences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dev vs Prod — Key Differences
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#five-common-moduleenvironment-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Five Common Module/Environment Mistakes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-production-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real Production Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands, Explained
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Commands, Explained">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-out-apply-exactly-what-you-reviewed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        plan -out: apply exactly what you reviewed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beginner-mistakes-vs-senior-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beginner Mistakes vs Senior Insights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-shortcuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Shortcuts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mutable-vs-immutable-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mutable vs Immutable Infrastructure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-check-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-Check Quiz
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hands-On Lab
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production Challenge
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-M2-ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M2 · Ansible
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-M3-docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M3 · Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-M4-kubernetes-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M4 · Kubernetes Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-M5-sizing-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M5 · Sizing & Cost
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-M6-cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M6 · CI/CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-M7-gitops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M7 · GitOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part II — Systems thinking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part II — Systems thinking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-connected-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Connected System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-k8s-objects-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Objects · How They Connect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-10-day-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Learning Plan (understand)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29-confidence-sprint/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Confidence Sprint (drill)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../28-helm-real-projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Helm in the Real World (your 2 projects)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-cicd-hands-on-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Follow One Commit (hands-on CI/CD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part III — Operate
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part III — Operate
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-M8-observability-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M8 · Observability & SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-M9-advanced-k8s-internals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M9 · Advanced K8s Internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30-k8s-complete-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Complete Reference (Workloads · Scheduling · Ops)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-production-incident-playbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Incident Playbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part IV — Capstones
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part IV — Capstones
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-capstone-url-shortener/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone I · URL Shortener
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-capstone-microshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone II · MicroShop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part V — Reference & career
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part V — Reference & career
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-interview-bank/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview Bank
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-confusions-and-tradeoffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Confusions & Trade-offs (X-vs-Y)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-command-cheatsheets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Command Cheat-Sheets & Labs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-roadmap-M11-M18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap · M11–M18
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-reference-appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Appendix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-career-job-ready/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Job-Ready
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part VI — The Production Gauntlet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part VI — The Production Gauntlet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-production-gauntlet-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build the Real System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-production-gauntlet-chaos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chaos Engineering · break & fix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#recall-gate-shuru-karne-se-pehle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ↩️ Recall gate — shuru karne se pehle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-60-second-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 60-Second Version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists-what-it-replaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why This Exists — What It Replaced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#core-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core Concepts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Core Concepts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#infrastructure-as-code-iac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Infrastructure as Code (IaC)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#declarative-vs-imperative" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Declarative vs Imperative
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#state-the-diary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State — The Diary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idempotent" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotent
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-command-lifecycle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Command Lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#providers-and-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Providers and Resources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#annotated-hcl-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Annotated HCL Example
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#state-the-thing-you-must-never-lose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State — The Thing You Must Never Lose
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="State — The Thing You Must Never Lose">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#why-remote-backend-lock" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why Remote Backend + Lock
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#secrets-in-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Secrets in State
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#drift-vs-lost-state-the-critical-distinction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Drift vs Lost-State — The Critical Distinction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#user_data-and-provisioners-where-to-draw-the-line" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        user_data and Provisioners — Where to Draw the Line
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-lifecycle-block-small-but-critical" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The lifecycle block (small but critical)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#modules-and-environment-isolation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modules and Environment Isolation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Modules and Environment Isolation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-dry-problem" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The DRY Problem
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modules-black-box-pattern" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Modules — Black Box Pattern
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-wiring-diagram-root-orchestrates-modules-do-not-talk-to-each-other" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The Wiring Diagram — Root Orchestrates, Modules Do Not Talk to Each Other
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environment-isolation-separate-state-keys-per-environment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment Isolation — Separate State Keys Per Environment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dev-vs-prod-key-differences" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dev vs Prod — Key Differences
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#five-common-moduleenvironment-mistakes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Five Common Module/Environment Mistakes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-production-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real Production Example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands, Explained
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Commands, Explained">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#plan-out-apply-exactly-what-you-reviewed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        plan -out: apply exactly what you reviewed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beginner-mistakes-vs-senior-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beginner Mistakes vs Senior Insights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-shortcuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory Shortcuts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mutable-vs-immutable-infrastructure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mutable vs Immutable Infrastructure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-check-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-Check Quiz
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hands-On Lab
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview Questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production Challenge
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="m1-terraform-infrastructure-as-code">M1 — Terraform &amp; Infrastructure as Code<a class="headerlink" href="#m1-terraform-infrastructure-as-code" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Core question:</strong> How do you turn a 400-click AWS console session into a 10-line code review that any teammate can read, reproduce, and audit?</p>
+<p><strong>⏱️ Time:</strong> ~60 min padho + 30 min lab · <strong>🎚️ Level:</strong> Beginner→Intermediate · <strong>📋 Pehle chahiye:</strong> <a href="../01-M0-foundations/">M0 — Foundations</a></p>
+<p><strong>Is module ke baad tum kar paoge:</strong>
+- Terraform lifecycle chalao: <code>init → plan → apply → destroy</code> — ek real AWS resource pe end-to-end
+- tfstate file ka role samjho aur drift vs lost-state ka farak interview mein confidently explain karo
+- Modules se multi-environment infrastructure organize karo — dev aur prod ki state alag rakho</p>
+<h3 id="recall-gate-shuru-karne-se-pehle">↩️ Recall gate — shuru karne se pehle<a class="headerlink" href="#recall-gate-shuru-karne-se-pehle" title="Permanent link">&para;</a></h3>
+<p>Pichhle modules se 3 sawaal. <strong>Pehle memory se jawab do, phir kholo.</strong> (Yeh retrieve karna hi lifetime yaad rakhta hai — dobara padhna nahi.)</p>
+<ol>
+<li><em>(M0)</em> "Idempotency" aur "reconciliation" mein kya farak hai? Dono ko ek line mein define karo.</li>
+<li><em>(M0)</em> "Provisioning" aur "configuration management" alag kyun hain — dono ka ek-ek real-world example do.</li>
+<li><em>(M0)</em> "Pets vs cattle" DevOps mein kya hota hai — aur yeh distinction scale ke liye kyun zaroori hai?</li>
+</ol>
+<p><details markdown="1"><summary>Jawab</summary></p>
+<ol>
+<li>Idempotency = ek operation safely baar baar chalao, result same (single op, safe re-run). Reconciliation = continuous loop jo hamesha desired state enforce karta rehta hai. &nbsp; 2. Provisioning = raw machine banana, e.g., EC2 spin up (Terraform); configuration = uss machine ke andar software daalna, e.g., nginx install (Ansible). Alag concerns, alag tools. &nbsp; 3. Pets = unique, hand-configured servers jo replace nahi ho sakte; cattle = identical, interchangeable nodes jo bina soche replace ho jaate — automation aur scale ke liye zaroori.
+</details></li>
+</ol>
+</blockquote>
+<p><strong>Module map:</strong> <a href="../00-INDEX/">00-INDEX</a> | <a href="../01-M0-foundations/">01-M0</a> | <strong>02-M1</strong> | <a href="../03-M2-ansible/">03-M2-ansible</a> | <a href="../04-M3-docker/">04-M3-docker</a> | <a href="../05-M4-kubernetes-core/">05-M4-kubernetes-core</a> | <a href="../06-M5-sizing-and-cost/">06-M5-sizing-and-cost</a> | <a href="../07-M6-cicd/">07-M6-cicd</a> | <a href="../08-M7-gitops/">08-M7-gitops</a> | <a href="../09-connected-system/">09-connected-system</a></p>
+<hr />
+<h2 id="the-60-second-version">The 60-Second Version<a class="headerlink" href="#the-60-second-version" title="Permanent link">&para;</a></h2>
+<p>Infrastructure as Code (IaC) means your servers, networks, databases, and firewalls are described in text files — not clicked into existence in a web console. Terraform is the dominant IaC tool. It reads your <code>.tf</code> files, compares what you asked for against what actually exists in AWS (using a local record called the <strong>state file</strong>), and makes only the changes needed to close that gap.</p>
+<p>Three words explain how Terraform works:</p>
+<ul>
+<li><strong>Declarative</strong> — you describe the destination, not the steps to get there.</li>
+<li><strong>State</strong> — Terraform keeps a diary of what it built; that diary is the link between your code and the real world.</li>
+<li><strong>Idempotent</strong> — run it a hundred times; you still get the same result, not a hundred copies.</li>
+</ul>
+<hr />
+<h2 id="why-this-exists-what-it-replaced">Why This Exists — What It Replaced<a class="headerlink" href="#why-this-exists-what-it-replaced" title="Permanent link">&para;</a></h2>
+<p>Before IaC, teams provisioned infrastructure by clicking through cloud consoles manually. This pattern has a name: <strong>ClickOps</strong>.</p>
+<p>ClickOps problems:</p>
+<table>
+<thead>
+<tr>
+<th>Problem</th>
+<th>Consequence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>No record of what was clicked</td>
+<td>"Who opened port 22 to the world?" — nobody knows</td>
+</tr>
+<tr>
+<td>Knowledge lives in one engineer's head</td>
+<td>That engineer leaves → knowledge leaves</td>
+</tr>
+<tr>
+<td>Reproducing an environment takes days</td>
+<td>"Just spin up a staging copy" — impossible</td>
+</tr>
+<tr>
+<td>Audits are guesswork</td>
+<td>Compliance teams find untracked servers</td>
+</tr>
+<tr>
+<td>Snowflake servers</td>
+<td>Every machine slightly different; none documented</td>
+</tr>
+</tbody>
+</table>
+<p>A <strong>snowflake server</strong> is one that has been hand-configured until it is unique — special, fragile, and irreplaceable. When it breaks, nobody knows how to rebuild it. IaC eliminates snowflakes: if you can read the <code>.tf</code> file, you can rebuild the entire environment from scratch.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Pehle infra banane ka koi recipe nahi tha — chef apne mood se banata tha, next day kuch aur. IaC = har dish ka <strong>likha hua recipe</strong> — koi bhi bana sake, har baar same.</p>
+</blockquote>
+<hr />
+<h2 id="core-concepts">Core Concepts<a class="headerlink" href="#core-concepts" title="Permanent link">&para;</a></h2>
+<h3 id="infrastructure-as-code-iac">Infrastructure as Code (IaC)<a class="headerlink" href="#infrastructure-as-code-iac" title="Permanent link">&para;</a></h3>
+<p>IaC means expressing infrastructure intent in code files that live in Git. The result:</p>
+<ul>
+<li><strong>Reviewable</strong> — a pull request shows exactly what will change before it changes.</li>
+<li><strong>Reproducible</strong> — <code>terraform apply</code> in any account recreates the same environment.</li>
+<li><strong>Auditable</strong> — Git history shows who changed what and when.</li>
+<li><strong>Versionable</strong> — roll back infrastructure the same way you roll back application code.</li>
+</ul>
+<h3 id="declarative-vs-imperative">Declarative vs Imperative<a class="headerlink" href="#declarative-vs-imperative" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Style</th>
+<th>You Write</th>
+<th>Tool Does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Declarative</strong> (Terraform)</td>
+<td>"I want 3 EC2 servers"</td>
+<td>Figures out the steps itself</td>
+</tr>
+<tr>
+<td><strong>Imperative</strong> (bash script)</td>
+<td>"Step 1: create VPC. Step 2: create subnet. Step 3: ..."</td>
+<td>Runs exactly what you wrote, blindly</td>
+</tr>
+</tbody>
+</table>
+<p>The declarative approach means Terraform handles the complexity of ordering, dependencies, and partial states. You describe the destination; Terraform plans the route.</p>
+<h3 id="state-the-diary">State — The Diary<a class="headerlink" href="#state-the-diary" title="Permanent link">&para;</a></h3>
+<p>Terraform maintains a file called <code>terraform.tfstate</code>. This JSON file is the link between your code and the real world. It records:</p>
+<ul>
+<li>Every resource Terraform has ever created</li>
+<li>The real cloud identifiers (e.g., <code>i-0abc1234</code> for an EC2 instance)</li>
+<li>All resource attributes at the time of the last apply</li>
+</ul>
+<p>Without the state file, Terraform cannot know what it has already built. It becomes blind.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> tfstate = Terraform ki <strong>diary</strong> 📔. "Aaj maine kya banaya, iska ID kya hai" — sab likha hai. Diary gayi to andha ho gaya.</p>
+</blockquote>
+<p><strong>Critical warning:</strong> The state file contains sensitive data in plaintext — including database passwords. <strong>Never commit it to Git.</strong> Always store it in a remote backend with encryption enabled.</p>
+<h3 id="idempotent">Idempotent<a class="headerlink" href="#idempotent" title="Permanent link">&para;</a></h3>
+<p>Idempotent means the operation can be safely repeated. If your code says <code>count = 3</code> and you already have 3 servers, running <code>terraform apply</code> does nothing. Terraform is performing a SET operation (desired = 3), not an ADD operation (actual += 3).</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Light switch — ek baar dabao ON hota. Sau baar dabao, ON hi rehta. += nahi hota.</p>
+</blockquote>
+<h3 id="the-command-lifecycle">The Command Lifecycle<a class="headerlink" href="#the-command-lifecycle" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│             │     │             │     │             │     │             │
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│  terraform  │────►│  terraform  │────►│  terraform  │────►│  terraform  │
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│    init     │     │    plan     │     │    apply    │     │   destroy   │
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│             │     │             │     │             │     │             │
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>└─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a> Download            Preview            Execute              Tear down
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a> providers &amp;         what will          the plan             all managed
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a> set up backend      change             (real API calls)     resources
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a> (once per project)  (safe — no         (costs money,
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>                     changes made)      changes state)
+</span></code></pre></div>
+<pre class="mermaid"><code>flowchart LR
+    HCL["Write HCL&lt;br/&gt;(.tf files)"]:::ci --&gt; PLAN["terraform plan&lt;br/&gt;(preview changes)"]:::ci
+    PLAN --&gt;|"if approved"| APPLY["terraform apply&lt;br/&gt;(real API calls)"]:::infra
+    APPLY --&gt; CLOUD[("Real Cloud&lt;br/&gt;EC2 VPC RDS")]:::run
+    CLOUD -. "state tracks&lt;br/&gt;resources" .-&gt; STATE[("tfstate&lt;br/&gt;state file")]:::store
+    STATE -. "compared on&lt;br/&gt;next plan" .-&gt; PLAN
+
+    classDef infra fill:#fce4ec,stroke:#d81b60,color:#880e4f;
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+    classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;</code></pre>
+<p><em>The Terraform loop: HCL declares desired state, plan previews changes against tfstate, apply modifies real cloud, and the state file is the map that tracks what was built.</em></p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> <code>plan</code> = bill dekhna 🧾. <code>apply</code> = payment 💳. Bill padhe bina payment mat karo.</p>
+</blockquote>
+<h3 id="providers-and-resources">Providers and Resources<a class="headerlink" href="#providers-and-resources" title="Permanent link">&para;</a></h3>
+<p>A <strong>provider</strong> is a plugin that knows how to talk to a specific cloud or service. <code>hashicorp/aws</code> handles AWS API calls; <code>hashicorp/google</code> handles GCP. You declare the provider once; Terraform downloads it during <code>init</code>.</p>
+<p>A <strong>resource</strong> is a single piece of infrastructure managed by Terraform. Each <code>resource</code> block describes one thing to create: one VPC, one security group, one EC2 instance.</p>
+<p>A <strong>backend</strong> tells Terraform where to store the state file. The default is a local file on disk. The production-grade choice is a remote backend (S3).</p>
+<h3 id="annotated-hcl-example">Annotated HCL Example<a class="headerlink" href="#annotated-hcl-example" title="Permanent link">&para;</a></h3>
+<p>HCL (HashiCorp Configuration Language) is Terraform's own file format — readable, structured, designed to describe infrastructure rather than write algorithms.</p>
+<div class="language-hcl highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># ── 1. Tell Terraform which cloud provider to use ──────────────────────────</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kr">provider</span><span class="w"> </span><span class="nv">&quot;aws&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="na">region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ap-south-1&quot;</span><span class="c1">          # Mumbai region</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="p">}</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="c1"># ── 2. Remote backend — state lives in S3, not on your laptop ──────────────</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="nb">terraform</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="kr">backend</span><span class="w"> </span><span class="nv">&quot;s3&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a><span class="w">    </span><span class="na">bucket</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;mycompany-tfstate&quot;</span><span class="c1">          # S3 bucket (create manually first)</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="w">    </span><span class="na">key</span><span class="w">            </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;prod/terraform.tfstate&quot;</span><span class="c1">     # path inside the bucket</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">    </span><span class="na">region</span><span class="w">         </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ap-south-1&quot;</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">    </span><span class="na">dynamodb_table</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tf-lock&quot;</span><span class="c1">                    # prevents simultaneous apply</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="w">    </span><span class="na">encrypt</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="no">true</span><span class="c1">                         # server-side encryption</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="p">}</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="c1"># ── 3. A variable — input, not hardcoded ───────────────────────────────────</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="kr">variable</span><span class="w"> </span><span class="nv">&quot;my_ip&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">  </span><span class="na">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Your office IP for SSH access&quot;</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">  </span><span class="na">type</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="kt">string</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="p">}</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="c1"># ── 4. A VPC (Virtual Private Cloud) — your private network on AWS ─────────</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_vpc&quot;</span><span class="w"> </span><span class="nv">&quot;main&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a><span class="w">  </span><span class="na">cidr_block</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;10.0.0.0/16&quot;</span><span class="c1">    # CIDR = IP range (Classless Inter-Domain Routing)</span>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">  </span><span class="na">enable_dns_hostnames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">  </span><span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="na">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;prod-vpc&quot;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="p">}</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="c1"># ── 5. Security Group (SG) — firewall rules ────────────────────────────────</span>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_security_group&quot;</span><span class="w"> </span><span class="nv">&quot;web&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a><span class="w">  </span><span class="na">name</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;web-sg&quot;</span>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">  </span><span class="na">vpc_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_vpc.main.id</span><span class="c1">                # reference to the VPC above (implicit dependency)</span>
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a>
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="w">  </span><span class="nb">ingress</span><span class="w"> </span><span class="p">{</span><span class="c1">                               # inbound: allow SSH only from your IP</span>
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="w">    </span><span class="na">from_port</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="m">22</span>
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="w">    </span><span class="na">to_port</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="m">22</span>
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="w">    </span><span class="na">protocol</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tcp&quot;</span>
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a><span class="w">    </span><span class="na">cidr_blocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;${var.my_ip}/32&quot;</span><span class="p">]</span><span class="c1">    # /32 = exactly one IP; use IPv4 here (not IPv6)</span>
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a><span class="w">  </span><span class="nb">egress</span><span class="w"> </span><span class="p">{</span><span class="c1">                               # outbound: allow everything</span>
+</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a><span class="w">    </span><span class="na">from_port</span><span class="w">   </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>
+</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a><span class="w">    </span><span class="na">to_port</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>
+</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a><span class="w">    </span><span class="na">protocol</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;-1&quot;</span>
+</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a><span class="w">    </span><span class="na">cidr_blocks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;0.0.0.0/0&quot;</span><span class="p">]</span>
+</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a><span class="p">}</span>
+</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a>
+</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a><span class="c1"># ── 6. An EC2 instance ─────────────────────────────────────────────────────</span>
+</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_instance&quot;</span><span class="w"> </span><span class="nv">&quot;web&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a><span class="w">  </span><span class="na">ami</span><span class="w">           </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;ami-0f5ee92e2d63afc18&quot;  # AMI = Amazon Machine Image, OS blueprint for EC2 — ⚠️ AMI IDs are region-specific and get deregistered; real code should use a `data &quot;aws_ami&quot;</span><span class="err">`</span><span class="w"> </span><span class="err">lookup</span><span class="w"> </span><span class="p">(</span><span class="err">see</span><span class="w"> </span><span class="err">Senior</span><span class="w"> </span><span class="err">Insights</span><span class="w"> </span><span class="err">table</span><span class="p">)</span>
+</span><span id="__span-1-52"><a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a><span class="w">  </span><span class="na">instance_type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;t3.micro&quot;</span>
+</span><span id="__span-1-53"><a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a><span class="w">  </span><span class="na">subnet_id</span><span class="w">     </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_subnet.public.id</span><span class="c1">     # aws_subnet.public shown in the full example — omitted here for brevity</span>
+</span><span id="__span-1-54"><a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a><span class="w">  </span><span class="na">vpc_security_group_ids</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nv">aws_security_group.web.id</span><span class="p">]</span>
+</span><span id="__span-1-55"><a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a><span class="w">  </span><span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="na">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;web-server&quot;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-1-56"><a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a><span class="p">}</span>
+</span><span id="__span-1-57"><a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a>
+</span><span id="__span-1-58"><a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a><span class="c1"># ── 7. Output — values surfaced after apply, used by Ansible next ──────────</span>
+</span><span id="__span-1-59"><a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a><span class="kr">output</span><span class="w"> </span><span class="nv">&quot;web_public_ip&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-1-60"><a id="__codelineno-1-60" name="__codelineno-1-60" href="#__codelineno-1-60"></a><span class="w">  </span><span class="na">value</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="nv">aws_instance.web.public_ip</span>
+</span><span id="__span-1-61"><a id="__codelineno-1-61" name="__codelineno-1-61" href="#__codelineno-1-61"></a><span class="w">  </span><span class="na">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Pass this to Ansible inventory&quot;</span>
+</span><span id="__span-1-62"><a id="__codelineno-1-62" name="__codelineno-1-62" href="#__codelineno-1-62"></a><span class="p">}</span>
+</span></code></pre></div>
+<p>Key observations:
+- <code>aws_vpc.main.id</code> references another resource by type + name — Terraform builds a dependency graph from these and applies in the correct order automatically.
+- <code>var.my_ip</code> keeps sensitive or environment-specific values out of the code itself.
+- The <code>output</code> block surfaces the IP that Ansible will need (see <a href="../03-M2-ansible/">03-M2-ansible.md</a>).</p>
+<hr />
+<h2 id="state-the-thing-you-must-never-lose">State — The Thing You Must Never Lose<a class="headerlink" href="#state-the-thing-you-must-never-lose" title="Permanent link">&para;</a></h2>
+<h3 id="why-remote-backend-lock">Why Remote Backend + Lock<a class="headerlink" href="#why-remote-backend-lock" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>🔧 <strong>War story:</strong> Ek engineer ka tfstate laptop pe tha — naye teammate ne <code>terraform apply</code> kiya, state nahi thi, usne 5 duplicate servers bana diye. Tab tak pata chala jab AWS bill double aa gaya. Poori kahani + lesson → <a href="../14-interview-bank/">Interview Bank</a>.</p>
+</blockquote>
+<p>If the state file lives on your laptop, two problems immediately appear the moment a second person joins the team:</p>
+<p><strong>Problem 1 — Sharing:</strong> Your teammate has no state file. Their Terraform thinks nothing exists. They run <code>apply</code> and create duplicate infrastructure: two VPCs, two databases, ten servers instead of five.</p>
+<p><strong>Problem 2 — Corruption:</strong> Two people run <code>apply</code> simultaneously. Both read the state, make changes, and write back. The writes overlap. The state file is now corrupt — partial entries, missing IDs, inconsistencies.</p>
+<p><strong>Solution:</strong> Store the state in S3 (solves sharing) and use a DynamoDB table as a distributed lock (solves simultaneous apply).</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Create the S3 bucket (once, manually — Terraform cannot bootstrap its own backend)</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>aws<span class="w"> </span>s3<span class="w"> </span>mb<span class="w"> </span>s3://mycompany-tfstate<span class="w"> </span>--region<span class="w"> </span>ap-south-1
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Create the DynamoDB lock table (once)</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>aws<span class="w"> </span>dynamodb<span class="w"> </span>create-table<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">  </span>--table-name<span class="w"> </span>tf-lock<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">  </span>--attribute-definitions<span class="w"> </span><span class="nv">AttributeName</span><span class="o">=</span>LockID,AttributeType<span class="o">=</span>S<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">  </span>--key-schema<span class="w"> </span><span class="nv">AttributeName</span><span class="o">=</span>LockID,KeyType<span class="o">=</span>HASH<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">  </span>--billing-mode<span class="w"> </span>PAY_PER_REQUEST<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="w">  </span>--region<span class="w"> </span>ap-south-1
+</span></code></pre></div>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> S3 = shared almari (sab padhein). DynamoDB lock = taala 🔒 — ek waqt mein ek hi likhे.</p>
+</blockquote>
+<h3 id="secrets-in-state">Secrets in State<a class="headerlink" href="#secrets-in-state" title="Permanent link">&para;</a></h3>
+<p>Terraform writes every resource attribute to the state file in plaintext. This includes:</p>
+<ul>
+<li>Database passwords passed via <code>variable "db_password" { sensitive = true }</code></li>
+<li>Private key material</li>
+<li>API tokens injected into resources</li>
+</ul>
+<p><strong>Non-negotiable rules:</strong>
+1. Add <code>*.tfstate*</code> to <code>.gitignore</code> — before the first commit, not after.
+2. Enable <code>encrypt = true</code> in the S3 backend block.
+3. Apply an IAM policy restricting who can read the S3 bucket.
+4. If a state file is accidentally committed, rotate every credential it contains immediately.</p>
+<blockquote>
+<p>🔮 <strong>Predict pehle (socho, phir aage padho):</strong> tfstate file delete ho gayi. Agla <code>terraform plan</code> kya sochta hai ki exist karta hai — aur kyun ye potentially catastrophic hai?</p>
+</blockquote>
+<h3 id="drift-vs-lost-state-the-critical-distinction">Drift vs Lost-State — The Critical Distinction<a class="headerlink" href="#drift-vs-lost-state-the-critical-distinction" title="Permanent link">&para;</a></h3>
+<p>These two situations look similar but require completely different responses.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Drift</strong></th>
+<th><strong>Lost-State</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>What happened</strong></td>
+<td>Someone changed real infrastructure outside Terraform (manual console click, AWS auto-scaling, another tool)</td>
+<td>The <code>tfstate</code> file was deleted or corrupted</td>
+</tr>
+<tr>
+<td><strong>State file</strong></td>
+<td>Intact — Terraform still knows what it built</td>
+<td>Gone — Terraform is blind</td>
+</tr>
+<tr>
+<td><strong>Terraform's view</strong></td>
+<td>Sees mismatch between state and reality</td>
+<td>Sees nothing at all — thinks zero resources exist</td>
+</tr>
+<tr>
+<td><strong>Result of <code>apply</code></strong></td>
+<td>Reverts reality back to what code specifies</td>
+<td>Creates everything from scratch — you now have double the infrastructure</td>
+</tr>
+<tr>
+<td><strong>Concrete example</strong></td>
+<td>Someone manually opened port 80 in the console; <code>plan</code> shows <code>-/+</code> change</td>
+<td>State deleted; 5 servers running; <code>apply</code> → 5 new servers → total 10</td>
+</tr>
+<tr>
+<td><strong>Your reflex</strong></td>
+<td>Run <code>terraform plan</code> — it shows the drift; run <code>apply</code> to revert</td>
+<td>Stop. Run <code>terraform import</code> for each existing resource to reconstruct state</td>
+</tr>
+<tr>
+<td><strong>Recovery command</strong></td>
+<td><code>terraform apply</code> (straightforward)</td>
+<td><code>terraform import aws_instance.web i-0abc1234</code> (one resource at a time)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong>
+- Drift = <strong>diary intact</strong>, par duniya badal gayi. TF diary padh ke duniya ko wapas theek kar deta.
+- Lost-state = <strong>diary jal gayi</strong> ☠️. TF andha — bhool gaya kya banaya tha. 5 naye bana deta.</p>
+</blockquote>
+<p><strong>Orphaned resource:</strong> A resource that exists in reality but has no entry in the state file. After lost-state, all your existing servers become orphans. Terraform neither manages nor destroys them — they run up your AWS bill invisibly. Fix: <code>terraform import</code>.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Orphaned resource = <strong>bina maalik ki gaay</strong> 🐄 — zinda hai, khana kha rahi hai, par kisi ki zimmedari mein nahi.</p>
+</blockquote>
+<h3 id="user_data-and-provisioners-where-to-draw-the-line">user_data and Provisioners — Where to Draw the Line<a class="headerlink" href="#user_data-and-provisioners-where-to-draw-the-line" title="Permanent link">&para;</a></h3>
+<p><strong>user_data / cloud-init:</strong> A script you pass to an EC2 instance that runs once at first boot. It is valid for simple, one-time setup tasks — installing a single package, writing a config file at launch time.</p>
+<div class="language-hcl highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_instance&quot;</span><span class="w"> </span><span class="nv">&quot;web&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1">  # ... other args</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="na">user_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&lt;&lt;-</span><span class="dl">EOF</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="sh">    #!/bin/bash</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="sh">    apt-get update -y</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="sh">    apt-get install -y nginx</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="dl">  EOF</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="p">}</span>
+</span></code></pre></div>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> user_data = "ghar ban-te waqt bijli ka connection lagwa do" — ek baar, construction ke time.</p>
+</blockquote>
+<p><strong>Provisioner (avoid):</strong> Terraform has <code>remote-exec</code> and <code>local-exec</code> provisioners that run shell commands against a resource after it is created. They are a trap:</p>
+<ul>
+<li>They run only once at creation — not on re-apply (not idempotent).</li>
+<li>Terraform has no visibility into whether they succeeded.</li>
+<li>They blur the boundary between Terraform (what exists) and Ansible (what is configured inside).</li>
+<li>HashiCorp's own documentation calls them a "last resort."</li>
+</ul>
+<p><strong>Rule:</strong> Terraform provisions the machine. Ansible configures what is inside it. Do not mix them. See <a href="../03-M2-ansible/">03-M2-ansible.md</a> for how Ansible takes the output IPs from Terraform and configures the servers.</p>
+<h3 id="the-lifecycle-block-small-but-critical">The <code>lifecycle</code> block (small but critical)<a class="headerlink" href="#the-lifecycle-block-small-but-critical" title="Permanent link">&para;</a></h3>
+<p>Every resource block accepts an optional <code>lifecycle</code> meta-argument that controls how Terraform creates, updates, and destroys that resource. Three arguments cover the situations you will actually hit in production:</p>
+<div class="language-hcl highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="kr">resource</span><span class="w"> </span><span class="nc">&quot;aws_db_instance&quot;</span><span class="w"> </span><span class="nv">&quot;prod&quot;</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1">  # ...</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nb">lifecycle</span><span class="w"> </span><span class="p">{</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="na">prevent_destroy</span><span class="w">       </span><span class="o">=</span><span class="w"> </span><span class="no">true</span><span class="c1">                   # guard: `terraform destroy` / accidental removal is BLOCKED</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="na">create_before_destroy</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">true</span><span class="c1">                   # make the replacement BEFORE deleting the old = no downtime</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="na">ignore_changes</span><span class="w">        </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="err">tags</span><span class="p">[</span><span class="s2">&quot;LastModified&quot;</span><span class="p">]]</span><span class="c1"> # stop fighting drift on fields changed outside TF</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="p">}</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong><code>prevent_destroy = true</code></strong> — a hard stop. If any plan would destroy this resource, Terraform errors the plan instead of executing it. A mistaken <code>terraform destroy</code> or a resource replacement triggered by a config change cannot complete while this flag is set. Use it on any production database, S3 bucket, or resource whose accidental deletion would cause data loss. Remove it explicitly only when you intend a real destroy.</p>
+<p><strong><code>create_before_destroy = true</code></strong> — for resources that must be <em>replaced</em> (not updated in place), Terraform normally destroys the old resource first and then creates the new one, leaving a gap. With this flag, the new resource is fully provisioned <em>before</em> the old one is removed — zero-downtime replacement. Essential for launch templates, ACM certificates, and anything with a downstream dependency that would break during the gap.</p>
+<p><strong><code>ignore_changes</code></strong> — when something outside Terraform legitimately modifies an attribute, TF treats the difference as drift and tries to revert it on every plan. <code>ignore_changes</code> tells Terraform: "stop watching this field." Common cases: an autoscaler sets <code>desired_capacity</code>; a tag like <code>LastModified</code> is written by a Lambda or a cost-allocation tool. Without this, you get a perpetual diff that <code>apply</code> never fully resolves.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> <code>prevent_destroy</code> = taala 🔒 jo sirf intentional remove pe khulta hai — <code>terraform plan</code> hi fail kar deta hai galti se. <code>create_before_destroy</code> = naya bridge banao phir purana girao — traffic ruka nahi. <code>ignore_changes</code> = "yeh field bahar se manage hoti hai, TF tujhe koi matlab nahi" — perpetual diff hamesha ke liye gayab.</p>
+</blockquote>
+<hr />
+<h2 id="modules-and-environment-isolation">Modules and Environment Isolation<a class="headerlink" href="#modules-and-environment-isolation" title="Permanent link">&para;</a></h2>
+<h3 id="the-dry-problem">The DRY Problem<a class="headerlink" href="#the-dry-problem" title="Permanent link">&para;</a></h3>
+<p>Without modules, a typical team does this: copy <code>main.tf</code> to <code>main-prod.tf</code>, tweak a few values, and now has two files diverging forever. A bug fix in one has to be manually applied to the other. This is a DRY (Don't Repeat Yourself) violation.</p>
+<p>Modules solve it by creating reusable black boxes.</p>
+<h3 id="modules-black-box-pattern">Modules — Black Box Pattern<a class="headerlink" href="#modules-black-box-pattern" title="Permanent link">&para;</a></h3>
+<p>A module is a directory containing Terraform files with a defined interface:</p>
+<ul>
+<li><strong>Inputs = variables</strong> (<code>variables.tf</code> inside the module)</li>
+<li><strong>Outputs = outputs</strong> (<code>outputs.tf</code> inside the module)</li>
+<li><strong>Internal logic = <code>main.tf</code></strong> (the caller does not need to understand it)</li>
+</ul>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Module = car engine. Accelerator dabao (input) → car chale (output). Engine kaise kaam karta — driver ko jaanne ki zaroorat nahi.</p>
+</blockquote>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Module: modules/vpc/
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>├── main.tf        ← creates VPC, subnets, IGW, route tables
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>├── variables.tf   ← accepts: project, env, cidr_block
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>└── outputs.tf     ← exposes: vpc_id, subnet_ids, sg_id
+</span></code></pre></div>
+<h3 id="the-wiring-diagram-root-orchestrates-modules-do-not-talk-to-each-other">The Wiring Diagram — Root Orchestrates, Modules Do Not Talk to Each Other<a class="headerlink" href="#the-wiring-diagram-root-orchestrates-modules-do-not-talk-to-each-other" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>environments/dev/main.tf  (ROOT — the driver)
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>│
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>├── module &quot;vpc&quot;
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>│     source   = &quot;../../modules/vpc&quot;
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>│     vpc_cidr = &quot;10.0.0.0/16&quot;
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>│     │
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>│     outputs: vpc_id, subnet_ids, sg_id
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>│                    │
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>├── module &quot;ec2&quot; ◄───┘  (root passes vpc outputs as ec2 inputs)
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>│     source    = &quot;../../modules/ec2&quot;
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>│     subnet_id = module.vpc.subnet_public_a_id
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>│     sg_id     = module.vpc.sg_id
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>│     │
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>│     outputs: master_ip, worker_ips
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>│
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>└── module &quot;rds&quot; ◄───┘  (root passes vpc outputs as rds inputs)
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>      source     = &quot;../../modules/rds&quot;
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>      subnet_ids = [module.vpc.subnet_public_a_id, module.vpc.subnet_public_b_id]
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>      sg_id      = module.vpc.sg_id
+</span></code></pre></div>
+<p>The <code>vpc</code> module and the <code>ec2</code> module do not reference each other directly. The root <code>main.tf</code> wires them: it takes the output of one and passes it as the input of another. This keeps modules reusable and independently testable.</p>
+<h3 id="environment-isolation-separate-state-keys-per-environment">Environment Isolation — Separate State Keys Per Environment<a class="headerlink" href="#environment-isolation-separate-state-keys-per-environment" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>S3 bucket: mycompany-tfstate/
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>├── microshop/dev/terraform.tfstate     ← dev&#39;s diary
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>└── microshop/prod/terraform.tfstate    ← prod&#39;s diary (completely separate)
+</span></code></pre></div>
+<p>Running <code>terraform destroy</code> from <code>environments/dev/</code> destroys only what is in the dev state. Prod is untouched. This is the only production-safe pattern.</p>
+<p>Also use non-overlapping CIDR blocks per environment so VPC peering and VPN connections remain possible:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>Dev VPC:  10.0.0.0/16
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>Prod VPC: 10.1.0.0/16
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>          ↑ different second octet — no overlap
+</span></code></pre></div>
+<pre class="mermaid"><code>flowchart TD
+    Dev["env/dev&lt;br/&gt;cidr=10.0.0.0/16"]:::ci --&gt;|"calls"| M["module vpc&lt;br/&gt;(shared code)"]:::shared
+    Stg["env/staging&lt;br/&gt;cidr=10.2.0.0/16"]:::ci --&gt;|"calls"| M
+    Prod["env/prod&lt;br/&gt;cidr=10.1.0.0/16"]:::ci --&gt;|"calls"| M
+    M --&gt;|"provisions"| VPC[("VPC per env&lt;br/&gt;isolated resources")]:::run
+    Dev -.-&gt;|"own state"| SD[("dev tfstate")]:::store
+    Prod -.-&gt;|"own state"| SP[("prod tfstate")]:::store
+
+    classDef infra fill:#fce4ec,stroke:#d81b60,color:#880e4f;
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+    classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;</code></pre>
+<p><em>One shared module "vpc" called by dev, staging, and prod with different CIDRs; each environment writes to its own isolated tfstate.</em></p>
+<h3 id="dev-vs-prod-key-differences">Dev vs Prod — Key Differences<a class="headerlink" href="#dev-vs-prod-key-differences" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Dev</th>
+<th>Prod</th>
+<th>Why Different</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EC2 instance type</td>
+<td>t3.micro</td>
+<td>t3.medium</td>
+<td>Free-tier vs real load</td>
+</tr>
+<tr>
+<td>Worker node count</td>
+<td>0 (single-node)</td>
+<td>2</td>
+<td>HA and capacity</td>
+</tr>
+<tr>
+<td>RDS instance class</td>
+<td>db.t3.micro</td>
+<td>db.t3.small</td>
+<td>User volume</td>
+</tr>
+<tr>
+<td>RDS Multi-AZ</td>
+<td>false</td>
+<td>true</td>
+<td>AZ failure = 60s auto-failover</td>
+</tr>
+<tr>
+<td>RDS backup retention</td>
+<td>0 days</td>
+<td>7 days</td>
+<td>Point-in-time recovery</td>
+</tr>
+<tr>
+<td>skip_final_snapshot</td>
+<td>true</td>
+<td><strong>false</strong></td>
+<td>See Mistake 3 below</td>
+</tr>
+<tr>
+<td>Storage encryption</td>
+<td>false</td>
+<td>true</td>
+<td>GDPR / SOC 2 compliance</td>
+</tr>
+<tr>
+<td>SSH access</td>
+<td>your IP /32</td>
+<td>bastion CIDR only</td>
+<td>Attack surface reduction</td>
+</tr>
+<tr>
+<td>ECR tag mutability</td>
+<td>MUTABLE</td>
+<td>IMMUTABLE</td>
+<td>No accidental overwrite in prod</td>
+</tr>
+</tbody>
+</table>
+<h3 id="five-common-moduleenvironment-mistakes">Five Common Module/Environment Mistakes<a class="headerlink" href="#five-common-moduleenvironment-mistakes" title="Permanent link">&para;</a></h3>
+<p><strong>Mistake 1 — Same CIDR in dev and prod</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>Dev:  10.0.0.0/16
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>Prod: 10.0.0.0/16  ← identical
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>Problem: VPC peering setup → routing conflict → connectivity fails
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>Fix: Plan your CIDR allocation before writing a single line of Terraform
+</span></code></pre></div>
+<p><strong>Mistake 2 — Hardcoded environment name</strong></p>
+<div class="language-hcl highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Wrong</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="na">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;microshop-dev-vpc&quot;</span><span class="w"> </span><span class="p">}</span>
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Correct</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="nb">tags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="na">Name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;${var.project}-${var.env}-vpc&quot;</span><span class="w"> </span><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>Mistake 3 — skip_final_snapshot = true in prod</strong></p>
+<p>This is the data-loss war story. When someone runs <code>terraform destroy</code> against production by mistake (wrong terminal window, wrong workspace), RDS deletes the database. If <code>skip_final_snapshot = true</code>, there is no automatic snapshot. The data is gone permanently. There is no undo.</p>
+<p>Always set <code>skip_final_snapshot = false</code> in production. Verify that a snapshot exists before any <code>destroy</code> on RDS.</p>
+<p><strong>Mistake 4 — One shared tfstate key for all environments</strong></p>
+<div class="language-hcl highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Wrong — all envs write to the same file</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="na">key</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;terraform.tfstate&quot;</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1"># Correct</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="c1"># dev:  key = &quot;microshop/dev/terraform.tfstate&quot;</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="c1"># prod: key = &quot;microshop/prod/terraform.tfstate&quot;</span>
+</span></code></pre></div>
+<p><strong>Mistake 5 — Wrong output path when wiring modules</strong></p>
+<div class="language-hcl highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Wrong — module doesn&#39;t expose an output named &quot;subnet_id&quot;</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="na">subnet_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">module.vpc.subnet_id</span>
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># Correct — match the exact name in the module&#39;s outputs.tf</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="na">subnet_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">module.vpc.subnet_public_a_id</span>
+</span></code></pre></div>
+<p>Always check the module's <code>outputs.tf</code> before referencing its values in root.</p>
+<hr />
+<h2 id="real-production-example">Real Production Example<a class="headerlink" href="#real-production-example" title="Permanent link">&para;</a></h2>
+<p>The URL Shortener capstone (<a href="../12-capstone-url-shortener/">12-capstone-url-shortener.md</a>) uses this Terraform structure. Here is the directory layout:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>infra/
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>├── backend.tf       ← S3 + DynamoDB backend declaration
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>├── main.tf          ← VPC / subnets / IGW / route tables / SG / EC2 / RDS / ECR
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>├── variables.tf     ← db_password (sensitive = true), my_ip
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>└── outputs.tf       ← master_ip, worker_ips, rds_endpoint, ecr_url
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a># Modular version (production-grade):
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>infra/
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>├── modules/
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>│   ├── vpc/     (main.tf, variables.tf, outputs.tf)
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>│   ├── ec2/
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>│   ├── rds/
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>│   └── ecr/
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>└── environments/
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>    ├── dev/     (main.tf calls modules with dev values)
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>    └── prod/    (same modules, prod values, separate state key)
+</span></code></pre></div>
+<p>The <code>outputs.tf</code> block exposes <code>master_ip</code> and <code>worker_ips</code>. Ansible reads these to populate its inventory file, then configures Kubernetes on the nodes. This is the Terraform → Ansible handoff. See <a href="../03-M2-ansible/">03-M2-ansible.md</a>.</p>
+<hr />
+<h2 id="commands-explained">Commands, Explained<a class="headerlink" href="#commands-explained" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># Download the AWS provider plugin and configure the S3 backend.</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="c1"># Run once per project, or after adding a new provider.</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>terraform<span class="w"> </span>init
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="c1"># Show what Terraform will create, change, or destroy.</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="c1"># Reads: code + state + real AWS. Writes: nothing.</span>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="c1"># + = create, ~ = modify in place, - = destroy, -/+ = destroy and recreate</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>terraform<span class="w"> </span>plan
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="c1"># Apply the plan. Prompts for confirmation (type &quot;yes&quot;).</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="c1"># Passes -var for sensitive values not stored in code.</span>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>terraform<span class="w"> </span>plan<span class="w"> </span>-var<span class="o">=</span><span class="s2">&quot;db_password=Secret123!&quot;</span>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a>terraform<span class="w"> </span>apply<span class="w"> </span>-var<span class="o">=</span><span class="s2">&quot;db_password=Secret123!&quot;</span>
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="c1"># Print the output values defined in outputs.tf.</span>
+</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="c1"># Use this to get IPs and endpoints after apply.</span>
+</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a>terraform<span class="w"> </span>output
+</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a>
+</span><span id="__span-14-19"><a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a><span class="c1"># Show the current state as Terraform understands it.</span>
+</span><span id="__span-14-20"><a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a><span class="c1"># Use to debug drift or confirm what Terraform is tracking.</span>
+</span><span id="__span-14-21"><a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a>terraform<span class="w"> </span>show
+</span><span id="__span-14-22"><a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a>
+</span><span id="__span-14-23"><a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a><span class="c1"># Re-attach an existing resource to Terraform state without destroying it.</span>
+</span><span id="__span-14-24"><a id="__codelineno-14-24" name="__codelineno-14-24" href="#__codelineno-14-24"></a><span class="c1"># Use for lost-state recovery, one resource at a time.</span>
+</span><span id="__span-14-25"><a id="__codelineno-14-25" name="__codelineno-14-25" href="#__codelineno-14-25"></a>terraform<span class="w"> </span>import<span class="w"> </span>aws_instance.web<span class="w"> </span>i-0abc1234def567890
+</span><span id="__span-14-26"><a id="__codelineno-14-26" name="__codelineno-14-26" href="#__codelineno-14-26"></a>
+</span><span id="__span-14-27"><a id="__codelineno-14-27" name="__codelineno-14-27" href="#__codelineno-14-27"></a><span class="c1"># Destroy all resources in the current state. Prompts for &quot;yes&quot;.</span>
+</span><span id="__span-14-28"><a id="__codelineno-14-28" name="__codelineno-14-28" href="#__codelineno-14-28"></a><span class="c1"># Run from the right environment directory. Always confirm state is correct first.</span>
+</span><span id="__span-14-29"><a id="__codelineno-14-29" name="__codelineno-14-29" href="#__codelineno-14-29"></a>terraform<span class="w"> </span>destroy
+</span><span id="__span-14-30"><a id="__codelineno-14-30" name="__codelineno-14-30" href="#__codelineno-14-30"></a>
+</span><span id="__span-14-31"><a id="__codelineno-14-31" name="__codelineno-14-31" href="#__codelineno-14-31"></a><span class="c1"># Format all .tf files consistently. Run before every commit.</span>
+</span><span id="__span-14-32"><a id="__codelineno-14-32" name="__codelineno-14-32" href="#__codelineno-14-32"></a>terraform<span class="w"> </span>fmt
+</span><span id="__span-14-33"><a id="__codelineno-14-33" name="__codelineno-14-33" href="#__codelineno-14-33"></a>
+</span><span id="__span-14-34"><a id="__codelineno-14-34" name="__codelineno-14-34" href="#__codelineno-14-34"></a><span class="c1"># Check syntax and validate resource configurations. Run before plan.</span>
+</span><span id="__span-14-35"><a id="__codelineno-14-35" name="__codelineno-14-35" href="#__codelineno-14-35"></a>terraform<span class="w"> </span>validate
+</span></code></pre></div>
+<h3 id="plan-out-apply-exactly-what-you-reviewed"><code>plan -out</code>: apply exactly what you reviewed<a class="headerlink" href="#plan-out-apply-exactly-what-you-reviewed" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>terraform<span class="w"> </span>plan<span class="w"> </span>-out<span class="o">=</span>tfplan<span class="w">     </span><span class="c1"># save the exact plan to a file</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>terraform<span class="w"> </span>apply<span class="w"> </span>tfplan<span class="w">         </span><span class="c1"># apply THAT plan — no drift between review and apply</span>
+</span></code></pre></div>
+<p>In interactive use, <code>plan</code> followed immediately by <code>apply</code> is fine. In CI — and especially in a prod apply gate — there is a window between the plan you reviewed and the <code>apply</code> you run. If the state changed in that window (a teammate applied something, an autoscaler touched a resource), <code>apply</code> without a saved plan re-plans silently and acts on the new state, not what you reviewed and approved.</p>
+<p><code>plan -out=tfplan</code> captures the exact plan object at that moment. <code>apply tfplan</code> executes precisely that snapshot — no re-plan, no surprises. The capstone CI (<a href="../07-M6-cicd/">07-M6-cicd.md</a>) pairs this with an approval gate: <code>plan</code> runs on the PR, the plan file is stored as a pipeline artifact, and <code>apply</code> uses that file in the merge job — guaranteeing the apply matches what was reviewed.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> <code>plan -out</code> = jo tumne review kiya, wahi cheez apply hogi — plan aur apply ke beech mein state change se bach jaate ho. CI mein "reviewed plan" ko artifact ki tarah pakad ke rakho, phir exactly wahi apply karo.</p>
+</blockquote>
+<hr />
+<h2 id="beginner-mistakes-vs-senior-insights">Beginner Mistakes vs Senior Insights<a class="headerlink" href="#beginner-mistakes-vs-senior-insights" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Beginner Does</th>
+<th>Senior Does</th>
+<th>Why It Matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Stores state on laptop</td>
+<td>Remote S3 backend + DynamoDB lock from day one</td>
+<td>First teammate = instant chaos without remote state</td>
+</tr>
+<tr>
+<td>Commits <code>.tfstate</code> to Git</td>
+<td>Adds <code>*.tfstate*</code> to <code>.gitignore</code> before first commit</td>
+<td>State contains plaintext DB passwords</td>
+</tr>
+<tr>
+<td>Runs <code>apply</code> without reading <code>plan</code></td>
+<td>Always reads plan output; no -auto-approve in prod</td>
+<td>One typo can cascade to replacing a production database</td>
+</tr>
+<tr>
+<td>Uses <code>provisioner "remote-exec"</code> for config</td>
+<td>Hands off to Ansible via outputs</td>
+<td>Provisioners are not idempotent; they hide failures from state</td>
+</tr>
+<tr>
+<td>One flat <code>main.tf</code> for all environments</td>
+<td>Modules + per-environment directories + separate state keys</td>
+<td>Without isolation, <code>dev destroy</code> can take prod offline</td>
+</tr>
+<tr>
+<td>Same CIDR in dev and prod</td>
+<td>Plans CIDR allocation before writing any code</td>
+<td>Overlap makes VPC peering impossible later</td>
+</tr>
+<tr>
+<td><code>skip_final_snapshot = true</code> everywhere</td>
+<td>Only in dev; always <code>false</code> in prod</td>
+<td>A mistaken <code>destroy</code> in prod is permanent data loss</td>
+</tr>
+<tr>
+<td>Hardcodes AMI IDs</td>
+<td>Uses <code>data "aws_ami"</code> to fetch latest dynamically, or pins with a comment</td>
+<td>AMI IDs are region-specific; hardcode breaks cross-region deploys</td>
+</tr>
+<tr>
+<td>Never runs <code>terraform fmt</code></td>
+<td>Formats before every commit; runs <code>validate</code> before every plan</td>
+<td>Unformatted HCL fails peer review; invalid config wastes plan time</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="memory-shortcuts">Memory Shortcuts<a class="headerlink" href="#memory-shortcuts" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Hook</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IaC</td>
+<td>Blueprint — anyone can build from it</td>
+</tr>
+<tr>
+<td>tfstate</td>
+<td>Diary 📔 — Terraform's memory of what it built</td>
+</tr>
+<tr>
+<td>Declarative</td>
+<td>"Kya chahiye" — destination, not directions</td>
+</tr>
+<tr>
+<td>Idempotent</td>
+<td>Light switch — 100 presses = still ON, not 100× brighter</td>
+</tr>
+<tr>
+<td><code>plan</code></td>
+<td>Bill dekhna 🧾 — preview before payment</td>
+</tr>
+<tr>
+<td><code>apply</code></td>
+<td>Payment 💳 — real change, real cost</td>
+</tr>
+<tr>
+<td>Remote backend</td>
+<td>Shared almari — team reads the same diary</td>
+</tr>
+<tr>
+<td>Lock (DynamoDB)</td>
+<td>Taala 🔒 — one writer at a time</td>
+</tr>
+<tr>
+<td>Drift</td>
+<td>Diary intact, duniya badal gayi — <code>apply</code> fixes it</td>
+</tr>
+<tr>
+<td>Lost-state</td>
+<td>Diary jal gayi ☠️ — <code>import</code> to rebuild</td>
+</tr>
+<tr>
+<td>Orphaned resource</td>
+<td>Bina maalik ki gaay 🐄 — running but unmanaged</td>
+</tr>
+<tr>
+<td>Module</td>
+<td>Car engine — inputs in, outputs out, internals hidden</td>
+</tr>
+<tr>
+<td>user_data</td>
+<td>One-time startup script — runs at first boot only</td>
+</tr>
+<tr>
+<td>Provisioner</td>
+<td>Last resort — not idempotent, use Ansible instead</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="mutable-vs-immutable-infrastructure">Mutable vs Immutable Infrastructure<a class="headerlink" href="#mutable-vs-immutable-infrastructure" title="Permanent link">&para;</a></h2>
+<p>Terraform sits at the provisioning layer, which intersects both approaches:</p>
+<p><strong>Mutable infrastructure:</strong> You create a server with Terraform, then Ansible logs in and installs/updates software on the running machine. The machine accumulates changes over time. This is the pattern used in this bootcamp for the Kubernetes cluster.</p>
+<p><strong>Immutable infrastructure:</strong> You bake everything into a machine image at build time (using Packer to create an AMI — Amazon Machine Image, the EC2 equivalent of a Docker image). When you need a change, you build a new image and replace the old servers. Nothing is ever modified in place.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Mutable (Terraform + Ansible)</th>
+<th>Immutable (Terraform + Packer)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Change method</td>
+<td><code>ansible-playbook</code> on running servers</td>
+<td>Build new AMI → <code>terraform apply</code> replaces EC2</td>
+</tr>
+<tr>
+<td>Drift risk</td>
+<td>High — servers diverge over time</td>
+<td>Low — every server is identical to the image</td>
+</tr>
+<tr>
+<td>Speed</td>
+<td>Fast incremental updates</td>
+<td>Slow to build image; fast to deploy</td>
+</tr>
+<tr>
+<td>Complexity</td>
+<td>Lower to start</td>
+<td>Higher pipeline; right choice at scale</td>
+</tr>
+<tr>
+<td>Bootcamp use</td>
+<td>Phase 4 (Ansible + kubeadm)</td>
+<td>Beyond this scope; Packer is the tool</td>
+</tr>
+</tbody>
+</table>
+<p>Containers (Docker + Kubernetes, covered in <a href="../04-M3-docker/">04-M3-docker.md</a> and <a href="../05-M4-kubernetes-core/">05-M4-kubernetes-core.md</a>) are the most common form of immutable infrastructure in practice.</p>
+<hr />
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>Terraform gives you three things that ClickOps cannot:</p>
+<ol>
+<li><strong>A record</strong> — everything is in <code>.tf</code> files that live in Git. The commit history is your infrastructure history.</li>
+<li><strong>A preview</strong> — <code>plan</code> shows you exactly what will change before anything changes. This is the seatbelt.</li>
+<li><strong>A repeatable process</strong> — the same code, applied twice, produces the same result. No snowflakes.</li>
+</ol>
+<p>The state file is the critical dependency. Protect it: remote S3 backend, DynamoDB lock, encryption on, never in Git. Understand the difference between drift (state intact, reality changed — recoverable with <code>apply</code>) and lost-state (state gone — potentially catastrophic, recover with <code>import</code>).</p>
+<p>Modules turn copy-paste into composition. Separate state keys per environment ensure that a <code>dev destroy</code> can never touch production.</p>
+<p>Terraform hands off to Ansible via outputs. Terraform builds the server; Ansible configures what runs inside it.</p>
+<hr />
+<h2 id="self-check-quiz">Self-Check Quiz<a class="headerlink" href="#self-check-quiz" title="Permanent link">&para;</a></h2>
+<p>Pehle memory se jawab do, phir neeche kholo.</p>
+<ol>
+<li>
+<p>What is the difference between declarative and imperative configuration? Give a one-line example of each in the context of Terraform vs a bash script.</p>
+</li>
+<li>
+<p>You run <code>terraform apply</code> five times against code that declares <code>count = 3</code>. How many EC2 instances exist after the fifth apply? Why?</p>
+</li>
+<li>
+<p>Your state file is in S3. Two teammates run <code>apply</code> at exactly the same time. What prevents the state file from being corrupted?</p>
+</li>
+<li>
+<p>A developer logs into the AWS console and manually opens port 443 on a security group. You then run <code>terraform plan</code>. What does it show, and what happens when you run <code>terraform apply</code>?</p>
+</li>
+<li>
+<p>The S3 bucket containing your state file is accidentally deleted. You have five production EC2 instances running. You run <code>terraform apply</code>. How many EC2 instances exist afterwards, and why?</p>
+</li>
+<li>
+<p>What is an orphaned resource, and what command do you run to bring it back under Terraform management?</p>
+</li>
+<li>
+<p>Why does HashiCorp recommend against using <code>provisioner "remote-exec"</code> for server configuration? What should you use instead?</p>
+</li>
+<li>
+<p>Your module <code>modules/vpc</code> exposes <code>subnet_public_a_id</code> in its <code>outputs.tf</code>. In <code>environments/dev/main.tf</code>, how do you reference that value when wiring it to the <code>ec2</code> module?</p>
+</li>
+</ol>
+<details>
+<summary>Jawab dekho</summary>
+<ol>
+<li>Declarative = desired end-state describe karo ("3 servers chahiye"); tool khud steps figure out karta. Imperative = har step manually likhna padta ("Step 1: VPC banao, Step 2: subnet..."). Terraform declarative — <code>resource "aws_instance" "web" { count = 3 }</code>; bash script imperative — <code>aws ec2 run-instances ...</code> ek ek kar ke.</li>
+<li>3 instances. Terraform SET operation karta (desired = 3), ADD nahi (actual += 3). Idempotency — 5 baar apply karo, sirf 3 servers.</li>
+<li>DynamoDB table distributed lock ka kaam karta hai. <code>apply</code> start hote hi lock entry write hoti; doosra <code>apply</code> wait ya fail karta. Done hone ke baad lock release. State file concurrent writes se safe.</li>
+<li><code>terraform plan</code> shows <code>~ aws_security_group.web</code> with port 443 as drift — reality state se alag hai. <code>terraform apply</code> manually-added rule remove karta, reality ko code pe wapas laata hai.</li>
+<li>10 EC2 instances. State zero dikhata → Terraform 5 naye banata. Original 5 orphaned ho jaate — running hain, bill bana rahe hain, lekin state mein nahi. Fix: apply mat karo. Har existing instance ke liye <code>terraform import aws_instance.web_N i-0abc...</code> chala ke state rebuild karo.</li>
+<li>Orphaned resource = cloud mein exist karta hai lekin state file mein entry nahi. Command: <code>terraform import aws_instance.web i-0abc1234def567890</code> — ek ek resource, ek ek baar.</li>
+<li>Provisioners sirf creation pe ek baar chalte hain (re-apply pe nahi) — idempotent nahi. Unki failures state mein reflect nahi hoti. Terraform/Ansible boundary blur hoti. HashiCorp khud "last resort" kehta. Use Ansible — idempotent, drift handle karta, state check karta.</li>
+<li><code>subnet_id = module.vpc.subnet_public_a_id</code> — pattern: <code>module.&lt;module_name&gt;.&lt;output_name&gt;</code>. Module ka <code>outputs.tf</code> zaroor check karo pehle; wrong name pe plan fail hoga.</li>
+</ol>
+</details>
+<hr />
+<h2 id="hands-on-lab">Hands-On Lab<a class="headerlink" href="#hands-on-lab" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Apply the core Terraform workflow on a real (free-tier) resource.</p>
+<p><strong>Cost:</strong> A single <code>aws_s3_bucket</code> resource costs $0 (storage is charged per GB stored; an empty bucket is free). Always run <code>terraform destroy</code> at the end.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># 1. Install Terraform (if not already done)</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="c1">#    https://developer.hashicorp.com/terraform/install</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>terraform<span class="w"> </span>version<span class="w">   </span><span class="c1"># should show 1.x.x</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="c1"># 2. Configure AWS credentials</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>aws<span class="w"> </span>configure<span class="w">      </span><span class="c1"># enter access key, secret key, region (ap-south-1 recommended)</span>
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>aws<span class="w"> </span>sts<span class="w"> </span>get-caller-identity<span class="w">   </span><span class="c1"># verify — should return your account ID</span>
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="c1"># 3. Create a working directory</span>
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>mkdir<span class="w"> </span>tf-lab<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">cd</span><span class="w"> </span>tf-lab
+</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>
+</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="c1"># 4. Write main.tf</span>
+</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>main.tf<span class="w"> </span><span class="s">&lt;&lt; &#39;EOF&#39;</span>
+</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="s">terraform {</span>
+</span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="s">  required_providers {</span>
+</span><span id="__span-16-16"><a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="s">    aws = { source = &quot;hashicorp/aws&quot;, version = &quot;~&gt; 5.0&quot; }</span>
+</span><span id="__span-16-17"><a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="s">  }</span>
+</span><span id="__span-16-18"><a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a><span class="s">}</span>
+</span><span id="__span-16-19"><a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a>
+</span><span id="__span-16-20"><a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a><span class="s">provider &quot;aws&quot; {</span>
+</span><span id="__span-16-21"><a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a><span class="s">  region = &quot;ap-south-1&quot;</span>
+</span><span id="__span-16-22"><a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a><span class="s">}</span>
+</span><span id="__span-16-23"><a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a>
+</span><span id="__span-16-24"><a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a><span class="s">resource &quot;aws_s3_bucket&quot; &quot;lab&quot; {</span>
+</span><span id="__span-16-25"><a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a><span class="s">  bucket = &quot;tf-lab-yourname-2024&quot;   # must be globally unique — add your name</span>
+</span><span id="__span-16-26"><a id="__codelineno-16-26" name="__codelineno-16-26" href="#__codelineno-16-26"></a><span class="s">  tags   = { Purpose = &quot;terraform-lab&quot; }</span>
+</span><span id="__span-16-27"><a id="__codelineno-16-27" name="__codelineno-16-27" href="#__codelineno-16-27"></a><span class="s">}</span>
+</span><span id="__span-16-28"><a id="__codelineno-16-28" name="__codelineno-16-28" href="#__codelineno-16-28"></a>
+</span><span id="__span-16-29"><a id="__codelineno-16-29" name="__codelineno-16-29" href="#__codelineno-16-29"></a><span class="s">output &quot;bucket_name&quot; {</span>
+</span><span id="__span-16-30"><a id="__codelineno-16-30" name="__codelineno-16-30" href="#__codelineno-16-30"></a><span class="s">  value = aws_s3_bucket.lab.bucket</span>
+</span><span id="__span-16-31"><a id="__codelineno-16-31" name="__codelineno-16-31" href="#__codelineno-16-31"></a><span class="s">}</span>
+</span><span id="__span-16-32"><a id="__codelineno-16-32" name="__codelineno-16-32" href="#__codelineno-16-32"></a><span class="s">EOF</span>
+</span><span id="__span-16-33"><a id="__codelineno-16-33" name="__codelineno-16-33" href="#__codelineno-16-33"></a>
+</span><span id="__span-16-34"><a id="__codelineno-16-34" name="__codelineno-16-34" href="#__codelineno-16-34"></a><span class="c1"># 5. Run the lifecycle</span>
+</span><span id="__span-16-35"><a id="__codelineno-16-35" name="__codelineno-16-35" href="#__codelineno-16-35"></a>terraform<span class="w"> </span>init<span class="w">      </span><span class="c1"># downloads AWS provider</span>
+</span><span id="__span-16-36"><a id="__codelineno-16-36" name="__codelineno-16-36" href="#__codelineno-16-36"></a>terraform<span class="w"> </span>validate<span class="w">  </span><span class="c1"># checks syntax</span>
+</span><span id="__span-16-37"><a id="__codelineno-16-37" name="__codelineno-16-37" href="#__codelineno-16-37"></a>terraform<span class="w"> </span>plan<span class="w">      </span><span class="c1"># should show: Plan: 1 to add</span>
+</span><span id="__span-16-38"><a id="__codelineno-16-38" name="__codelineno-16-38" href="#__codelineno-16-38"></a>terraform<span class="w"> </span>apply<span class="w">     </span><span class="c1"># type &quot;yes&quot; when prompted</span>
+</span><span id="__span-16-39"><a id="__codelineno-16-39" name="__codelineno-16-39" href="#__codelineno-16-39"></a>
+</span><span id="__span-16-40"><a id="__codelineno-16-40" name="__codelineno-16-40" href="#__codelineno-16-40"></a><span class="c1"># 6. Verify</span>
+</span><span id="__span-16-41"><a id="__codelineno-16-41" name="__codelineno-16-41" href="#__codelineno-16-41"></a>aws<span class="w"> </span>s3<span class="w"> </span>ls<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>tf-lab
+</span><span id="__span-16-42"><a id="__codelineno-16-42" name="__codelineno-16-42" href="#__codelineno-16-42"></a>terraform<span class="w"> </span>output
+</span><span id="__span-16-43"><a id="__codelineno-16-43" name="__codelineno-16-43" href="#__codelineno-16-43"></a>
+</span><span id="__span-16-44"><a id="__codelineno-16-44" name="__codelineno-16-44" href="#__codelineno-16-44"></a><span class="c1"># 7. Experiment with drift</span>
+</span><span id="__span-16-45"><a id="__codelineno-16-45" name="__codelineno-16-45" href="#__codelineno-16-45"></a><span class="c1">#    Go to AWS console → S3 → add a tag to the bucket manually.</span>
+</span><span id="__span-16-46"><a id="__codelineno-16-46" name="__codelineno-16-46" href="#__codelineno-16-46"></a><span class="c1">#    Then run:</span>
+</span><span id="__span-16-47"><a id="__codelineno-16-47" name="__codelineno-16-47" href="#__codelineno-16-47"></a>terraform<span class="w"> </span>plan<span class="w">      </span><span class="c1"># should show drift: the tag you added</span>
+</span><span id="__span-16-48"><a id="__codelineno-16-48" name="__codelineno-16-48" href="#__codelineno-16-48"></a>
+</span><span id="__span-16-49"><a id="__codelineno-16-49" name="__codelineno-16-49" href="#__codelineno-16-49"></a><span class="c1"># 8. Cleanup (important — always destroy lab resources)</span>
+</span><span id="__span-16-50"><a id="__codelineno-16-50" name="__codelineno-16-50" href="#__codelineno-16-50"></a>terraform<span class="w"> </span>destroy<span class="w">   </span><span class="c1"># type &quot;yes&quot;</span>
+</span><span id="__span-16-51"><a id="__codelineno-16-51" name="__codelineno-16-51" href="#__codelineno-16-51"></a>aws<span class="w"> </span>s3<span class="w"> </span>ls<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>tf-lab<span class="w">   </span><span class="c1"># should be empty</span>
+</span></code></pre></div>
+<p><strong>What you observed:</strong>
+- <code>init</code> downloaded the provider
+- <code>plan</code> showed the future state without making changes
+- <code>apply</code> created the bucket and updated state
+- The manually added console tag appeared as drift in the next <code>plan</code>
+- <code>destroy</code> removed everything and cleared state</p>
+<p><strong>✅ Sahi hua to aisa dikhega:</strong> Step 5 ke baad <code>terraform plan</code> shows <code>Plan: 0 to add, 0 to change, 0 to destroy</code> (bucket already exists). Step 7 (drift experiment) mein <code>terraform plan</code> shows <code>~ aws_s3_bucket.lab</code> with the manually-added console tag as a pending change. Final <code>terraform destroy</code> ke baad <code>aws s3 ls | grep tf-lab</code> kuch return nahi karta — bucket gone, state cleared.</p>
+<hr />
+<h2 id="interview-questions">Interview Questions<a class="headerlink" href="#interview-questions" title="Permanent link">&para;</a></h2>
+<p><strong>Q1: What is infrastructure drift, and how does Terraform detect and correct it?</strong></p>
+<p>Drift occurs when someone modifies infrastructure outside of Terraform — typically via the cloud console or CLI. Terraform detects it during <code>terraform plan</code> by querying the real AWS APIs and comparing the result against the state file. Any mismatch appears as a change in the plan output. Running <code>terraform apply</code> brings reality back in line with the code. The key point: drift is only detectable because the state file is intact.</p>
+<p><strong>Q2: Your state file is gone. You have 5 production servers running. You run <code>terraform apply</code>. How many servers exist afterwards, and how do you actually recover?</strong></p>
+<p>After apply: 10 servers. Terraform sees no state, assumes zero resources exist, creates 5 new ones. The existing 5 are now orphans — unmanaged, still billing you, not in the new state.</p>
+<p>Recovery: stop before applying. Run <code>terraform import aws_instance.web_0 i-0abc...</code> for each existing server, one at a time, to reconstruct the state file without touching the real resources. Then run <code>plan</code> to verify state matches reality before any <code>apply</code>.</p>
+<p><strong>Q3: Why should the state file never be stored in Git?</strong></p>
+<p>Terraform writes sensitive values — including database passwords, private keys, and secret tokens — to the state file in plaintext. Git history is permanent and often shared. Once a secret is committed, it is effectively leaked even after deletion (it remains in history). Use S3 with encryption and restricted IAM access.</p>
+<p><strong>Q4: What is the difference between <code>user_data</code> and a Terraform provisioner?</strong></p>
+<p><code>user_data</code> (cloud-init) is a bootstrap script passed to the EC2 instance that runs once at first boot. It is handled entirely by the operating system at startup — Terraform just delivers the script. A <code>provisioner</code> is a Terraform-specific construct that runs commands (via SSH or locally) after a resource is created. Provisioners are not idempotent, their failures may not be reflected in state, and they blur the boundary between Terraform and Ansible. Use <code>user_data</code> for one-time boot tasks; use Ansible for anything repeatable and configurable.</p>
+<p><strong>Q5: How do you manage multiple environments (dev, staging, prod) safely with Terraform?</strong></p>
+<p>Use a module-per-component structure (<code>modules/vpc</code>, <code>modules/ec2</code>, <code>modules/rds</code>) with a separate environment directory per environment (<code>environments/dev</code>, <code>environments/prod</code>). Each environment directory has its own backend configuration pointing to a unique S3 key. This ensures that <code>terraform destroy</code> in dev cannot affect prod, that state files are completely isolated, and that the same module code is reused with different variable values per environment.</p>
+<p><strong>Bonus scenario question:</strong> A senior engineer says "our Terraform apply ran successfully but prod is down." What are three things you check first?</p>
+<ol>
+<li>Check <code>terraform plan</code> output — did an apply trigger a resource replacement (<code>-/+</code>) that caused brief downtime?</li>
+<li>Check if <code>skip_final_snapshot = false</code> and whether an RDS replacement dropped the database.</li>
+<li>Check whether a security group change removed an inbound rule (e.g., port 80/443) that the load balancer needs.</li>
+</ol>
+<hr />
+<h2 id="production-challenge">Production Challenge<a class="headerlink" href="#production-challenge" title="Permanent link">&para;</a></h2>
+<p>Design and implement a three-environment Terraform module structure for a hypothetical e-commerce application with the following components: VPC, public and private subnets, NAT Gateway, EC2 instances for application servers, RDS PostgreSQL, and ECR.</p>
+<p>Requirements:
+- Each environment (dev, staging, prod) must have completely isolated state.
+- Modules must be reusable — adding a fourth environment should require only a new <code>environments/qa/main.tf</code> with different variable values.
+- CIDR blocks must not overlap across environments.
+- Prod must have Multi-AZ RDS, encryption, 7-day backups, and <code>skip_final_snapshot = false</code>.
+- Dev must work within AWS free-tier limits.
+- All sensitive values (passwords, IPs) must be passed via variables — nothing hardcoded.</p>
+<p>Deliverables: directory structure, module interfaces (<code>variables.tf</code> + <code>outputs.tf</code> for each module), and a <code>environments/prod/main.tf</code> showing the complete wiring. Show the backend configuration for each environment.</p>
+<p>This challenge maps directly to what a DevOps engineer builds on day one at a Series B startup. If you can explain every decision here, you can answer any Terraform interview question.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../01-M0-foundations/" class="md-footer__link md-footer__link--prev" aria-label="Previous: M0 · Foundations">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                M0 · Foundations
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../03-M2-ansible/" class="md-footer__link md-footer__link--next" aria-label="Next: M2 · Ansible">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                M2 · Ansible
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 grvtech1 — licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/grvtech1/devops-handbook" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "announce.dismiss"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/progress.js"></script>
+      
+    
+  </body>
+</html>

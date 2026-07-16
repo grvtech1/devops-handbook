@@ -1,0 +1,2989 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free, zero-to-job-ready DevOps handbook — from "what is a terminal" to production- and interview-ready. Systems thinking, hands-on labs, capstones.">
+      
+      
+      
+        <link rel="canonical" href="https://grvtech1.github.io/devops-handbook/29-confidence-sprint/">
+      
+      
+        <link rel="prev" href="../27-10-day-plan/">
+      
+      
+        <link rel="next" href="../28-helm-real-projects/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>10-Day Confidence Sprint (drill) - The DevOps Engineer's Handbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%206a6%206%200%200%201%206%206c0%202.22-1.21%204.16-3%205.2V19a1%201%200%200%201-1%201h-4a1%201%200%200%201-1-1v-1.8c-1.79-1.04-3-2.98-3-5.2a6%206%200%200%201%206-6m2%2015v1a1%201%200%200%201-1%201h-2a1%201%200%200%201-1-1v-1zm6-10h3v2h-3zM1%2011h3v2H1zM13%201v3h-2V1zM4.92%203.5l2.13%202.14-1.42%201.41L3.5%204.93zm12.03%202.13%202.12-2.13%201.43%201.43-2.13%202.12z%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m13.13%2022.19-1.63-3.83c1.57-.58%203.04-1.36%204.4-2.27zM5.64%2012.5l-3.83-1.63%206.1-2.77C7%209.46%206.22%2010.93%205.64%2012.5M21.61%202.39S16.66.269%2011%205.93c-2.19%202.19-3.5%204.6-4.35%206.71-.28.75-.09%201.57.46%202.13l2.13%202.12c.55.56%201.37.74%202.12.46A19.1%2019.1%200%200%200%2018.07%2013c5.66-5.66%203.54-10.61%203.54-10.61m-7.07%207.07c-.78-.78-.78-2.05%200-2.83s2.05-.78%202.83%200c.77.78.78%202.05%200%202.83s-2.05.78-2.83%200m-5.66%207.07-1.41-1.41zM6.24%2022l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83%2022zM2%2022h1.41l4.77-4.76-1.42-1.41L2%2020.59zm0-2.83%204.09-4.08c-.21-.3-.36-.62-.45-.97L2%2017.76z%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M13%2014h-2V9h2m0%209h-2v-2h2M1%2021h22L12%202z%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M8%2015a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m2.5%202%201.5-3%201.5%203zm5.5-2a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m6-4A10%2010%200%200%200%2012%201%2010%2010%200%200%200%202%2011c0%202.8%201.2%205.3%203%207.1V22h14v-3.9c1.8-1.8%203-4.3%203-7.1m-5%209h-2v-2h-2v2h-2v-2H9v2H7v-2.8c-1.8-1.5-3-3.7-3-6.2a8%208%200%200%201%208-8%208%208%200%200%201%208%208c0%202.5-1.2%204.8-3%206.2z%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#29-the-10-day-confidence-sprint-revise-do-prove" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  🚀 <strong>26 chapters</strong> · rendered diagrams · hands-on labs · a 26-scenario incident playbook — all free (CC BY 4.0).
+  &nbsp;
+  <a href="https://github.com/grvtech1/devops-handbook" style="color: inherit; text-decoration: underline; font-weight: 700;">⭐ Star it on GitHub</a>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-header__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The DevOps Engineer's Handbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              10-Day Confidence Sprint (drill)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../study-plan/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Study Plan
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../progress/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  My Progress
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../00-INDEX/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Handbook
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-nav__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    The DevOps Engineer's Handbook
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../study-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    My Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handbook
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Handbook
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-INDEX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Curriculum (Index)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 0 — Pre-flight
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 0 — Pre-flight
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00a-preflight/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00a · Pre-flight ground floor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00b-setup-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00b · Setup runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-linux-toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux · the ground everything runs on
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part I — Core toolchain
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part I — Core toolchain
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-M0-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M0 · Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-M1-terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M1 · Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-M2-ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M2 · Ansible
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-M3-docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M3 · Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-M4-kubernetes-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M4 · Kubernetes Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-M5-sizing-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M5 · Sizing & Cost
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-M6-cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M6 · CI/CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-M7-gitops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M7 · GitOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part II — Systems thinking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part II — Systems thinking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-connected-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Connected System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-k8s-objects-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Objects · How They Connect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-10-day-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Learning Plan (understand)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Confidence Sprint (drill)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Confidence Sprint (drill)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-one-honest-truth-about-this-sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The one honest truth about this sprint
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gap-analysis-saaf-baat-jo-actually-gaps-hain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gap analysis — saaf baat (jo actually gaps hain)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#har-din-ka-format-3-lanes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Har din ka format — 3 lanes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-10-day-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 10-day map
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-1-fundamentals-drill-linux-git-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 1 — Fundamentals drill: Linux · Git · Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-2-kubernetes-core-self-heal-scale-rollout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 2 — Kubernetes Core: self-heal, scale, rollout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-3-config-secret-storage-break-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 3 — Config · Secret · Storage: break &amp; fix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-4-networking-service-ingress-dns-networkpolicy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 4 — Networking: Service · Ingress · DNS · NetworkPolicy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-5-cicd-follow-one-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 5 — CI/CD: follow one commit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-6-gitops-helm-argocd-sync-drift" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 6 — GitOps + Helm: ArgoCD sync &amp; drift
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-7-outer-loop-terraform-ansible-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 7 — Outer loop: Terraform · Ansible · AWS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-8-observability-sre-2-am-drill" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 8 — Observability &amp; SRE: 2 a.m. drill
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-9-break-fix-incident-chaos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 9 — Break &amp; fix: Incident + Chaos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-10-grand-opening-end-to-end-interview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 10 — Grand opening: end-to-end + interview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#har-din-chalta-rahega-the-recall-habit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Har din chalta rahega — the recall habit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-din-baad-confident-ka-matlab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10 din baad — "confident" ka matlab
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../28-helm-real-projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Helm in the Real World (your 2 projects)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-cicd-hands-on-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Follow One Commit (hands-on CI/CD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part III — Operate
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part III — Operate
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-M8-observability-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M8 · Observability & SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-M9-advanced-k8s-internals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M9 · Advanced K8s Internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30-k8s-complete-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Complete Reference (Workloads · Scheduling · Ops)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-production-incident-playbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Incident Playbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part IV — Capstones
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part IV — Capstones
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-capstone-url-shortener/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone I · URL Shortener
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-capstone-microshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone II · MicroShop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part V — Reference & career
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part V — Reference & career
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-interview-bank/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview Bank
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-confusions-and-tradeoffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Confusions & Trade-offs (X-vs-Y)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-command-cheatsheets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Command Cheat-Sheets & Labs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-roadmap-M11-M18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap · M11–M18
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-reference-appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Appendix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-career-job-ready/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Job-Ready
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part VI — The Production Gauntlet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part VI — The Production Gauntlet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-production-gauntlet-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build the Real System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-production-gauntlet-chaos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chaos Engineering · break & fix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-one-honest-truth-about-this-sprint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The one honest truth about this sprint
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gap-analysis-saaf-baat-jo-actually-gaps-hain" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gap analysis — saaf baat (jo actually gaps hain)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#har-din-ka-format-3-lanes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Har din ka format — 3 lanes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-10-day-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 10-day map
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-1-fundamentals-drill-linux-git-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 1 — Fundamentals drill: Linux · Git · Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-2-kubernetes-core-self-heal-scale-rollout" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 2 — Kubernetes Core: self-heal, scale, rollout
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-3-config-secret-storage-break-fix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 3 — Config · Secret · Storage: break &amp; fix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-4-networking-service-ingress-dns-networkpolicy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 4 — Networking: Service · Ingress · DNS · NetworkPolicy
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-5-cicd-follow-one-commit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 5 — CI/CD: follow one commit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-6-gitops-helm-argocd-sync-drift" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 6 — GitOps + Helm: ArgoCD sync &amp; drift
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-7-outer-loop-terraform-ansible-aws" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 7 — Outer loop: Terraform · Ansible · AWS
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-8-observability-sre-2-am-drill" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 8 — Observability &amp; SRE: 2 a.m. drill
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-9-break-fix-incident-chaos" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 9 — Break &amp; fix: Incident + Chaos
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#day-10-grand-opening-end-to-end-interview" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Day 10 — Grand opening: end-to-end + interview
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#har-din-chalta-rahega-the-recall-habit" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Har din chalta rahega — the recall habit
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-din-baad-confident-ka-matlab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10 din baad — "confident" ka matlab
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="29-the-10-day-confidence-sprint-revise-do-prove">29 — The 10-Day Confidence Sprint: Revise · Do · Prove<a class="headerlink" href="#29-the-10-day-confidence-sprint-revise-do-prove" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Ye chapter kab padhen:</strong> Jab concepts <em>clear ho chuke hain</em> aur ab <strong>haath ka bharosa</strong> (confidence) chahiye — real project pe karke, recall karke, bol ke. Ye <a href="../27-10-day-plan/">27 — 10-Day Learning Plan</a> ka <strong>agla step</strong> hai.</p>
+<ul>
+<li><strong><a href="../27-10-day-plan/">27 — Learning Plan</a></strong> = <em>pehli baar</em> — restaurant analogy se sab connect karo (understand).</li>
+<li><strong>29 (yeh) — Confidence Sprint</strong> = <em>dusri baar</em> — padhna band, <strong>karo + recall karo + bolo</strong> (drill).</li>
+</ul>
+</blockquote>
+<hr />
+<h2 id="the-one-honest-truth-about-this-sprint">The one honest truth about this sprint<a class="headerlink" href="#the-one-honest-truth-about-this-sprint" title="Permanent link">&para;</a></h2>
+<p>Tera content gap mein nahi hai — <strong>execution mein hai.</strong></p>
+<p>Is handbook mein 28 module hain: recall gates, flashcards, incident playbook (26 issues), 2 capstones, chaos engineering. Ye kisi paid bootcamp se behtar hai. Par agar <a href="../progress/">progress.md</a> ke checkbox <strong>untick</strong> hain aur spaced-review log <strong>khaali</strong> hai — to matlab <em>padha bahut, drill nahi kiya</em>. Aur confidence content se nahi, <strong>reps</strong> se aata hai.</p>
+<p>Ye 10 din isi ek cheez ke liye hain: <strong>har concept ko apne do real projects pe karo</strong> — VANTA-Boutique (kind, local) aur Billfree-techops (AWS, production) — padho mat, <em>karo</em>.</p>
+<div class="admonition tip">
+<p class="admonition-title">🎨 Visual dashboard</p>
+<p>Isi sprint ka ek interactive, daily-open dashboard bhi hai: <strong><code>10_Day_Confidence_Sprint.html</code></strong> (repo root). Roz kholo, aaj ka din expand karo, 3 lanes karo, tick karo. Ye chapter reference + progress tracking ke liye; wo daily driver ke liye.</p>
+</div>
+<hr />
+<h2 id="gap-analysis-saaf-baat-jo-actually-gaps-hain">Gap analysis — saaf baat (jo actually gaps hain)<a class="headerlink" href="#gap-analysis-saaf-baat-jo-actually-gaps-hain" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Bucket</th>
+<th>Kya</th>
+<th>Sprint mein</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>✅ <strong>Poora + gehra</strong></td>
+<td>Linux, Git, Docker, K8s core+config+storage, CI/CD, GitOps, Helm, Kustomize, Terraform, Ansible, Observability, Incident playbook, Chaos</td>
+<td>Bas <strong>drill</strong> karo</td>
+</tr>
+<tr>
+<td>⚠️ <strong>Patla</strong> (concept hai, hands-on kam)</td>
+<td>Secrets maturity (Vault / SealedSecrets / External Secrets), Service mesh (Istio/mTLS), Azure/AZ-900</td>
+<td>Ek mini-lab / abhi optional</td>
+</tr>
+<tr>
+<td>⏭️ <strong>Abhi skip</strong> (10-din ke baad)</td>
+<td>Roadmap <a href="../15-roadmap-M11-M18/">M11–M18</a> — progressive delivery, supply-chain security, distributed systems</td>
+<td>Baad mein</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Tere paas gadi (content) already hai — bas chalayi nahi. Ye sprint driving lessons hai, nayi gadi kharidna nahi.</p>
+</blockquote>
+<hr />
+<h2 id="har-din-ka-format-3-lanes">Har din ka format — 3 lanes<a class="headerlink" href="#har-din-ka-format-3-lanes" title="Permanent link">&para;</a></h2>
+<p>Har din yehi teen lanes, isi order mein. Kabhi sirf padho mat.</p>
+<table>
+<thead>
+<tr>
+<th>Lane</th>
+<th>Time</th>
+<th>Kya</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>↩️ <strong>Revise</strong></td>
+<td>~15 min</td>
+<td>Us din ke chapter ka <em>recall gate</em> <strong>memory se</strong> — dobara padho nahi, dobara <em>nikaalo</em>. Yehi <a href="../00-INDEX/">active recall</a> hai (spaced-review system).</td>
+</tr>
+<tr>
+<td>▸ <strong>Do</strong></td>
+<td>60–90 min</td>
+<td>Terminal kholo. VANTA/Billfree pe <strong>actual commands</strong>. Todo, banao, badlo. Haath se — koi tumhare liye execute na kare.</td>
+</tr>
+<tr>
+<td>✅ <strong>Prove</strong></td>
+<td>~15 min</td>
+<td>Blank page pe diagram banao, ya loud bolo jaise interview mein. Atka? <strong>Wahi kal ka revise.</strong></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="the-10-day-map">The 10-day map<a class="headerlink" href="#the-10-day-map" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart LR
+  D1["Day 1\nLinux·Git·Docker"]:::a
+  D2["Day 2\nK8s Core"]:::a
+  D3["Day 3\nConfig·Secret·Storage"]:::b
+  D4["Day 4\nNetworking"]:::c
+  D5["Day 5\nCI/CD"]:::c
+  D6["Day 6\nGitOps·Helm"]:::d
+  D7["Day 7\nTerraform·Ansible"]:::e
+  D8["Day 8\nObservability"]:::b
+  D9["Day 9\nBreak &amp; Fix"]:::e
+  D10["Day 10\nEnd-to-end + Interview"]:::c
+  D1--&gt;D2--&gt;D3--&gt;D4--&gt;D5--&gt;D6--&gt;D7--&gt;D8--&gt;D9--&gt;D10
+  classDef a fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  classDef b fill:#fff3e0,stroke:#e65100,color:#bf360c
+  classDef c fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+  classDef d fill:#f3e5f5,stroke:#6a1b9a,color:#4a148c
+  classDef e fill:#fce4ec,stroke:#880e4f,color:#880e4f</code></pre>
+<hr />
+<h2 id="day-1-fundamentals-drill-linux-git-docker">Day 1 — Fundamentals drill: Linux · Git · Docker<a class="headerlink" href="#day-1-fundamentals-drill-linux-git-docker" title="Permanent link">&para;</a></h2>
+<p><em>zameen pakki karo</em></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:3"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><input id="__tabbed_1_2" name="__tabbed_1" type="radio" /><input id="__tabbed_1_3" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">↩️ Revise (15 min)</label><label for="__tabbed_1_2">▸ Do (60–90 min)</label><label for="__tabbed_1_3">✅ Prove (15 min)</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ul>
+<li><a href="../21-linux-toolkit/">21 — Linux toolkit</a> + <a href="../04-M3-docker/">04 — Docker</a> ke recall gates, memory se</li>
+<li>Ek line: image vs container vs registry vs layer?</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><strong>VANTA:</strong> frontend ka Dockerfile padho → <code>docker build</code> → <code>docker run</code> → browser</li>
+<li><code>docker exec -it &lt;id&gt; sh</code> — andar ghuso, files/env dekho</li>
+<li>Linux debug drill: <code>top</code>, <code>df -h</code>, <code>ss -tlnp</code>, <code>journalctl</code>, <code>tail -f</code></li>
+<li>Git: branch banao → change → commit → merge → <code>git log --oneline</code></li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>Blank page: <code>Dockerfile → build → image → run → container</code> flow likho</li>
+<li>Loud bolo: "layer caching se rebuild fast kaise hota hai?"</li>
+</ul>
+</div>
+</div>
+</div>
+<p>📖 <a href="../21-linux-toolkit/">21-linux-toolkit</a> · <a href="../04-M3-docker/">04-M3-docker</a> · <a href="../22-command-cheatsheets/">22-command-cheatsheets</a></p>
+<hr />
+<h2 id="day-2-kubernetes-core-self-heal-scale-rollout">Day 2 — Kubernetes Core: self-heal, scale, rollout<a class="headerlink" href="#day-2-kubernetes-core-self-heal-scale-rollout" title="Permanent link">&para;</a></h2>
+<p><em>cook + manager + counter</em></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:3"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><input id="__tabbed_2_2" name="__tabbed_2" type="radio" /><input id="__tabbed_2_3" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">↩️ Revise</label><label for="__tabbed_2_2">▸ Do</label><label for="__tabbed_2_3">✅ Prove</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ul>
+<li><a href="../05-M4-kubernetes-core/">05 — K8s Core</a> + <a href="../26-k8s-objects-map/">26 — Objects map</a> recall gates</li>
+<li>Pod vs ReplicaSet vs Deployment — kaun kya, labels ka role?</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><strong>VANTA (kind ready hai):</strong> <code>kubectl get pods,deploy,svc,rs -L app</code> — label flow dekho</li>
+<li>Self-heal: <code>kubectl delete pod &lt;frontend-pod&gt;</code> → khud wapas aata hai</li>
+<li>Scale: <code>kubectl scale deploy frontend --replicas=4</code> → watch</li>
+<li>Rollout: image badlo → <code>kubectl set image</code> → <code>kubectl rollout status</code> → <code>kubectl rollout undo</code></li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>Blank page: self-heal loop (desired vs actual → controller → new pod)</li>
+<li>Loud: "rolling update mein zero downtime kaise?"</li>
+</ul>
+</div>
+</div>
+</div>
+<p>📖 <a href="../05-M4-kubernetes-core/">05-M4-kubernetes-core</a> · <a href="../26-k8s-objects-map/">26-k8s-objects-map</a></p>
+<hr />
+<h2 id="day-3-config-secret-storage-break-fix">Day 3 — Config · Secret · Storage: break &amp; fix<a class="headerlink" href="#day-3-config-secret-storage-break-fix" title="Permanent link">&para;</a></h2>
+<p><em>masala + pantry</em></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:3"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><input id="__tabbed_3_2" name="__tabbed_3" type="radio" /><input id="__tabbed_3_3" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">↩️ Revise</label><label for="__tabbed_3_2">▸ Do</label><label for="__tabbed_3_3">✅ Prove</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ul>
+<li>ConfigMap vs Secret vs PVC — kab kaun? (visual: <code>Helm_ConfigMap_Secret_Init_samjho.html</code>)</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><strong>VANTA:</strong> ek ConfigMap banao, frontend env usse inject karo, restart, verify</li>
+<li>Secret banao <code>kubectl create secret generic</code> → Pod mein <code>secretRef</code></li>
+<li><strong>Billfree:</strong> postgres StatefulSet + <code>volumeClaimTemplates</code> padho — PVC lifecycle</li>
+<li><strong>Break:</strong> galat secret key do → Pod fail → <code>describe</code>/<code>logs</code> se fix</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>Loud: "Secret Git mein kyun nahi? base64 encryption kyun nahi?"</li>
+<li>Pod restart pe PVC ka data kyun bacha rehta hai — samjhao</li>
+</ul>
+</div>
+</div>
+</div>
+<p>📖 <a href="../05-M4-kubernetes-core/">05-M4-kubernetes-core</a> (config/storage) · <a href="../11-M9-advanced-k8s-internals/">11-M9-advanced-k8s-internals</a></p>
+<hr />
+<h2 id="day-4-networking-service-ingress-dns-networkpolicy">Day 4 — Networking: Service · Ingress · DNS · NetworkPolicy<a class="headerlink" href="#day-4-networking-service-ingress-dns-networkpolicy" title="Permanent link">&para;</a></h2>
+<p><em>request → pod tak</em></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="4:3"><input checked="checked" id="__tabbed_4_1" name="__tabbed_4" type="radio" /><input id="__tabbed_4_2" name="__tabbed_4" type="radio" /><input id="__tabbed_4_3" name="__tabbed_4" type="radio" /><div class="tabbed-labels"><label for="__tabbed_4_1">↩️ Revise</label><label for="__tabbed_4_2">▸ Do</label><label for="__tabbed_4_3">✅ Prove</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ul>
+<li>Service 4 types, CoreDNS, kube-proxy, Calico</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><strong>VANTA:</strong> pod-to-pod — ek pod mein <code>exec</code> → <code>wget cartservice:7070</code> — DNS se baat</li>
+<li><code>kubectl get svc,endpoints</code> — Service ke peeche kaunse pod IPs</li>
+<li><strong>Billfree:</strong> ingress-nginx + host/path routing padho; NetworkPolicy yaml</li>
+<li><strong>Break:</strong> Service ka selector label galat karo → traffic gir jaye → fix</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>Blank page: User → DNS → Ingress → Service → Pod — poora hop draw</li>
+<li>Loud: "Calico vs Service — kaun packet ko kahan pahunchata?"</li>
+</ul>
+</div>
+</div>
+</div>
+<p>📖 <a href="../11-M9-advanced-k8s-internals/">11-M9-advanced-k8s-internals</a> · <a href="../20-confusions-and-tradeoffs/">20-confusions-and-tradeoffs</a></p>
+<hr />
+<h2 id="day-5-cicd-follow-one-commit">Day 5 — CI/CD: follow one commit<a class="headerlink" href="#day-5-cicd-follow-one-commit" title="Permanent link">&para;</a></h2>
+<p><em>test kitchen</em></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="5:3"><input checked="checked" id="__tabbed_5_1" name="__tabbed_5" type="radio" /><input id="__tabbed_5_2" name="__tabbed_5" type="radio" /><input id="__tabbed_5_3" name="__tabbed_5" type="radio" /><div class="tabbed-labels"><label for="__tabbed_5_1">↩️ Revise</label><label for="__tabbed_5_2">▸ Do</label><label for="__tabbed_5_3">✅ Prove</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ul>
+<li>CI vs CD, runner, image tag handoff, Trivy scan — kyun zaroori</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><strong>Billfree:</strong> <code>.github/workflows</code> padho — test → build → push → tag update</li>
+<li>Ek chhota code change → push → GitHub Actions run live dekho</li>
+<li>Trace: image kahan build/push hui, config repo mein tag kaise badla</li>
+<li><strong>VANTA (local):</strong> <code>docker build</code> → <code>kind load</code> → <code>kubectl set image</code></li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>Loud: "CI cluster ko touch kyun nahi karta? handoff kahan hai?"</li>
+<li>Blank page: git push → … → running pod (har box likho)</li>
+</ul>
+</div>
+</div>
+</div>
+<p>📖 <a href="../07-M6-cicd/">07-M6-cicd</a> · <a href="../19-cicd-hands-on-flow/">19-cicd-hands-on-flow</a></p>
+<hr />
+<h2 id="day-6-gitops-helm-argocd-sync-drift">Day 6 — GitOps + Helm: ArgoCD sync &amp; drift<a class="headerlink" href="#day-6-gitops-helm-argocd-sync-drift" title="Permanent link">&para;</a></h2>
+<p><em>manager + meal deal</em></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="6:3"><input checked="checked" id="__tabbed_6_1" name="__tabbed_6" type="radio" /><input id="__tabbed_6_2" name="__tabbed_6" type="radio" /><input id="__tabbed_6_3" name="__tabbed_6" type="radio" /><div class="tabbed-labels"><label for="__tabbed_6_1">↩️ Revise</label><label for="__tabbed_6_2">▸ Do</label><label for="__tabbed_6_3">✅ Prove</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ul>
+<li>Pull vs push CD, auto-sync, self-heal, prune; Helm chart vs values (visual: <code>Helm_ConfigMap_Secret_Init_samjho.html</code>)</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><strong>VANTA:</strong> ArgoCD <code>kind</code> pe install → Application connect → sync dekho</li>
+<li><strong>Drift test:</strong> <code>kubectl scale</code> se manually badlo → ArgoCD wapas Git jaisa kar de</li>
+<li><strong>Billfree:</strong> Helm chart + values structure padho; <code>helm template</code> se rendered YAML</li>
+<li>ApplicationSet + app-of-apps pattern samjho</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>Loud: "rollback GitOps mein kaise? (git revert)"</li>
+<li>Kustomize vs Helm — ek line mein farak</li>
+</ul>
+</div>
+</div>
+</div>
+<p>📖 <a href="../08-M7-gitops/">08-M7-gitops</a> · <a href="../28-helm-real-projects/">28-helm-real-projects</a></p>
+<hr />
+<h2 id="day-7-outer-loop-terraform-ansible-aws">Day 7 — Outer loop: Terraform · Ansible · AWS<a class="headerlink" href="#day-7-outer-loop-terraform-ansible-aws" title="Permanent link">&para;</a></h2>
+<p><em>building banao</em></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="7:3"><input checked="checked" id="__tabbed_7_1" name="__tabbed_7" type="radio" /><input id="__tabbed_7_2" name="__tabbed_7" type="radio" /><input id="__tabbed_7_3" name="__tabbed_7" type="radio" /><div class="tabbed-labels"><label for="__tabbed_7_1">↩️ Revise</label><label for="__tabbed_7_2">▸ Do</label><label for="__tabbed_7_3">✅ Prove</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ul>
+<li>IaC kyun, state file, plan-before-apply, idempotency, push vs pull</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><strong>Billfree:</strong> <code>infra/terraform</code> padho — compute, network, cloud-init (kubeadm)</li>
+<li><code>terraform plan</code> chalao — kya banega, state kya kehti hai</li>
+<li>Safe lab: ek S3 bucket <code>apply</code> → verify → <code>destroy</code></li>
+<li>Ansible playbook padho — nodes pe kya configure hota (containerd, kubeadm)</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>Loud: "Terraform → Ansible → K8s — kaun kya banata, handoff kahan?"</li>
+<li>tfstate delete ho jaye to kya hota — samjhao</li>
+</ul>
+</div>
+</div>
+</div>
+<p>📖 <a href="../02-M1-terraform/">02-M1-terraform</a> · <a href="../03-M2-ansible/">03-M2-ansible</a> · <a href="../06-M5-sizing-and-cost/">06-M5-sizing-and-cost</a></p>
+<hr />
+<h2 id="day-8-observability-sre-2-am-drill">Day 8 — Observability &amp; SRE: 2 a.m. drill<a class="headerlink" href="#day-8-observability-sre-2-am-drill" title="Permanent link">&para;</a></h2>
+<p><em>health inspector</em></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="8:3"><input checked="checked" id="__tabbed_8_1" name="__tabbed_8" type="radio" /><input id="__tabbed_8_2" name="__tabbed_8" type="radio" /><input id="__tabbed_8_3" name="__tabbed_8" type="radio" /><div class="tabbed-labels"><label for="__tabbed_8_1">↩️ Revise</label><label for="__tabbed_8_2">▸ Do</label><label for="__tabbed_8_3">✅ Prove</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ul>
+<li>RED vs USE metrics, logs vs metrics vs traces, SLO/alert</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><strong>VANTA:</strong> <code>kube-prometheus-stack</code> Helm se install → Grafana port-forward</li>
+<li>4 dashboards: compute, networking, node-exporter, ArgoCD</li>
+<li><strong>Billfree:</strong> ServiceMonitor + PrometheusRule padho — thresholds (error 5%, p95 1s)</li>
+<li>Load daalo (loadgenerator) → CPU/latency graph move karte dekho</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>Loud: "app slow hai — main pehle kya dekhun, kis order mein?"</li>
+</ul>
+</div>
+</div>
+</div>
+<p>📖 <a href="../10-M8-observability-sre/">10-M8-observability-sre</a></p>
+<hr />
+<h2 id="day-9-break-fix-incident-chaos">Day 9 — Break &amp; fix: Incident + Chaos<a class="headerlink" href="#day-9-break-fix-incident-chaos" title="Permanent link">&para;</a></h2>
+<p><em>yahi confidence deta hai</em></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="9:3"><input checked="checked" id="__tabbed_9_1" name="__tabbed_9" type="radio" /><input id="__tabbed_9_2" name="__tabbed_9" type="radio" /><input id="__tabbed_9_3" name="__tabbed_9" type="radio" /><div class="tabbed-labels"><label for="__tabbed_9_1">↩️ Revise</label><label for="__tabbed_9_2">▸ Do — jaan-boojh ke todo, phir fix karo</label><label for="__tabbed_9_3">✅ Prove</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ul>
+<li>Debug order: <code>describe</code> → events → <code>logs --previous</code> → root cause</li>
+<li>Exit codes: 137 (OOM/SIGKILL), 1, 0 — kya matlab</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><strong>VANTA — CrashLoop:</strong> liveness timeout 1s karo → CrashLoop → diagnose → fix</li>
+<li><strong>OOMKilled:</strong> memory limit bahut kam karo → 137 → badhao</li>
+<li><strong>ImagePullBackOff:</strong> galat image tag → describe se pakdo</li>
+<li><strong>PVC Pending / Service no endpoints:</strong> playbook ke 26 issues mein se 5 chuno</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li>Har issue: symptom → diagnose command → fix → prevent — likho</li>
+<li>Ye war-stories interview mein sona hai</li>
+</ul>
+</div>
+</div>
+</div>
+<p>📖 <a href="../23-production-incident-playbook/">23-production-incident-playbook</a> · <a href="../25-production-gauntlet-chaos/">25-production-gauntlet-chaos</a></p>
+<hr />
+<h2 id="day-10-grand-opening-end-to-end-interview">Day 10 — Grand opening: end-to-end + interview<a class="headerlink" href="#day-10-grand-opening-end-to-end-interview" title="Permanent link">&para;</a></h2>
+<p><em>sab jodo, bolo</em></p>
+<div class="tabbed-set tabbed-alternate" data-tabs="10:3"><input checked="checked" id="__tabbed_10_1" name="__tabbed_10" type="radio" /><input id="__tabbed_10_2" name="__tabbed_10" type="radio" /><input id="__tabbed_10_3" name="__tabbed_10" type="radio" /><div class="tabbed-labels"><label for="__tabbed_10_1">↩️ Revise</label><label for="__tabbed_10_2">▸ Do — one commit to prod</label><label for="__tabbed_10_3">✅ Prove — the final test</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<ul>
+<li><a href="../09-connected-system/">09 — Connected System</a>: 2 loops + 8 bridges + 5 golden threads</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><strong>Billfree:</strong> ek chhota change → push → CI green → ArgoCD sync → Grafana check — poora flow ek baar khud</li>
+<li>VANTA + Billfree dono ka README/docs polish — portfolio ready</li>
+</ul>
+</div>
+<div class="tabbed-block">
+<ul>
+<li><strong>Blank page (no notes):</strong> 2 loops + 8 bridges + 5 threads draw karo</li>
+<li><strong>Whiteboard talk:</strong> "git push se user tak" 10 min bolo, loud</li>
+<li><strong>STAR stories:</strong> VANTA aur Billfree se 3 real "maine kya kiya" answers likho</li>
+</ul>
+</div>
+</div>
+</div>
+<p>📖 <a href="../09-connected-system/">09-connected-system</a> · <a href="../14-interview-bank/">14-interview-bank</a> · <a href="../18-career-job-ready/">18-career-job-ready</a></p>
+<hr />
+<h2 id="har-din-chalta-rahega-the-recall-habit">Har din chalta rahega — the recall habit<a class="headerlink" href="#har-din-chalta-rahega-the-recall-habit" title="Permanent link">&para;</a></h2>
+<div class="admonition note">
+<p class="admonition-title">🔁 5-min daily recall (ye chhodna mat)</p>
+<table>
+<thead>
+<tr>
+<th>Kab</th>
+<th>Kya</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Subah</strong></td>
+<td>Kal wale din ka recall gate — memory se, 5 min</td>
+</tr>
+<tr>
+<td><strong>Din mein</strong></td>
+<td>Aaj ka <em>Do</em> lane — haath se, terminal pe</td>
+</tr>
+<tr>
+<td><strong>Raat</strong></td>
+<td><a href="../17-flashcards/">17 — Flashcards</a> — us din ke module ke, 5 min</td>
+</tr>
+<tr>
+<td><strong><a href="../progress/">progress.md</a></strong></td>
+<td>Aaj ke checkbox tick karo — <em>dikhta progress hi motivation hai</em></td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr />
+<h2 id="10-din-baad-confident-ka-matlab">10 din baad — "confident" ka matlab<a class="headerlink" href="#10-din-baad-confident-ka-matlab" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Padha nahi — kiya.</strong> Har din progress tick hua, har concept apne project pe chala.</li>
+<li><strong>Recall aaya.</strong> Blank page pe 2 loops + 8 bridges bina notes ke bana sakte ho.</li>
+<li><strong>Bol sakte ho.</strong> "git push se user tak" 10 min whiteboard pe, + VANTA/Billfree ki 3 STAR stories.</li>
+<li><strong>Toota, phir theek kiya.</strong> CrashLoop/OOM/502 khud banaye aur fix kiye — yehi "2.5-saal experience" <em>dikhna</em> hai.</li>
+</ul>
+<blockquote>
+<p>🇮🇳 <strong>Final baat:</strong> Ye sprint ka maqsad naya seekhna nahi — jo aata hai use <em>haath</em> aur <em>zubaan</em> mein laana hai. Har din: revise karo (memory), karo (terminal), prove karo (blank page + loud). 10 din baad tum confident nahi <em>mehsoos</em> karoge — confident <em>hoge</em>.</p>
+</blockquote>
+<hr />
+<p><em>Connected pages: <a href="../27-10-day-plan/">27 — 10-Day Learning Plan (conceptual)</a> · <a href="../09-connected-system/">09 — Connected System</a> · <a href="../23-production-incident-playbook/">23 — Incident Playbook</a> · <a href="../17-flashcards/">17 — Flashcards</a> · <a href="../progress/">progress.md</a></em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../27-10-day-plan/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 10-Day Learning Plan (understand)">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                10-Day Learning Plan (understand)
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../28-helm-real-projects/" class="md-footer__link md-footer__link--next" aria-label="Next: Helm in the Real World (your 2 projects)">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Helm in the Real World (your 2 projects)
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 grvtech1 — licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/grvtech1/devops-handbook" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "announce.dismiss"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/progress.js"></script>
+      
+    
+  </body>
+</html>

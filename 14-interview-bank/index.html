@@ -1,0 +1,3239 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free, zero-to-job-ready DevOps handbook — from "what is a terminal" to production- and interview-ready. Systems thinking, hands-on labs, capstones.">
+      
+      
+      
+        <link rel="canonical" href="https://grvtech1.github.io/devops-handbook/14-interview-bank/">
+      
+      
+        <link rel="prev" href="../13-capstone-microshop/">
+      
+      
+        <link rel="next" href="../20-confusions-and-tradeoffs/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Interview Bank - The DevOps Engineer's Handbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%206a6%206%200%200%201%206%206c0%202.22-1.21%204.16-3%205.2V19a1%201%200%200%201-1%201h-4a1%201%200%200%201-1-1v-1.8c-1.79-1.04-3-2.98-3-5.2a6%206%200%200%201%206-6m2%2015v1a1%201%200%200%201-1%201h-2a1%201%200%200%201-1-1v-1zm6-10h3v2h-3zM1%2011h3v2H1zM13%201v3h-2V1zM4.92%203.5l2.13%202.14-1.42%201.41L3.5%204.93zm12.03%202.13%202.12-2.13%201.43%201.43-2.13%202.12z%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m13.13%2022.19-1.63-3.83c1.57-.58%203.04-1.36%204.4-2.27zM5.64%2012.5l-3.83-1.63%206.1-2.77C7%209.46%206.22%2010.93%205.64%2012.5M21.61%202.39S16.66.269%2011%205.93c-2.19%202.19-3.5%204.6-4.35%206.71-.28.75-.09%201.57.46%202.13l2.13%202.12c.55.56%201.37.74%202.12.46A19.1%2019.1%200%200%200%2018.07%2013c5.66-5.66%203.54-10.61%203.54-10.61m-7.07%207.07c-.78-.78-.78-2.05%200-2.83s2.05-.78%202.83%200c.77.78.78%202.05%200%202.83s-2.05.78-2.83%200m-5.66%207.07-1.41-1.41zM6.24%2022l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83%2022zM2%2022h1.41l4.77-4.76-1.42-1.41L2%2020.59zm0-2.83%204.09-4.08c-.21-.3-.36-.62-.45-.97L2%2017.76z%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M13%2014h-2V9h2m0%209h-2v-2h2M1%2021h22L12%202z%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M8%2015a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m2.5%202%201.5-3%201.5%203zm5.5-2a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m6-4A10%2010%200%200%200%2012%201%2010%2010%200%200%200%202%2011c0%202.8%201.2%205.3%203%207.1V22h14v-3.9c1.8-1.8%203-4.3%203-7.1m-5%209h-2v-2h-2v2h-2v-2H9v2H7v-2.8c-1.8-1.5-3-3.7-3-6.2a8%208%200%200%201%208-8%208%208%200%200%201%208%208c0%202.5-1.2%204.8-3%206.2z%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#14-interview-bank" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  🚀 <strong>26 chapters</strong> · rendered diagrams · hands-on labs · a 26-scenario incident playbook — all free (CC BY 4.0).
+  &nbsp;
+  <a href="https://github.com/grvtech1/devops-handbook" style="color: inherit; text-decoration: underline; font-weight: 700;">⭐ Star it on GitHub</a>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-header__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The DevOps Engineer's Handbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Interview Bank
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../study-plan/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Study Plan
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../progress/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  My Progress
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../00-INDEX/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Handbook
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-nav__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    The DevOps Engineer's Handbook
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../study-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    My Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handbook
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Handbook
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-INDEX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Curriculum (Index)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 0 — Pre-flight
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 0 — Pre-flight
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00a-preflight/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00a · Pre-flight ground floor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00b-setup-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00b · Setup runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-linux-toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux · the ground everything runs on
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part I — Core toolchain
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part I — Core toolchain
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-M0-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M0 · Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-M1-terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M1 · Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-M2-ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M2 · Ansible
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-M3-docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M3 · Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-M4-kubernetes-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M4 · Kubernetes Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-M5-sizing-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M5 · Sizing & Cost
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-M6-cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M6 · CI/CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-M7-gitops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M7 · GitOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part II — Systems thinking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part II — Systems thinking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-connected-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Connected System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-k8s-objects-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Objects · How They Connect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-10-day-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Learning Plan (understand)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29-confidence-sprint/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Confidence Sprint (drill)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../28-helm-real-projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Helm in the Real World (your 2 projects)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-cicd-hands-on-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Follow One Commit (hands-on CI/CD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part III — Operate
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part III — Operate
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-M8-observability-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M8 · Observability & SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-M9-advanced-k8s-internals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M9 · Advanced K8s Internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30-k8s-complete-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Complete Reference (Workloads · Scheduling · Ops)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-production-incident-playbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Incident Playbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part IV — Capstones
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part IV — Capstones
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-capstone-url-shortener/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone I · URL Shortener
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-capstone-microshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone II · MicroShop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part V — Reference & career
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part V — Reference & career
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview Bank
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview Bank
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-consolidated-interview-prep-hub-for-a-253-year-devops-engineer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The consolidated interview-prep hub for a 2.5–3 year DevOps engineer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-this-bank" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to use this bank
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-reflex-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The reflex tables
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The reflex tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#error-status-cause-fire-this-without-thinking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error / status → cause (fire this without thinking)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagnose-from-symptom-primer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diagnose-from-symptom primer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#foundations-systems-thinking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Foundations &amp; systems thinking
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terraform
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ansible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ansible
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kubernetes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cicd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI/CD
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gitops-argo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitOps / Argo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sizing-cost-capacity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sizing, cost &amp; capacity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#observability-sre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observability &amp; SRE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#war-stories-tell-me-about-a-time-you-debugged" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        War stories — "tell me about a time you debugged…"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-troubleshoot-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Troubleshoot Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-60-second-self-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 60-second self-test
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#closing-what-interviewers-are-really-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Closing: what interviewers are really testing
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-confusions-and-tradeoffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Confusions & Trade-offs (X-vs-Y)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-command-cheatsheets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Command Cheat-Sheets & Labs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-roadmap-M11-M18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap · M11–M18
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-reference-appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Appendix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-career-job-ready/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Job-Ready
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part VI — The Production Gauntlet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part VI — The Production Gauntlet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-production-gauntlet-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build the Real System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-production-gauntlet-chaos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chaos Engineering · break & fix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-consolidated-interview-prep-hub-for-a-253-year-devops-engineer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The consolidated interview-prep hub for a 2.5–3 year DevOps engineer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-this-bank" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to use this bank
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-reflex-tables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The reflex tables
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The reflex tables">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#error-status-cause-fire-this-without-thinking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error / status → cause (fire this without thinking)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#diagnose-from-symptom-primer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Diagnose-from-symptom primer
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#foundations-systems-thinking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Foundations &amp; systems thinking
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terraform
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ansible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ansible
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubernetes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kubernetes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cicd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI/CD
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gitops-argo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitOps / Argo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sizing-cost-capacity" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sizing, cost &amp; capacity
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#observability-sre" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observability &amp; SRE
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#war-stories-tell-me-about-a-time-you-debugged" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        War stories — "tell me about a time you debugged…"
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-troubleshoot-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Troubleshoot Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-60-second-self-test" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 60-second self-test
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#closing-what-interviewers-are-really-testing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Closing: what interviewers are really testing
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="14-interview-bank">14 — Interview Bank<a class="headerlink" href="#14-interview-bank" title="Permanent link">&para;</a></h1>
+<h3 id="the-consolidated-interview-prep-hub-for-a-253-year-devops-engineer">The consolidated interview-prep hub for a 2.5–3 year DevOps engineer<a class="headerlink" href="#the-consolidated-interview-prep-hub-for-a-253-year-devops-engineer" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>Sources: DevOps_Study_Guide_1 · Terraform-Modules-DeepDive · Capstone-DeepDive-Internals-v2 · Capstone-DeepDive-v3-Additions · Capstone-LabGotchas · DevOps-Glossary · DevOps-Master-Recall · DevOps-Bootcamp-Notes · DevOps-Beginner-FAQ</p>
+</blockquote>
+<hr />
+<h2 id="how-to-use-this-bank">How to use this bank<a class="headerlink" href="#how-to-use-this-bank" title="Permanent link">&para;</a></h2>
+<p><strong>Before the interview:</strong> skim topic headers, then drill the reflex tables until they fire without thinking. The war stories (section 12) are ready-to-tell STAR answers — personalize the pronouns.</p>
+<p><strong>Difficulty tags:</strong> <code>[Jr]</code> = expected from anyone with 1 yr experience · <code>[Mid]</code> = your sweet spot at 2.5 yrs · <code>[Sr]</code> = shows depth, use when the interview goes deep.</p>
+<p><strong>The one-line system view</strong> (memorize this): "Code is pushed, CI/CD builds and tests it and produces a Docker image in a registry, then Argo CD picks it up from Git and deploys it to Kubernetes, with monitoring watching the whole thing."</p>
+<p><strong>Module cross-links</strong> appear as (→ 02-M1) etc. The reflex tables below are the highest-value page in this chapter — they are the 2 a.m. recall aid.</p>
+<hr />
+<h2 id="the-reflex-tables">The reflex tables<a class="headerlink" href="#the-reflex-tables" title="Permanent link">&para;</a></h2>
+<h3 id="error-status-cause-fire-this-without-thinking">Error / status → cause (fire this without thinking)<a class="headerlink" href="#error-status-cause-fire-this-without-thinking" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>What you see</th>
+<th>Root cause</th>
+<th>First command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UNREACHABLE</code> / timeout</td>
+<td>Network unreachable — machine down or SG/firewall blocking</td>
+<td><code>ping</code>, <code>curl -v</code>, check SG rules</td>
+</tr>
+<tr>
+<td><code>Permission denied</code></td>
+<td>Wrong key, wrong user, or missing sudo</td>
+<td><code>ssh -i &lt;key&gt;</code>, check <code>ansible_user</code></td>
+</tr>
+<tr>
+<td><code>OOMKilled</code> / exit <code>137</code></td>
+<td>RAM limit exceeded; kernel killed the process</td>
+<td><code>kubectl describe pod</code> → <code>OOMKilled</code>; raise <code>limits.memory</code></td>
+</tr>
+<tr>
+<td><code>CrashLoopBackOff</code></td>
+<td>Container starts then crashes, kubelet retrying with backoff</td>
+<td><code>kubectl logs &lt;pod&gt; --previous</code></td>
+</tr>
+<tr>
+<td><code>Pending</code> (pod)</td>
+<td>Scheduler can't place it — insufficient CPU/RAM, IP exhaustion, or taint mismatch</td>
+<td><code>kubectl describe pod</code> → Events</td>
+</tr>
+<tr>
+<td><code>ImagePullBackOff</code></td>
+<td>Image not found or registry auth failed</td>
+<td><code>kubectl describe pod</code> → check tag + pull-secret</td>
+</tr>
+<tr>
+<td><code>READY 0/1</code></td>
+<td>Container running but readiness probe failing → not in EndpointSlice</td>
+<td><code>kubectl describe pod</code> → probe events</td>
+</tr>
+<tr>
+<td><code>OutOfSync</code> (Argo)</td>
+<td>Cluster state diverged from Git</td>
+<td><code>argocd app diff &lt;app&gt;</code></td>
+</tr>
+<tr>
+<td><code>localhost:8080 connection refused</code> (kubectl)</td>
+<td><code>~/.kube/config</code> missing — kubectl fell back to insecure port</td>
+<td><code>cp /etc/kubernetes/admin.conf ~/.kube/config</code></td>
+</tr>
+<tr>
+<td><code>TLS handshake timeout</code> (kubectl)</td>
+<td>API server OOM-killed; node RAM exhausted</td>
+<td><code>free -h</code>; add swap + <code>systemctl restart k3s</code></td>
+</tr>
+<tr>
+<td><code>sed: No such file</code> (CI)</td>
+<td>Filename mismatch between script and actual file</td>
+<td>Rename <code>k8s/&lt;service&gt;.yaml</code> to match CI loop</td>
+</tr>
+<tr>
+<td><code>IP pe 404 nginx</code> (ingress)</td>
+<td>Ingress alive; no Host header match</td>
+<td><code>/etc/hosts</code> entry + <code>curl -H "Host:"</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="diagnose-from-symptom-primer">Diagnose-from-symptom primer<a class="headerlink" href="#diagnose-from-symptom-primer" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p>"Never guess — narrow the blast radius layer by layer."
+Network → Auth → App → Config. Or for K8s: outside-in — NodePort → Service → EndpointSlice → Pod → DB.</p>
+</blockquote>
+<hr />
+<h2 id="foundations-systems-thinking">Foundations &amp; systems thinking<a class="headerlink" href="#foundations-systems-thinking" title="Permanent link">&para;</a></h2>
+<p><strong>Q: Walk me through a deploy from <code>git push</code> to traffic. <code>[Jr/Mid]</code></strong></p>
+<p>I push code to <code>main</code>. GitHub Actions triggers: checks out the repo, runs tests, builds a Docker image tagged with the commit SHA, pushes it to ECR. The pipeline then updates the image tag in <code>k8s/deployment.yaml</code> and commits that back to Git with <code>[skip ci]</code> to avoid a loop. Argo CD polls Git every 3 minutes, detects OutOfSync, and applies the manifest. Kubernetes does a rolling update — new pods must pass the readiness probe before old ones are removed. Zero downtime if both graceful shutdown and readiness are configured correctly.</p>
+<p><strong>Q: Monolith vs microservices — how do you decide? <code>[Mid]</code></strong></p>
+<p>Monolith is one deployable unit — simpler to develop and debug, lower operational overhead. Microservices are independently deployable, independently scalable services communicating over the network. I'd choose microservices when services have genuinely different scaling characteristics, different release cadences, or different team ownership. I've seen people split too early and end up with a "distributed monolith" — the complexity of services with none of the isolation benefits. Start monolith, extract services when you feel the pain.</p>
+<p><strong>Q: Pets vs cattle — give me a real example from your project. <code>[Jr]</code></strong></p>
+<p>Pets are servers you name and care for; if one gets sick you fix it. Cattle are interchangeable; if one fails you replace it. In our project, app pods are cattle — the Deployment controller replaces them automatically. The RDS database is a pet (stateful, managed separately with backups). The golden rule: extract state out of compute so compute becomes cattle.</p>
+<p><strong>Q: Two reconciliation loops in your system — name them and contrast. <code>[Mid/Sr]</code></strong></p>
+<p>Kubernetes controllers run a continuous desired-vs-actual loop: if a pod crashes, the ReplicaSet controller detects the gap and creates a replacement. Argo CD runs the same pattern but against Git as the desired state: if the live cluster diverges from what's in Git, Argo applies the Git version. The difference is the source of desired state — etcd for K8s, Git for Argo. Terraform is also idempotent but does NOT continuously reconcile; you trigger <code>terraform apply</code> manually.</p>
+<p><strong>Q: Design process — if asked to design "a URL shortener on AWS", how do you approach it? <code>[Mid/Sr]</code></strong></p>
+<p>Six steps: (1) Requirements — read vs write ratio, expected QPS, latency SLA, durability needs. (2) Component breakdown — API, storage, redirect logic. (3) Tool per component — managed vs self-managed. (4) Draw the request flow end to end. (5) Failure-think — what happens if the DB is down? If the API crashes? (6) Start simple, iterate. I'd avoid over-engineering before understanding load. Commands and code come last; design and decision-making come first.</p>
+<blockquote>
+<p>"Commands AI/Google de dega — DESIGN + DECIDE = engineer." (→ 01-M0-foundations.md)</p>
+</blockquote>
+<hr />
+<h2 id="terraform">Terraform<a class="headerlink" href="#terraform" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>(→ 02-M1-terraform.md · Terraform-Modules-DeepDive.md)</p>
+</blockquote>
+<p><strong>Q: What is Terraform state and why does it matter? <code>[Jr]</code></strong></p>
+<p><code>tfstate</code> is Terraform's diary — a JSON file mapping your HCL resource blocks to real cloud resource IDs. Without it Terraform is blind; it can't tell what already exists. This is why you never delete it carelessly and never commit it to Git (it may contain plaintext secrets like DB passwords). In a team context the state goes in S3 with a DynamoDB lock so two engineers can't run <code>apply</code> simultaneously and corrupt it.</p>
+<p><strong>Q: Drift vs lost-state — what's the difference? <code>[Mid]</code></strong></p>
+<p>Drift: the state file is intact, but reality changed outside Terraform (someone edited a security group in the console). <code>terraform plan</code> detects it and will revert the manual change on next apply. Lost-state: the <code>tfstate</code> file is gone. Terraform is now blind — it sees your <code>.tf</code> files but has no record of existing resources. Running <code>apply</code> creates duplicates. Recovery is <code>terraform import</code> — re-register each real resource into a new state file one by one.</p>
+<blockquote>
+<p>❌ Don't say: "I'd just re-run <code>apply</code>" when state is lost — it creates duplicate infrastructure.
+✅ Say: "I'd use <code>terraform import</code> to reconstruct state resource-by-resource."</p>
+</blockquote>
+<p><strong>Q: How do you manage multiple environments (dev, prod) in Terraform? <code>[Mid]</code></strong></p>
+<p>Modules plus environment directories. I write reusable modules (<code>modules/vpc</code>, <code>modules/ec2</code>, <code>modules/rds</code>) — each is a black box taking inputs and producing outputs. Then <code>environments/dev/main.tf</code> and <code>environments/prod/main.tf</code> call those same modules with different variable values. Each environment directory has its own remote backend key (<code>microshop/dev/terraform.tfstate</code> vs <code>microshop/prod/terraform.tfstate</code>) so a <code>terraform destroy</code> in dev can't touch prod. (→ Terraform-Modules-DeepDive.md)</p>
+<p><strong>Q: Module wiring — how does one module's output reach another? <code>[Mid]</code></strong></p>
+<p>Modules don't talk to each other directly. The root <code>main.tf</code> orchestrates: <code>module.vpc.sg_id</code> is passed as an input variable into <code>module.ec2</code>. The output is declared in <code>modules/vpc/outputs.tf</code> and referenced from the root with <code>module.vpc.&lt;output_name&gt;</code>. Attempting to reference <code>module.vpc.subnet_id</code> when the output is named <code>subnet_public_a_id</code> silently fails with a "no such output" error — the most common wiring mistake. (→ Terraform-Modules-DeepDive.md)</p>
+<p><strong>Q: Remote backend — what's S3 + DynamoDB for? <code>[Jr/Mid]</code></strong></p>
+<p>S3 stores the shared state file so the entire team reads the same truth (not a local laptop copy). DynamoDB provides locking: when <code>terraform apply</code> starts it writes a lock record; a second concurrent apply sees the lock and waits. Without the lock two simultaneous applies can corrupt state. Terraform 1.10+ supports native locking via S3, but DynamoDB is the battle-tested pattern.</p>
+<p><strong>Q: "tfstate gayi — 5 servers are running. I run apply. How many servers now?" <code>[Jr]</code></strong></p>
+<p>Ten. Lost state means Terraform has no memory of the existing 5, so it creates 5 more. Always keep state backed up (S3 versioning on the bucket) and never delete it manually.</p>
+<hr />
+<h2 id="ansible">Ansible<a class="headerlink" href="#ansible" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>(→ 03-M2-ansible.md)</p>
+</blockquote>
+<p><strong>Q: What is Ansible and why is agentless a feature? <code>[Jr]</code></strong></p>
+<p>Ansible is a configuration management and automation tool that configures servers by running tasks over SSH in YAML playbooks. Agentless means nothing is installed on managed nodes — only SSH and Python (already present on most Linux hosts). This eliminates the operational burden of maintaining agent software, version-matching it to the server OS, and securing it. Compare with Puppet/Chef where every node runs a persistent agent process.</p>
+<p><strong>Q: What is idempotency and why does it matter for operations? <code>[Jr/Mid]</code></strong></p>
+<p>An idempotent operation produces the same result whether it runs once or one hundred times. Ansible modules check current state before acting: if nginx is already installed, <code>apt: name=nginx state=present</code> does nothing and returns <code>ok</code>. This matters because I can safely re-run a playbook to repair drift, enforce a baseline after an incident, or include it in a CI pipeline without side effects. A raw Bash script lacks this — it re-executes blindly and can corrupt state.</p>
+<p><strong>Q: Handlers — why bother? <code>[Mid]</code></strong></p>
+<p>A handler is a task that fires only when notified by a <code>changed</code> result in another task. The canonical use is restarting a service only when its config file actually changed. If the config is unchanged, the <code>copy</code> or <code>template</code> task returns <code>ok</code>, the notify never fires, and the service runs uninterrupted. Without handlers you'd restart nginx on every playbook run — wasteful and potentially disruptive.</p>
+<p><strong>Q: Ansible module vs shell module — when would you use <code>shell:</code> and why is it risky? <code>[Mid]</code></strong></p>
+<p>I use purpose-built modules (<code>apt</code>, <code>copy</code>, <code>service</code>, <code>template</code>) wherever possible because they are idempotent — they check state before acting. The <code>shell:</code> and <code>command:</code> modules are blind executors: they run the command every time, with no state checking. <code>echo "config" &gt;&gt; /etc/app.conf</code> with shell runs on every playbook execution and keeps appending, corrupting the file. If no module exists for a task, I add <code>creates:</code> or <code>changed_when:</code> guards to restore idempotent behaviour.</p>
+<p><strong>Q: Ansible vs Terraform — in one sentence each. <code>[Jr]</code></strong></p>
+<p>Terraform provisions infrastructure — it creates the cloud resources (EC2, VPC, RDS). Ansible configures what's inside those servers — it installs software, deploys app code, writes config. Terraform builds the house; Ansible furnishes it.</p>
+<p><strong>Q: When would you NOT use Ansible in a modern stack? <code>[Sr]</code></strong></p>
+<p>When the configuration belongs in the Docker image (immutable infra pattern) rather than applied at runtime. In a fully containerized Kubernetes environment, much of what Ansible used to do — install runtimes, copy app binaries, write config — is baked into the image at build time. Ansible remains valuable for host-level bootstrapping (installing containerd, running kubeadm), VM-based fleets, network gear, and any work that must happen at the OS level before containers launch.</p>
+<p><strong>Q: How do you manage secrets in Ansible? <code>[Mid]</code></strong></p>
+<p>Ansible Vault — I encrypt the sensitive file or variable (<code>ansible-vault encrypt secrets.yml</code>) and supply the vault password at runtime via <code>--ask-vault-pass</code> or a password file. The encrypted YAML is safe to commit to Git. I never store plaintext credentials in inventory or playbooks.</p>
+<hr />
+<h2 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>(→ 04-M3-docker.md)</p>
+</blockquote>
+<p><strong>Q: Container vs VM — the core technical difference. <code>[Jr]</code></strong></p>
+<p>A VM virtualizes hardware and runs a full guest OS with its own kernel on top of a hypervisor — separate foundation. A container shares the host kernel and isolates at the process level using Linux namespaces (isolation) and cgroups (resource limits). Containers are lighter (MBs not GBs), start in seconds, and you can run far more per host. VMs give stronger isolation; containers give speed and density.</p>
+<p><strong>Q: Image vs container. <code>[Jr]</code></strong></p>
+<p>An image is a read-only, immutable template built from a Dockerfile — each instruction creates a cached layer. A container is a running (or stopped) instance of an image with a thin writable layer on top. One image, many containers. Delete a container and its writable layer is gone; the image is untouched.</p>
+<p><strong>Q: What are layers and why does their order matter? <code>[Mid]</code></strong></p>
+<p>Every Dockerfile instruction creates a layer. Layers are cached: if a layer hasn't changed, Docker reuses the cached version and all layers above it rebuild. I put rarely-changing instructions first (base image, dependency install) and frequently-changing ones last (COPY source code). This way a code change doesn't invalidate the dependencies layer — CI build time drops from minutes to seconds.</p>
+<p><strong>Q: How do you reduce image size? <code>[Mid]</code></strong></p>
+<p>Multi-stage builds (compile in a full-toolchain stage, copy only the artifact into a minimal runtime stage), small base images (alpine or distroless), combining <code>RUN</code> commands to reduce layer count, <code>.dockerignore</code> to keep build context clean, and never installing packages that aren't needed at runtime. Build tools can triple the image size — they have no business in a production image.</p>
+<p><strong>Q: Why is tagging with <code>latest</code> dangerous in production? <code>[Mid]</code></strong></p>
+<p><code>latest</code> is mutable — the same tag can point to different image content over time. Rollback becomes ambiguous ("which latest?"), audit trails break, and reproducible deployments are impossible. I tag images with the commit SHA (<code>github.sha</code>) so every deployed image is traceable to an exact commit. For absolute immutability, pin to the digest (<code>@sha256:...</code>) — the tag can be moved, the digest never can.</p>
+<p><strong>Q: A container exits immediately after starting. Debug it. <code>[Jr/Mid]</code></strong></p>
+<p>First: <code>docker logs &lt;name&gt;</code> to see stderr. Second: <code>docker ps -a</code> for the exit code. Common causes — the main process exited (a container lives only as long as its PID 1), a missing environment variable caused a startup crash, or the CMD/ENTRYPOINT is wrong. I'd then <code>docker run -it &lt;image&gt; sh</code> to shell into the container interactively with an overridden entrypoint and poke around.</p>
+<p><strong>Q: CMD vs ENTRYPOINT — practical difference. <code>[Mid]</code></strong></p>
+<p><code>ENTRYPOINT</code> is the fixed executable that always runs. <code>CMD</code> provides default arguments and is easily overridden by <code>docker run ... &lt;args&gt;</code>. The common pattern: <code>ENTRYPOINT ["python"]</code> + <code>CMD ["app.py"]</code> runs <code>python app.py</code> by default but lets you do <code>docker run &lt;image&gt; -c "print(1)"</code> to override just the args. If you define only <code>CMD</code>, the whole command can be replaced.</p>
+<hr />
+<h2 id="kubernetes">Kubernetes<a class="headerlink" href="#kubernetes" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>(→ 05-M4-kubernetes-core.md · 11-M9-advanced-k8s-internals.md)</p>
+</blockquote>
+<p><strong>Q: How does reconciliation actually work — is there a master loop? <code>[Mid/Sr]</code></strong></p>
+<p>No. K8s uses distributed, level-triggered controllers — each watching etcd (via the apiserver) for its resource type. The Deployment controller compares desired spec vs actual status; if they differ it acts. Crucially, this is level-triggered not edge-triggered: even if an event is missed, the next poll sees the current state and corrects any gap. This is what makes K8s self-healing — the loop runs continuously, 24/7, with no central coordinator.</p>
+<p><strong>Q: Walk me through what happens when I run <code>kubectl apply -f deployment.yaml</code>. <code>[Mid]</code></strong></p>
+<p>(1) kubectl sends the manifest to the apiserver. (2) apiserver validates it and writes the desired Deployment to etcd. (3) Deployment controller detects a new Deployment and creates a ReplicaSet. (4) ReplicaSet controller sees 0 pods vs desired 2 and creates 2 Pod objects in etcd. (5) Scheduler assigns each unscheduled pod to a node. (6) kubelet on each assigned node pulls the image via containerd and starts the container. (7) kubelet reports status back to the apiserver, which updates etcd.</p>
+<p><strong>Q: Only one component talks to etcd directly. Which one, and why? <code>[Sr]</code></strong></p>
+<p>The apiserver. All other components — scheduler, controller-manager, kubelets — communicate with etcd exclusively through the apiserver. This centralizes auth, validation, admission control, and audit logging. If etcd is the cluster's brain, the apiserver is the only door to it. (→ 11-M9-advanced-k8s-internals.md)</p>
+<p><strong>Q: Readiness vs Liveness probe — and when do you need Startup? <code>[Mid]</code></strong></p>
+<p>Readiness asks "is this pod ready to receive traffic?" Fail → pod is removed from the EndpointSlice, traffic stops, but the pod is not restarted. Liveness asks "is this process healthy or deadlocked?" Fail → kubelet restarts the container. Startup probe is needed for slow-boot applications: it holds liveness checks until the app finishes booting, preventing liveness from killing an app that just hasn't started yet. Without it, a 30-second startup time causes a CrashLoopBackOff. <code>[Mid]</code></p>
+<blockquote>
+<p>❌ Don't say: "Readiness and liveness are the same thing."
+❌ Don't say: "Liveness failure stops traffic." It RESTARTS. Readiness stops traffic.</p>
+</blockquote>
+<p><strong>Q: Liveness footgun — what's the most dangerous liveness probe mistake? <code>[Sr]</code></strong></p>
+<p>Checking an external dependency (like the database) in the liveness probe. If the DB has a brief slowdown, every pod's liveness probe times out simultaneously. kubelet restarts all pods at once. The restarting pods reconnect, adding more load to the already-stressed DB. The DB slows further. Loop. A minor DB blip becomes a full application outage. The rule: <strong>liveness checks only the process itself</strong> (deadlock detection, in-process flag). Dependency health checks go in readiness — a readiness failure stops traffic but doesn't restart and escalate.</p>
+<p><strong>Q: Pod Running but zero traffic. Debug it. <code>[Mid]</code></strong></p>
+<p><code>kubectl get endpointslices</code> — is the pod's IP listed? If not: (a) check readiness probe — <code>kubectl describe pod</code> → probe failure events; (b) check label/selector mismatch — <code>kubectl describe svc</code> selector vs <code>kubectl get pod --show-labels</code>. The service never routes directly; it routes via the EndpointSlice which only lists READY pods. Fix the readiness probe or the labels and the IP appears automatically.</p>
+<p><strong>Q: What are QoS classes and who dies first when a node runs out of RAM? <code>[Mid/Sr]</code></strong></p>
+<p>K8s assigns a QoS class based on requests/limits: <strong>Guaranteed</strong> (requests == limits for both CPU and RAM), <strong>Burstable</strong> (requests &lt; limits, or only some set), <strong>BestEffort</strong> (nothing set). Under memory pressure, the OOM killer evicts BestEffort first, then Burstable, then Guaranteed last. Critical workloads should be Guaranteed — set <code>requests.memory == limits.memory</code>. (→ 06-M5-sizing-and-cost.md)</p>
+<blockquote>
+<p>❌ Don't say: "The pod using the most RAM dies first." QoS class is the primary factor.</p>
+</blockquote>
+<p><strong>Q: HPA — what does it need to work, and why is scale-down slow? <code>[Mid]</code></strong></p>
+<p>HPA needs <code>metrics-server</code> installed (provides CPU/RAM metrics) and pod <code>requests</code> set (the % calculation has no baseline without them). Formula: <code>desiredReplicas = ceil(currentReplicas × currentMetric/targetMetric)</code>. Scale-up is fast because under-provisioning immediately hurts users. Scale-down uses a stabilization window (default 5 minutes) to prevent flapping — if load spikes briefly and you scale down immediately, you'd need to scale up again seconds later. <code>[Mid]</code></p>
+<blockquote>
+<p>❌ Don't say: "HPA scales nodes." HPA scales pods. Cluster Autoscaler scales nodes.</p>
+</blockquote>
+<p><strong>Q: Pod DNS — how does one pod find another? <code>[Mid]</code></strong></p>
+<p>CoreDNS (running in <code>kube-system</code>) resolves service names to ClusterIPs. The FQDN is <code>&lt;service&gt;.&lt;namespace&gt;.svc.cluster.local</code> but within the same namespace just <code>&lt;service&gt;</code> works. Each pod's <code>/etc/resolv.conf</code> is set by kubelet to point to the CoreDNS Service IP. The app should use the service name (<code>DB_HOST=url-shortener-db</code>), never a pod IP — pod IPs are ephemeral and change on every restart.</p>
+<p><strong>Q: Graceful shutdown — why do requests sometimes fail during a rolling update? <code>[Sr]</code></strong></p>
+<p>There's a race condition between two async events: (1) the pod being removed from the EndpointSlice (so new traffic stops) and (2) the SIGTERM being sent to the container. If SIGTERM arrives before the slice update propagates to kube-proxy, traffic keeps arriving at a pod that is shutting down and drops those requests. The fix: <code>preStop: exec: command: ["sleep", "5"]</code> — give slice propagation a head start — plus the application must handle SIGTERM gracefully (drain in-flight, reject new). (→ 11-M9-advanced-k8s-internals.md)</p>
+<p><strong>Q: Public vs private subnet — what's the actual technical difference? <code>[Jr/Mid]</code></strong></p>
+<p>The route table. A public subnet has a route <code>0.0.0.0/0 → igw-xxxx</code> (internet gateway). A private subnet does not — it has only the VPC-local route, plus optionally a NAT gateway route for outbound-only internet. The name "public" or "private" is a label; the route table is the reality.</p>
+<p><strong>Q: SG stateful — practical meaning? <code>[Jr]</code></strong></p>
+<p>A Security Group tracks connection state. If you allow inbound port 443, the return traffic (the response) is automatically allowed without a separate egress rule. NACL (Network Access Control List) is stateless — you must explicitly allow both directions. SG = connection-aware, NACL = packet-by-packet.</p>
+<p><strong>K8s rapid-fire table</strong> (Jr/Mid/Sr tags)</p>
+<table>
+<thead>
+<tr>
+<th>Q</th>
+<th>One-line answer</th>
+<th>Tag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reconciliation = master loop?</td>
+<td>No — distributed, level-triggered per-controller</td>
+<td>Sr</td>
+</tr>
+<tr>
+<td>Only who talks to etcd?</td>
+<td>apiserver</td>
+<td>Sr</td>
+</tr>
+<tr>
+<td>etcd gone → what happens?</td>
+<td>Cluster amnesia — all reads/writes fail</td>
+<td>Sr</td>
+</tr>
+<tr>
+<td>Control-plane HA quorum?</td>
+<td>Odd number (3 or 5) for Raft</td>
+<td>Sr</td>
+</tr>
+<tr>
+<td>CNI/Calico does what?</td>
+<td>Cross-node pod-to-pod flat networking</td>
+<td>Mid</td>
+</tr>
+<tr>
+<td>No CNI installed → ?</td>
+<td>Pods Pending, nodes NotReady</td>
+<td>Jr</td>
+</tr>
+<tr>
+<td>Why <code>swapoff</code> for kubelet?</td>
+<td>Predictable memory for QoS/eviction math</td>
+<td>Mid</td>
+</tr>
+<tr>
+<td><code>kubeadm join</code> token TTL?</td>
+<td>24 hours; <code>kubeadm token create</code> for new one</td>
+<td>Mid</td>
+</tr>
+<tr>
+<td>Service ClusterIP → how traffic reaches pod?</td>
+<td>kube-proxy iptables/IPVS rules per EndpointSlice</td>
+<td>Mid</td>
+</tr>
+<tr>
+<td><code>iptables</code> vs <code>IPVS</code> mode?</td>
+<td>O(n) vs hash-based — IPVS for large clusters</td>
+<td>Sr</td>
+</tr>
+<tr>
+<td><code>READY 0/1</code> means?</td>
+<td>Running but readiness fail — not in EndpointSlice</td>
+<td>Jr</td>
+</tr>
+<tr>
+<td>Rolling update zero-downtime guarantee?</td>
+<td>Only if readiness + graceful shutdown both correct</td>
+<td>Sr</td>
+</tr>
+<tr>
+<td><code>maxSurge</code>/<code>maxUnavailable</code></td>
+<td>Extra pods temporarily allowed / pods allowed down</td>
+<td>Mid</td>
+</tr>
+<tr>
+<td>Argo desired state source?</td>
+<td>Git (not etcd)</td>
+<td>Jr</td>
+</tr>
+<tr>
+<td><code>kubectl edit</code> on a selfHeal app?</td>
+<td>Argo reverts it within 3 min</td>
+<td>Mid</td>
+</tr>
+<tr>
+<td>StatefulSet vs Deployment</td>
+<td>StatefulSet: stable network ID + persistent volume per pod</td>
+<td>Mid</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="cicd">CI/CD<a class="headerlink" href="#cicd" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>(→ 07-M6-cicd.md)</p>
+</blockquote>
+<p><strong>Q: CI vs CD vs Continuous Deployment — the distinction. <code>[Jr]</code></strong></p>
+<p>CI (Continuous Integration) automatically builds and tests every commit so integration issues surface immediately. CD is ambiguous — Continuous Delivery means every build is always deployable but a human approves the production push; Continuous Deployment removes that human gate and ships to production automatically on every green build. In interviews, clarify which you mean.</p>
+<p><strong>Q: How do you handle secrets in a pipeline? <code>[Jr/Mid]</code></strong></p>
+<p>Store them in the platform's secret store — GitHub repo secrets or GitLab CI/CD variables — never in YAML or code. They're injected at runtime as masked environment variables. I scope each secret to the minimum privilege required and rotate them on a schedule or whenever a team member leaves.</p>
+<p><strong>Q: Your pipeline passes locally but fails in CI — why? <code>[Mid]</code></strong></p>
+<p>Typically: missing environment variables that exist on your laptop but aren't declared in CI, version differences (your Node 20 vs CI's Node 18), reliance on locally-cached files, or a service (DB, cache) available locally but not in the ephemeral runner. Fix: containerize the build step, declare all dependencies explicitly, and make the test environment self-contained.</p>
+<p><strong>Q: How do you pass build output between pipeline jobs? <code>[Jr]</code></strong></p>
+<p>Artifacts. A job publishes files (compiled binary, Docker image manifest) and later jobs download them. Caches are for reusable dependencies to speed runs (e.g. <code>node_modules</code>); artifacts are build outputs that flow forward. Don't confuse them — a cache miss is a slower build; a missing artifact is a broken pipeline.</p>
+<p><strong>Q: The CI manifest-update loop trap — how do you prevent it? <code>[Mid/Sr]</code></strong></p>
+<p>Two-layer defense: (1) <code>paths</code> filter — trigger the workflow only on changes under <code>services/**</code>, not <code>k8s/**</code>; the manifest commit touches <code>k8s/</code> and therefore doesn't re-trigger. (2) Append <code>[skip ci]</code> to the manifest update commit message as a belt-and-suspenders fallback. One layer alone can fail; both together is production-safe. (→ G10 war story)</p>
+<p><strong>Q: Matrix builds — why use them for multiple services? <code>[Mid]</code></strong></p>
+<p>A matrix strategy fans out one job definition to N parallel runners simultaneously. Building 3 Docker images sequentially takes 3× the wall-clock time. With a matrix, all 3 run in parallel — total wall-clock is only as long as the slowest service. Same compute cost, dramatically less latency to a green pipeline.</p>
+<p><strong>Q: Why tag images with the commit SHA? <code>[Jr]</code></strong></p>
+<p>Every deployed image is traceable to an exact commit. Rollback is unambiguous — revert the Git commit and Argo deploys the old SHA. Auditors can answer "what was running in prod at 14:00?" with a <code>git log</code>. The <code>latest</code> tag can't give any of this.</p>
+<hr />
+<h2 id="gitops-argo">GitOps / Argo<a class="headerlink" href="#gitops-argo" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>(→ 08-M7-gitops.md · 09-connected-system.md)</p>
+</blockquote>
+<p><strong>Q: Push-based deployment vs GitOps pull model — security difference. <code>[Mid/Sr]</code></strong></p>
+<p>Push: the CI system has cluster credentials (kubeconfig or cloud IAM) and runs <code>kubectl apply</code> directly. If CI is compromised, the cluster is compromised. Pull: Argo CD runs inside the cluster and watches Git. The cluster credentials never leave the cluster — CI only pushes a YAML file to a Git repo. The blast radius of a compromised CI system drops dramatically.</p>
+<p><strong>Q: OutOfSync — name two causes and how you'd tell them apart. <code>[Mid]</code></strong></p>
+<p>Cause A: CI pushed a new image tag to Git — Argo detects the diff and applies it (desired outcome). Cause B: someone ran <code>kubectl edit</code> or <code>kubectl scale</code> directly on the cluster — Argo detects the drift and with <code>selfHeal: true</code> reverts it within 3 minutes. You can tell them apart with <code>argocd app diff &lt;app&gt;</code> — it shows exactly which fields diverge.</p>
+<p><strong>Q: selfHeal on, you need to hotfix prod right now. What do you do? <code>[Sr]</code></strong></p>
+<p>Never edit the cluster directly — Argo will revert it within one reconcile cycle. The only correct path in a GitOps system is to push a commit to Git (even if it's a quick PR merged with approval shortcuts). This preserves audit history, and the rollback is also a Git operation (<code>git revert</code>). The only safe emergency escape hatch is temporarily disabling selfHeal in the Argo app, making the fix, then re-enabling — but that should be rare and tracked.</p>
+<p><strong>Q: Rollback in GitOps. <code>[Mid]</code></strong></p>
+<p><code>git revert &lt;bad-commit&gt;</code> — this creates a new commit reverting the change. Git history stays intact, Argo detects the new desired state, and deploys the previous good version. Compare to imperative rollback: <code>kubectl rollout undo</code> works but leaves no Git trace — next Argo sync would push the new broken version again.</p>
+<p><strong>Q: Argo 3-way diff — what are the three sources? <code>[Sr]</code></strong></p>
+<p>Git manifest (desired), live cluster state (actual), and last-applied configuration (what was last synced). The three-way diff enables Argo to distinguish between "this field was in Git and then removed" vs "this field was added manually" — enabling <code>prune</code> (delete Git-removed resources) and <code>selfHeal</code> (revert manual cluster edits) to work correctly.</p>
+<hr />
+<h2 id="sizing-cost-capacity">Sizing, cost &amp; capacity<a class="headerlink" href="#sizing-cost-capacity" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>(→ 06-M5-sizing-and-cost.md)</p>
+</blockquote>
+<p><strong>Q: OOMKilled / exit 137 — what happened, what do you do? <code>[Jr]</code></strong></p>
+<p>The container exceeded its <code>limits.memory</code> and the Linux OOM killer terminated it. Exit code 137 = killed by signal 9. First: check actual peak memory usage with <code>kubectl top pods</code> to understand the real footprint. Then either raise the limit to match reality or profile the app for a memory leak. Do not raise limits blindly without understanding the usage pattern.</p>
+<p><strong>Q: A pod is Pending. Three reasons and how you'd diagnose each. <code>[Mid]</code></strong></p>
+<p>(1) Insufficient CPU/RAM — no node has enough headroom to fit the pod's <code>requests</code>. Check: <code>kubectl describe pod</code> → "Insufficient cpu/memory" in Events; <code>kubectl describe nodes</code> for available capacity. (2) IP address exhaustion — the node's pod subnet is full (e.g. a <code>/28</code> has only 11 usable IPs). Check: <code>kubectl describe pod</code> → "Failed to allocate a nodeIP". (3) Taint mismatch — the pod lacks a toleration for a taint on all nodes. Check: <code>kubectl describe pod</code> → "node(s) had taints that the pod didn't tolerate".</p>
+<p><strong>Q: When would you use Spot instances and what's the safety rule? <code>[Mid]</code></strong></p>
+<p>Spot instances are 70–90% cheaper but can be reclaimed by AWS with 2 minutes' notice. Safe uses: stateless workloads with tolerations for spot node taints — batch jobs, CI runners, stateless app pods that K8s will reschedule. Never use Spot for: databases, stateful workloads, or anything that can't survive a sudden node termination. The rule: state is on stable nodes (or managed services like RDS); compute is on Spot.</p>
+<p><strong>Q: Requests vs limits — what happens when you hit each ceiling? <code>[Jr]</code></strong></p>
+<p><code>requests</code> is the CPU/RAM amount the scheduler uses to place the pod — it's guaranteed headroom. <code>limits</code> is the ceiling. CPU: hitting the limit causes throttling (the process slows, not killed). RAM: hitting the limit causes OOMKilled (the process is killed, exit 137). A CPU-throttled app is slow; a RAM-OOMKilled app restarts — very different failure modes.</p>
+<p><strong>Q: Node fragmentation — what is it and how do you detect it? <code>[Sr]</code></strong></p>
+<p>Fragmentation is when the cluster has total free capacity but no single node has a large enough contiguous block to fit a new pod's <code>requests</code>. For example: 10 nodes each with 200m CPU free, but you need a pod requiring 500m. Total free = 2 CPU, but the pod can't fit anywhere. Detect with <code>kubectl describe nodes</code> showing per-node allocatable vs requests. Fix: right-size pods downward, or add a node. This is also why Pending pods don't always mean cluster is out of resources.</p>
+<hr />
+<h2 id="observability-sre">Observability &amp; SRE<a class="headerlink" href="#observability-sre" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>(→ 10-M8-observability-sre.md)</p>
+</blockquote>
+<p><strong>Q: Why is p99 latency more important than average latency? <code>[Mid]</code></strong></p>
+<p>The average hides tail latency. If 99 out of 100 requests take 50ms but 1 takes 2 seconds, the average might be 70ms — acceptable. But that 1% is a real user having a terrible experience, and at scale (10,000 RPS) it's 100 users per second. p99 (the 99th percentile) surfaces those outliers. Alert on p99 and p95; use the average only for capacity trending.</p>
+<p><strong>Q: SLI vs SLO vs error budget. <code>[Mid]</code></strong></p>
+<p>SLI (Service Level Indicator): the measured metric — e.g. "% of requests that returned 2xx within 300ms". SLO (Service Level Objective): the target — "99.9% of requests meet the SLI over a rolling 30-day window". Error budget: the allowed failure headroom — for 99.9% that's 0.1% = ~43 minutes per month. When the error budget is depleted, you stop feature work and focus on reliability. Error budgets make reliability a shared engineering conversation, not an ops complaint.</p>
+<p><strong>Q: Alert on symptoms, not causes. <code>[Mid/Sr]</code></strong></p>
+<p>Alert on what users experience (high error rate, latency spike, availability drop) rather than on infrastructure signals (CPU at 80%, disk at 70%). A CPU-high alert with no user impact causes alert fatigue. A latency-spike alert without high CPU is the one that matters. Golden signals: latency, traffic, errors, saturation. Alert on the first three; use saturation for capacity planning.</p>
+<p><strong>Q: High cardinality in metrics — why is it a problem? <code>[Sr]</code></strong></p>
+<p>Cardinality is the number of unique label combinations. If you add <code>user_id</code> as a label to a request metric, you get one time series per user — millions of series that collapse Prometheus. Keep labels to low-cardinality dimensions (status code, endpoint, service). For high-cardinality analysis, use logs or tracing, not metrics.</p>
+<hr />
+<h2 id="war-stories-tell-me-about-a-time-you-debugged">War stories — "tell me about a time you debugged…"<a class="headerlink" href="#war-stories-tell-me-about-a-time-you-debugged" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Read these as STAR stories. Each has the situation, what you saw, root cause, fix, and the lesson (the "T" of STAR).</p>
+</blockquote>
+<hr />
+<p><strong>G1 — ECR login fails on master node</strong> <code>[Docker/Auth]</code></p>
+<p>Tried to log in to ECR directly on the Kubernetes master EC2 node. Got "aws: command not found." The AWS CLI isn't installed on EC2 instances by default — I'd assumed it was. Generated the ECR token on my laptop (<code>aws ecr get-login-password</code>), piped it to <code>docker login</code>, copied the resulting auth into a Kubernetes pull-secret, and applied it to the cluster. <strong>Lesson:</strong> Nodes don't need the AWS CLI — use IAM instance profiles or Kubernetes pull-secrets. ECR tokens expire in 12 hours; automate rotation.</p>
+<hr />
+<p><strong>G2 — t3.micro billing surprise</strong> <code>[Terraform/Cost]</code></p>
+<p>Stood up a kubeadm cluster on t3.micro thinking it was free-tier. Got a billing alert — kubeadm requires minimum 2 vCPU, and t3.micro (1 vCPU, 1 GB) is free-tier but inadequate. Switched to k3s (lightweight single-binary K8s) on t3.micro with a 2 GB swapfile. <strong>Lesson:</strong> Always check free-tier eligibility before <code>terraform apply</code>. For labs, k3s on t3.micro; kubeadm needs t3.medium or larger.</p>
+<hr />
+<p><strong>G3 — RDS password rejected by AWS</strong> <code>[Terraform/RDS]</code></p>
+<p><code>terraform apply</code> failed with <code>InvalidParameterValue: MasterUserPassword</code>. I'd included a <code>@</code> in the password string. AWS RDS forbids <code>/</code>, <code>@</code>, <code>"</code>, and spaces in master passwords. Changed to alphanumeric only. <strong>Lesson:</strong> Validate all external API constraints at the boundary — IaC provisioning time. In production, use Secrets Manager with auto-rotation so plaintext never appears in <code>tfvars</code>.</p>
+<hr />
+<p><strong>G4 — SSH timeout after SG update</strong> <code>[Terraform/Networking]</code></p>
+<p>Updated the security group's SSH rule with <code>my_ip = "$(curl ifconfig.me)/32"</code> and still couldn't SSH in. <code>curl ifconfig.me</code> had returned an IPv6 address; SG <code>cidr_blocks</code> expects IPv4. The rule was accepted silently by AWS but never matched. Fixed with <code>curl -4 ifconfig.me</code> to force IPv4. <strong>Lesson:</strong> IPv6 addresses in an IPv4 SG rule cause silent failures — no error, just dropped packets. Always <code>-4</code> flag when fetching your IP for SG rules.</p>
+<hr />
+<p><strong>G5 — k3s API server dies with TLS timeout</strong> <code>[Kubernetes/Memory]</code></p>
+<p><code>kubectl get nodes</code> returned <code>TLS handshake timeout</code>. <code>systemctl status k3s</code> showed the k3s process had stopped — it had been OOM-killed by the kernel on a 1 GB t3.micro. (k3s runs as a systemd service, not as a CRI-managed container, so <code>crictl ps</code> will not show it; use <code>systemctl status k3s</code> or <code>ps aux | grep k3s</code> to check if the process is alive.) Added a 2 GB swapfile (<code>fallocate -l 2G /swapfile</code>, <code>mkswap</code>, <code>swapon</code>), restarted k3s, cluster came back. <strong>Lesson:</strong> k3s needs ~500 MB RAM. On 1 GB nodes, swap is the lifeline. In production, minimum 2 GB (t3.small+).</p>
+<hr />
+<p><strong>G6 — Swap disappears after reboot</strong> <code>[Linux/Persistence]</code></p>
+<p>After an EC2 stop/start, the swap was gone and k3s OOM-killed again. <code>swapon</code> is session-only. Added <code>/swapfile none swap sw 0 0</code> to <code>/etc/fstab</code> for persistence. <strong>Lesson:</strong> <code>swapon</code> = current session. <code>/etc/fstab</code> = survives reboot. A persistent fix requires both: create the file AND add the fstab entry.</p>
+<hr />
+<p><strong>G7 — Worker node can't join cluster</strong> <code>[Kubernetes/Networking]</code></p>
+<p>Worker join with <code>K3S_URL=https://&lt;PUBLIC_IP&gt;:6443</code> failed with TLS error. The K8s API server listens on the private VPC IP — node-to-node traffic inside a VPC uses private IPs; the public IP route doesn't work for intra-VPC traffic. Used <code>ip addr</code> to get the master's private IP (<code>10.0.1.x</code>) and the join succeeded. <strong>Lesson:</strong> Inside a VPC, nodes communicate via private IPs. <code>kubectl get nodes -o wide</code> → use the <code>INTERNAL-IP</code> column, not the public IP.</p>
+<hr />
+<p><strong>G8 — CI can't push to Git: Permission denied</strong> <code>[CI/CD/Permissions]</code></p>
+<p>The <code>update-manifests</code> job failed with <code>remote: Permission to repo.git denied to github-actions[bot]</code>. Two separate permission gaps: the workflow YAML was missing <code>permissions: contents: write</code>, AND the repo settings had the default "Read" workflow permission. Fixed both. <strong>Lesson:</strong> <code>GITHUB_TOKEN</code> starts read-only. Manifest-update workflows explicitly need <code>contents: write</code> declared in both the YAML and the repo Settings → Actions → General → Workflow permissions.</p>
+<hr />
+<p><strong>G9 — <code>sed: No such file or directory</code> in CI</strong> <code>[CI/CD/Naming]</code></p>
+<p>The CI loop tried to update <code>k8s/catalog-api.yaml</code> but the file was named <code>k8s/catalog.yaml</code>. The <code>sed</code> command failed silently enough to break the manifest update. Renamed files to exactly match the service names used in the CI matrix. <strong>Lesson:</strong> CI script names, K8s manifest filenames, Docker image names, and deployment names should all use one consistent convention. A mismatch anywhere in the chain silently breaks the update.</p>
+<hr />
+<p><strong>G10 — CI manifest update triggers itself in a loop</strong> <code>[CI/CD/GitOps]</code></p>
+<p>CI pushed a tag update commit to <code>main</code>. That push triggered the workflow again. Applied a two-layer fix: a <code>paths: ['services/**']</code> trigger filter (manifest commits touch <code>k8s/</code>, not <code>services/</code>) and appended <code>[skip ci]</code> to the commit message. <strong>Lesson:</strong> Two independent layers beat one. The <code>paths</code> filter is structural; <code>[skip ci]</code> is an escape hatch. Either one alone can fail under edge cases.</p>
+<hr />
+<p><strong>G11 — Sequential Docker builds were slow</strong> <code>[CI/CD/Performance]</code></p>
+<p>Building three service images sequentially in CI took 12+ minutes. Switched to a GitHub Actions matrix strategy — three jobs fan out in parallel. Build time dropped to the duration of the slowest single service (~5 minutes). <strong>Lesson:</strong> Matrix builds give parallel execution for free. Fan-out with <code>strategy.matrix</code>, sync with <code>needs</code>. Wall-clock = slowest job, not sum of all jobs.</p>
+<hr />
+<p><strong>G12 — Argo CD pods OOMing on t3.micro</strong> <code>[GitOps/Sizing]</code></p>
+<p>After installing Argo CD (6–7 pods: server, repo-server, application-controller, redis, dex, notifications), the node ran out of RAM and Argo pods went Pending or OOMKilled. Swap from G5/G6 kept things afloat for the demo. <strong>Lesson:</strong> Argo's full install needs 1–2 GB RAM. For a lab it's swap-backed; for production use dedicated nodes with resource limits and a HA install.</p>
+<hr />
+<p><strong>G13 — <code>kubectl apply</code> timing out with <code>--validate</code> error</strong> <code>[Kubernetes/API]</code></p>
+<p><code>kubectl apply -f argocd/application.yaml</code> returned <code>TLS handshake timeout</code> during schema validation — the API server was under load and the openapi schema fetch was timing out. Applied with <code>--validate=false</code> to skip server-side schema validation. <strong>Lesson:</strong> <code>--validate=false</code> is a workaround for an overloaded API server, not a permanent setting. Production: keep validation on; fix the capacity problem instead.</p>
+<hr />
+<p><strong>G14 — selfHeal reverted my manual scale</strong> <code>[GitOps/selfHeal]</code></p>
+<p>Scaled a deployment to 3 replicas with <code>kubectl scale</code> to handle a load spike. Within 3 minutes it was back to 1. Argo CD's <code>selfHeal: true</code> detected the cluster drift from Git (which said <code>replicas: 1</code>) and reverted it. The fix: update <code>replicas: 3</code> in the Git manifest. <strong>Lesson:</strong> In a GitOps system, the cluster is read-only. All changes go through Git. <code>kubectl edit</code> / <code>kubectl scale</code> are anti-patterns when selfHeal is enabled.</p>
+<hr />
+<p><strong>G15 — Understood why pull model is more secure</strong> <code>[GitOps/Security]</code></p>
+<p>While designing the pipeline I considered having GitHub Actions run <code>kubectl apply</code> directly (push model) — CI would need kubeconfig secrets. Switched to Argo CD. Now CI only writes YAML to Git; the cluster credentials never leave the cluster. If CI is compromised, the attacker gets Git write access — bad, but far less dangerous than direct cluster access. <strong>Lesson:</strong> Pull = credentials cluster-side, never in CI. Push = credentials in CI = much larger blast radius on compromise.</p>
+<hr />
+<p><strong>G16 — SSH and kubectl both "Connection refused" after IP rotation</strong> <code>[Networking/SG]</code></p>
+<p>Was mid-session when both SSH (port 22) and kubectl (port 6443) suddenly refused connections — not timed out, refused. The security group rules were locked to my IP at Terraform apply time. My ISP's CGNAT had rotated my public IP. "Connection refused" vs "Connection timed out" distinction matters: timeout = SG drops (silent); refused = RST from host or CGNAT. Used <code>curl -4 ifconfig.me</code> to get new IP, updated <code>terraform.tfvars</code>, ran <code>apply</code> (only SG rule changes, instances unaffected). <strong>Lesson:</strong> Dynamic ISP IPs break IP-locked SGs. Production answer: bastion host, VPN, or AWS Systems Manager Session Manager — never lock to a home IP.</p>
+<hr />
+<p><strong>G17 — kubectl defaults to localhost:8080</strong> <code>[Kubernetes/Config]</code></p>
+<p>On the freshly provisioned master, <code>kubectl get nodes</code> returned <code>dial tcp 127.0.0.1:8080: connection refused</code>. No error about config — it just fell back to the old insecure port. The <code>ubuntu</code> user's <code>~/.kube/config</code> didn't exist. Ran the standard kubeadm post-init steps (<code>mkdir -p $HOME/.kube; sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config</code>). <strong>Lesson:</strong> <code>localhost:8080 refused</code> is an unambiguous signal: kubectl has no kubeconfig. It's not a cluster problem — it's a client config problem.</p>
+<hr />
+<p><strong>G18 — postgres StatefulSet stuck Pending: no StorageClass</strong> <code>[Kubernetes/Storage]</code></p>
+<p><code>postgres-0</code> stayed Pending indefinitely. <code>kubectl get pvc</code> showed <code>data-postgres-0 Pending</code>. <code>kubectl get sc</code> returned nothing. A fresh <code>kubeadm</code> cluster has no default StorageClass or dynamic provisioner — unlike EKS/GKE which provision one automatically. Installed <code>rancher/local-path-provisioner</code>, patched it as the default class, then deleted and recreated the PVC (existing Pending PVCs don't retroactively bind to a newly added StorageClass). <strong>Lesson:</strong> First debug step for PVC Pending: <code>kubectl get sc</code>. No StorageClass = no dynamic provisioning. EBS CSI driver for production on AWS.</p>
+<hr />
+<p><strong>G19 — Ingress IP returns "404 Not Found"</strong> <code>[Kubernetes/Ingress]</code></p>
+<p>Browsing to the node's raw public IP returned "404 Not Found, nginx". All pods were Running. The ingress-nginx controller routes based on the HTTP <code>Host</code> header, not the IP. No hostname → no rule match → default backend → 404. The 404 proved the ingress was alive — it was a routing miss, not a crash. Added <code>/etc/hosts</code> entries mapping a hostname to the node IP, browsed to <code>http://hostname</code>, got 200. <strong>Lesson:</strong> "IP pe 404 nginx" = ingress is UP, Host header doesn't match any rule. Debug with <code>curl -H "Host: your.domain" http://&lt;ip&gt;/</code> before touching anything else. In production, use real DNS (Route 53).</p>
+<hr />
+<h2 id="quick-troubleshoot-reference">Quick Troubleshoot Reference<a class="headerlink" href="#quick-troubleshoot-reference" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Check first</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>TLS handshake timeout</code> (kubectl)</td>
+<td><code>free -h</code> — RAM?</td>
+<td><code>sudo swapon /swapfile &amp;&amp; sudo systemctl restart k3s</code></td>
+</tr>
+<tr>
+<td>CI push: "Permission denied to github-actions[bot]"</td>
+<td><code>permissions:</code> in YAML + repo Settings</td>
+<td>Add <code>contents: write</code> in both (G8)</td>
+</tr>
+<tr>
+<td><code>sed: No such file</code> in CI</td>
+<td>Manifest filenames vs CI loop names</td>
+<td>Rename <code>k8s/&lt;service&gt;.yaml</code> to match (G9)</td>
+</tr>
+<tr>
+<td>Argo App OutOfSync, not self-healing</td>
+<td><code>selfHeal: true</code> in <code>application.yaml</code>?</td>
+<td><code>kubectl describe application -n argocd</code> (G14)</td>
+</tr>
+<tr>
+<td>Worker can't join cluster</td>
+<td>Using public vs private IP?</td>
+<td>Use master's <code>INTERNAL-IP</code> (<code>10.0.x.x</code>) (G7)</td>
+</tr>
+<tr>
+<td>ECR pull fails on node</td>
+<td>Pull-secret present? Expired?</td>
+<td>Recreate secret — ECR tokens expire 12h (G1)</td>
+</tr>
+<tr>
+<td>Swap gone after reboot</td>
+<td><code>/etc/fstab</code> entry?</td>
+<td><code>echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab</code> (G6)</td>
+</tr>
+<tr>
+<td>RDS connection refused / bad password</td>
+<td>Special chars in password? SG?</td>
+<td>Letters+numbers only; SG <code>:5432</code> self-rule (G3)</td>
+</tr>
+<tr>
+<td>SSH/6443 "Connection refused"</td>
+<td><code>curl -4 ifconfig.me</code> vs SG rule</td>
+<td>IP rotated — update CIDR + <code>terraform apply</code> (G16)</td>
+</tr>
+<tr>
+<td><code>kubectl</code> → <code>localhost:8080 refused</code></td>
+<td><code>~/.kube/config</code> exists?</td>
+<td><code>cp /etc/kubernetes/admin.conf ~/.kube/config</code> (G17)</td>
+</tr>
+<tr>
+<td>Pod / PVC <code>Pending</code> indefinitely</td>
+<td><code>kubectl get sc</code> — any StorageClass?</td>
+<td>Install local-path-provisioner + recreate PVC (G18)</td>
+</tr>
+<tr>
+<td>Ingress IP → "404 Not Found nginx"</td>
+<td>Sending Host header?</td>
+<td><code>/etc/hosts</code> entry + <code>http://hostname</code> (G19)</td>
+</tr>
+<tr>
+<td>Pod <code>OOMKilled</code> (exit 137)</td>
+<td><code>kubectl top pods</code> — actual usage?</td>
+<td>Raise <code>limits.memory</code> or fix memory leak</td>
+</tr>
+<tr>
+<td><code>CrashLoopBackOff</code></td>
+<td><code>kubectl logs &lt;pod&gt; --previous</code></td>
+<td>Fix app crash; check CMD/ENTRYPOINT</td>
+</tr>
+<tr>
+<td><code>ImagePullBackOff</code></td>
+<td>Tag correct? Pull-secret present?</td>
+<td>Fix image name/tag; create registry secret</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="the-60-second-self-test">The 60-second self-test<a class="headerlink" href="#the-60-second-self-test" title="Permanent link">&para;</a></h2>
+<p>Quiz yourself out loud. Cover the right column, speak the answer, then check.</p>
+<table>
+<thead>
+<tr>
+<th>Trap question</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>T → A → D → K, each one word?</td>
+<td>Builder / Setup / Pack / Manager</td>
+</tr>
+<tr>
+<td>tfstate gayi, 5 servers zinda, apply kiya → kitne?</td>
+<td>10 (orphan + 5 new = lost-state disaster)</td>
+</tr>
+<tr>
+<td>Drift vs lost-state — state file kahan?</td>
+<td>Drift = intact; lost-state = gone</td>
+</tr>
+<tr>
+<td>Docker: why deps layer above, code below?</td>
+<td>Code changes more often; cache deps layer avoids full rebuild</td>
+</tr>
+<tr>
+<td>Reconciliation — 4 tools?</td>
+<td>Terraform (triggered) / Ansible (triggered) / K8s (continuous) / Argo (continuous)</td>
+</tr>
+<tr>
+<td>Actions = push, Argo = ? beech mein kya?</td>
+<td>Pull; Git is the intermediary source of truth</td>
+</tr>
+<tr>
+<td>selfHeal on + <code>kubectl scale</code> kiya → ?</td>
+<td>Argo reverts to Git state within ~3 min</td>
+</tr>
+<tr>
+<td>OOMKilled = ? CPU limit cross = ?</td>
+<td>RAM exceeded (kill) / CPU throttle (slow, not killed)</td>
+</tr>
+<tr>
+<td>Manifest-update: CI cluster ko chhuti hai?</td>
+<td>Yes — CI only writes to Git; Argo applies to cluster</td>
+</tr>
+<tr>
+<td><code>latest</code> tag se rollback kaise?</td>
+<td>Can't — mutable tag, no audit trail; use SHA pin</td>
+</tr>
+<tr>
+<td>Liveness check mein DB dala — kya hoga?</td>
+<td>Load spike → all pods liveness fail → mass restart → cascading outage</td>
+</tr>
+<tr>
+<td>Pod Running, READY 0/1 — agle step?</td>
+<td><code>kubectl get endpointslices</code> → readiness probe → label match</td>
+</tr>
+<tr>
+<td>Node RAM full, kaun pehle marta?</td>
+<td>BestEffort → Burstable → Guaranteed</td>
+</tr>
+<tr>
+<td>HPA kya chahiye?</td>
+<td><code>metrics-server</code> + pod <code>requests</code> set</td>
+</tr>
+<tr>
+<td><code>localhost:8080 refused</code> (kubectl) → ?</td>
+<td><code>~/.kube/config</code> missing — copy <code>admin.conf</code></td>
+</tr>
+<tr>
+<td>IP pe 404 nginx (ingress) → ?</td>
+<td>Ingress alive; no Host header match — add <code>/etc/hosts</code></td>
+</tr>
+<tr>
+<td>Sirf kaun etcd se baat karta?</td>
+<td>apiserver only</td>
+</tr>
+<tr>
+<td>Public vs private subnet — technical test?</td>
+<td>Route table: IGW route present = public</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="closing-what-interviewers-are-really-testing">Closing: what interviewers are really testing<a class="headerlink" href="#closing-what-interviewers-are-really-testing" title="Permanent link">&para;</a></h2>
+<p>Interviewers at 2.5–3 year level are not testing command recall. They are testing three things:</p>
+<p><strong>1. Can you design?</strong> Given a problem, can you break it into the right components, choose the right tool for each, and draw the request-flow end to end — including failure paths? Commands are Google-able. Design decisions define the engineer.</p>
+<p><strong>2. Can you decide under ambiguity?</strong> Every architecture has trade-offs (Spot vs On-Demand, monolith vs microservices, kubeadm vs managed). Senior engineers articulate the trade-off and defend a choice. Junior engineers ask which one to pick.</p>
+<p><strong>3. Can you debug systematically?</strong> Interviewers simulate a production failure. The answer is never "I'd Google it." The answer is: form a hypothesis, isolate the layer, verify deterministically, and move inward. Every war story in section 12 demonstrates this method.</p>
+<blockquote>
+<p>"Commands AI/Google de dega. DESIGN + DECIDE = engineer."</p>
+</blockquote>
+<p>The candidate who explains <em>why</em> selfHeal beats <code>kubectl edit</code> in a GitOps system, who knows <em>why</em> liveness probes shouldn't check the DB, and who can walk a 502 debug from NodePort to RDS without guessing — that candidate gets the offer. The one who memorized <code>kubectl apply</code> flags does not.</p>
+<p>Prepare the war stories in your own voice. Prepare the reflex table until the answer fires before the question finishes. And when in doubt, say "I'd start by checking X, because in a system like this the most likely failure at that layer is Y." That reasoning, not the right answer, is what the interviewer is scoring.</p>
+<hr />
+<p><em>Cross-links: probes → 05-M4-kubernetes-core.md / 11-M9-advanced-k8s-internals.md · state/drift → 02-M1-terraform.md · push-vs-pull → 08-M7-gitops.md / 09-connected-system.md · sizing/OOM → 06-M5-sizing-and-cost.md · observability → 10-M8-observability-sre.md · capstone war stories → 12-capstone-url-shortener.md / 13-capstone-microshop.md</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../13-capstone-microshop/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Capstone II · MicroShop">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Capstone II · MicroShop
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../20-confusions-and-tradeoffs/" class="md-footer__link md-footer__link--next" aria-label="Next: Confusions &amp; Trade-offs (X-vs-Y)">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Confusions & Trade-offs (X-vs-Y)
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 grvtech1 — licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/grvtech1/devops-handbook" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "announce.dismiss"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/progress.js"></script>
+      
+    
+  </body>
+</html>

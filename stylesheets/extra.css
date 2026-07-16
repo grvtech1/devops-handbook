@@ -1,0 +1,132 @@
+/* ---- DevOps Handbook — site polish + interactive widgets ---- */
+
+/* Progress meter (injected on the Progress page and any tracker-like page) */
+.dhb-progress {
+  position: relative;
+  height: 28px;
+  background: var(--md-default-fg-color--lightest);
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 1rem 0 1.5rem;
+  box-shadow: inset 0 0 0 1px var(--md-default-fg-color--lightest);
+}
+.dhb-progress-fill {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 0;
+  background: linear-gradient(90deg, var(--md-primary-fg-color), var(--md-accent-fg-color));
+  transition: width .35s ease;
+}
+.dhb-progress-label {
+  position: relative;
+  display: block;
+  text-align: center;
+  line-height: 28px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .02em;
+  color: var(--md-default-fg-color);
+}
+
+/* Make task-list checkboxes feel clickable (progress.js enables them) */
+.md-content .task-list-item input[type="checkbox"] {
+  cursor: pointer;
+}
+.md-content .task-list-item input[type="checkbox"]:not(:disabled) {
+  transform: scale(1.15);
+}
+
+/* Flashcards — quiz mode (blur answers until clicked) */
+.dhb-fc-toggle { margin: .25rem 0 1.25rem; }
+.dhb-fc-answer { cursor: pointer; transition: filter .15s ease; }
+.dhb-fc-answer.dhb-hidden { filter: blur(5px); user-select: none; }
+.dhb-fc-answer.dhb-hidden:hover { filter: blur(2.5px); }
+.dhb-fc-hint {
+  font-size: .75rem;
+  color: var(--md-default-fg-color--light);
+  margin: -.5rem 0 1rem;
+}
+
+/* A touch more breathing room in the chapter header callouts */
+.md-typeset blockquote { border-left-width: 3px; }
+
+/* ============================================================
+   VISUAL LEVEL-UP — cards, buttons, mermaid, admonitions, tables
+   ============================================================ */
+
+/* Grid cards — hover lift + accent, dark-mode safe */
+.md-typeset .grid.cards > ul > li,
+.md-typeset .grid.cards > :is(ul, ol) > li {
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 12px;
+  padding: 1rem 1.05rem;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  background: var(--md-default-bg-color);
+}
+.md-typeset .grid.cards > ul > li:hover {
+  transform: translateY(-4px);
+  border-color: var(--md-accent-fg-color);
+  box-shadow: 0 10px 26px -12px rgba(63, 81, 181, .5);
+}
+.md-typeset .grid.cards .twemoji.lg svg,
+.md-typeset .grid.cards :is(.lg) svg { height: 1.9em; width: 1.9em; }
+
+/* Buttons — primary gets a gradient + lift */
+.md-typeset .md-button {
+  border-radius: 10px;
+  font-weight: 700;
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+.md-typeset .md-button:hover { transform: translateY(-2px); }
+.md-typeset .md-button--primary {
+  background: linear-gradient(135deg, var(--md-primary-fg-color), #6573ff);
+  border-color: transparent;
+  box-shadow: 0 8px 20px -8px rgba(63, 81, 181, .6);
+}
+.md-typeset .md-button--primary:hover { filter: brightness(1.06); }
+
+/* Mermaid — centered, framed, breathes */
+.md-typeset .mermaid {
+  display: flex;
+  justify-content: center;
+  margin: 1.4rem 0;
+  padding: 1rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 12px;
+  background: var(--md-code-bg-color);
+  overflow-x: auto;
+}
+
+/* Admonitions — a little rounder + softer */
+.md-typeset :is(.admonition, details) {
+  border-radius: 10px;
+  border-left-width: 4px;
+  box-shadow: 0 2px 10px -6px rgba(0,0,0,.25);
+}
+
+/* Tables — header pops, rounded corners, row hover */
+.md-typeset table:not([class]) {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 8px -5px rgba(0,0,0,.3);
+}
+.md-typeset table:not([class]) th {
+  background: var(--md-primary-fg-color);
+  color: #fff;
+  font-weight: 700;
+}
+.md-typeset table:not([class]) tr:hover td {
+  background: var(--md-default-fg-color--lightest);
+}
+
+/* Section headings — subtle accent underline on H2 */
+.md-typeset h2 {
+  border-bottom: 2px solid var(--md-default-fg-color--lightest);
+  padding-bottom: .3rem;
+}
+
+/* Landing hero buttons row spacing */
+.md-typeset .md-button + .md-button { margin-left: .4rem; }
+
+/* Code blocks — a hair more rounding */
+.md-typeset pre > code { border-radius: 8px; }

@@ -1,0 +1,3641 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free, zero-to-job-ready DevOps handbook — from "what is a terminal" to production- and interview-ready. Systems thinking, hands-on labs, capstones.">
+      
+      
+      
+        <link rel="canonical" href="https://grvtech1.github.io/devops-handbook/00b-setup-runbook/">
+      
+      
+        <link rel="prev" href="../00a-preflight/">
+      
+      
+        <link rel="next" href="../21-linux-toolkit/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>00b · Setup runbook - The DevOps Engineer's Handbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%206a6%206%200%200%201%206%206c0%202.22-1.21%204.16-3%205.2V19a1%201%200%200%201-1%201h-4a1%201%200%200%201-1-1v-1.8c-1.79-1.04-3-2.98-3-5.2a6%206%200%200%201%206-6m2%2015v1a1%201%200%200%201-1%201h-2a1%201%200%200%201-1-1v-1zm6-10h3v2h-3zM1%2011h3v2H1zM13%201v3h-2V1zM4.92%203.5l2.13%202.14-1.42%201.41L3.5%204.93zm12.03%202.13%202.12-2.13%201.43%201.43-2.13%202.12z%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m13.13%2022.19-1.63-3.83c1.57-.58%203.04-1.36%204.4-2.27zM5.64%2012.5l-3.83-1.63%206.1-2.77C7%209.46%206.22%2010.93%205.64%2012.5M21.61%202.39S16.66.269%2011%205.93c-2.19%202.19-3.5%204.6-4.35%206.71-.28.75-.09%201.57.46%202.13l2.13%202.12c.55.56%201.37.74%202.12.46A19.1%2019.1%200%200%200%2018.07%2013c5.66-5.66%203.54-10.61%203.54-10.61m-7.07%207.07c-.78-.78-.78-2.05%200-2.83s2.05-.78%202.83%200c.77.78.78%202.05%200%202.83s-2.05.78-2.83%200m-5.66%207.07-1.41-1.41zM6.24%2022l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83%2022zM2%2022h1.41l4.77-4.76-1.42-1.41L2%2020.59zm0-2.83%204.09-4.08c-.21-.3-.36-.62-.45-.97L2%2017.76z%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M13%2014h-2V9h2m0%209h-2v-2h2M1%2021h22L12%202z%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M8%2015a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m2.5%202%201.5-3%201.5%203zm5.5-2a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m6-4A10%2010%200%200%200%2012%201%2010%2010%200%200%200%202%2011c0%202.8%201.2%205.3%203%207.1V22h14v-3.9c1.8-1.8%203-4.3%203-7.1m-5%209h-2v-2h-2v2h-2v-2H9v2H7v-2.8c-1.8-1.5-3-3.7-3-6.2a8%208%200%200%201%208-8%208%208%200%200%201%208%208c0%202.5-1.2%204.8-3%206.2z%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#module-00b-setup-runbook-from-zero-to-ready" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  🚀 <strong>26 chapters</strong> · rendered diagrams · hands-on labs · a 26-scenario incident playbook — all free (CC BY 4.0).
+  &nbsp;
+  <a href="https://github.com/grvtech1/devops-handbook" style="color: inherit; text-decoration: underline; font-weight: 700;">⭐ Star it on GitHub</a>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-header__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The DevOps Engineer's Handbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              00b · Setup runbook
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../study-plan/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Study Plan
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../progress/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  My Progress
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../00-INDEX/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Handbook
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-nav__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    The DevOps Engineer's Handbook
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../study-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    My Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handbook
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Handbook
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-INDEX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Curriculum (Index)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 0 — Pre-flight
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 0 — Pre-flight
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00a-preflight/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00a · Pre-flight ground floor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00b · Setup runbook
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00b · Setup runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#before-you-begin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Before you begin
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-install-and-why" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you'll install (and why)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-windows-enable-wsl2-ubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — Windows: enable WSL2 + Ubuntu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-update-the-system-install-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — Update the system &amp; install basics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-install-docker-desktop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Install Docker Desktop
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-install-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Install Terraform
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-install-kubectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — Install kubectl
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-6-install-aws-cli-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6 — Install AWS CLI v2
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-7-install-ansible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7 — Install Ansible
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-8-a-local-kubernetes-cluster-for-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 8 — A local Kubernetes cluster for practice
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 8 — A local Kubernetes cluster for practice">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-kind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install kind
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-your-first-local-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create your first local cluster
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-9-create-secure-your-aws-account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 9 — Create &amp; secure your AWS account
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 9 — Create &amp; secure your AWS account">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-sign-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 Sign up
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-understand-the-root-user-and-why-you-must-lock-it-away" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 Understand the root user — and why you must lock it away
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-create-an-iam-user-for-daily-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 Create an IAM user for daily work
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#94-choose-a-region" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.4 Choose a region
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-10-configure-the-aws-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 10 — Configure the AWS CLI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-11-free-tier-billing-alerts-cost-discipline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 11 — Free Tier, billing alerts &amp; cost discipline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 11 — Free Tier, billing alerts &amp; cost discipline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-the-free-tier-actually-covers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the Free Tier actually covers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set-a-billing-alarm-now-before-you-create-anything" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Set a billing alarm now (before you create anything)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-golden-rule-terraform-destroy-before-you-stop-for-the-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The golden rule — terraform destroy before you stop for the day
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify-everything-the-pre-flight-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify everything — the pre-flight checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-setup-gotchas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common setup gotchas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mac-specific-quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mac-specific quick reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linux-specific-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linux-specific notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where next
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-linux-toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux · the ground everything runs on
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part I — Core toolchain
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part I — Core toolchain
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-M0-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M0 · Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-M1-terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M1 · Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-M2-ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M2 · Ansible
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-M3-docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M3 · Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-M4-kubernetes-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M4 · Kubernetes Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-M5-sizing-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M5 · Sizing & Cost
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-M6-cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M6 · CI/CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-M7-gitops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M7 · GitOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part II — Systems thinking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part II — Systems thinking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-connected-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Connected System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-k8s-objects-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Objects · How They Connect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-10-day-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Learning Plan (understand)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29-confidence-sprint/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Confidence Sprint (drill)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../28-helm-real-projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Helm in the Real World (your 2 projects)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-cicd-hands-on-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Follow One Commit (hands-on CI/CD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part III — Operate
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part III — Operate
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-M8-observability-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M8 · Observability & SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-M9-advanced-k8s-internals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M9 · Advanced K8s Internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30-k8s-complete-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Complete Reference (Workloads · Scheduling · Ops)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-production-incident-playbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Incident Playbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part IV — Capstones
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part IV — Capstones
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-capstone-url-shortener/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone I · URL Shortener
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-capstone-microshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone II · MicroShop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part V — Reference & career
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part V — Reference & career
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-interview-bank/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview Bank
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-confusions-and-tradeoffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Confusions & Trade-offs (X-vs-Y)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-command-cheatsheets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Command Cheat-Sheets & Labs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-roadmap-M11-M18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap · M11–M18
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-reference-appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Appendix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-career-job-ready/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Job-Ready
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part VI — The Production Gauntlet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part VI — The Production Gauntlet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-production-gauntlet-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build the Real System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-production-gauntlet-chaos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chaos Engineering · break & fix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#before-you-begin" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Before you begin
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-youll-install-and-why" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you'll install (and why)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-windows-enable-wsl2-ubuntu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — Windows: enable WSL2 + Ubuntu
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-update-the-system-install-basics" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — Update the system &amp; install basics
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-install-docker-desktop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Install Docker Desktop
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-4-install-terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Install Terraform
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-5-install-kubectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — Install kubectl
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-6-install-aws-cli-v2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6 — Install AWS CLI v2
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-7-install-ansible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7 — Install Ansible
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-8-a-local-kubernetes-cluster-for-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 8 — A local Kubernetes cluster for practice
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 8 — A local Kubernetes cluster for practice">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#install-kind" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install kind
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#create-your-first-local-cluster" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Create your first local cluster
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-9-create-secure-your-aws-account" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 9 — Create &amp; secure your AWS account
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 9 — Create &amp; secure your AWS account">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#91-sign-up" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.1 Sign up
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#92-understand-the-root-user-and-why-you-must-lock-it-away" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.2 Understand the root user — and why you must lock it away
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#93-create-an-iam-user-for-daily-work" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.3 Create an IAM user for daily work
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#94-choose-a-region" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        9.4 Choose a region
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-10-configure-the-aws-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 10 — Configure the AWS CLI
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-11-free-tier-billing-alerts-cost-discipline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 11 — Free Tier, billing alerts &amp; cost discipline
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 11 — Free Tier, billing alerts &amp; cost discipline">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-the-free-tier-actually-covers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What the Free Tier actually covers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#set-a-billing-alarm-now-before-you-create-anything" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Set a billing alarm now (before you create anything)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-golden-rule-terraform-destroy-before-you-stop-for-the-day" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The golden rule — terraform destroy before you stop for the day
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#verify-everything-the-pre-flight-checklist" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Verify everything — the pre-flight checklist
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#common-setup-gotchas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Common setup gotchas
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mac-specific-quick-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mac-specific quick reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#linux-specific-notes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Linux-specific notes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-next" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where next
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="module-00b-setup-runbook-from-zero-to-ready">Module 00b — Setup Runbook: from zero to ready<a class="headerlink" href="#module-00b-setup-runbook-from-zero-to-ready" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Core question:</strong> Can you go from a bare Windows 11 laptop to a fully armed DevOps workstation
+— with a verified AWS account, a local Kubernetes cluster, and every tool version-checked —
+without ever touching the AWS root user or committing a secret to Git?</p>
+</blockquote>
+<hr />
+<blockquote>
+<p><strong>⏱️ Time:</strong> ~60 min (installs chalte rehte) · <strong>🎚️ Level:</strong> Beginner · <strong>📋 Pehle chahiye:</strong> <a href="../00a-preflight/">00a Pre-flight</a></p>
+<p><strong>Is module ke baad tum kar paoge:</strong>
+- WSL2, Git, Docker, Terraform, kubectl, AWS CLI, Ansible, aur kind install karke har tool ka version verify karo
+- AWS account secure karo: root user lock karo, IAM user banao, MFA enable karo, billing alarm lagao
+- <code>aws sts get-caller-identity</code> se CLI authentication confirm karo aur local kind cluster <code>Ready</code> state mein chalao</p>
+</blockquote>
+<h2 id="before-you-begin">Before you begin<a class="headerlink" href="#before-you-begin" title="Permanent link">&para;</a></h2>
+<p>This runbook follows <a href="../00a-preflight/">00a — Preflight</a> and lands you at the starting line for
+<a href="../01-M0-foundations/">M0 — Foundations</a>. Work through it in order. Every step has a <strong>verify
+command</strong> — do not move on until your output matches.</p>
+<p><strong>Time estimate:</strong> 60–90 minutes for a fresh machine with a decent internet connection.</p>
+<hr />
+<h2 id="what-youll-install-and-why">What you'll install (and why)<a class="headerlink" href="#what-youll-install-and-why" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>What it is</th>
+<th>What it does in this book</th>
+<th>Verify command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>WSL2 + Ubuntu</strong></td>
+<td>Windows Subsystem for Linux v2</td>
+<td>Gives you a real Linux shell on Windows — all book commands run here</td>
+<td><code>wsl -l -v</code></td>
+</tr>
+<tr>
+<td><strong>Git</strong></td>
+<td>Distributed version-control system</td>
+<td>Tracks every config/code change; the spine of every DevOps workflow</td>
+<td><code>git --version</code></td>
+</tr>
+<tr>
+<td><strong>Docker Desktop</strong></td>
+<td>Container runtime + GUI</td>
+<td>Builds and runs containers locally; uses WSL2 as its Linux backend</td>
+<td><code>docker version</code></td>
+</tr>
+<tr>
+<td><strong>Terraform</strong></td>
+<td>Infrastructure-as-Code CLI</td>
+<td>Provisions AWS resources from <code>.tf</code> files — the outer loop</td>
+<td><code>terraform -version</code></td>
+</tr>
+<tr>
+<td><strong>kubectl</strong></td>
+<td>Kubernetes CLI (kube-control)</td>
+<td>Sends commands to any Kubernetes cluster</td>
+<td><code>kubectl version --client</code></td>
+</tr>
+<tr>
+<td><strong>AWS CLI v2</strong></td>
+<td>AWS Command Line Interface</td>
+<td>Talks to every AWS service from your terminal</td>
+<td><code>aws --version</code></td>
+</tr>
+<tr>
+<td><strong>Ansible</strong></td>
+<td>Agentless configuration management</td>
+<td>Configures Linux servers via SSH — companion to Terraform</td>
+<td><code>ansible --version</code></td>
+</tr>
+<tr>
+<td><strong>kind</strong></td>
+<td>Kubernetes IN Docker</td>
+<td>Local Kubernetes cluster that runs inside Docker — zero cloud cost</td>
+<td><code>kind version</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Yeh sab tools ek ek karke install karne hain — ekdum waisi tarah
+jaise naya phone set karte waqt ek ek app download karte ho. Fark sirf itna hai ki yahan
+<strong>verify command</strong> hai jo confirm karta hai ki tool sahi kaam kar raha hai.</p>
+</blockquote>
+<hr />
+<h2 id="step-1-windows-enable-wsl2-ubuntu">Step 1 — Windows: enable WSL2 + Ubuntu<a class="headerlink" href="#step-1-windows-enable-wsl2-ubuntu" title="Permanent link">&para;</a></h2>
+<p><strong>Why:</strong> All book commands are written for Linux. WSL2 (Windows Subsystem for Linux version 2)
+gives you a full Linux kernel running inside Windows — no dual-boot, no VM hassle.</p>
+<p>Open <strong>PowerShell as Administrator</strong> and run:</p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c"># Install WSL2 with the Ubuntu distribution in one command</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">wsl</span> <span class="p">-</span><span class="n">-install</span>
+</span></code></pre></div>
+<blockquote>
+<p><em>Why this command:</em> Microsoft bundles WSL2 + Ubuntu installation into a single command since
+Windows 11. It enables the WSL2 feature, downloads the Linux kernel, and installs Ubuntu 22.04.</p>
+</blockquote>
+<p>Restart your machine when prompted. After restart, Ubuntu will finish setup and ask you to create
+a Linux username and password (these are independent of your Windows login).</p>
+<p><strong>Verify WSL2 is running with version 2:</strong></p>
+<div class="language-powershell highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c"># In PowerShell</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">wsl</span> <span class="n">-l</span> <span class="n">-v</span>
+</span></code></pre></div>
+<p>Expected output:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>  NAME      STATE           VERSION
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>* Ubuntu    Running         2
+</span></code></pre></div>
+<p>The <code>2</code> in the VERSION column is the critical check — WSL1 does not have a real Linux kernel.</p>
+<p><strong>Verify your Ubuntu version inside the WSL shell:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Inside the Ubuntu terminal</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>lsb_release<span class="w"> </span>-a
+</span></code></pre></div>
+<p>Expected output (Ubuntu 22.04 or 24.04 LTS, depending on your install):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>No LSB modules are available.
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Distributor ID: Ubuntu
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Description:    Ubuntu 22.04.x LTS  (or 24.04.x LTS)
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>Release:        22.04  (or 24.04)
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>Codename:       jammy  (or noble)
+</span></code></pre></div>
+<blockquote>
+<p><strong>Note:</strong> <code>wsl --install</code> may default to Ubuntu 22.04 or 24.04 depending on your Windows
+version and Microsoft's current default. Both work for this book. The Git version you install
+in Step 2 will vary accordingly — Ubuntu 22.04 ships git 2.34.x; Ubuntu 24.04 ships git 2.43.x.</p>
+<p><strong>Mac/Linux note:</strong> Skip this step. You already have a native terminal. On macOS, install
+Homebrew (<code>/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"</code>)
+— it replaces <code>apt</code> in the commands below.</p>
+</blockquote>
+<p><strong>From this point, run all commands inside the Ubuntu (WSL2) terminal unless stated otherwise.</strong></p>
+<hr />
+<h2 id="step-2-update-the-system-install-basics">Step 2 — Update the system &amp; install basics<a class="headerlink" href="#step-2-update-the-system-install-basics" title="Permanent link">&para;</a></h2>
+<p><strong>Why:</strong> A fresh Ubuntu install has outdated package lists. Update first so everything you install
+is the latest stable version. <code>curl</code> fetches files over HTTP/HTTPS; <code>unzip</code> extracts archives —
+both are needed by later installers.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Refresh the package list and upgrade all installed packages</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>upgrade<span class="w"> </span>-y
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># Install essential utilities</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>git<span class="w"> </span>curl<span class="w"> </span>unzip
+</span></code></pre></div>
+<p><strong>Verify Git:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>git<span class="w"> </span>--version
+</span></code></pre></div>
+<p>Expected output:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>git version 2.43.x
+</span></code></pre></div>
+<p><strong>Configure Git identity</strong> (this stamps every commit you ever make):</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>user.name<span class="w"> </span><span class="s2">&quot;Your Name&quot;</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>git<span class="w"> </span>config<span class="w"> </span>--global<span class="w"> </span>user.email<span class="w"> </span><span class="s2">&quot;you@example.com&quot;</span>
+</span></code></pre></div>
+<hr />
+<h2 id="step-3-install-docker-desktop">Step 3 — Install Docker Desktop<a class="headerlink" href="#step-3-install-docker-desktop" title="Permanent link">&para;</a></h2>
+<p><strong>Why:</strong> Docker runs containers — isolated, reproducible application packages. Docker Desktop
+(Windows app) connects to the WSL2 backend so containers you build in the Ubuntu shell run
+natively on the Linux kernel, not through emulation.</p>
+<ol>
+<li>Download <strong>Docker Desktop for Windows</strong> from <a href="https://www.docker.com/products/docker-desktop/">https://www.docker.com/products/docker-desktop/</a>.</li>
+<li>Run the installer. Accept defaults.</li>
+<li>After install, open Docker Desktop → <strong>Settings → Resources → WSL Integration</strong> → enable
+   integration for your Ubuntu distribution.</li>
+<li>Start Docker Desktop (the whale icon must be running in the system tray).</li>
+</ol>
+<p><strong>Verify in your Ubuntu shell:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Check the Docker engine version</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>docker<span class="w"> </span>version
+</span></code></pre></div>
+<p>Expected output (abbreviated):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Client: Docker Engine - Community
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a> Version:           27.x.x
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a> ...
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>Server: Docker Desktop
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a> Engine:
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>  Version:          27.x.x
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>  ...
+</span></code></pre></div>
+<p><strong>Smoke test — run the official hello-world image:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>docker<span class="w"> </span>run<span class="w"> </span>hello-world
+</span></code></pre></div>
+<p>Expected output (key lines):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Hello from Docker!
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>This message shows that your installation appears to be working correctly.
+</span></code></pre></div>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Docker Desktop = Windows pe chhota Linux factory. Jab tum
+<code>docker run</code> karte ho, Docker ek naya sandauk (container) banata hai, usme app daalta hai,
+chalata hai, aur khatam hone pe hata deta hai. Koi kachra nahi.</p>
+<p><strong>Mac note:</strong> Docker Desktop for Mac works the same way — download the <code>.dmg</code> from Docker's
+site. No WSL step needed.</p>
+<p><strong>Linux note:</strong> Install the Docker Engine directly via <code>apt</code> — Docker Desktop is not required
+on native Linux.</p>
+</blockquote>
+<hr />
+<h2 id="step-4-install-terraform">Step 4 — Install Terraform<a class="headerlink" href="#step-4-install-terraform" title="Permanent link">&para;</a></h2>
+<p><strong>Why:</strong> Terraform (by HashiCorp) is the industry-standard <strong>Infrastructure-as-Code (IaC)</strong> tool.
+You write what AWS resources you want in <code>.tf</code> files and Terraform creates/changes/destroys them.
+It is the outer loop of every DevOps system in this book.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Add HashiCorp&#39;s GPG (GNU Privacy Guard) signing key so apt can verify the package</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>wget<span class="w"> </span>-O<span class="w"> </span>-<span class="w"> </span>https://apt.releases.hashicorp.com/gpg<span class="w"> </span><span class="p">|</span><span class="w"> </span>sudo<span class="w"> </span>gpg<span class="w"> </span>--dearmor<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span>-o<span class="w"> </span>/usr/share/keyrings/hashicorp-archive-keyring.gpg
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="c1"># Add the HashiCorp apt repository</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="nb">echo</span><span class="w"> </span><span class="s2">&quot;deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \</span>
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="s2">  https://apt.releases.hashicorp.com </span><span class="k">$(</span>lsb_release<span class="w"> </span>-cs<span class="k">)</span><span class="s2"> main&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">  </span>sudo<span class="w"> </span>tee<span class="w"> </span>/etc/apt/sources.list.d/hashicorp.list
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="c1"># Update package list and install Terraform</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>sudo<span class="w"> </span>apt<span class="w"> </span>update<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>terraform
+</span></code></pre></div>
+<p><strong>Verify:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>terraform<span class="w"> </span>-version
+</span></code></pre></div>
+<p>Expected output:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Terraform v1.x.x
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>on linux_amd64
+</span></code></pre></div>
+<blockquote>
+<p><strong>Alternative — tfenv:</strong> If you need to switch Terraform versions across projects, install
+<code>tfenv</code> (Terraform version manager) first. <code>tfenv install latest &amp;&amp; tfenv use latest</code> gives
+the same result with version flexibility.</p>
+<p><strong>Mac:</strong> <code>brew tap hashicorp/tap &amp;&amp; brew install hashicorp/tap/terraform</code></p>
+</blockquote>
+<hr />
+<h2 id="step-5-install-kubectl">Step 5 — Install kubectl<a class="headerlink" href="#step-5-install-kubectl" title="Permanent link">&para;</a></h2>
+<p><strong>Why:</strong> <code>kubectl</code> (pronounced "kube-control" or "kube-cuttle") is the CLI for Kubernetes. Every
+interaction with a cluster — deploying apps, checking pod status, reading logs — goes through it.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># Download the latest stable kubectl binary</span>
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>curl<span class="w"> </span>-LO<span class="w"> </span><span class="s2">&quot;https://dl.k8s.io/release/</span><span class="k">$(</span>curl<span class="w"> </span>-Ls<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">  </span>https://dl.k8s.io/release/stable.txt<span class="k">)</span><span class="s2">/bin/linux/amd64/kubectl&quot;</span>
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="c1"># Make it executable and move to a directory in your PATH</span>
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>chmod<span class="w"> </span>+x<span class="w"> </span>kubectl
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>sudo<span class="w"> </span>mv<span class="w"> </span>kubectl<span class="w"> </span>/usr/local/bin/kubectl
+</span></code></pre></div>
+<p><strong>Verify:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>kubectl<span class="w"> </span>version<span class="w"> </span>--client
+</span></code></pre></div>
+<p>Expected output:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>Client Version: v1.xx.x
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>Kustomize Version: v5.x.x
+</span></code></pre></div>
+<blockquote>
+<p><strong>Mac:</strong> <code>brew install kubectl</code></p>
+<p><strong>Windows (native):</strong> <code>winget install -e --id Kubernetes.kubectl</code> — but use the WSL version
+for this book; mixing native Windows kubectl with WSL kind clusters causes context confusion.</p>
+</blockquote>
+<hr />
+<h2 id="step-6-install-aws-cli-v2">Step 6 — Install AWS CLI v2<a class="headerlink" href="#step-6-install-aws-cli-v2" title="Permanent link">&para;</a></h2>
+<p><strong>Why:</strong> The <strong>AWS CLI</strong> (Amazon Web Services Command Line Interface) lets you control all AWS
+services from the terminal. Terraform and Ansible both use it under the hood for authentication.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Download the AWS CLI v2 installer bundle</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>curl<span class="w"> </span><span class="s2">&quot;https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip&quot;</span><span class="w"> </span>-o<span class="w"> </span><span class="s2">&quot;awscliv2.zip&quot;</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="c1"># Extract and run the installer</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>unzip<span class="w"> </span>awscliv2.zip
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>sudo<span class="w"> </span>./aws/install
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="c1"># Clean up</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a>rm<span class="w"> </span>-rf<span class="w"> </span>aws<span class="w"> </span>awscliv2.zip
+</span></code></pre></div>
+<p><strong>Verify:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>aws<span class="w"> </span>--version
+</span></code></pre></div>
+<p>Expected output:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>aws-cli/2.x.x Python/3.x.x Linux/x86_64 exe/x86_64
+</span></code></pre></div>
+<blockquote>
+<p><strong>Mac:</strong> <code>brew install awscli</code></p>
+<p><strong>Upgrade an existing v1 install:</strong> <code>sudo ./aws/install --update</code></p>
+</blockquote>
+<hr />
+<h2 id="step-7-install-ansible">Step 7 — Install Ansible<a class="headerlink" href="#step-7-install-ansible" title="Permanent link">&para;</a></h2>
+<p><strong>Why:</strong> Ansible configures servers after Terraform creates them — installs software, writes
+config files, manages services. It connects over SSH (Secure Shell) with no agent installed on
+the target machine, which is why it's called "agentless".</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1"># Install pipx — a tool for installing Python CLI apps in isolated environments</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>pipx
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>pipx<span class="w"> </span>ensurepath
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="c1"># Reload PATH so the shell sees pipx-installed binaries</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="nb">source</span><span class="w"> </span>~/.bashrc
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="c1"># Install Ansible via pipx</span>
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a>pipx<span class="w"> </span>install<span class="w"> </span>ansible
+</span></code></pre></div>
+<p><strong>Verify:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>ansible<span class="w"> </span>--version
+</span></code></pre></div>
+<p>Expected output (key line):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>ansible [core 2.x.x]
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>  python version = 3.x.x
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>  ...
+</span></code></pre></div>
+<blockquote>
+<p><strong>Mac:</strong> <code>brew install ansible</code></p>
+<p><strong>Alternative:</strong> <code>sudo apt install -y ansible</code> works too, but the pipx method gives you a more
+isolated install that avoids Python dependency conflicts on the system.</p>
+</blockquote>
+<hr />
+<h2 id="step-8-a-local-kubernetes-cluster-for-practice">Step 8 — A local Kubernetes cluster for practice<a class="headerlink" href="#step-8-a-local-kubernetes-cluster-for-practice" title="Permanent link">&para;</a></h2>
+<p><strong>Why:</strong> Cloud Kubernetes clusters cost money and take 10+ minutes to provision. <code>kind</code>
+(Kubernetes IN Docker) spins up a full Kubernetes cluster inside Docker containers on your
+laptop — it's free, starts in 60 seconds, and is destroyed just as fast. You'll use it for every
+K8s lab until the capstone projects.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> kind = ghar pe bana hua chhota AWS EKS. Sikhne ke liye bilkul
+sahi — koi bill nahi, koi wait nahi. Real cloud cluster capstone mein aayega jab concept
+pakke ho jayenge.</p>
+</blockquote>
+<h3 id="install-kind">Install kind<a class="headerlink" href="#install-kind" title="Permanent link">&para;</a></h3>
+<blockquote>
+<p><strong>Note:</strong> The version below may be outdated. Check the latest release at
+https://github.com/kubernetes-sigs/kind/releases and substitute the current tag.</p>
+</blockquote>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># Fetch the latest kind release tag dynamically</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="nv">KIND_VERSION</span><span class="o">=</span><span class="k">$(</span>curl<span class="w"> </span>-s<span class="w"> </span>https://api.github.com/repos/kubernetes-sigs/kind/releases/latest<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>tag_name<span class="w"> </span><span class="p">|</span><span class="w"> </span>cut<span class="w"> </span>-d<span class="w"> </span><span class="s1">&#39;&quot;&#39;</span><span class="w"> </span>-f<span class="w"> </span><span class="m">4</span><span class="k">)</span>
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="c1"># Download the kind binary for Linux amd64</span>
+</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>curl<span class="w"> </span>-Lo<span class="w"> </span>./kind<span class="w"> </span><span class="s2">&quot;https://kind.sigs.k8s.io/dl/</span><span class="si">${</span><span class="nv">KIND_VERSION</span><span class="si">}</span><span class="s2">/kind-linux-amd64&quot;</span>
+</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>
+</span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a><span class="c1"># Make it executable and move to PATH</span>
+</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>chmod<span class="w"> </span>+x<span class="w"> </span>kind
+</span><span id="__span-25-10"><a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a>sudo<span class="w"> </span>mv<span class="w"> </span>kind<span class="w"> </span>/usr/local/bin/kind
+</span></code></pre></div>
+<p><strong>Verify:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>kind<span class="w"> </span>version
+</span></code></pre></div>
+<p>Expected output (version number will vary):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>kind v0.2x.x go1.xx.x linux/amd64
+</span></code></pre></div>
+<h3 id="create-your-first-local-cluster">Create your first local cluster<a class="headerlink" href="#create-your-first-local-cluster" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c1"># Create a single-node cluster named &quot;devops-lab&quot;</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>kind<span class="w"> </span>create<span class="w"> </span>cluster<span class="w"> </span>--name<span class="w"> </span>devops-lab
+</span></code></pre></div>
+<p>Expected output:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>Creating cluster &quot;devops-lab&quot; ...
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a> ✓ Ensuring node image (kindest/node:v1.xx.x) 🖼
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a> ✓ Preparing nodes 📦
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a> ✓ Writing configuration 📜
+</span><span id="__span-29-5"><a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a> ✓ Starting control-plane 🕹️
+</span><span id="__span-29-6"><a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a> ✓ Installing CNI 🔌
+</span><span id="__span-29-7"><a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a> ✓ Installing StorageClass 💾
+</span><span id="__span-29-8"><a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a>Set kubectl context to &quot;kind-devops-lab&quot;
+</span><span id="__span-29-9"><a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a>...
+</span><span id="__span-29-10"><a id="__codelineno-29-10" name="__codelineno-29-10" href="#__codelineno-29-10"></a>Have a nice day! 👋
+</span></code></pre></div>
+<p><strong>Verify the cluster is ready:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>nodes
+</span></code></pre></div>
+<p>Expected output:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>NAME                       STATUS   ROLES           AGE   VERSION
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>devops-lab-control-plane   Ready    control-plane   60s   v1.xx.x
+</span></code></pre></div>
+<p>The <code>Ready</code> status is the critical check. If you see <code>NotReady</code>, wait 20 seconds and try again —
+the CNI (Container Network Interface, the cluster's internal network plugin) may still be
+initialising.</p>
+<blockquote>
+<p><strong>Alternatives:</strong>
+- <strong>minikube</strong> — similar to kind, slightly heavier, has a built-in dashboard. Cross-platform.
+  <code>brew install minikube</code> / <code>apt</code> / Windows binary.
+- <strong>k3d</strong> — wraps k3s (lightweight Kubernetes) in Docker; faster than kind, Linux/Mac primary.
+  Not recommended on WSL2 due to iptables (firewall rules) quirks.</p>
+<p>For this book's labs, <strong>kind</strong> is the default. Commands are identical across all three for
+basic usage.</p>
+</blockquote>
+<hr />
+<h2 id="step-9-create-secure-your-aws-account">Step 9 — Create &amp; secure your AWS account<a class="headerlink" href="#step-9-create-secure-your-aws-account" title="Permanent link">&para;</a></h2>
+<h3 id="91-sign-up">9.1 Sign up<a class="headerlink" href="#91-sign-up" title="Permanent link">&para;</a></h3>
+<p>Go to <a href="https://aws.amazon.com/">https://aws.amazon.com/</a> → <strong>Create an AWS Account</strong>. You need:
+- An email address
+- A credit/debit card (AWS will not charge you for Free Tier usage, but requires a card on file)
+- A phone number for verification</p>
+<h3 id="92-understand-the-root-user-and-why-you-must-lock-it-away">9.2 Understand the root user — and why you must lock it away<a class="headerlink" href="#92-understand-the-root-user-and-why-you-must-lock-it-away" title="Permanent link">&para;</a></h3>
+<p>When you create an AWS account, Amazon creates a <strong>root user</strong> — a super-administrator account
+that has unlimited access to every resource and billing setting in the account. It cannot be
+restricted by any policy.</p>
+<p><strong>SECURITY RULE: Never use the root user for daily work.</strong> The root user is only for:
+- Closing the account
+- Restoring access if all IAM users are locked out
+- Changing the support plan</p>
+<p>After signup, do this immediately:</p>
+<ol>
+<li>Log into the AWS Console as root.</li>
+<li>Go to your account name (top-right) → <strong>Security credentials</strong>.</li>
+<li>Enable <strong>MFA (Multi-Factor Authentication)</strong> on the root account — use an authenticator app.</li>
+<li>Create no access keys for the root account. If any exist, delete them.</li>
+</ol>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Root user = ghar ki master key. Locker mein rakh do aur roz use
+mat karo. Roz ke kaam ke liye ek alag chhoti key banao (IAM user).</p>
+</blockquote>
+<h3 id="93-create-an-iam-user-for-daily-work">9.3 Create an IAM user for daily work<a class="headerlink" href="#93-create-an-iam-user-for-daily-work" title="Permanent link">&para;</a></h3>
+<p><strong>IAM</strong> stands for <strong>Identity and Access Management</strong> — AWS's system for controlling who can do
+what. You'll create a user with just enough permissions to run the book's labs.</p>
+<p>In the AWS Console:</p>
+<ol>
+<li>Search for <strong>IAM</strong> → <strong>Users</strong> → <strong>Create user</strong>.</li>
+<li>Username: <code>devops-learner</code> (or your name).</li>
+<li>Access type: check <strong>Provide user access to the AWS Management Console</strong> → <strong>I want to create
+   an IAM user</strong> → set a password.</li>
+<li>Permissions: <strong>Attach policies directly</strong> → attach <code>AdministratorAccess</code> for now.</li>
+</ol>
+<blockquote>
+<p><strong>Tradeoff note:</strong> <code>AdministratorAccess</code> is broad. For a production account you would create a
+scoped policy (only EC2, S3, EKS, IAM limited). For learning, full admin reduces friction — but
+note: even admin IAM users cannot close the account or change billing methods (only root can).
+Revisit the principle of least privilege in <a href="../02-M1-terraform/">M1 — Terraform</a>.</p>
+</blockquote>
+<ol>
+<li><strong>Create access keys</strong> for the new user:</li>
+<li>Go to the user → <strong>Security credentials</strong> → <strong>Create access key</strong>.</li>
+<li>Use case: <strong>CLI</strong>.</li>
+<li>Download the <code>.csv</code> file — you will never be able to see the secret key again after closing
+     this screen.</li>
+</ol>
+<p>You will receive two values — guard them as carefully as a password:
+- <strong>Access Key ID</strong> — like a username for API calls (starts with <code>AKIA…</code>)
+- <strong>Secret Access Key</strong> — like the password (a 40-character string)</p>
+<blockquote>
+<p>⚠️ <strong>SECURITY — non-negotiable rules:</strong>
+1. <strong>Never commit these keys to Git.</strong> Not even to a private repo. GitHub scanners and
+   malicious forks can expose them within minutes. Rotate immediately if you ever do this.
+2. <strong>Never paste them in Slack, email, or screenshots.</strong>
+3. <strong>Never share them.</strong> Each team member gets their own IAM user and their own keys.
+4. Add <code>.env</code> and <code>*credentials*</code> to your <code>.gitignore</code> before you start any project.</p>
+</blockquote>
+<h3 id="94-choose-a-region">9.4 Choose a region<a class="headerlink" href="#94-choose-a-region" title="Permanent link">&para;</a></h3>
+<p>AWS runs in <strong>regions</strong> — geographically isolated data-centre clusters (e.g., <code>us-east-1</code> in
+Virginia, <code>ap-south-1</code> in Mumbai). For this book:</p>
+<table>
+<thead>
+<tr>
+<th>Your location</th>
+<th>Recommended region</th>
+<th>Code</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>India</td>
+<td>Mumbai</td>
+<td><code>ap-south-1</code></td>
+</tr>
+<tr>
+<td>US East</td>
+<td>N. Virginia</td>
+<td><code>us-east-1</code></td>
+</tr>
+<tr>
+<td>Europe</td>
+<td>Ireland</td>
+<td><code>eu-west-1</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Use <code>ap-south-1</code> if you are in India</strong> — lower latency and often lower cost for EC2.</p>
+<hr />
+<h2 id="step-10-configure-the-aws-cli">Step 10 — Configure the AWS CLI<a class="headerlink" href="#step-10-configure-the-aws-cli" title="Permanent link">&para;</a></h2>
+<p><strong>Why:</strong> The CLI needs to know which credentials to use and which region to default to. <code>aws
+configure</code> writes these to <code>~/.aws/credentials</code> and <code>~/.aws/config</code>.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>aws<span class="w"> </span>configure
+</span></code></pre></div>
+<p>You'll be prompted interactively — enter the values from Step 9:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>AWS Access Key ID [None]: AKIAIOSFODNN7EXAMPLE
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>AWS Secret Access Key [None]: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>Default region name [None]: ap-south-1
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>Default output format [None]: json
+</span></code></pre></div>
+<p><strong>Verify — the most important check in this runbook:</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>aws<span class="w"> </span>sts<span class="w"> </span>get-caller-identity
+</span></code></pre></div>
+<p><strong>STS</strong> stands for <strong>Security Token Service</strong> — AWS's identity broker. <code>get-caller-identity</code>
+returns who the CLI thinks you are. Expected output:</p>
+<div class="language-json highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="p">{</span>
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="w">    </span><span class="nt">&quot;UserId&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;AIDACKCEVSQ6C2EXAMPLE&quot;</span><span class="p">,</span>
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="w">    </span><span class="nt">&quot;Account&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;123456789012&quot;</span><span class="p">,</span>
+</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="w">    </span><span class="nt">&quot;Arn&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:iam::123456789012:user/devops-learner&quot;</span>
+</span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="p">}</span>
+</span></code></pre></div>
+<p><strong>What is an ARN?</strong> An <strong>ARN (Amazon Resource Name)</strong> is the globally unique identifier for any
+AWS resource. Format: <code>arn:partition:service:region:account-id:resource</code>. If this command returns
+your user's ARN, the CLI is correctly authenticated and talking to your account.</p>
+<p>If you see <code>An error occurred (InvalidClientTokenId)</code> — your keys were typed incorrectly. Run
+<code>aws configure</code> again.</p>
+<hr />
+<h2 id="step-11-free-tier-billing-alerts-cost-discipline">Step 11 — Free Tier, billing alerts &amp; cost discipline<a class="headerlink" href="#step-11-free-tier-billing-alerts-cost-discipline" title="Permanent link">&para;</a></h2>
+<h3 id="what-the-free-tier-actually-covers">What the Free Tier actually covers<a class="headerlink" href="#what-the-free-tier-actually-covers" title="Permanent link">&para;</a></h3>
+<p>The <strong>AWS Free Tier</strong> gives you 12 months of limited free usage after signup. Key limits:</p>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Free Tier limit</th>
+<th>Common trap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EC2</td>
+<td>750 hrs/month of <code>t2.micro</code> or <code>t3.micro</code></td>
+<td>Running 2 micros = 1500 hrs → charged for 750</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>5 GB storage, 20k GET, 2k PUT</td>
+<td>Large file uploads / egress cost extra</td>
+</tr>
+<tr>
+<td>RDS</td>
+<td>750 hrs/month of <code>db.t2.micro</code></td>
+<td>Leaving RDS on overnight burns hours fast</td>
+</tr>
+<tr>
+<td>Lambda</td>
+<td>1M requests / month</td>
+<td>Almost impossible to exceed in learning</td>
+</tr>
+<tr>
+<td>EKS control plane</td>
+<td><strong>NOT free</strong> — $0.10/hour per cluster (~$72/month)</td>
+<td>Use local kind instead</td>
+</tr>
+<tr>
+<td>NAT Gateway</td>
+<td><strong>NOT free</strong> — ~$0.045/hr + data</td>
+<td>Destroy when done; one of the biggest surprise bills</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ <strong>kubeadm cluster on EC2:</strong> Running a multi-node Kubernetes cluster on EC2 requires ≥2 CPU /
+2 GB RAM per node — that's <code>t3.small</code> or larger, which is <strong>not</strong> Free Tier. For all K8s labs,
+use local <code>kind</code>. The cloud EKS cluster is reserved for the capstone projects where the spend
+is intentional and time-bounded.</p>
+</blockquote>
+<h3 id="set-a-billing-alarm-now-before-you-create-anything">Set a billing alarm now (before you create anything)<a class="headerlink" href="#set-a-billing-alarm-now-before-you-create-anything" title="Permanent link">&para;</a></h3>
+<p><strong>Recommended (2 minutes, no CLI required):</strong> AWS Console → <strong>Billing</strong> → <strong>Budgets</strong> →
+<strong>Create budget</strong> → Cost budget → $10/month → email alert. Do this before any lab.</p>
+<blockquote>
+<p><strong>CLI alternative (advanced):</strong> The CloudWatch billing alarm command below requires an SNS
+topic to exist first. Create one with <code>aws sns create-topic --name billing-alerts</code> and add
+a subscription (<code>aws sns subscribe ...</code>) before running the alarm command. Without the topic,
+<code>--alarm-actions</code> will point to a non-existent ARN and the alarm is silently created but
+never fires.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="c1"># Step 1: create the SNS topic (once)</span>
+</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>aws<span class="w"> </span>sns<span class="w"> </span>create-topic<span class="w"> </span>--name<span class="w"> </span>billing-alerts<span class="w"> </span>--region<span class="w"> </span>us-east-1
+</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="c1"># Step 2: subscribe your email (check inbox for confirmation link)</span>
+</span><span id="__span-36-4"><a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a>aws<span class="w"> </span>sns<span class="w"> </span>subscribe<span class="w"> </span>--topic-arn<span class="w"> </span>arn:aws:sns:us-east-1:YOUR_ACCOUNT_ID:billing-alerts<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-5"><a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="w">  </span>--protocol<span class="w"> </span>email<span class="w"> </span>--notification-endpoint<span class="w"> </span>you@example.com<span class="w"> </span>--region<span class="w"> </span>us-east-1
+</span><span id="__span-36-6"><a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a><span class="c1"># Step 3: create the alarm</span>
+</span><span id="__span-36-7"><a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a>aws<span class="w"> </span>cloudwatch<span class="w"> </span>put-metric-alarm<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-8"><a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a><span class="w">  </span>--alarm-name<span class="w"> </span><span class="s2">&quot;MonthlySpendAlert-10USD&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-9"><a id="__codelineno-36-9" name="__codelineno-36-9" href="#__codelineno-36-9"></a><span class="w">  </span>--alarm-description<span class="w"> </span><span class="s2">&quot;Alert when estimated charges exceed </span><span class="nv">$10</span><span class="s2">&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-10"><a id="__codelineno-36-10" name="__codelineno-36-10" href="#__codelineno-36-10"></a><span class="w">  </span>--metric-name<span class="w"> </span>EstimatedCharges<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-11"><a id="__codelineno-36-11" name="__codelineno-36-11" href="#__codelineno-36-11"></a><span class="w">  </span>--namespace<span class="w"> </span>AWS/Billing<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-12"><a id="__codelineno-36-12" name="__codelineno-36-12" href="#__codelineno-36-12"></a><span class="w">  </span>--statistic<span class="w"> </span>Maximum<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-13"><a id="__codelineno-36-13" name="__codelineno-36-13" href="#__codelineno-36-13"></a><span class="w">  </span>--period<span class="w"> </span><span class="m">86400</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-14"><a id="__codelineno-36-14" name="__codelineno-36-14" href="#__codelineno-36-14"></a><span class="w">  </span>--threshold<span class="w"> </span><span class="m">10</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-15"><a id="__codelineno-36-15" name="__codelineno-36-15" href="#__codelineno-36-15"></a><span class="w">  </span>--comparison-operator<span class="w"> </span>GreaterThanThreshold<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-16"><a id="__codelineno-36-16" name="__codelineno-36-16" href="#__codelineno-36-16"></a><span class="w">  </span>--dimensions<span class="w"> </span><span class="nv">Name</span><span class="o">=</span>Currency,Value<span class="o">=</span>USD<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-17"><a id="__codelineno-36-17" name="__codelineno-36-17" href="#__codelineno-36-17"></a><span class="w">  </span>--evaluation-periods<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-18"><a id="__codelineno-36-18" name="__codelineno-36-18" href="#__codelineno-36-18"></a><span class="w">  </span>--alarm-actions<span class="w"> </span>arn:aws:sns:us-east-1:YOUR_ACCOUNT_ID:billing-alerts<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-36-19"><a id="__codelineno-36-19" name="__codelineno-36-19" href="#__codelineno-36-19"></a><span class="w">  </span>--region<span class="w"> </span>us-east-1
+</span></code></pre></div>
+</blockquote>
+<h3 id="the-golden-rule-terraform-destroy-before-you-stop-for-the-day">The golden rule — <code>terraform destroy</code> before you stop for the day<a class="headerlink" href="#the-golden-rule-terraform-destroy-before-you-stop-for-the-day" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="c1"># In any Terraform project directory — run this before closing your laptop</span>
+</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>terraform<span class="w"> </span>destroy
+</span></code></pre></div>
+<p>This tears down every resource the current plan created. A forgotten EC2 instance at <code>t3.small</code>
+costs ~$15/month. A forgotten NAT Gateway costs ~$33/month plus data transfer. These are not
+hypothetical — they are the most common way learners get surprise AWS bills.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> <code>terraform destroy</code> = ghar se nikalne se pehle lights off karo.
+Har raat karo. Bhool gaye to bill aayega — AWS tumhe nahi rokta.</p>
+</blockquote>
+<hr />
+<h2 id="verify-everything-the-pre-flight-checklist">Verify everything — the pre-flight checklist<a class="headerlink" href="#verify-everything-the-pre-flight-checklist" title="Permanent link">&para;</a></h2>
+<p>Run each command below and confirm the output matches:</p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Command</th>
+<th>Expected output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WSL2</td>
+<td><code>wsl -l -v</code> (PowerShell)</td>
+<td>Ubuntu, VERSION 2, Running</td>
+</tr>
+<tr>
+<td>Ubuntu</td>
+<td><code>lsb_release -a</code></td>
+<td>Ubuntu 22.04 or 24.04 LTS</td>
+</tr>
+<tr>
+<td>Git</td>
+<td><code>git --version</code></td>
+<td><code>git version 2.x.x</code></td>
+</tr>
+<tr>
+<td>Docker</td>
+<td><code>docker version</code></td>
+<td>Client + Server versions shown</td>
+</tr>
+<tr>
+<td>Docker smoke</td>
+<td><code>docker run hello-world</code></td>
+<td>"Hello from Docker!"</td>
+</tr>
+<tr>
+<td>Terraform</td>
+<td><code>terraform -version</code></td>
+<td><code>Terraform v1.x.x</code></td>
+</tr>
+<tr>
+<td>kubectl</td>
+<td><code>kubectl version --client</code></td>
+<td><code>Client Version: v1.xx.x</code></td>
+</tr>
+<tr>
+<td>AWS CLI</td>
+<td><code>aws --version</code></td>
+<td><code>aws-cli/2.x.x</code></td>
+</tr>
+<tr>
+<td>Ansible</td>
+<td><code>ansible --version</code></td>
+<td><code>ansible [core 2.x.x]</code></td>
+</tr>
+<tr>
+<td>kind</td>
+<td><code>kind version</code></td>
+<td><code>kind v0.23.x</code></td>
+</tr>
+<tr>
+<td>Kubernetes</td>
+<td><code>kubectl get nodes</code></td>
+<td><code>devops-lab-control-plane   Ready</code></td>
+</tr>
+<tr>
+<td>AWS auth</td>
+<td><code>aws sts get-caller-identity</code></td>
+<td>JSON with your account ID and user ARN</td>
+</tr>
+</tbody>
+</table>
+<p><strong>✅ Sab ✓ ho gaya to aisa dikhega:</strong> Every tool prints a version number without errors, Docker
+prints "Hello from Docker!", kubectl shows a <code>Ready</code> node, and <code>aws sts get-caller-identity</code>
+returns a JSON blob with your ARN. That ARN is proof that your local terminal is authorised to
+talk to your AWS account.</p>
+<hr />
+<h2 id="common-setup-gotchas">Common setup gotchas<a class="headerlink" href="#common-setup-gotchas" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely cause</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>&amp;&amp;</code> not working in PowerShell</td>
+<td>PowerShell 5.1 does not support <code>&amp;&amp;</code></td>
+<td>Use <code>;</code> or switch to WSL Ubuntu shell</td>
+</tr>
+<tr>
+<td><code>docker: command not found</code> in WSL</td>
+<td>Docker Desktop WSL integration off</td>
+<td>Docker Desktop → Settings → WSL Integration → enable Ubuntu</td>
+</tr>
+<tr>
+<td>Docker Desktop not responding</td>
+<td>Docker not started</td>
+<td>Look for the whale icon in the system tray; start it manually</td>
+</tr>
+<tr>
+<td><code>aws configure</code> wrong region</td>
+<td>Set <code>us-east-1</code> instead of <code>ap-south-1</code></td>
+<td>Run <code>aws configure</code> again; or edit <code>~/.aws/config</code> directly</td>
+</tr>
+<tr>
+<td><code>InvalidClientTokenId</code> from AWS CLI</td>
+<td>Keys copied with trailing whitespace</td>
+<td>Re-run <code>aws configure</code> and paste carefully, or open <code>~/.aws/credentials</code> in a text editor</td>
+</tr>
+<tr>
+<td><code>kubectl get nodes</code> — no objects found</td>
+<td>kubectl pointing at wrong context</td>
+<td>Run <code>kubectl config current-context</code>; should show <code>kind-devops-lab</code>. If not: <code>kubectl config use-context kind-devops-lab</code></td>
+</tr>
+<tr>
+<td><code>kind create cluster</code> hangs</td>
+<td>Docker Desktop not running</td>
+<td>Start Docker Desktop first, then retry</td>
+</tr>
+<tr>
+<td><code>terraform: command not found</code></td>
+<td>HashiCorp apt repo not added correctly</td>
+<td>Re-run Step 4 exactly; check <code>cat /etc/apt/sources.list.d/hashicorp.list</code></td>
+</tr>
+<tr>
+<td><code>ansible: command not found</code> after pipx install</td>
+<td>PATH not refreshed</td>
+<td>Run <code>source ~/.bashrc</code> or open a new terminal window</td>
+</tr>
+<tr>
+<td>WSL version shows <code>1</code></td>
+<td>WSL2 not set as default</td>
+<td>Run <code>wsl --set-default-version 2</code> in PowerShell and re-install Ubuntu</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Setup mein problem aana bilkul normal hai — iska matlab yeh nahi
+ki tum galat ho, iska matlab hai ki environment complex hai. Upar ki table dekho, symptom
+milao, fix karo. Ek ek step.</p>
+</blockquote>
+<hr />
+<h2 id="mac-specific-quick-reference">Mac-specific quick reference<a class="headerlink" href="#mac-specific-quick-reference" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Mac equivalent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>WSL2</td>
+<td>Skip — use Terminal.app or iTerm2 directly</td>
+</tr>
+<tr>
+<td><code>apt install</code></td>
+<td><code>brew install</code> (requires Homebrew)</td>
+</tr>
+<tr>
+<td>Docker Desktop</td>
+<td>Download the <code>.dmg</code> from docker.com — same experience</td>
+</tr>
+<tr>
+<td>Terraform</td>
+<td><code>brew tap hashicorp/tap &amp;&amp; brew install hashicorp/tap/terraform</code></td>
+</tr>
+<tr>
+<td>kubectl</td>
+<td><code>brew install kubectl</code></td>
+</tr>
+<tr>
+<td>AWS CLI</td>
+<td><code>brew install awscli</code></td>
+</tr>
+<tr>
+<td>kind</td>
+<td><code>brew install kind</code></td>
+</tr>
+<tr>
+<td>Ansible</td>
+<td><code>brew install ansible</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="linux-specific-notes">Linux-specific notes<a class="headerlink" href="#linux-specific-notes" title="Permanent link">&para;</a></h2>
+<p>On native Ubuntu/Debian Linux, skip Steps 1 and 3 (WSL2 and Docker Desktop). Instead:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="c1"># Install Docker Engine directly (not Docker Desktop)</span>
+</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>docker.io
+</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a>sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span><span class="w">   </span><span class="c1"># add yourself to the docker group</span>
+</span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a>newgrp<span class="w"> </span>docker<span class="w">                   </span><span class="c1"># apply without logout</span>
+</span></code></pre></div>
+<p>Everything else in this runbook runs identically on native Linux.</p>
+<hr />
+<h2 id="where-next">Where next<a class="headerlink" href="#where-next" title="Permanent link">&para;</a></h2>
+<p>You are fully equipped. Every tool is installed, your AWS account is secure, and a local
+Kubernetes cluster is running. Head to:</p>
+<p><strong>→ <a href="../01-M0-foundations/">M0 — Foundations &amp; Mental Model</a></strong></p>
+<p>M0 builds the conceptual scaffold — the Two Loops model — that makes every tool you just
+installed make sense. Do not skip it even if you know some of the tools; the mental model is what
+separates engineers who can debug production from engineers who just follow recipes.</p>
+<hr />
+<p><em>Module map: <a href="../00-INDEX/">00-INDEX</a> · <a href="../00a-preflight/">00a-preflight</a> · </em><em>00b-setup-runbook</em><em> · <a href="../01-M0-foundations/">M0</a> · <a href="../02-M1-terraform/">M1-Terraform</a> · <a href="../03-M2-ansible/">M2-Ansible</a> · <a href="../04-M3-docker/">M3-Docker</a> · <a href="../05-M4-kubernetes-core/">M4-Kubernetes</a> · <a href="../06-M5-sizing-and-cost/">M5-Sizing</a> · <a href="../07-M6-cicd/">M6-CI/CD</a> · <a href="../08-M7-gitops/">M7-GitOps</a> · <a href="../09-connected-system/">Connected System</a> · <a href="../10-M8-observability-sre/">M8-Observability</a> · <a href="../11-M9-advanced-k8s-internals/">M9-Advanced K8s</a> · <a href="../12-capstone-url-shortener/">Capstone 1</a> · <a href="../13-capstone-microshop/">Capstone 2</a> · <a href="../14-interview-bank/">Interview Bank</a> · <a href="../15-roadmap-M11-M18/">Roadmap</a> · <a href="../16-reference-appendix/">Appendix</a> · <a href="../17-flashcards/">Flashcards</a></em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../00a-preflight/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 00a · Pre-flight ground floor">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                00a · Pre-flight ground floor
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../21-linux-toolkit/" class="md-footer__link md-footer__link--next" aria-label="Next: Linux · the ground everything runs on">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Linux · the ground everything runs on
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 grvtech1 — licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/grvtech1/devops-handbook" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "announce.dismiss"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/progress.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,3295 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free, zero-to-job-ready DevOps handbook — from "what is a terminal" to production- and interview-ready. Systems thinking, hands-on labs, capstones.">
+      
+      
+      
+        <link rel="canonical" href="https://grvtech1.github.io/devops-handbook/01-M0-foundations/">
+      
+      
+        <link rel="prev" href="../21-linux-toolkit/">
+      
+      
+        <link rel="next" href="../02-M1-terraform/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>M0 · Foundations - The DevOps Engineer's Handbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%206a6%206%200%200%201%206%206c0%202.22-1.21%204.16-3%205.2V19a1%201%200%200%201-1%201h-4a1%201%200%200%201-1-1v-1.8c-1.79-1.04-3-2.98-3-5.2a6%206%200%200%201%206-6m2%2015v1a1%201%200%200%201-1%201h-2a1%201%200%200%201-1-1v-1zm6-10h3v2h-3zM1%2011h3v2H1zM13%201v3h-2V1zM4.92%203.5l2.13%202.14-1.42%201.41L3.5%204.93zm12.03%202.13%202.12-2.13%201.43%201.43-2.13%202.12z%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m13.13%2022.19-1.63-3.83c1.57-.58%203.04-1.36%204.4-2.27zM5.64%2012.5l-3.83-1.63%206.1-2.77C7%209.46%206.22%2010.93%205.64%2012.5M21.61%202.39S16.66.269%2011%205.93c-2.19%202.19-3.5%204.6-4.35%206.71-.28.75-.09%201.57.46%202.13l2.13%202.12c.55.56%201.37.74%202.12.46A19.1%2019.1%200%200%200%2018.07%2013c5.66-5.66%203.54-10.61%203.54-10.61m-7.07%207.07c-.78-.78-.78-2.05%200-2.83s2.05-.78%202.83%200c.77.78.78%202.05%200%202.83s-2.05.78-2.83%200m-5.66%207.07-1.41-1.41zM6.24%2022l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83%2022zM2%2022h1.41l4.77-4.76-1.42-1.41L2%2020.59zm0-2.83%204.09-4.08c-.21-.3-.36-.62-.45-.97L2%2017.76z%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M13%2014h-2V9h2m0%209h-2v-2h2M1%2021h22L12%202z%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M8%2015a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m2.5%202%201.5-3%201.5%203zm5.5-2a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m6-4A10%2010%200%200%200%2012%201%2010%2010%200%200%200%202%2011c0%202.8%201.2%205.3%203%207.1V22h14v-3.9c1.8-1.8%203-4.3%203-7.1m-5%209h-2v-2h-2v2h-2v-2H9v2H7v-2.8c-1.8-1.5-3-3.7-3-6.2a8%208%200%200%201%208-8%208%208%200%200%201%208%208c0%202.5-1.2%204.8-3%206.2z%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#m0-foundations-mental-model" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  🚀 <strong>26 chapters</strong> · rendered diagrams · hands-on labs · a 26-scenario incident playbook — all free (CC BY 4.0).
+  &nbsp;
+  <a href="https://github.com/grvtech1/devops-handbook" style="color: inherit; text-decoration: underline; font-weight: 700;">⭐ Star it on GitHub</a>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-header__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The DevOps Engineer's Handbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              M0 · Foundations
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../study-plan/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Study Plan
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../progress/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  My Progress
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../00-INDEX/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Handbook
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-nav__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    The DevOps Engineer's Handbook
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../study-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    My Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handbook
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Handbook
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-INDEX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Curriculum (Index)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 0 — Pre-flight
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 0 — Pre-flight
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00a-preflight/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00a · Pre-flight ground floor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00b-setup-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00b · Setup runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-linux-toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux · the ground everything runs on
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part I — Core toolchain
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part I — Core toolchain
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M0 · Foundations
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M0 · Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-60-second-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 60-second version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-devops-exists-what-it-replaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why DevOps exists — what it replaced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#first-principles-servers-processes-state-and-ports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First principles — servers, processes, state, and ports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-four-layers-of-a-running-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The four layers of a running system
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stateful-vs-stateless-pets-vs-cattle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stateful vs Stateless, Pets vs Cattle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-two-loops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The two loops
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-think-like-an-engineer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to think like an engineer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How to think like an engineer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-6-step-design-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 6-step design process
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-debugging-reflex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The debugging reflex
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monolith-vs-microservices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Monolith vs Microservices
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-production-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real production example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beginner-mistakes-vs-senior-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beginner mistakes vs Senior insights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-shortcuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory shortcuts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-check-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-check quiz
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hands-on lab
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production challenge
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-M1-terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M1 · Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-M2-ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M2 · Ansible
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-M3-docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M3 · Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-M4-kubernetes-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M4 · Kubernetes Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-M5-sizing-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M5 · Sizing & Cost
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-M6-cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M6 · CI/CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-M7-gitops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M7 · GitOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part II — Systems thinking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part II — Systems thinking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-connected-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Connected System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-k8s-objects-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Objects · How They Connect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-10-day-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Learning Plan (understand)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29-confidence-sprint/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Confidence Sprint (drill)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../28-helm-real-projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Helm in the Real World (your 2 projects)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-cicd-hands-on-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Follow One Commit (hands-on CI/CD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part III — Operate
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part III — Operate
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-M8-observability-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M8 · Observability & SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-M9-advanced-k8s-internals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M9 · Advanced K8s Internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30-k8s-complete-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Complete Reference (Workloads · Scheduling · Ops)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-production-incident-playbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Incident Playbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part IV — Capstones
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part IV — Capstones
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-capstone-url-shortener/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone I · URL Shortener
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-capstone-microshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone II · MicroShop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part V — Reference & career
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part V — Reference & career
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-interview-bank/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview Bank
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-confusions-and-tradeoffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Confusions & Trade-offs (X-vs-Y)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-command-cheatsheets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Command Cheat-Sheets & Labs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-roadmap-M11-M18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap · M11–M18
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-reference-appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Appendix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-career-job-ready/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Job-Ready
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part VI — The Production Gauntlet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part VI — The Production Gauntlet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-production-gauntlet-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build the Real System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-production-gauntlet-chaos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chaos Engineering · break & fix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#the-60-second-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 60-second version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-devops-exists-what-it-replaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why DevOps exists — what it replaced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#first-principles-servers-processes-state-and-ports" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        First principles — servers, processes, state, and ports
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-four-layers-of-a-running-system" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The four layers of a running system
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stateful-vs-stateless-pets-vs-cattle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stateful vs Stateless, Pets vs Cattle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-two-loops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The two loops
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-think-like-an-engineer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to think like an engineer
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="How to think like an engineer">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-6-step-design-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 6-step design process
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-debugging-reflex" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The debugging reflex
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#monolith-vs-microservices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Monolith vs Microservices
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-production-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real production example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beginner-mistakes-vs-senior-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beginner mistakes vs Senior insights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-shortcuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory shortcuts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-check-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-check quiz
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hands-on lab
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production challenge
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="m0-foundations-mental-model">M0 — Foundations &amp; Mental Model<a class="headerlink" href="#m0-foundations-mental-model" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Core question:</strong> Before you touch a single tool, can you explain what problem DevOps actually
+solves — and why every tool in this book exists?</p>
+</blockquote>
+<hr />
+<blockquote>
+<p><strong>⏱️ Time:</strong> ~45 min padho · <strong>🎚️ Level:</strong> Beginner · <strong>📋 Pehle chahiye:</strong> kuch nahi (optionally <a href="../00a-preflight/">00a Pre-flight</a>)</p>
+<p><strong>Is module ke baad tum kar paoge:</strong>
+- DevOps ke teen pillars aur chaaron layers (Terraform → Ansible → Docker → K8s) bina dekhe explain karo
+- Stateful vs stateless ka distinction use karke kisi bhi workload ko confidently classify karo
+- Outer loop (setup) aur inner loop (delivery) ko trace karo — <code>git push</code> se live pod tak</p>
+</blockquote>
+<h2 id="the-60-second-version">The 60-second version<a class="headerlink" href="#the-60-second-version" title="Permanent link">&para;</a></h2>
+<p><strong>DevOps is the discipline of automating the entire path from code to production — reliably,
+repeatably, and fast.</strong> It replaced a world where developers wrote code and threw it over the wall
+to a separate Operations team who manually configured servers, deployed apps, and took the blame
+when production broke.</p>
+<p>Three pillars drive every decision in this book:</p>
+<table>
+<thead>
+<tr>
+<th>Pillar</th>
+<th>What it means in practice</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Speed</strong></td>
+<td>Ship features in minutes, not weeks</td>
+</tr>
+<tr>
+<td><strong>Safety</strong></td>
+<td>Automated tests, previews, rollbacks — humans cannot break prod by fat-fingering</td>
+</tr>
+<tr>
+<td><strong>Repeatability</strong></td>
+<td>Run the same automation ten times; get the same result every time</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Memory hook:</strong> Think of it as a recipe machine. Before DevOps, every chef cooked differently on
+every server. DevOps is the recipe <em>plus</em> the machine that guarantees the same dish every time,
+no matter who is in the kitchen.</p>
+<hr />
+<h2 id="why-devops-exists-what-it-replaced">Why DevOps exists — what it replaced<a class="headerlink" href="#why-devops-exists-what-it-replaced" title="Permanent link">&para;</a></h2>
+<p>In the pre-DevOps world two teams lived in different buildings with opposing goals:</p>
+<ul>
+<li><strong>Dev (Developers):</strong> Ship features fast. "It works on my machine."</li>
+<li><strong>Ops (Operations):</strong> Keep production stable. "Don't touch anything that works."</li>
+</ul>
+<p>Software sat in a handoff queue for days or weeks. A developer delivered a zip file and a prayer.
+The Ops engineer clicked through a cloud console, forgot one environment variable, and caused an
+outage at 2 a.m. No audit trail. No rollback. Blame-game (the original "throw it over the wall"
+culture).</p>
+<p><strong>DevOps collapses this wall.</strong> The same team owns the code, the pipeline, and production health.
+Every deployment step is encoded in files that live in Git (the version-control system that
+tracks every change), are reviewable by any team member, and are reproducible by a machine.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Pehle developer ne dabba (code) diya, ops ne kholne ki koshish ki
+— na key, na instructions. DevOps matlab: dabba khud khulta hai, aur khulne ka tarika code
+mein likha hai.</p>
+</blockquote>
+<hr />
+<h2 id="first-principles-servers-processes-state-and-ports">First principles — servers, processes, state, and ports<a class="headerlink" href="#first-principles-servers-processes-state-and-ports" title="Permanent link">&para;</a></h2>
+<p>You cannot understand DevOps tools without understanding what they operate on. Five minutes here
+pays off for the rest of the book.</p>
+<p><strong>Server</strong>
+A server is a computer running continuously, waiting to serve requests. It has a CPU (Central
+Processing Unit — the brain that executes instructions), RAM (Random Access Memory — fast
+temporary workspace), a disk (persistent storage), and a network card. In a cloud like AWS
+(Amazon Web Services) you rent a virtual server called an EC2 (Elastic Compute Cloud) instance.</p>
+<p><strong>OS and process</strong>
+The OS (Operating System — Linux on most production servers) manages hardware and runs programs.
+When you launch a program the OS creates a <em>process</em>: a running instance with its own slice of
+RAM and CPU time. If the process crashes, the program stops. A container is a lightweight,
+isolated process with its own filesystem view.</p>
+<p><strong>State</strong>
+State is any data that persists beyond a single request or process restart. Data held only in RAM
+disappears when the process dies (ephemeral). Data written to a database or file on disk survives
+restarts (persistent). This distinction drives most architectural decisions in this book — it is
+the foundation of the Stateful vs Stateless concept.</p>
+<p><strong>Network port</strong>
+A port is a numbered doorway on a server. Port 80 = HTTP (HyperText Transfer Protocol, the web).
+Port 443 = HTTPS (HTTP Secure). Port 22 = SSH (Secure Shell, for remote terminal login). Multiple
+services share a server by each using a different port. A Security Group in AWS is a firewall that
+controls which ports accept traffic from the internet.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Server ek makan hai. Process ek kiraaydaar. RAM furniture hai
+(gaya to gaya). Disk almirah hai (tehta rehta). Port darwaza ka number hai — SSH ka darwaza
+22 pe hai, wahi se andar jaate hain.</p>
+</blockquote>
+<hr />
+<h2 id="the-four-layers-of-a-running-system">The four layers of a running system<a class="headerlink" href="#the-four-layers-of-a-running-system" title="Permanent link">&para;</a></h2>
+<p>Getting an application from a developer's laptop to live production requires four distinct
+activities, each owned by a dedicated tool:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>┌───────────────────────────────────────────────────────────────────┐
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│  LAYER 4 — ORCHESTRATION  ·  Kubernetes (K8s)                     │
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│  &quot;Run the boxes, heal them on crash, scale them on load&quot;          │
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>├───────────────────────────────────────────────────────────────────┤
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│  LAYER 3 — PACKAGING      ·  Docker                               │
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│  &quot;Pack the app + all its dependencies into a portable image&quot;      │
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>├───────────────────────────────────────────────────────────────────┤
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│  LAYER 2 — CONFIGURATION  ·  Ansible                              │
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│  &quot;Install and configure software inside the machine&quot;              │
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>├───────────────────────────────────────────────────────────────────┤
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│  LAYER 1 — PROVISIONING   ·  Terraform                            │
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│  &quot;Create the raw machine (and network, database) on the cloud&quot;    │
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>└───────────────────────────────────────────────────────────────────┘
+</span></code></pre></div>
+<p><strong>Provisioning</strong> — Creating raw infrastructure: virtual servers, networks (VPC — Virtual Private
+Cloud), databases, storage buckets. Before this step nothing exists. Terraform expresses all of
+this as code (IaC — Infrastructure as Code) in <code>.tf</code> files stored in Git, replacing manual console
+clicks with a reproducible blueprint.</p>
+<p><strong>Configuration</strong> — Installing software inside those blank machines. A raw EC2 instance cannot run
+Kubernetes. Ansible (agentless — it connects over SSH with no agent pre-installed on the target)
+installs the container runtime, runs <code>kubeadm</code> to bootstrap the cluster, and configures system
+services.</p>
+<p><strong>Packaging</strong> — Bundling your application with every library and dependency into a single, portable
+Docker image. The image is <em>immutable</em>: build it once, run it identically on any machine with a
+container runtime. No more "it worked on my laptop."</p>
+<p><strong>Orchestration</strong> — Running, healing, and scaling packaged images across a cluster of machines.
+Kubernetes (the "8" in K8s counts the letters between K and s) watches a declared desired state,
+detects failures, and continuously reconciles the cluster to match your specification — 24/7,
+without human intervention.</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Activity</th>
+<th>Tool</th>
+<th>Restaurant analogy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Provisioning</td>
+<td><strong>Terraform</strong></td>
+<td>Build the restaurant building and gas lines</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Configuration</td>
+<td><strong>Ansible</strong></td>
+<td>Equip the kitchen: stove, utensils, shelves</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Packaging</td>
+<td><strong>Docker</strong></td>
+<td>Seal each dish in a labelled, airtight container</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Orchestration</td>
+<td><strong>Kubernetes</strong></td>
+<td>Head chef: replaces cooks who collapse, calls in more when busy</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Order is fixed:</strong> you cannot configure a server that does not exist; you cannot orchestrate
+images that have not been packaged. Always: Terraform → Ansible → Docker → Kubernetes.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> T → A → D → K. Ghar banao (TF) → andar saaman rakho (Ansible)
+→ dish pack karo (Docker) → manager rakho jo kitchen chalaye (K8s). Ulta nahi chalta.</p>
+</blockquote>
+<p><strong>Concepts vs tools — a critical distinction</strong>
+Idempotency, reconciliation, and declarative style are <em>concepts</em> (properties and patterns).
+Terraform, Ansible, Docker, and Kubernetes are <em>tools</em> (software you install). Tools implement
+concepts; do not confuse the two. Never say "I used reconciliation" as if it were a product.</p>
+<hr />
+<h2 id="stateful-vs-stateless-pets-vs-cattle">Stateful vs Stateless, Pets vs Cattle<a class="headerlink" href="#stateful-vs-stateless-pets-vs-cattle" title="Permanent link">&para;</a></h2>
+<p>This is the single most important foundational distinction in DevOps. Every architecture and
+operational decision flows from it.</p>
+<p><strong>Stateful</strong> means the process holds or owns data that cannot be lost. Destroy the instance and
+you lose information. A database is the canonical stateful workload.</p>
+<p><strong>Stateless</strong> means each request is fully self-contained. The process holds no memory of past
+requests. Destroy it, spin up a fresh copy — users notice nothing.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Stateful</th>
+<th>Stateless</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data inside the instance?</td>
+<td>Yes — persistent, valuable</td>
+<td>No — ephemeral</td>
+</tr>
+<tr>
+<td>Replace the instance freely?</td>
+<td>No — you lose data</td>
+<td>Yes — start fresh</td>
+</tr>
+<tr>
+<td>Canonical example</td>
+<td>Postgres / MySQL database</td>
+<td>Web API, worker, CI runner</td>
+</tr>
+<tr>
+<td>Kubernetes object</td>
+<td><code>StatefulSet</code> + PersistentVolume</td>
+<td><code>Deployment</code></td>
+</tr>
+<tr>
+<td>Operational posture</td>
+<td><strong>Pet</strong> — nurse it</td>
+<td><strong>Cattle</strong> — replace it</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Pets vs Cattle</strong>
+- <strong>Pet</strong> (stateful): Named, irreplaceable. One gets sick — you stay up nursing it back to health.
+  A database is a pet. Losing it means losing data.
+- <strong>Cattle</strong> (stateless): Numbered, anonymous, disposable. One crashes — replace it in seconds.
+  Kubernetes does exactly this: a crashed pod is replaced automatically, not repaired manually.</p>
+<blockquote>
+<p>🔮 <strong>Predict pehle (socho, phir aage padho):</strong> Ek API jo sirf Postgres se padhti hai — apne andar kuch store nahi karti — woh stateful hai ya stateless?</p>
+</blockquote>
+<p><strong>Common misconceptions — read these carefully:</strong></p>
+<ol>
+<li>"The database is stateful because it is <em>important</em>." Wrong. Stateful means data lives <em>inside</em>
+   the instance. Importance is irrelevant.</li>
+<li>"An app that uses a database is stateful." Wrong. If the app stores <em>nothing</em> internally —
+   pushes all state to an external DB — the app is <strong>stateless</strong>. The database is stateful. The
+   app's compute layer is cattle.</li>
+<li>"All Kubernetes pods are cattle." No. <code>StatefulSet</code> pods have stable identities and their own
+   persistent volumes. Standard <code>Deployment</code> pods are cattle.</li>
+</ol>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Pet wala bilaa — naam hai, bimaar hua to ilaaj. Cattle wali gaay
+— bimaar hua to nayi le aao. DB = bilaa. Web server = gaay. Dhoka: "DB use karne wali app
+stateless ho sakti hai" — kyunki usne apna data bahar rakh diya. Golden thread: <strong>state bahar
+nikaalo, compute disposable ban jaata hai.</strong></p>
+</blockquote>
+<hr />
+<h2 id="the-two-loops">The two loops<a class="headerlink" href="#the-two-loops" title="Permanent link">&para;</a></h2>
+<p>Everything in DevOps splits into two distinct loops. Confuse them and every tutorial feels chaotic.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>┌──────────────────────────────────────────────────────────────────────┐
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>│  OUTER LOOP — SETUP  (runs once, or rarely on infrastructure change) │
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>│  Think: Pets. Deliberate. Human-triggered.                           │
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>│                                                                      │
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>│   terraform apply  ──►  EC2 nodes + VPC + RDS + ECR created on AWS  │
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>│         │                                                            │
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>│         ▼                                                            │
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>│   ansible-playbook ──►  containerd installed, kubeadm forms cluster  │
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>│         │                                                            │
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>│         ▼                                                            │
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>│   ✅  Kubernetes cluster LIVE — this runs for months unchanged        │
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>└───────────────────────────────┬──────────────────────────────────────┘
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>                                │  cluster is ready
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>┌───────────────────────────────▼──────────────────────────────────────┐
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>│  INNER LOOP — DELIVERY  (runs on every git push, fully automatic)    │
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>│  Think: Cattle. Event-driven. Machine-executed.                      │
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>│                                                                      │
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>│   git push (developer&#39;s only manual step)                            │
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>│      │                                                               │
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>│      ▼                                                               │
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>│   GitHub Actions (CI — Continuous Integration)                       │
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>│      test → docker build → push to ECR → update deployment.yaml     │
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>│      │                                                               │
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>│      ▼                    (Git is the handshake)                     │
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>│   Argo CD (CD — Continuous Delivery)                                 │
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>│      detects Git change → kubectl apply → rolling update in K8s      │
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>│      │                                                               │
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>│      ▼                                                               │
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>│   🎉  New version LIVE  ·  developer did exactly one thing            │
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>└──────────────────────────────────────────────────────────────────────┘
+</span></code></pre></div>
+<p><strong>Why two loops?</strong> The outer loop builds the platform — it changes infrequently and requires
+deliberate work. The inner loop ships software — it runs dozens of times per day and must be
+fully automated. Never rebuild your cluster every time you deploy code: that is the outer loop
+bleeding into the inner loop.</p>
+<p><strong>The GitOps handshake</strong>
+GitHub Actions (the CI side) never touches the Kubernetes cluster directly. Instead it updates a
+manifest file (a YAML file describing desired cluster state) in Git. Argo CD, running <em>inside</em>
+the cluster, watches Git and applies changes. Git is the single source of truth. Rollback = <code>git
+revert</code> — Argo reconciles the rest.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Outer loop = ghar banana (sirf ek baar). Inner loop = roz khana
+banana. Developer ka kaam = <code>git push</code>. Baaki sab machine karta. Agar rollback chahiye:
+<code>git revert</code> → Argo purana deploy — no panic, no SSH, no 2 a.m. heroics.</p>
+</blockquote>
+<hr />
+<h2 id="how-to-think-like-an-engineer">How to think like an engineer<a class="headerlink" href="#how-to-think-like-an-engineer" title="Permanent link">&para;</a></h2>
+<h3 id="the-6-step-design-process">The 6-step design process<a class="headerlink" href="#the-6-step-design-process" title="Permanent link">&para;</a></h3>
+<p>The difference between a senior and a junior DevOps engineer is not knowing more commands — it is
+knowing how to <em>design</em>. AI and search engines can give you commands. Design is the skill that
+cannot be commoditised.</p>
+<ol>
+<li><strong>Requirements</strong> — What does the system need to do? Who are the users? What are the SLOs
+   (Service Level Objectives — reliability targets, e.g. 99.9% uptime)?</li>
+<li><strong>Components</strong> — Decompose the system into logical pieces: services, databases, queues, caches.</li>
+<li><strong>Tool selection</strong> — Match each component to the right tool. Do not reach for the most
+   impressive tool; reach for the correct one.</li>
+<li><strong>Flow map</strong> — Draw how a user request moves through the system. Draw how a deployment flows
+   from <code>git push</code> to a live pod. Both paths must be explicit before you write any code.</li>
+<li><strong>Failure thinking</strong> — Ask: "What breaks first? What happens when the database is unreachable?
+   What if a pod crashes mid-request?" A senior engineer's first instinct is to find the failure.</li>
+<li><strong>Iterate</strong> — Start as simple as possible. Add complexity only when a real requirement demands it.</li>
+</ol>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Planner = senior. Button-pusher = junior. Interview mein "kaise
+design karoge" poochenge — commands nahi. Design "baar baar karke" aata, padhke nahi.</p>
+</blockquote>
+<h3 id="the-debugging-reflex">The debugging reflex<a class="headerlink" href="#the-debugging-reflex" title="Permanent link">&para;</a></h3>
+<p>When production breaks, the error <em>type</em> identifies the problem <em>layer</em>. Develop this reflex and
+you diagnose faster than any team member who reads error messages linearly.</p>
+<table>
+<thead>
+<tr>
+<th>Error / Status</th>
+<th>Layer with the problem</th>
+<th>First action</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UNREACHABLE</code> / connection timeout</td>
+<td><strong>Network</strong> — machine never reached</td>
+<td>Check Security Groups, VPC routes</td>
+</tr>
+<tr>
+<td><code>Permission denied</code> (Ansible/SSH)</td>
+<td><strong>Authentication</strong> — wrong key or user</td>
+<td>Verify key path and username</td>
+</tr>
+<tr>
+<td>Syntax / parse error</td>
+<td><strong>Your code or config</strong> — logic mistake</td>
+<td>Read the file and line number</td>
+</tr>
+<tr>
+<td><code>ImagePullBackOff</code></td>
+<td><strong>Registry</strong> — wrong image tag or missing auth</td>
+<td>Check ECR credentials and tag</td>
+</tr>
+<tr>
+<td><code>OOMKilled</code> / exit code <code>137</code></td>
+<td><strong>RAM</strong> — pod exceeded memory limit</td>
+<td>Raise memory limit or fix leak</td>
+</tr>
+<tr>
+<td><code>CrashLoopBackOff</code></td>
+<td><strong>Application</strong> — container starts then crashes</td>
+<td>Read application logs</td>
+</tr>
+<tr>
+<td><code>Pending</code> (K8s pod)</td>
+<td><strong>Scheduling</strong> — no node fits the request</td>
+<td>Check CPU/RAM/IP availability</td>
+</tr>
+</tbody>
+</table>
+<p>Key principle: <em>"The error appears where it is detected, not where it originated."</em> A <code>pip install</code>
+failure inside a Docker <code>RUN</code> step is usually caused by a missing <code>COPY</code> above it — not by pip.
+The error layer points you to the right area; the root cause may be one step upstream.</p>
+<h3 id="monolith-vs-microservices">Monolith vs Microservices<a class="headerlink" href="#monolith-vs-microservices" title="Permanent link">&para;</a></h3>
+<p>A <strong>monolith</strong> is one large application: all features in one codebase, deployed as one artifact,
+scaled as one unit. Simple to start, hard to change independently at scale.</p>
+<p><strong>Microservices</strong> split the application into small, independent services — each with its own
+Docker image, Kubernetes Deployment, and release cadence. A payment service and a product catalogue
+service deploy independently; one crash does not take the other down.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Monolith</th>
+<th>Microservices</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deployment</td>
+<td>One artifact</td>
+<td>Per-service image + manifest</td>
+</tr>
+<tr>
+<td>Scaling</td>
+<td>Whole app scales together</td>
+<td>Scale only the bottleneck service</td>
+</tr>
+<tr>
+<td>Failure isolation</td>
+<td>One crash = total outage</td>
+<td>One service down, others live</td>
+</tr>
+<tr>
+<td>Complexity</td>
+<td>Low to start</td>
+<td>Higher: networking, tracing, matrix CI</td>
+</tr>
+<tr>
+<td>K8s fit</td>
+<td>One Deployment</td>
+<td>One Deployment per service</td>
+</tr>
+</tbody>
+</table>
+<p>Both are valid. Start with a monolith for a new product; move to microservices when team size or
+independent scaling requirements justify the added complexity.</p>
+<hr />
+<h2 id="real-production-example">Real production example<a class="headerlink" href="#real-production-example" title="Permanent link">&para;</a></h2>
+<p><strong>Day 1 — Outer loop (runs once):</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a># Platform engineer
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>terraform apply      # EC2 nodes, VPC, RDS (Postgres), ECR registry — created on AWS
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>ansible-playbook     # containerd + kubeadm → Kubernetes cluster formed
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a># Argo CD installed into the cluster
+</span></code></pre></div>
+The cluster is live. This work is complete and will not run again for months.</p>
+<p><strong>Day 2+ — Inner loop (triggered by every code change):</strong>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>git push origin main   # developer&#39;s only manual step
+</span></code></pre></div>
+Automated sequence:
+1. GitHub Actions: <code>pytest</code> runs — test gate. Fail = pipeline stops. No broken code ships.
+2. Docker image built, tagged <code>app:&lt;git-sha&gt;</code> (e.g. <code>app:f9e8d7c</code>), pushed to ECR.
+3. Actions updates <code>k8s/deployment.yaml</code> to <code>image: &lt;ecr&gt;/app:f9e8d7c</code>, commits, pushes to Git.
+4. Argo CD detects the Git change, runs <code>kubectl apply</code> — Kubernetes performs a rolling update.
+5. Bug found? <code>git revert &amp;&amp; git push</code> — Argo redeploys the previous SHA. Rollback in &lt; 2 minutes.</p>
+<hr />
+<h2 id="beginner-mistakes-vs-senior-insights">Beginner mistakes vs Senior insights<a class="headerlink" href="#beginner-mistakes-vs-senior-insights" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Beginner</th>
+<th>Senior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Click cloud console to create servers</td>
+<td>Write Terraform; everything is Git history</td>
+</tr>
+<tr>
+<td>Run setup script twice, get errors</td>
+<td>Use idempotent tools — re-runs are always safe</td>
+</tr>
+<tr>
+<td>Rebuild the cluster on every deploy</td>
+<td>Outer loop (cluster) vs inner loop (code) are separate</td>
+</tr>
+<tr>
+<td>Put secrets in code or Dockerfile</td>
+<td>Secrets in environment variables or a secrets manager</td>
+</tr>
+<tr>
+<td>Tag Docker images with <code>latest</code></td>
+<td>Pin every image to a commit SHA for traceability</td>
+</tr>
+<tr>
+<td>SSH into prod and fix manually</td>
+<td>Fix in Git; Argo reconciles — no ad-hoc ops</td>
+</tr>
+<tr>
+<td>"It works on my machine"</td>
+<td>Same immutable image built once, runs everywhere</td>
+</tr>
+<tr>
+<td>Ask "which tool?" before understanding the need</td>
+<td>Ask "what does the system need?" then pick tools</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="memory-shortcuts">Memory shortcuts<a class="headerlink" href="#memory-shortcuts" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Analogy</th>
+<th>Concept</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Recipe machine — same dish every time</td>
+<td>DevOps: speed + safety + repeatability</td>
+</tr>
+<tr>
+<td>Building → kitchen → sealed dish → head chef</td>
+<td>Terraform → Ansible → Docker → K8s</td>
+</tr>
+<tr>
+<td>Pet vs Cattle</td>
+<td>Stateful vs Stateless</td>
+</tr>
+<tr>
+<td>Outer loop / inner loop</td>
+<td>Setup (rare) vs Delivery (continuous)</td>
+</tr>
+<tr>
+<td><code>git push</code> — developer's only job</td>
+<td>Full CI/CD automation</td>
+</tr>
+<tr>
+<td>Error type = problem layer</td>
+<td>Debugging reflex</td>
+</tr>
+<tr>
+<td>Planner vs button-pusher</td>
+<td>Senior vs junior engineering mindset</td>
+</tr>
+<tr>
+<td>Git = menu (source of truth)</td>
+<td>GitOps — Argo deploys what Git says</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The golden thread</strong> tying every module together:</p>
+<blockquote>
+<p><em>State bahar nikaalo — compute disposable ban jaata hai.</em>
+(Move state outside the compute layer — the compute becomes replaceable cattle.)</p>
+</blockquote>
+<p>This one idea explains stateless web apps, remote Terraform state in S3, Kubernetes cattle pods,
+and why Spot instances only work for stateless workloads.</p>
+<hr />
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>DevOps is not a tool — it is the discipline of automating and safeguarding the path from code to
+production. It replaced manual, error-prone operations with code-driven, reproducible pipelines.</p>
+<p>Every system in this course rests on four ordered layers: Provisioning (Terraform) → Configuration
+(Ansible) → Packaging (Docker) → Orchestration (Kubernetes). Each layer exists because the layer
+below cannot do the job above it.</p>
+<p>The stateful/stateless distinction determines whether you can freely replace infrastructure or must
+preserve it. Pets and Cattle are the operational posture that follows from that distinction.</p>
+<p>The two-loop model prevents the most common beginner confusion: setup is the outer loop (rare,
+deliberate), delivery is the inner loop (continuous, automatic). Git is the handshake.</p>
+<p>Thinking like an engineer means designing before building, using the debugging reflex when things
+break, and knowing that your value is in design decisions — not in memorising commands.</p>
+<p><strong>Chapters ahead:</strong>
+- <a href="../02-M1-terraform/">02-M1-terraform.md</a> — Provisioning in depth: state, drift, lost-state, modules
+- <a href="../03-M2-ansible/">03-M2-ansible.md</a> — Configuration in depth: playbooks, handlers, idempotency
+- <a href="../04-M3-docker/">04-M3-docker.md</a> — Packaging in depth: layers, caching, multi-stage builds
+- <a href="../05-M4-kubernetes-core/">05-M4-kubernetes-core.md</a> — Orchestration in depth: Deployments, Services, probes
+- <a href="../09-connected-system/">09-connected-system.md</a> — How all four layers work together end-to-end
+- <a href="../16-reference-appendix/">16-reference-appendix.md</a> — Glossary, acronym index, cheat-sheets</p>
+<hr />
+<h2 id="self-check-quiz">Self-check quiz<a class="headerlink" href="#self-check-quiz" title="Permanent link">&para;</a></h2>
+<p>Answer from memory before revealing answers.</p>
+<ol>
+<li>Name the three pillars of DevOps.</li>
+<li>What is the difference between Provisioning and Configuration?</li>
+<li>A web API reads from a Postgres database but stores nothing internally. Is the API stateful or
+   stateless? Is the Postgres instance stateful or stateless?</li>
+<li>You declare 3 servers in Terraform and run <code>terraform apply</code> 5 times. How many servers exist?</li>
+<li>What is the outer loop? What is the inner loop?</li>
+<li>You see <code>UNREACHABLE</code> when Ansible tries to connect. Which layer has the problem?</li>
+<li>Why should you never use <code>latest</code> as a Docker image tag in production?</li>
+<li>What is the difference between idempotency and reconciliation?</li>
+</ol>
+<details>
+<summary>Answers</summary>
+<ol>
+<li>Speed, Safety, Repeatability.</li>
+<li>Provisioning creates the raw machine (infrastructure). Configuration installs and configures
+   software inside that machine.</li>
+<li>The API is stateless — it holds no data internally; it delegates state to the DB. The Postgres
+   instance is stateful — the data lives inside it.</li>
+<li>3 servers. Terraform is idempotent: it reconciles to the desired count, it does not add.</li>
+<li>Outer loop = setup (Terraform + Ansible, runs once to build the cluster). Inner loop = delivery
+   (git push → CI/CD → K8s, runs on every code change).</li>
+<li>Network layer — the machine was never reached. Check Security Groups and routing.</li>
+<li><code>latest</code> is a mutable label. Any subsequent push can overwrite it silently. You lose
+   traceability and the ability to roll back. Use commit SHAs instead.</li>
+<li>Idempotency is a property of a single operation: safe to re-run, same result. Reconciliation is
+   a continuous control loop: compares desired state to actual state and fixes drift — 24/7 without
+   human triggering (Kubernetes, Argo CD). Terraform is idempotent but only reconciles when you
+   run <code>terraform apply</code>.</li>
+</ol>
+</details>
+<hr />
+<h2 id="hands-on-lab">Hands-on lab<a class="headerlink" href="#hands-on-lab" title="Permanent link">&para;</a></h2>
+<p>No cloud account. No software installation required.</p>
+<p><strong>Exercise 1 — Draw the stack from memory</strong>
+Take a blank sheet of paper. Draw the four-layer stack (Provisioning → Orchestration). For each
+layer write: the tool name, the activity it performs, and the restaurant analogy. Check against
+the table in "The four layers" section.</p>
+<p><strong>Exercise 2 — Classify workloads</strong>
+Label each as Stateful or Stateless, and Pet or Cattle:
+- A Redis cache holding user session tokens
+- A Node.js API that reads sessions from Redis and stores nothing internally
+- A Postgres database
+- A GitHub Actions CI runner that builds Docker images
+- An Nginx server serving static HTML files</p>
+<p><strong>Exercise 3 — Trace a deployment</strong>
+Write in order every step that occurs between <code>git push origin main</code> and a new pod being live.
+Use only tool and concept names — no commands needed. Compare with the inner-loop diagram.</p>
+<p><strong>Exercise 4 — Apply the debugging reflex</strong>
+For each error below, identify which layer caused it and one probable root cause:
+- <code>OOMKilled</code> on a Kubernetes pod
+- <code>ImagePullBackOff</code> when a pod starts
+- <code>Permission denied</code> when Ansible connects to a server</p>
+<p><strong>✅ Sahi hua to aisa dikhega:</strong>
+- <em>Ex-1:</em> chaaron layers + tool + analogy bina dekhe likh diye (Provisioning=Terraform, Configuration=Ansible, Packaging=Docker, Orchestration=Kubernetes).
+- <em>Ex-2:</em> Redis(session) aur Postgres = <strong>Stateful / Pet</strong>; Node API, CI runner, Nginx-static = <strong>Stateless / Cattle</strong>.
+- <em>Ex-3:</em> <code>git push → CI test → docker build → ECR push → manifest update → Argo sync → rolling update → pod live</code> — koi step chhoota nahi.
+- <em>Ex-4:</em> <code>OOMKilled</code> = sizing/RAM layer · <code>ImagePullBackOff</code> = image/registry layer (tag ya auth galat) · <code>Permission denied</code> = wrong SSH key (na network, na app).</p>
+<p>Sab match ho gaya? To M0 pakka — <a href="../02-M1-terraform/">M1 pe jao</a>.</p>
+<hr />
+<h2 id="interview-questions">Interview questions<a class="headerlink" href="#interview-questions" title="Permanent link">&para;</a></h2>
+<ol>
+<li>
+<p><strong>"Explain DevOps to someone who has never heard the term."</strong>
+   Cover: what it replaced (manual dev→ops handoff, blame culture), the three pillars, and the
+   idea that the entire code-to-production path is automated and version-controlled.</p>
+</li>
+<li>
+<p><strong>"What is the difference between a stateful and stateless service?"</strong>
+   Stateful holds persistent data internally — destroy the instance and lose data. Stateless holds
+   nothing — destroy and replace with zero loss. Bonus: correct the "app using a DB is stateful"
+   misconception.</p>
+</li>
+<li>
+<p><strong>"Walk me through the four layers of a production system."</strong>
+   Provisioning → Configuration → Packaging → Orchestration, with the tool and rationale for each.</p>
+</li>
+<li>
+<p><strong>"A pod is stuck in <code>CrashLoopBackOff</code>. How do you debug it?"</strong>
+   Error type = application layer (the container starts then crashes). Run <code>kubectl logs &lt;pod&gt;</code> to
+   read the application output. The error type told you where to look.</p>
+</li>
+<li>
+<p><strong>"What is the difference between CI and CD?"</strong>
+   CI (Continuous Integration): build, test, package — produces a deployable artifact. CD
+   (Continuous Delivery/Deployment): releases and deploys that artifact to staging or production.</p>
+</li>
+<li>
+<p><strong>"Why is Infrastructure as Code important?"</strong>
+   Reproducibility, auditability (Git history is your change log), no single human knowledge
+   dependency, drift detection, and disaster recovery (rebuild infrastructure from code).</p>
+</li>
+<li>
+<p><strong>"What is GitOps and why does it improve security?"</strong>
+   Git is the single source of truth for desired state. The CD tool (Argo CD) pulls from Git —
+   the CI system never needs cluster access. A compromised CI pipeline cannot directly damage
+   the cluster.</p>
+</li>
+</ol>
+<hr />
+<h2 id="production-challenge">Production challenge<a class="headerlink" href="#production-challenge" title="Permanent link">&para;</a></h2>
+<p><strong>Scenario:</strong> A team deploys a Node.js monolith on a single EC2 server. Deployments are manual:
+SSH in, pull latest code, restart with <code>pm2</code>. The server runs out of RAM twice a month and
+requires manual rebooting. One engineer once overwrote the production config by accident.
+There is no rollback procedure.</p>
+<p><strong>Your design task (no code, diagrams welcome):</strong></p>
+<ol>
+<li>Identify which of the four layers is missing or broken.</li>
+<li>Propose the tool from this chapter that fixes each gap.</li>
+<li>Is the Node.js app stateful or stateless? (It currently stores sessions in RAM.)</li>
+<li>What architectural change would make the app stateless and safe to treat as cattle?</li>
+<li>Sketch (in words) how the two loops would look for this team after adopting the full stack.</li>
+</ol>
+<p>There is no single correct answer. The quality of your <em>reasoning</em> — not the specific tools you
+choose — is what matters. A senior engineer explains <em>why</em>, not just <em>what</em>.</p>
+<hr />
+<p><em>Navigate: <a href="../00-INDEX/">← 00-INDEX.md</a> · <a href="../02-M1-terraform/">02-M1-terraform.md →</a></em></p>
+<p><em>See also: <a href="../09-connected-system/">09-connected-system.md</a> — end-to-end connected system walkthrough</em>
+<em>· <a href="../14-interview-bank/">14-interview-bank.md</a> — full interview question bank</em>
+<em>· <a href="../16-reference-appendix/">16-reference-appendix.md</a> — glossary and acronym index</em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../21-linux-toolkit/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Linux · the ground everything runs on">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Linux · the ground everything runs on
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../02-M1-terraform/" class="md-footer__link md-footer__link--next" aria-label="Next: M1 · Terraform">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                M1 · Terraform
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 grvtech1 — licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/grvtech1/devops-handbook" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "announce.dismiss"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/progress.js"></script>
+      
+    
+  </body>
+</html>

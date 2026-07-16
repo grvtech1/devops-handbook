@@ -1,0 +1,3702 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free, zero-to-job-ready DevOps handbook — from "what is a terminal" to production- and interview-ready. Systems thinking, hands-on labs, capstones.">
+      
+      
+      
+        <link rel="canonical" href="https://grvtech1.github.io/devops-handbook/21-linux-toolkit/">
+      
+      
+        <link rel="prev" href="../00b-setup-runbook/">
+      
+      
+        <link rel="next" href="../01-M0-foundations/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Linux · the ground everything runs on - The DevOps Engineer's Handbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%206a6%206%200%200%201%206%206c0%202.22-1.21%204.16-3%205.2V19a1%201%200%200%201-1%201h-4a1%201%200%200%201-1-1v-1.8c-1.79-1.04-3-2.98-3-5.2a6%206%200%200%201%206-6m2%2015v1a1%201%200%200%201-1%201h-2a1%201%200%200%201-1-1v-1zm6-10h3v2h-3zM1%2011h3v2H1zM13%201v3h-2V1zM4.92%203.5l2.13%202.14-1.42%201.41L3.5%204.93zm12.03%202.13%202.12-2.13%201.43%201.43-2.13%202.12z%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m13.13%2022.19-1.63-3.83c1.57-.58%203.04-1.36%204.4-2.27zM5.64%2012.5l-3.83-1.63%206.1-2.77C7%209.46%206.22%2010.93%205.64%2012.5M21.61%202.39S16.66.269%2011%205.93c-2.19%202.19-3.5%204.6-4.35%206.71-.28.75-.09%201.57.46%202.13l2.13%202.12c.55.56%201.37.74%202.12.46A19.1%2019.1%200%200%200%2018.07%2013c5.66-5.66%203.54-10.61%203.54-10.61m-7.07%207.07c-.78-.78-.78-2.05%200-2.83s2.05-.78%202.83%200c.77.78.78%202.05%200%202.83s-2.05.78-2.83%200m-5.66%207.07-1.41-1.41zM6.24%2022l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83%2022zM2%2022h1.41l4.77-4.76-1.42-1.41L2%2020.59zm0-2.83%204.09-4.08c-.21-.3-.36-.62-.45-.97L2%2017.76z%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M13%2014h-2V9h2m0%209h-2v-2h2M1%2021h22L12%202z%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M8%2015a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m2.5%202%201.5-3%201.5%203zm5.5-2a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m6-4A10%2010%200%200%200%2012%201%2010%2010%200%200%200%202%2011c0%202.8%201.2%205.3%203%207.1V22h14v-3.9c1.8-1.8%203-4.3%203-7.1m-5%209h-2v-2h-2v2h-2v-2H9v2H7v-2.8c-1.8-1.5-3-3.7-3-6.2a8%208%200%200%201%208-8%208%208%200%200%201%208%208c0%202.5-1.2%204.8-3%206.2z%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#21-linux-the-ground-everything-runs-on" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  🚀 <strong>26 chapters</strong> · rendered diagrams · hands-on labs · a 26-scenario incident playbook — all free (CC BY 4.0).
+  &nbsp;
+  <a href="https://github.com/grvtech1/devops-handbook" style="color: inherit; text-decoration: underline; font-weight: 700;">⭐ Star it on GitHub</a>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-header__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The DevOps Engineer's Handbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Linux · the ground everything runs on
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../study-plan/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Study Plan
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../progress/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  My Progress
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../00-INDEX/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Handbook
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-nav__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    The DevOps Engineer's Handbook
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../study-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    My Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handbook
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Handbook
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-INDEX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Curriculum (Index)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 0 — Pre-flight
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 0 — Pre-flight
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00a-preflight/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00a · Pre-flight ground floor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00b-setup-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00b · Setup runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux · the ground everything runs on
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux · the ground everything runs on
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#recall-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ↩️ Recall gate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#navigation-finding-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Navigation &amp; finding things
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viewing-searching-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Viewing &amp; searching content
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File operations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#permissions-know-this-cold" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Permissions — know this cold
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#users-groups-sudo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users, groups &amp; sudo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Processes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system-resources-the-debug-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System &amp; resources — the debug flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#networking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Networking
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#packages-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Packages &amp; services
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#text-processing-pipes-the-unix-superpower" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Text processing &amp; pipes — the Unix superpower
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#archives-transfer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Archives &amp; transfer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment &amp; shell
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-golden-debug-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The golden debug flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#small-but-important" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Small but important
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hands-on lab
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-check-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-check quiz
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-second-cheat-sheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20-second cheat-sheet
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part I — Core toolchain
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part I — Core toolchain
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-M0-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M0 · Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-M1-terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M1 · Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-M2-ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M2 · Ansible
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-M3-docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M3 · Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-M4-kubernetes-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M4 · Kubernetes Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-M5-sizing-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M5 · Sizing & Cost
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-M6-cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M6 · CI/CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-M7-gitops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M7 · GitOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part II — Systems thinking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part II — Systems thinking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-connected-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Connected System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-k8s-objects-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Objects · How They Connect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-10-day-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Learning Plan (understand)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29-confidence-sprint/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Confidence Sprint (drill)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../28-helm-real-projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Helm in the Real World (your 2 projects)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-cicd-hands-on-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Follow One Commit (hands-on CI/CD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part III — Operate
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part III — Operate
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-M8-observability-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M8 · Observability & SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-M9-advanced-k8s-internals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M9 · Advanced K8s Internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30-k8s-complete-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Complete Reference (Workloads · Scheduling · Ops)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-production-incident-playbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Incident Playbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part IV — Capstones
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part IV — Capstones
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-capstone-url-shortener/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone I · URL Shortener
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-capstone-microshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone II · MicroShop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part V — Reference & career
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part V — Reference & career
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-interview-bank/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview Bank
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-confusions-and-tradeoffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Confusions & Trade-offs (X-vs-Y)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-command-cheatsheets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Command Cheat-Sheets & Labs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-roadmap-M11-M18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap · M11–M18
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-reference-appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Appendix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-career-job-ready/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Job-Ready
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part VI — The Production Gauntlet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part VI — The Production Gauntlet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-production-gauntlet-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build the Real System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-production-gauntlet-chaos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chaos Engineering · break & fix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#recall-gate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ↩️ Recall gate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#navigation-finding-things" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Navigation &amp; finding things
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#viewing-searching-content" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Viewing &amp; searching content
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#file-operations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File operations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#permissions-know-this-cold" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Permissions — know this cold
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#users-groups-sudo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Users, groups &amp; sudo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#processes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Processes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#system-resources-the-debug-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        System &amp; resources — the debug flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#networking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Networking
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#packages-services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Packages &amp; services
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#text-processing-pipes-the-unix-superpower" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Text processing &amp; pipes — the Unix superpower
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#archives-transfer" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Archives &amp; transfer
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#environment-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Environment &amp; shell
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-golden-debug-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The golden debug flow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#small-but-important" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Small but important
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hands-on lab
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-check-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-check quiz
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#20-second-cheat-sheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        20-second cheat-sheet
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="21-linux-the-ground-everything-runs-on">21 — Linux: the ground everything runs on<a class="headerlink" href="#21-linux-the-ground-everything-runs-on" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Core question:</strong> Every container, pod, pipeline, and server ultimately runs on a Linux process — can you navigate, interrogate, and fix one under pressure?</p>
+<p><strong>⏱️ Time:</strong> ~50 min · <strong>🎚️ Level:</strong> Beginner→Intermediate · <strong>📋 Pehle chahiye:</strong> <a href="../00a-preflight/">00a Pre-flight</a></p>
+<p><strong>Is chapter ke baad tum kar paoge:</strong>
+- Navigate, read, and edit files and directories with confidence in any Linux environment
+- Debug a slow or unresponsive server using the golden five-command flow
+- Use pipes and text tools to mine any log file for errors, counts, and top offenders</p>
+<p><strong>How to use:</strong> ek terminal khol ke har command khud chalao — reading ≠ knowing.</p>
+</blockquote>
+<hr />
+<blockquote>
+<h3 id="recall-gate">↩️ Recall gate<a class="headerlink" href="#recall-gate" title="Permanent link">&para;</a></h3>
+<p>Pehle memory se jawab do, phir kholo.</p>
+<ol>
+<li><em>(00a)</em> What is a shell — and what is the difference between a shell and a terminal?</li>
+<li><em>(00a)</em> What is the difference between an absolute path and a relative path?</li>
+<li><em>(00a)</em> What is <code>stdout</code> — and how is it different from <code>stderr</code>?</li>
+</ol>
+<p><details markdown="1"><summary>Jawab dekho</summary></p>
+<ol>
+<li>
+<p>A <strong>terminal</strong> is the window you type in. A <strong>shell</strong> is the program running inside it (Bash, Zsh, sh) that interprets commands and returns output. The terminal is UI; the shell is the interpreter.</p>
+</li>
+<li>
+<p>An <strong>absolute path</strong> starts from root <code>/</code> and works from anywhere: <code>/etc/nginx/nginx.conf</code>. A <strong>relative path</strong> is relative to your current directory: <code>./scripts/deploy.sh</code>. <code>pwd</code> shows your current position.</p>
+</li>
+<li>
+<p><strong>stdout</strong> (file descriptor 1) carries normal output. <strong>stderr</strong> (file descriptor 2) carries error messages. Both print to the screen by default. You can separate them: <code>cmd 2&gt;/dev/null</code> silences errors; <code>cmd 2&gt;&amp;1</code> merges both into stdout for capture.</p>
+</li>
+</ol>
+</details>
+</blockquote>
+<hr />
+<h2 id="navigation-finding-things">Navigation &amp; finding things<a class="headerlink" href="#navigation-finding-things" title="Permanent link">&para;</a></h2>
+<p>First thing you do on any unknown server: orient yourself.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+<th>Why you need it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>pwd</code></td>
+<td>Print current directory</td>
+<td>Baseline — where am I?</td>
+</tr>
+<tr>
+<td><code>ls -lah</code></td>
+<td>Long, all (hidden files), human-readable sizes</td>
+<td>See everything including dotfiles</td>
+</tr>
+<tr>
+<td><code>cd /var/log</code></td>
+<td>Change directory</td>
+<td>Move around the filesystem</td>
+</tr>
+<tr>
+<td><code>cd -</code></td>
+<td>Go to previous directory</td>
+<td>Toggle between two locations</td>
+</tr>
+<tr>
+<td><code>cd ~</code></td>
+<td>Go home</td>
+<td>Back to your user's home directory</td>
+</tr>
+<tr>
+<td><code>tree -L 2</code></td>
+<td>Visual tree, 2 levels deep</td>
+<td>Quick structural overview of a project</td>
+</tr>
+<tr>
+<td><code>find / -name "*.log" 2&gt;/dev/null</code></td>
+<td>Walk the tree, filter by name, suppress errors</td>
+<td>Find any file when you don't know where it lives</td>
+</tr>
+<tr>
+<td><code>find . -type f -mtime -1</code></td>
+<td>Files modified in the last 24 hours</td>
+<td>What changed recently?</td>
+</tr>
+<tr>
+<td><code>find . -size +100M</code></td>
+<td>Files bigger than 100 MB</td>
+<td><strong>Disk-full culprit hunt</strong></td>
+</tr>
+<tr>
+<td><code>which kubectl</code></td>
+<td>Full path of a binary</td>
+<td>Is it installed? Which one am I running?</td>
+</tr>
+<tr>
+<td><code>locate nginx.conf</code></td>
+<td>Instant index-based search</td>
+<td>Fast — but the index (<code>updatedb</code>) may be stale</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🎤 <strong>Interview one-liner:</strong> "<code>find</code> walks the filesystem live with filters — name, size, mtime, type. <code>locate</code> is instant but uses a prebuilt index that may lag. When the disk is full, <code>find . -size +100M</code> is your first move."</p>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> <code>find</code> ek real-time detective hai — koi bhi file dhundh ke deta hai. <code>locate</code> ek phone directory hai — tez hai par puraani ho sakti hai. Disk full? <code>find . -size +100M</code> seedha chor ko pakadta hai.</p>
+</blockquote>
+<hr />
+<h2 id="viewing-searching-content">Viewing &amp; searching content<a class="headerlink" href="#viewing-searching-content" title="Permanent link">&para;</a></h2>
+<p>Log files are how servers talk to you. Reading them well is half of incident response.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cat file</code></td>
+<td>Dump whole file to screen (small files only)</td>
+</tr>
+<tr>
+<td><code>less file</code></td>
+<td>Paginated view — <code>/pattern</code> to search, <code>q</code> to quit</td>
+</tr>
+<tr>
+<td><code>head -n 20 file</code></td>
+<td>First 20 lines</td>
+</tr>
+<tr>
+<td><code>tail -n 20 file</code></td>
+<td>Last 20 lines</td>
+</tr>
+<tr>
+<td><code>tail -f app.log</code></td>
+<td><strong>Follow live</strong> — new lines appear as they are written</td>
+</tr>
+<tr>
+<td><code>grep "ERROR" app.log</code></td>
+<td>Filter lines matching a pattern</td>
+</tr>
+<tr>
+<td><code>grep -ri "timeout" /etc</code></td>
+<td>Recursive, case-insensitive — search a whole directory</td>
+</tr>
+<tr>
+<td><code>grep -c "500" access.log</code></td>
+<td>Count matching lines only</td>
+</tr>
+<tr>
+<td><code>grep -A3 -B1 "panic" app.log</code></td>
+<td>3 lines after + 1 before each match — stack-trace context</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🎤 <strong>Interview one-liner:</strong> "<code>tail -f</code> watches a log live while a bug happens. <code>grep -A3 -B1</code> gives context around the match — critical for stack traces where the useful line is two lines above the word ERROR."</p>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> <code>tail -f</code> ek live TV channel hai. <code>grep</code> ek remote hai — sirf wahi dikhao jo chahiye. Dono saath mein: <code>tail -f app.log | grep ERROR</code> — live error-only feed, baaki sab mute.</p>
+</blockquote>
+<hr />
+<h2 id="file-operations">File operations<a class="headerlink" href="#file-operations" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mkdir -p a/b/c</code></td>
+<td>Create nested directories in one shot</td>
+<td><code>-p</code> creates parents if missing</td>
+</tr>
+<tr>
+<td><code>touch file.txt</code></td>
+<td>Create empty file or update timestamp</td>
+<td></td>
+</tr>
+<tr>
+<td><code>cp -r src/ dst/</code></td>
+<td>Copy directory recursively</td>
+<td></td>
+</tr>
+<tr>
+<td><code>mv old new</code></td>
+<td>Move or rename — works across paths</td>
+<td></td>
+</tr>
+<tr>
+<td><code>rm -rf dir/</code></td>
+<td>Delete recursively, no confirmation prompt</td>
+<td><strong>No undo — be certain before running</strong></td>
+</tr>
+<tr>
+<td><code>ln -s /real/path link</code></td>
+<td>Create a symbolic link</td>
+<td>Used for config files and versioned binaries</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⚠️ <code>rm -rf</code> has no recycle bin. A misplaced <code>rm -rf /</code> or <code>rm -rf ./*</code> on a production server is irreversible. Always <code>pwd</code> and <code>ls</code> before running it.</p>
+</blockquote>
+<hr />
+<h2 id="permissions-know-this-cold">Permissions — know this cold<a class="headerlink" href="#permissions-know-this-cold" title="Permanent link">&para;</a></h2>
+<p>Every file on Linux has three permission sets — <strong>owner</strong>, <strong>group</strong>, <strong>others</strong> — each with three bits: <strong>r</strong>ead (4), <strong>w</strong>rite (2), e<strong>x</strong>ecute (1).</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>  -rwxr-xr--
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>  │├──┤├──┤├──┤
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>  ││  ││  │└── others: r-- = 4
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  ││  │└──┘ group:   r-x = 5
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>  │└──┘ owner:  rwx = 7
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>  └── file type: - = regular, d = directory, l = symlink
+</span></code></pre></div>
+<p><strong>The addition rule:</strong> 7 = 4+2+1 (rwx) · 6 = 4+2+0 (rw-) · 5 = 4+0+1 (r-x) · 4 = 4+0+0 (r--)</p>
+<table>
+<thead>
+<tr>
+<th>Mode</th>
+<th>Symbolic</th>
+<th>Owner</th>
+<th>Group</th>
+<th>Others</th>
+<th>Standard use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>755</code></td>
+<td>rwxr-xr-x</td>
+<td>rwx</td>
+<td>r-x</td>
+<td>r-x</td>
+<td>Scripts, directories</td>
+</tr>
+<tr>
+<td><code>644</code></td>
+<td>rw-r--r--</td>
+<td>rw-</td>
+<td>r--</td>
+<td>r--</td>
+<td>Config files, static assets</td>
+</tr>
+<tr>
+<td><code>600</code></td>
+<td>rw-------</td>
+<td>rw-</td>
+<td>---</td>
+<td>---</td>
+<td>SSH private keys, secrets</td>
+</tr>
+<tr>
+<td><code>777</code></td>
+<td>rwxrwxrwx</td>
+<td>rwx</td>
+<td>rwx</td>
+<td>rwx</td>
+<td><strong>Never in production</strong></td>
+</tr>
+</tbody>
+</table>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>chmod<span class="w"> </span><span class="m">755</span><span class="w"> </span>script.sh<span class="w">         </span><span class="c1"># make a script executable by all users</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>chmod<span class="w"> </span>+x<span class="w"> </span>script.sh<span class="w">          </span><span class="c1"># symbolic: add execute bit to existing permissions</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>chmod<span class="w"> </span>-R<span class="w"> </span><span class="m">644</span><span class="w"> </span>config/<span class="w">        </span><span class="c1"># set 644 recursively on all files in a directory</span>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>chown<span class="w"> </span>devuser:appgroup<span class="w"> </span>file<span class="w">  </span><span class="c1"># change owner and group</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>chown<span class="w"> </span>-R<span class="w"> </span>devuser<span class="w"> </span>app/<span class="w">        </span><span class="c1"># recursive ownership change</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="nb">umask</span><span class="w">                        </span><span class="c1"># show the default permission mask for new files</span>
+</span></code></pre></div>
+<blockquote>
+<p>🎤 <strong>Interview one-liner:</strong> "r=4, w=2, x=1. 755 = owner full access, everyone else read+execute — standard for scripts. 644 = owner read-write, everyone else read-only — standard for config files. chmod 777 is a security hole: any process on the system can overwrite or execute the file."</p>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Teen groups ke liye teen daraaze. r=4 padhna, w=2 likhna, x=1 chalana. 755 matlab owner ke paas master key hai; baaki sirf ander aa sakte hain — kuch change nahi kar sakte.</p>
+</blockquote>
+<hr />
+<h2 id="users-groups-sudo">Users, groups &amp; sudo<a class="headerlink" href="#users-groups-sudo" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>whoami</code></td>
+<td>Current username</td>
+</tr>
+<tr>
+<td><code>id</code></td>
+<td>UID, GID, and all group memberships</td>
+</tr>
+<tr>
+<td><code>sudo command</code></td>
+<td>Run one command as root</td>
+</tr>
+<tr>
+<td><code>su - user</code></td>
+<td>Switch to another user (full login environment)</td>
+</tr>
+<tr>
+<td><code>sudo useradd -m user</code></td>
+<td>Create a user with a home directory</td>
+</tr>
+<tr>
+<td><code>sudo passwd user</code></td>
+<td>Set or change a password</td>
+</tr>
+<tr>
+<td><code>sudo usermod -aG docker user</code></td>
+<td>Add user to a group (docker, sudo, etc.)</td>
+</tr>
+<tr>
+<td><code>groups user</code></td>
+<td>List all groups a user belongs to</td>
+</tr>
+<tr>
+<td><code>cat /etc/passwd</code></td>
+<td>All user accounts on the system</td>
+</tr>
+<tr>
+<td><code>cat /etc/group</code></td>
+<td>All groups and their members</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🎤 <strong>Interview one-liner:</strong> "<code>sudo usermod -aG docker user</code> adds a user to the docker group so they can run Docker without <code>sudo</code>. The <code>-a</code> flag <strong>appends</strong> — omitting it would <strong>replace</strong> all group memberships, locking the user out of other groups."</p>
+</blockquote>
+<hr />
+<h2 id="processes">Processes<a class="headerlink" href="#processes" title="Permanent link">&para;</a></h2>
+<p>A <strong>process</strong> is any running program. Every container, every service, every script is a process with a PID (Process ID). Knowing how to find and control processes is the core of incident response.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ps aux</code></td>
+<td>Snapshot of all processes — user, PID, CPU%, MEM%, command</td>
+</tr>
+<tr>
+<td><code>ps aux \| grep nginx</code></td>
+<td>Find a specific process by name</td>
+</tr>
+<tr>
+<td><code>top</code></td>
+<td>Live monitor — CPU and memory per process, updated every second</td>
+</tr>
+<tr>
+<td><code>htop</code></td>
+<td>Colour-coded <code>top</code> with mouse support (install separately)</td>
+</tr>
+<tr>
+<td><code>kill &lt;PID&gt;</code></td>
+<td>Send SIGTERM (15) — polite shutdown request</td>
+</tr>
+<tr>
+<td><code>kill -9 &lt;PID&gt;</code></td>
+<td>Send SIGKILL — forced, immediate, no cleanup</td>
+</tr>
+<tr>
+<td><code>pkill -f "python app"</code></td>
+<td>Kill all processes matching a name or pattern</td>
+</tr>
+<tr>
+<td><code>nohup ./run.sh &amp;</code></td>
+<td>Run in background, survives terminal close</td>
+</tr>
+<tr>
+<td><code>jobs</code> / <code>fg</code> / <code>bg</code></td>
+<td>List / foreground / background shell jobs</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Signal numbers every engineer must know:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Number</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SIGHUP</td>
+<td>1</td>
+<td>Reload config — most daemons restart cleanly on <code>kill -1</code></td>
+</tr>
+<tr>
+<td>SIGTERM</td>
+<td>15</td>
+<td>Polite shutdown — app can flush data, close connections, then exit</td>
+</tr>
+<tr>
+<td>SIGKILL</td>
+<td>9</td>
+<td>Forced kill by the kernel — no cleanup, no ceremony</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🎤 <strong>Interview one-liner:</strong> "Always try SIGTERM first — just <code>kill &lt;PID&gt;</code>. SIGKILL is the last resort because it skips cleanup: open files can be left corrupt and database connections abandoned."</p>
+<p>Containers are Linux processes wrapped in namespaces and cgroups — see <a href="../04-M3-docker/">M3 Docker</a> for how Docker uses these primitives, and <a href="../11-M9-advanced-k8s-internals/">M9</a> for how Kubernetes orchestrates them at scale.</p>
+</blockquote>
+<hr />
+<h2 id="system-resources-the-debug-flow">System &amp; resources — the debug flow<a class="headerlink" href="#system-resources-the-debug-flow" title="Permanent link">&para;</a></h2>
+<p>This is the section most directly tied to incident response. Each command answers one specific diagnostic question.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it shows</th>
+<th>Incident question it answers</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>top</code></td>
+<td>CPU and memory per process, load average, system totals</td>
+<td>"What process is burning CPU or RAM?"</td>
+</tr>
+<tr>
+<td><code>df -h</code></td>
+<td>Disk used/free per filesystem, human-readable</td>
+<td>"Is the disk full?"</td>
+</tr>
+<tr>
+<td><code>df -i</code></td>
+<td>Inode usage per filesystem</td>
+<td>"Disk shows space but writes fail?"</td>
+</tr>
+<tr>
+<td><code>du -sh *</code></td>
+<td>Size of each item in the current directory</td>
+<td>"Which directory is the bloat?"</td>
+</tr>
+<tr>
+<td><code>du -sh /var/log</code></td>
+<td>Total size of a specific path</td>
+<td>"How big are my logs?"</td>
+</tr>
+<tr>
+<td><code>free -h</code></td>
+<td>RAM: total, used, free, buffers/cache, swap used</td>
+<td>"Are we swapping? Is OOM near?"</td>
+</tr>
+<tr>
+<td><code>uptime</code></td>
+<td>Load average (1 / 5 / 15 min) + uptime</td>
+<td>"Is load &gt; core count?" (overloaded)</td>
+</tr>
+<tr>
+<td><code>nproc</code></td>
+<td>Number of CPU cores</td>
+<td>Context for interpreting load average</td>
+</tr>
+<tr>
+<td><code>uname -a</code></td>
+<td>Kernel version, hostname, architecture</td>
+<td>"What OS and kernel is this exactly?"</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🎤 <strong>Interview one-liner:</strong> "When a server is slow or down I run <code>top</code> (CPU/mem spike?), <code>df -h</code> (disk full?), <code>free -h</code> (swapping?), <code>journalctl -xe</code> (recent errors), and <code>ss -tulnp</code> (port conflict?). That five-command sequence covers 90% of real incidents."</p>
+<p>⚠️ <strong>The inode trap:</strong> <code>df -h</code> can show gigabytes free while the disk is "full" — if you have millions of tiny files (log fragments, temp files, cache entries), <strong>inodes</strong> (filesystem metadata slots) can be exhausted even with free block space. Always check <code>df -i</code> when <code>df -h</code> looks healthy but writes are failing.</p>
+</blockquote>
+<p>See <a href="../10-M8-observability-sre/">M8 Observability</a> for the monitoring-layer view of the same problems — what you are doing manually here, Prometheus + Grafana does automatically and continuously.</p>
+<hr />
+<h2 id="networking">Networking<a class="headerlink" href="#networking" title="Permanent link">&para;</a></h2>
+<p>Every connection, every port, every DNS query is inspectable from the command line.</p>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+<th>When to use it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ip a</code></td>
+<td>All network interfaces and assigned IPs</td>
+<td>"What IP does this host have?"</td>
+</tr>
+<tr>
+<td><code>ss -tulnp</code></td>
+<td>All listening sockets: protocol, port, PID, process name</td>
+<td>"What is listening on port X?"</td>
+</tr>
+<tr>
+<td><code>ping host</code></td>
+<td>ICMP reachability — round-trip time</td>
+<td>"Is this host alive on the network?"</td>
+</tr>
+<tr>
+<td><code>curl -I https://site</code></td>
+<td>HTTP headers only — shows status code fast</td>
+<td>"Is the web server responding?"</td>
+</tr>
+<tr>
+<td><code>curl -v http://svc:8080</code></td>
+<td>Full verbose request + response trace</td>
+<td>"Why can't I reach this service?"</td>
+</tr>
+<tr>
+<td><code>wget url</code></td>
+<td>Download a file over HTTP/HTTPS</td>
+<td>Fetch artefacts, test download paths</td>
+</tr>
+<tr>
+<td><code>dig example.com</code></td>
+<td>Full DNS resolution chain</td>
+<td>"Is DNS resolving correctly?"</td>
+</tr>
+<tr>
+<td><code>nslookup example.com</code></td>
+<td>Simple DNS query</td>
+<td>Quick lookup — faster to type than dig</td>
+</tr>
+<tr>
+<td><code>nc -zv host 5432</code></td>
+<td>Test TCP port reachability without sending data</td>
+<td>"Can I reach the database port?"</td>
+</tr>
+<tr>
+<td><code>traceroute host</code></td>
+<td>Each routing hop on the path</td>
+<td>"Where is the packet being dropped?"</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🎤 <strong>Interview one-liner:</strong> "<code>ss -tulnp</code> is the first command for 'port already in use' — it shows every listening port and the PID that owns it. <code>curl -v</code> and <code>nc -zv</code> test whether a remote port is actually reachable, which separates network/firewall problems from application problems."</p>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> <code>ss -tulnp</code> ek building directory hai — kaun sa process kaun si window pe baith ke sun raha hai. <code>nc -zv host port</code> ek door knock hai — khuli hai ya nahi. <code>curl -v</code> ek poori conversation hai — andar jao, poochho, jawab suno.</p>
+</blockquote>
+<hr />
+<h2 id="packages-services">Packages &amp; services<a class="headerlink" href="#packages-services" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sudo apt update</code></td>
+<td>Refresh package index (Debian/Ubuntu)</td>
+</tr>
+<tr>
+<td><code>sudo apt install -y nginx</code></td>
+<td>Install without interactive confirmation</td>
+</tr>
+<tr>
+<td><code>sudo apt remove nginx</code></td>
+<td>Uninstall a package</td>
+</tr>
+<tr>
+<td><code>apt list --installed</code></td>
+<td>List all installed packages</td>
+</tr>
+<tr>
+<td><code>sudo dnf install -y nginx</code></td>
+<td>Install on RHEL / Fedora / Amazon Linux</td>
+</tr>
+<tr>
+<td><code>sudo systemctl start nginx</code></td>
+<td>Start a service right now</td>
+</tr>
+<tr>
+<td><code>sudo systemctl stop nginx</code></td>
+<td>Stop a service</td>
+</tr>
+<tr>
+<td><code>sudo systemctl restart nginx</code></td>
+<td>Stop + start (pick up config changes)</td>
+</tr>
+<tr>
+<td><code>sudo systemctl enable nginx</code></td>
+<td>Start automatically on every boot</td>
+</tr>
+<tr>
+<td><code>sudo systemctl status nginx</code></td>
+<td>Current state + last few log lines</td>
+</tr>
+<tr>
+<td><code>journalctl -u nginx -f</code></td>
+<td>Follow a service's log output live</td>
+</tr>
+<tr>
+<td><code>journalctl -u nginx --since "10 min ago"</code></td>
+<td>Recent logs for a specific service</td>
+</tr>
+<tr>
+<td><code>journalctl -xe</code></td>
+<td>System-wide recent errors with context</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🎤 <strong>Interview one-liner:</strong> "<code>systemctl enable</code> means 'start on every boot'. <code>systemctl start</code> means 'start right now'. You need both on a new server. <code>journalctl -u &lt;service&gt; -f</code> is the first look when a service won't start — it shows the exact error before the process died."</p>
+<p>For the error-response reflex for common service failures see <a href="../16-reference-appendix/">16 Appendix</a>. For the full observability stack built on top of these logs see <a href="../10-M8-observability-sre/">M8</a>.</p>
+</blockquote>
+<hr />
+<h2 id="text-processing-pipes-the-unix-superpower">Text processing &amp; pipes — the Unix superpower<a class="headerlink" href="#text-processing-pipes-the-unix-superpower" title="Permanent link">&para;</a></h2>
+<p>Unix philosophy: small tools, each doing one thing, chained with <code>|</code>. The combination is more powerful than any single application.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Count 500 errors in an access log</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>cat<span class="w"> </span>access.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="s2">&quot;500&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Frequency table — most common items first</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>sort<span class="w"> </span>file<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span>-c<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-rn
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="c1"># Top IPs hitting a web server (field 1 of Apache/nginx access log)</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>awk<span class="w"> </span><span class="s1">&#39;{print $1}&#39;</span><span class="w"> </span>access.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span>-c<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-rn<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-10
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="c1"># Find-and-replace across a file</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>sed<span class="w"> </span><span class="s1">&#39;s/old_value/new_value/g&#39;</span><span class="w"> </span>config.template<span class="w"> </span>&gt;<span class="w"> </span>config.final
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="c1"># Extract a column by delimiter (field 1 of /etc/passwd = usernames)</span>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>cut<span class="w"> </span>-d:<span class="w"> </span>-f1<span class="w"> </span>/etc/passwd
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="c1"># Pull a specific field from structured log lines</span>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>grep<span class="w"> </span><span class="s2">&quot;ERROR&quot;</span><span class="w"> </span>app.log<span class="w"> </span><span class="p">|</span><span class="w"> </span>awk<span class="w"> </span><span class="s1">&#39;{print $4}&#39;</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>One job</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>grep</code></td>
+<td>Filter lines by pattern</td>
+</tr>
+<tr>
+<td><code>awk</code></td>
+<td>Extract columns / arithmetic on fields</td>
+</tr>
+<tr>
+<td><code>sed</code></td>
+<td>Find-and-replace in a byte stream</td>
+</tr>
+<tr>
+<td><code>cut</code></td>
+<td>Extract columns by delimiter</td>
+</tr>
+<tr>
+<td><code>sort</code></td>
+<td>Sort lines lexicographically or numerically</td>
+</tr>
+<tr>
+<td><code>uniq -c</code></td>
+<td>Count consecutive duplicates (always <code>sort</code> first)</td>
+</tr>
+<tr>
+<td><code>wc -l</code></td>
+<td>Count lines</td>
+</tr>
+<tr>
+<td><code>head -N</code> / <code>tail -N</code></td>
+<td>First / last N lines of a stream</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🎤 <strong>Interview one-liner:</strong> "<code>sort | uniq -c | sort -rn | head</code> is the frequency-table recipe — it turns any log into a ranked list of top errors, IPs, or status codes in one pipeline. Stick it on any stream."</p>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Pipes ek assembly line hain. <code>grep</code> filter karta hai, <code>awk</code> column nikalti hai, <code>sort|uniq -c</code> ginne wala hai, <code>sort -rn</code> bada pehle laata hai. Chain bano — bada kaam chhota ho jaata hai.</p>
+</blockquote>
+<hr />
+<h2 id="archives-transfer">Archives &amp; transfer<a class="headerlink" href="#archives-transfer" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Create a compressed archive</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>tar<span class="w"> </span>-czf<span class="w"> </span>backup.tar.gz<span class="w"> </span>dir/
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="c1"># Extract an archive</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>tar<span class="w"> </span>-xzf<span class="w"> </span>backup.tar.gz
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="c1"># List archive contents without extracting</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>tar<span class="w"> </span>-tzf<span class="w"> </span>backup.tar.gz
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="c1"># Copy a file to a remote host over SSH</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>scp<span class="w"> </span>file.txt<span class="w"> </span>user@host:/remote/path/
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="c1"># Sync a directory (only changed files, preserves permissions)</span>
+</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>rsync<span class="w"> </span>-avz<span class="w"> </span>src/<span class="w"> </span>user@host:/dst/
+</span></code></pre></div>
+<p><code>tar</code> flags decoded: <code>-c</code> create · <code>-x</code> extract · <code>-z</code> gzip compression · <code>-f</code> filename follows · <code>-v</code> verbose output.</p>
+<p><code>rsync -avz</code> is preferred over <code>scp</code> for directories — it sends only diffs, preserves attributes (<code>-a</code>), compresses in transit (<code>-z</code>), and shows progress (<code>-v</code>). On large deployments the bandwidth savings are significant.</p>
+<hr />
+<h2 id="environment-shell">Environment &amp; shell<a class="headerlink" href="#environment-shell" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">echo</span><span class="w"> </span><span class="nv">$PATH</span><span class="w">            </span><span class="c1"># colon-separated directories the shell searches for commands</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nb">export</span><span class="w"> </span><span class="nv">API_KEY</span><span class="o">=</span>abc<span class="w">    </span><span class="c1"># set an env var visible to this shell and all child processes</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>env<span class="w">                   </span><span class="c1"># print every environment variable currently set</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="nb">alias</span><span class="w"> </span><span class="nv">ll</span><span class="o">=</span><span class="s1">&#39;ls -lah&#39;</span><span class="w">    </span><span class="c1"># create a shorthand (add to ~/.bashrc to persist across sessions)</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nb">history</span><span class="w">               </span><span class="c1"># numbered list of past commands</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>!123<span class="w">                  </span><span class="c1"># re-run history entry 123</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>Ctrl+R<span class="w">                </span><span class="c1"># reverse-search history — type part of a past command</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>man<span class="w"> </span>ls<span class="w">                </span><span class="c1"># full manual page (q to quit)</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>ls<span class="w"> </span>--help<span class="w">             </span><span class="c1"># short inline help for most commands</span>
+</span></code></pre></div>
+<blockquote>
+<p>⚠️ <code>export VAR=value</code> sets the variable for the <strong>current session only</strong>. To persist, add it to <code>~/.bashrc</code> (user) or <code>/etc/environment</code> (system-wide). Without <code>export</code>, child processes (scripts, subshells) cannot see the variable — a common source of "env var works in terminal but not in my script" confusion.</p>
+</blockquote>
+<hr />
+<h2 id="the-golden-debug-flow">The golden debug flow<a class="headerlink" href="#the-golden-debug-flow" title="Permanent link">&para;</a></h2>
+<p>When someone says "the server is slow" or "my service is down", this sequence covers 90% of real incidents. Run them in order — each either finds the problem or rules it out.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># Step 1 — Is CPU spiking? Which process owns it?</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>top
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="c1"># Press &#39;P&#39; to sort by CPU usage, &#39;M&#39; for memory, &#39;q&#39; to quit.</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># Watch for a process at 99% CPU or total load &gt; nproc output.</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="c1"># Step 2 — Is the disk full?</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>df<span class="w"> </span>-h
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="c1"># Any filesystem at 100% Use%? Disk full = writes fail = services crash.</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1"># Drill down: du -sh /var/* 2&gt;/dev/null | sort -rh | head -10</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="c1"># Step 2b — Are inodes exhausted? (disk &quot;full&quot; with space remaining)</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>df<span class="w"> </span>-i
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="c1"># If IUse% is 100% on any filesystem, you have inode exhaustion — not block exhaustion.</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="c1"># Find the flood: find /tmp -type f | wc -l</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="c1"># Step 3 — Are we out of memory or swapping heavily?</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>free<span class="w"> </span>-h
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="c1"># Check the &#39;available&#39; column. Near zero + swap in use = OOM is imminent.</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="c1"># Kubernetes calls this OOMKilled (exit code 137).</span>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a><span class="c1"># Step 4 — What did the service log right before it died?</span>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>journalctl<span class="w"> </span>-xe
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a><span class="c1"># Or for a specific service:</span>
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>journalctl<span class="w"> </span>-u<span class="w"> </span>myservice<span class="w"> </span>--since<span class="w"> </span><span class="s2">&quot;15 min ago&quot;</span>
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>
+</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a><span class="c1"># Step 5 — Is something unexpected listening, or is the port already taken?</span>
+</span><span id="__span-5-27"><a id="__codelineno-5-27" name="__codelineno-5-27" href="#__codelineno-5-27"></a>ss<span class="w"> </span>-tulnp
+</span><span id="__span-5-28"><a id="__codelineno-5-28" name="__codelineno-5-28" href="#__codelineno-5-28"></a><span class="c1"># Shows every listening port and the PID + process name that owns it.</span>
+</span></code></pre></div>
+<p><strong>The decision tree:</strong></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>top
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>  └── CPU/mem spike found? → identify PID, kill or investigate
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>  └── No spike?
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>        df -h
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>          └── Filesystem at 100%? → du -sh to find bloat, delete or rotate
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>          └── Looks ok?
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>                df -i
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>                  └── IUse% at 100%? → find and delete the tiny-file storm
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>                  └── Looks ok?
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>                        free -h
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>                          └── Available near zero? → OOM risk; reduce load or add memory
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a>                          └── Ok?
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a>                                journalctl -xe
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a>                                  └── Error found? → fix the root cause
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a>                                  └── No obvious error?
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a>                                        ss -tulnp
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a>                                          └── Wrong port or unexpected listener? → kill/reconfigure
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a>                                          └── All clear → application-level bug; check app logs
+</span></code></pre></div>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Yeh flow ek doctor ka checkup hai. Pehle pulse (<code>top</code>), phir breathing (<code>df -h</code>), phir blood pressure (<code>free -h</code>), phir patient ki history (<code>journalctl</code>), phir sunna stethoscope se (<code>ss -tulnp</code>). Sab normal? Toh application ka bug hai — logs mein jao.</p>
+</blockquote>
+<p>This debug flow is the manual version of what <a href="../10-M8-observability-sre/">M8 Observability</a> automates at scale. See <a href="../09-connected-system/">the connected system diagram</a> for how the Linux layer relates to every layer above it.</p>
+<hr />
+<h2 id="small-but-important">Small but important<a class="headerlink" href="#small-but-important" title="Permanent link">&para;</a></h2>
+<p>Commonly missed in tutorials, constantly used in real work:</p>
+<table>
+<thead>
+<tr>
+<th>Pattern</th>
+<th>What it does</th>
+<th>Why it matters</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>cmd1 &amp;&amp; cmd2</code></td>
+<td>Run <code>cmd2</code> only if <code>cmd1</code> exits 0 (success)</td>
+<td><code>apt update &amp;&amp; apt install</code> — don't install from a stale index</td>
+</tr>
+<tr>
+<td><code>cmd1 \|\| cmd2</code></td>
+<td>Run <code>cmd2</code> only if <code>cmd1</code> fails</td>
+<td>Fallback / default logic in scripts</td>
+</tr>
+<tr>
+<td><code>cmd1 ; cmd2</code></td>
+<td>Run <code>cmd2</code> always, regardless of <code>cmd1</code> outcome</td>
+<td>Fire-and-forget sequencing</td>
+</tr>
+<tr>
+<td><code>echo hi &gt; f</code></td>
+<td>Overwrite file with stdout</td>
+<td>Creates or truncates — destructive</td>
+</tr>
+<tr>
+<td><code>echo hi &gt;&gt; f</code></td>
+<td>Append stdout to existing file</td>
+<td>Add without destroying prior content</td>
+</tr>
+<tr>
+<td><code>cmd 2&gt;&amp;1 \| tee out.log</code></td>
+<td>Merge stderr into stdout, print live AND save to file</td>
+<td>Capture full output during long runs</td>
+</tr>
+<tr>
+<td><code>find . -name "*.log" \| xargs rm</code></td>
+<td>Feed output lines as arguments to another command</td>
+<td>Bulk operations when a glob won't reach</td>
+</tr>
+<tr>
+<td><code>watch -n2 'df -h'</code></td>
+<td>Re-run a command every 2 seconds</td>
+<td>Monitor disk / memory without polling manually</td>
+</tr>
+<tr>
+<td><code>df -i</code></td>
+<td>Show inode usage</td>
+<td>A disk can be "full" on inodes with free block space</td>
+</tr>
+<tr>
+<td><code>crontab -e</code></td>
+<td>Edit the current user's cron schedule</td>
+<td>Recurring jobs: <code>MIN HOUR DOM MON DOW command</code></td>
+</tr>
+<tr>
+<td><code>sudo !!</code></td>
+<td>Re-run the previous command with sudo prepended</td>
+<td>"Permission denied" → <code>sudo !!</code> saves retyping the whole command</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Signal quick-reference:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Number</th>
+<th><code>kill</code> syntax</th>
+<th>App reaction</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SIGHUP</td>
+<td>1</td>
+<td><code>kill -1 &lt;PID&gt;</code></td>
+<td>Reload config (most daemons)</td>
+</tr>
+<tr>
+<td>SIGTERM</td>
+<td>15</td>
+<td><code>kill &lt;PID&gt;</code></td>
+<td>Graceful shutdown — flush, close, exit cleanly</td>
+</tr>
+<tr>
+<td>SIGKILL</td>
+<td>9</td>
+<td><code>kill -9 &lt;PID&gt;</code></td>
+<td>Immediate forced kill — no cleanup possible</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="hands-on-lab">Hands-on lab<a class="headerlink" href="#hands-on-lab" title="Permanent link">&para;</a></h2>
+<p>No cloud account needed. Use WSL, a local VM, or <code>docker run -it ubuntu bash</code>.</p>
+<p><strong>Drill 1 — Disk-full investigation</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1"># Where is disk space going?</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>df<span class="w"> </span>-h
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="c1"># Find the biggest directories under /var</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>du<span class="w"> </span>-sh<span class="w"> </span>/var/*<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-rh<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-10
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="c1"># Find any file over 100 MB</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>find<span class="w"> </span>/var/log<span class="w"> </span>-size<span class="w"> </span>+100M<span class="w"> </span><span class="m">2</span>&gt;/dev/null
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="c1"># Check inodes too</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>df<span class="w"> </span>-i
+</span></code></pre></div>
+<p><strong>Drill 2 — Service down diagnosis</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1"># Check a service&#39;s current state</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>nginx
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="c1"># Read its recent log output</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>journalctl<span class="w"> </span>-u<span class="w"> </span>nginx<span class="w"> </span>--since<span class="w"> </span><span class="s2">&quot;10 min ago&quot;</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="c1"># If nginx is not installed, list running services instead</span>
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>systemctl<span class="w"> </span>list-units<span class="w"> </span>--type<span class="o">=</span>service<span class="w"> </span>--state<span class="o">=</span>running<span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-10
+</span></code></pre></div>
+<p><strong>Drill 3 — Port conflict</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># What is listening on port 8080?</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>ss<span class="w"> </span>-tulnp<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>:8080
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="c1"># What is listening on all ports?</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>ss<span class="w"> </span>-tulnp
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="c1"># Cross-reference a PID to a process name</span>
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>ps<span class="w"> </span>aux<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>&lt;PID&gt;
+</span></code></pre></div>
+<p><strong>Drill 4 — CPU and memory snapshot</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># Open top — press &#39;P&#39; (CPU sort), &#39;M&#39; (memory sort), &#39;q&#39; (quit)</span>
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>top
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="c1"># Memory breakdown</span>
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>free<span class="w"> </span>-h
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="c1"># Load average vs core count — if load-1min &gt; nproc, system is overloaded</span>
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>uptime
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>nproc
+</span></code></pre></div>
+<p><strong>Drill 5 — Log mining with pipes</strong></p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># Count 404 errors in nginx access log</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>grep<span class="w"> </span><span class="s2">&quot;404&quot;</span><span class="w"> </span>/var/log/nginx/access.log<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>wc<span class="w"> </span>-l
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="c1"># Frequency table of HTTP status codes (field 9 in nginx combined format)</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>awk<span class="w"> </span><span class="s1">&#39;{print $9}&#39;</span><span class="w"> </span>/var/log/nginx/access.log<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">  </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span><span class="p">|</span><span class="w"> </span>uniq<span class="w"> </span>-c<span class="w"> </span><span class="p">|</span><span class="w"> </span>sort<span class="w"> </span>-rn
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="c1"># If no web server, scan auth log for failed logins</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>grep<span class="w"> </span><span class="s2">&quot;Failed&quot;</span><span class="w"> </span>/var/log/auth.log<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>tail<span class="w"> </span>-20
+</span></code></pre></div>
+<p><strong>✅ Sahi hua to aisa dikhega:</strong></p>
+<ul>
+<li><strong>Drill 1:</strong> <code>df -h</code> prints a table with <code>Use%</code> per filesystem. <code>find /var/log -size +100M</code> either returns file paths (you found the culprits) or prints nothing (no large files — both are valid outcomes). <code>df -i</code> shows inode usage — anything near 100% is a problem worth investigating.</li>
+<li><strong>Drill 3:</strong> <code>ss -tulnp | grep :8080</code> returns a line including a PID and process name if something is listening on 8080, or no output if the port is free. You can identify the process from the PID column.</li>
+<li><strong>Drill 4:</strong> <code>top</code> opens a live display; sorting by CPU/memory puts the heaviest process at the top. <code>uptime</code> shows three load numbers — compare the first to <code>nproc</code>. Load exceeding core count means the system cannot service all queued work.</li>
+<li><strong>Drill 5:</strong> Each <code>awk | sort | uniq -c | sort -rn</code> pipeline produces a ranked frequency table. If no matching log file exists, the command exits cleanly with no output — that is also a correct result.</li>
+</ul>
+<hr />
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>The one thing to remember</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Navigation</td>
+<td><code>find . -size +100M</code> for disk culprits; <code>ls -lah</code> to see everything including hidden files</td>
+</tr>
+<tr>
+<td>Permissions</td>
+<td>r=4, w=2, x=1 · 755 for scripts · 644 for configs · 600 for secrets · never 777</td>
+</tr>
+<tr>
+<td>Processes</td>
+<td><code>kill</code> = SIGTERM (graceful) · <code>kill -9</code> = SIGKILL (last resort) · <code>ps aux \| grep</code> to find PIDs</td>
+</tr>
+<tr>
+<td>Debug flow</td>
+<td><code>top → df -h → df -i → free -h → journalctl -xe → ss -tulnp</code> covers 90% of incidents</td>
+</tr>
+<tr>
+<td>Networking</td>
+<td><code>ss -tulnp</code> = who is listening where · <code>curl -v</code> + <code>nc -zv</code> = is the port reachable</td>
+</tr>
+<tr>
+<td>Services</td>
+<td><code>enable</code> = on boot · <code>start</code> = right now · <code>journalctl -u svc -f</code> = live logs</td>
+</tr>
+<tr>
+<td>Pipes</td>
+<td><code>sort \| uniq -c \| sort -rn \| head</code> = frequency table from any byte stream</td>
+</tr>
+<tr>
+<td>Gotchas</td>
+<td><code>df -i</code> for inodes · <code>&amp;&amp;</code> vs <code>;</code> in scripts · <code>export</code> makes vars visible to children · <code>sudo !!</code> to retry</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="self-check-quiz">Self-check quiz<a class="headerlink" href="#self-check-quiz" title="Permanent link">&para;</a></h2>
+<p><strong>Pehle memory se jawab do.</strong></p>
+<ol>
+<li>What does <code>chmod 644 file.txt</code> allow — and who can write to that file?</li>
+<li>You run <code>kill 1234</code> but the process does not die. What do you try next, and why is it a last resort?</li>
+<li><code>df -h</code> shows 2 GB free on <code>/var</code>. Your application still cannot write a file there. What do you check?</li>
+<li>A service crashed 3 minutes ago. What single command shows its log output from the last 5 minutes?</li>
+<li><code>ss -tulnp</code> shows a process on port 8080 that should not be there. What are your next two steps?</li>
+<li>You need a command to run every night at 2 AM. What tool do you use, and what does the schedule field look like?</li>
+<li>What is the difference between <code>cmd1 &amp;&amp; cmd2</code> and <code>cmd1 ; cmd2</code>?</li>
+</ol>
+<details>
+<summary>Jawab dekho</summary>
+<ol>
+<li>
+<p><code>644</code> = owner rw-, group r--, others r--. <strong>Only the owner can write.</strong> Group and others can only read. This is the standard for config files — world-readable but not world-writable.</p>
+</li>
+<li>
+<p>Try <code>kill -9 &lt;PID&gt;</code> (SIGKILL). It is a last resort because it bypasses the application's cleanup code — open file handles may not be flushed, database connections not closed, in-flight transactions not rolled back. Use it only when the process genuinely refuses to terminate gracefully.</p>
+</li>
+<li>
+<p>Check <strong>inode exhaustion</strong>: <code>df -i</code>. If <code>IUse%</code> is at 100% on <code>/var</code>, the filesystem has no free inode slots even though block space is available. This happens when millions of small files accumulate. Find and delete the file storm: <code>find /var -type f | wc -l</code> to quantify, then investigate subdirectories.</p>
+</li>
+<li>
+<p><code>journalctl -u &lt;service-name&gt; --since "5 min ago"</code> — or <code>journalctl -u &lt;service-name&gt; -n 100</code> for the last 100 lines regardless of time.</p>
+</li>
+<li>
+<p>First: <strong>identify</strong> — <code>ps aux | grep &lt;PID&gt;</code> to see what the process actually is. Second: <strong>act</strong> — if it is a known conflicting service, <code>systemctl stop &lt;service&gt;</code>. If it is an unknown process, investigate before killing it.</p>
+</li>
+<li>
+<p>Use <code>crontab -e</code>. An entry for 2 AM daily: <code>0 2 * * * /path/to/script.sh</code>. Fields left to right: minute (0), hour (2), day-of-month (<em>), month (</em>), day-of-week (*).</p>
+</li>
+<li>
+<p><code>&amp;&amp;</code> is <strong>conditional</strong> — <code>cmd2</code> runs only if <code>cmd1</code> exits with code 0 (success). <code>;</code> is <strong>unconditional</strong> — <code>cmd2</code> runs regardless. In scripts, <code>&amp;&amp;</code> prevents cascading failures; <code>;</code> is "do both no matter what." In CI pipelines <code>&amp;&amp;</code> is almost always what you want.</p>
+</li>
+</ol>
+</details>
+<hr />
+<h2 id="interview-questions">Interview questions<a class="headerlink" href="#interview-questions" title="Permanent link">&para;</a></h2>
+<p><strong>1. What is the difference between a soft link (symlink) and a hard link?</strong>
+A symlink points to a <strong>path</strong> — if the original file moves or is deleted, the symlink breaks and returns "No such file or directory." A hard link points directly to the <strong>inode</strong> (the actual data on disk) — the data persists until every hard link to it is removed. Hard links cannot span filesystems; symlinks can. In practice, symlinks are far more common and are used heavily for versioned binaries and config files.</p>
+<p><strong>2. Why is <code>chmod 777</code> a security problem?</strong>
+It grants every user on the system — including any compromised web process, container escape, or rogue script — full read, write, and execute access. Least-privilege principle: scripts should be <code>755</code> (executable, not writable by others), config files <code>644</code>, secret files <code>600</code>. <code>777</code> is the "I'll fix permissions later" setting that never gets fixed.</p>
+<p><strong>3. What is the difference between SIGTERM and SIGKILL?</strong>
+SIGTERM (signal 15, default <code>kill</code>) is a polite request — the process catches it, runs cleanup code, closes connections, flushes buffers, and exits gracefully. SIGKILL (signal 9, <code>kill -9</code>) is enforced directly by the kernel — the process has no chance to clean up. Always try SIGTERM first. Use SIGKILL only when the process is truly hung.</p>
+<p><strong>4. How do you find the largest files on a filesystem?</strong>
+Start with <code>df -h</code> to identify which filesystem is full. Then <code>du -sh /path/* 2&gt;/dev/null | sort -rh | head -10</code> to drill into directories. For individual files: <code>find / -size +100M 2&gt;/dev/null</code>. The <code>2&gt;/dev/null</code> suppresses permission-denied noise.</p>
+<p><strong>5. How do you find what is listening on a specific port?</strong>
+<code>ss -tulnp | grep :8080</code>. The output includes protocol, local address, PID, and process name. You can then <code>ps aux | grep &lt;PID&gt;</code> for more detail or <code>kill &lt;PID&gt;</code> to stop it.</p>
+<p><strong>6. What is the difference between an environment variable and a shell variable?</strong>
+A shell variable (<code>VAR=value</code>) is local to the current shell — child processes and scripts cannot see it. An environment variable (<code>export VAR=value</code>) is inherited by all child processes (scripts, subshells, programs launched from the shell). In Docker and Kubernetes, all runtime config is passed as environment variables — which is why <code>export</code> matters so much in automation.</p>
+<p><strong>7. Where are system logs and what is the modern way to read them?</strong>
+Traditional text logs live in <code>/var/log/</code> (<code>syslog</code>, <code>auth.log</code>, <code>kern.log</code>). On all modern systemd-based Linux (Ubuntu 16+, RHEL 7+, Debian 8+), the primary store is the <strong>journal</strong> — read with <code>journalctl</code>. Use <code>journalctl -u &lt;service&gt;</code> for a specific service, <code>journalctl -xe</code> for recent system errors, <code>journalctl -f</code> to follow live.</p>
+<p><strong>8. What does load average mean and when is it "too high"?</strong>
+Load average (shown by <code>uptime</code>) is the average number of processes <strong>waiting for CPU time</strong> over the last 1, 5, and 15 minutes. Compare to <code>nproc</code> (core count). Load equal to core count = 100% busy but keeping up. Load greater than core count = processes are queueing — the system cannot service demand. A 1-minute load of 8.0 on a 4-core machine means processes are waiting on average twice as long as they should.</p>
+<hr />
+<h2 id="20-second-cheat-sheet">20-second cheat-sheet<a class="headerlink" href="#20-second-cheat-sheet" title="Permanent link">&para;</a></h2>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>NAVIGATE    pwd  ls -lah  cd /path  cd -  find . -size +100M  which cmd
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>VIEW        tail -f  less  grep -ri  grep -A3 -B1 &quot;pattern&quot; file
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>PERMISSIONS r=4 w=2 x=1 | 755=scripts  644=files  600=secrets  never 777
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>PROCESSES   ps aux|grep  top(P=cpu M=mem)  kill(TERM)  kill -9(KILL)
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>DEBUG FLOW  top → df -h → df -i → free -h → journalctl -xe → ss -tulnp
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>NETWORK     ss -tulnp  curl -v  nc -zv host port  dig  traceroute
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>SERVICES    systemctl start|enable|status  journalctl -u svc -f
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>PIPES       grep | awk | sort | uniq -c | sort -rn | head    wc -l  sed  cut
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>ARCHIVES    tar -czf out.tgz dir/    tar -xzf file.tgz    rsync -avz src/ dst/
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>SMALL BITS  &amp;&amp; vs ;    2&gt;&amp;1|tee    xargs    watch -n2    df -i    sudo !!
+</span></code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../00b-setup-runbook/" class="md-footer__link md-footer__link--prev" aria-label="Previous: 00b · Setup runbook">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                00b · Setup runbook
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../01-M0-foundations/" class="md-footer__link md-footer__link--next" aria-label="Next: M0 · Foundations">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                M0 · Foundations
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 grvtech1 — licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/grvtech1/devops-handbook" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "announce.dismiss"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/progress.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,3814 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free, zero-to-job-ready DevOps handbook — from "what is a terminal" to production- and interview-ready. Systems thinking, hands-on labs, capstones.">
+      
+      
+      
+        <link rel="canonical" href="https://grvtech1.github.io/devops-handbook/07-M6-cicd/">
+      
+      
+        <link rel="prev" href="../06-M5-sizing-and-cost/">
+      
+      
+        <link rel="next" href="../08-M7-gitops/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>M6 · CI/CD - The DevOps Engineer's Handbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%206a6%206%200%200%201%206%206c0%202.22-1.21%204.16-3%205.2V19a1%201%200%200%201-1%201h-4a1%201%200%200%201-1-1v-1.8c-1.79-1.04-3-2.98-3-5.2a6%206%200%200%201%206-6m2%2015v1a1%201%200%200%201-1%201h-2a1%201%200%200%201-1-1v-1zm6-10h3v2h-3zM1%2011h3v2H1zM13%201v3h-2V1zM4.92%203.5l2.13%202.14-1.42%201.41L3.5%204.93zm12.03%202.13%202.12-2.13%201.43%201.43-2.13%202.12z%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m13.13%2022.19-1.63-3.83c1.57-.58%203.04-1.36%204.4-2.27zM5.64%2012.5l-3.83-1.63%206.1-2.77C7%209.46%206.22%2010.93%205.64%2012.5M21.61%202.39S16.66.269%2011%205.93c-2.19%202.19-3.5%204.6-4.35%206.71-.28.75-.09%201.57.46%202.13l2.13%202.12c.55.56%201.37.74%202.12.46A19.1%2019.1%200%200%200%2018.07%2013c5.66-5.66%203.54-10.61%203.54-10.61m-7.07%207.07c-.78-.78-.78-2.05%200-2.83s2.05-.78%202.83%200c.77.78.78%202.05%200%202.83s-2.05.78-2.83%200m-5.66%207.07-1.41-1.41zM6.24%2022l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83%2022zM2%2022h1.41l4.77-4.76-1.42-1.41L2%2020.59zm0-2.83%204.09-4.08c-.21-.3-.36-.62-.45-.97L2%2017.76z%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M13%2014h-2V9h2m0%209h-2v-2h2M1%2021h22L12%202z%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M8%2015a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m2.5%202%201.5-3%201.5%203zm5.5-2a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m6-4A10%2010%200%200%200%2012%201%2010%2010%200%200%200%202%2011c0%202.8%201.2%205.3%203%207.1V22h14v-3.9c1.8-1.8%203-4.3%203-7.1m-5%209h-2v-2h-2v2h-2v-2H9v2H7v-2.8c-1.8-1.5-3-3.7-3-6.2a8%208%200%200%201%208-8%208%208%200%200%201%208%208c0%202.5-1.2%204.8-3%206.2z%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#m6-cicd-pipelines" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  🚀 <strong>26 chapters</strong> · rendered diagrams · hands-on labs · a 26-scenario incident playbook — all free (CC BY 4.0).
+  &nbsp;
+  <a href="https://github.com/grvtech1/devops-handbook" style="color: inherit; text-decoration: underline; font-weight: 700;">⭐ Star it on GitHub</a>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-header__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The DevOps Engineer's Handbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              M6 · CI/CD
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../study-plan/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Study Plan
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../progress/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  My Progress
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../00-INDEX/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Handbook
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-nav__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    The DevOps Engineer's Handbook
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../study-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    My Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handbook
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Handbook
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-INDEX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Curriculum (Index)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 0 — Pre-flight
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 0 — Pre-flight
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00a-preflight/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00a · Pre-flight ground floor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00b-setup-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00b · Setup runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-linux-toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux · the ground everything runs on
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part I — Core toolchain
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part I — Core toolchain
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-M0-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M0 · Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-M1-terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M1 · Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-M2-ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M2 · Ansible
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-M3-docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M3 · Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-M4-kubernetes-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M4 · Kubernetes Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-M5-sizing-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M5 · Sizing & Cost
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M6 · CI/CD
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M6 · CI/CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#recall-gate-shuru-karne-se-pehle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ↩️ Recall gate — shuru karne se pehle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-60-second-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 60-second version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists-what-it-replaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists / what it replaced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ci-vs-cd-vs-continuous-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI vs CD vs Continuous Deployment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-anatomy-and-shared-vocabulary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline anatomy and shared vocabulary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#github-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitHub Actions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GitHub Actions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#annotated-workflow-test-build-push-to-ecr-update-manifest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Annotated workflow — test, build, push to ECR, update manifest
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-github-actions-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key GitHub Actions concepts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#three-production-grade-actions-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Three production-grade Actions patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Three production-grade Actions patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-actionscache-skip-the-re-download" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (a) actions/cache — skip the re-download
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-concurrency-cancel-in-progress-kill-the-stale-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (b) concurrency + cancel-in-progress — kill the stale run
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-oidc-auth-to-aws-with-no-long-lived-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (c) OIDC — auth to AWS with no long-lived secrets
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gitlab-ci-and-the-jenkins-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitLab CI and the Jenkins comparison
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GitLab CI and the Jenkins comparison">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gitlab-ci-annotated-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitLab CI — annotated example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jenkins-vs-github-actions-vs-gitlab-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Jenkins vs GitHub Actions vs GitLab CI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-handoff-to-gitops-manifest-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The handoff to GitOps: manifest-update
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The handoff to GitOps: manifest-update">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-two-deployment-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The two deployment models
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-manifest-update-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The manifest-update flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-infinite-loop-trap-and-its-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The infinite-loop trap and its fixes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-contents-write-permission-gotcha" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The contents: write permission gotcha
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-production-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real production example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands-and-config-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands and config, explained
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beginner-mistakes-vs-senior-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beginner mistakes vs senior insights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-shortcuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory shortcuts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-check-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-check quiz
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hands-on lab
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hands-on lab">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#part-a-your-first-github-actions-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part A — your first GitHub Actions pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-b-add-the-manifest-update-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part B — add the manifest-update step
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production challenge
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-M7-gitops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M7 · GitOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part II — Systems thinking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part II — Systems thinking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-connected-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Connected System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-k8s-objects-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Objects · How They Connect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-10-day-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Learning Plan (understand)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29-confidence-sprint/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Confidence Sprint (drill)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../28-helm-real-projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Helm in the Real World (your 2 projects)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-cicd-hands-on-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Follow One Commit (hands-on CI/CD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part III — Operate
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part III — Operate
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-M8-observability-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M8 · Observability & SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-M9-advanced-k8s-internals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M9 · Advanced K8s Internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30-k8s-complete-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Complete Reference (Workloads · Scheduling · Ops)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-production-incident-playbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Incident Playbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part IV — Capstones
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part IV — Capstones
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-capstone-url-shortener/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone I · URL Shortener
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-capstone-microshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone II · MicroShop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part V — Reference & career
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part V — Reference & career
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-interview-bank/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview Bank
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-confusions-and-tradeoffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Confusions & Trade-offs (X-vs-Y)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-command-cheatsheets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Command Cheat-Sheets & Labs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-roadmap-M11-M18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap · M11–M18
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-reference-appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Appendix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-career-job-ready/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Job-Ready
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part VI — The Production Gauntlet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part VI — The Production Gauntlet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-production-gauntlet-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build the Real System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-production-gauntlet-chaos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chaos Engineering · break & fix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#recall-gate-shuru-karne-se-pehle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ↩️ Recall gate — shuru karne se pehle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-60-second-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 60-second version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists-what-it-replaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists / what it replaced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ci-vs-cd-vs-continuous-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI vs CD vs Continuous Deployment
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pipeline-anatomy-and-shared-vocabulary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline anatomy and shared vocabulary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#github-actions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitHub Actions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GitHub Actions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#annotated-workflow-test-build-push-to-ecr-update-manifest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Annotated workflow — test, build, push to ECR, update manifest
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#key-github-actions-concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Key GitHub Actions concepts
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#three-production-grade-actions-patterns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Three production-grade Actions patterns
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Three production-grade Actions patterns">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#a-actionscache-skip-the-re-download" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (a) actions/cache — skip the re-download
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#b-concurrency-cancel-in-progress-kill-the-stale-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (b) concurrency + cancel-in-progress — kill the stale run
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#c-oidc-auth-to-aws-with-no-long-lived-secrets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        (c) OIDC — auth to AWS with no long-lived secrets
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#gitlab-ci-and-the-jenkins-comparison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitLab CI and the Jenkins comparison
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="GitLab CI and the Jenkins comparison">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#gitlab-ci-annotated-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GitLab CI — annotated example
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#jenkins-vs-github-actions-vs-gitlab-ci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Jenkins vs GitHub Actions vs GitLab CI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-handoff-to-gitops-manifest-update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The handoff to GitOps: manifest-update
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="The handoff to GitOps: manifest-update">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-two-deployment-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The two deployment models
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-manifest-update-flow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The manifest-update flow
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-infinite-loop-trap-and-its-fixes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The infinite-loop trap and its fixes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-contents-write-permission-gotcha" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The contents: write permission gotcha
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-production-example" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real production example
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands-and-config-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands and config, explained
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beginner-mistakes-vs-senior-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beginner mistakes vs senior insights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-shortcuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory shortcuts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-check-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-check quiz
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hands-on lab
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hands-on lab">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#part-a-your-first-github-actions-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part A — your first GitHub Actions pipeline
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#part-b-add-the-manifest-update-step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Part B — add the manifest-update step
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production challenge
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="m6-cicd-pipelines">M6 — CI/CD Pipelines<a class="headerlink" href="#m6-cicd-pipelines" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Core question:</strong> How does a <code>git push</code> become a tested, built, pushed image with zero manual steps?</p>
+<p><strong>⏱️ Time:</strong> ~55 min padho + 30 min lab · <strong>🎚️ Level:</strong> Intermediate · <strong>📋 Pehle chahiye:</strong> <a href="../04-M3-docker/">M3</a>, <a href="../05-M4-kubernetes-core/">M4</a></p>
+<p><strong>Is module ke baad tum kar paoge:</strong>
+- GitHub Actions workflow YAML likho — test gate, docker build, ECR push, manifest update sab ek pipeline mein
+- CI ka GitOps handoff explain karo: CI cluster nahi, sirf Git ko chhuta hai — aur yeh kyun safer hai
+- Infinite loop trap identify karo aur <code>paths:</code> + <code>[skip ci]</code> ke saath fix karo</p>
+</blockquote>
+<p><strong>Previous:</strong> <a href="../06-M5-sizing-and-cost/">06-M5-sizing-and-cost.md</a> | <strong>Next:</strong> <a href="../08-M7-gitops/">08-M7-gitops.md</a> | <strong>Index:</strong> <a href="../00-INDEX/">00-INDEX.md</a></p>
+<hr />
+<blockquote>
+<h3 id="recall-gate-shuru-karne-se-pehle">↩️ Recall gate — shuru karne se pehle<a class="headerlink" href="#recall-gate-shuru-karne-se-pehle" title="Permanent link">&para;</a></h3>
+<p>Pichhle modules se 3 sawaal. <strong>Pehle memory se jawab do, phir kholo.</strong> (Yeh retrieve karna hi lifetime yaad rakhta hai — dobara padhna nahi.)</p>
+<ol>
+<li><em>(M3)</em> Kubernetes pod mein <code>ImagePullBackOff</code> error kyun aata hai? Do sabse common wajah batao.</li>
+<li><em>(M4)</em> K8s Deployment mein rolling update ke dauran agar naya pod readiness probe fail kare to kya hota hai?</li>
+<li><em>(M1)</em> "Idempotent" ka matlab kya hai? Terraform ka ek concrete example do jahan yeh property kaam aati hai.</li>
+</ol>
+<p><details markdown="1"><summary>Jawab</summary></p>
+<ol>
+<li>(1) Image tag galat hai ya registry mein exist nahi karta. (2) Private registry mein auth fail — <code>imagePullSecret</code> missing ya credentials wrong. &nbsp; 2. Rolling update ruk jaata hai — purani pods alive rehti hain, naye pods nahi aate jab tak readiness fail ho; cluster old version pe chalta rehta. &nbsp; 3. Idempotent = same operation baar-baar karo, result same rahe. Terraform: "3 EC2 chahiye" — 5 baar <code>apply</code> karo, hamesha 3 hi rahenge, 15 nahi banenge.
+</details></li>
+</ol>
+</blockquote>
+<h2 id="the-60-second-version">The 60-second version<a class="headerlink" href="#the-60-second-version" title="Permanent link">&para;</a></h2>
+<p>CI (Continuous Integration) = every push automatically compiles, tests, and packages your code.
+CD (Continuous Delivery) = that package is always ready to ship; a human presses the final button.
+Continuous Deployment = no button — it ships to production automatically.</p>
+<p>The mechanism is a <strong>pipeline</strong>: a YAML file committed alongside your code that describes a chain of jobs running on ephemeral virtual machines called <strong>runners</strong>. On every <code>git push</code>, the platform reads the file, spins up a fresh runner, and executes each step. If a test fails, the pipeline stops — nothing reaches production.</p>
+<p>The output is a <strong>Docker image</strong> tagged with the exact commit SHA, pushed to a registry (ECR, GHCR, Docker Hub). From there, a GitOps tool (Argo CD — covered in M7) detects the new image and deploys it to Kubernetes. CI never touches the cluster directly.</p>
+<hr />
+<h2 id="why-this-exists-what-it-replaced">Why this exists / what it replaced<a class="headerlink" href="#why-this-exists-what-it-replaced" title="Permanent link">&para;</a></h2>
+<p>Before CI/CD, the release process looked like this:</p>
+<ul>
+<li>A developer finishes a feature on their laptop. "Works on my machine."</li>
+<li>Days or weeks later, someone manually SSHes into a build server, runs <code>npm run build</code>, copies the binary somewhere, and hopes for the best.</li>
+<li>The QA team runs manual tests. Bugs found. Fixes pushed. More manual testing.</li>
+<li>Release night: the entire team stays up, manually deploying to production one server at a time.</li>
+<li>A config file was wrong. Rollback means someone remembering what version to re-deploy.</li>
+</ul>
+<p>The problems are slow feedback (bugs found days after they were written), human error at every step, undocumented process (knowledge lives in one person's head), and irreproducible builds (the build server has mystery packages installed).</p>
+<p>CI/CD replaces this with <strong>pipeline-as-code</strong>: the build and test instructions live in the same repository as the app code. Every push triggers the pipeline automatically. Failures surface in minutes, not days. The artifact (Docker image) is identical whether built on a developer's laptop push or a production release — because the runner is ephemeral and deterministic.</p>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Pehle har developer apne haath se dish banata (alag swaad, alag cheez). CI/CD = ek standardized recipe + machine jo har baar bilkul same dish banaye, aur agar galti ho to turant bata de — plate bahar jaane se pehle.</p>
+<hr />
+<h2 id="ci-vs-cd-vs-continuous-deployment">CI vs CD vs Continuous Deployment<a class="headerlink" href="#ci-vs-cd-vs-continuous-deployment" title="Permanent link">&para;</a></h2>
+<p>These three terms are often collapsed into "CI/CD" but mean distinct things. Knowing the distinction is a common senior interview question.</p>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Full name</th>
+<th>What it automates</th>
+<th>Who triggers production?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CI</strong></td>
+<td>Continuous Integration</td>
+<td>Build + test + package on every push</td>
+<td>— (no deployment)</td>
+</tr>
+<tr>
+<td><strong>Continuous Delivery</strong></td>
+<td>Continuous Delivery</td>
+<td>CI + always-deployable artifact; staging auto-deploy</td>
+<td><strong>Human</strong> (manual approval gate to prod)</td>
+</tr>
+<tr>
+<td><strong>Continuous Deployment</strong></td>
+<td>Continuous Deployment</td>
+<td>All of the above; production deploy is automatic</td>
+<td><strong>Nobody</strong> — pipeline does it</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The key difference between Delivery and Deployment:</strong> Delivery says "the artifact is always ready to go to production." Deployment says "the artifact goes to production automatically without a human gate." Most regulated or high-stakes environments use Delivery (human approval before prod); most SaaS companies with strong test suites use Deployment.</p>
+<p>In this module, the capstone project implements Continuous Delivery: GitHub Actions builds and pushes the image, updates the manifest in Git, and Argo CD syncs it — but you could add a manual approval step before the GitOps sync if needed.</p>
+<hr />
+<h2 id="pipeline-anatomy-and-shared-vocabulary">Pipeline anatomy and shared vocabulary<a class="headerlink" href="#pipeline-anatomy-and-shared-vocabulary" title="Permanent link">&para;</a></h2>
+<p>Every CI/CD tool — Jenkins, GitHub Actions, GitLab CI, CircleCI, Tekton — is a variation of the same model. Learn the vocabulary once; it transfers everywhere.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>TRIGGER (push / PR / schedule / manual)
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    │
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    ▼
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>PIPELINE ─────────────────────────────────────────────────────
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│  STAGE: build          STAGE: test          STAGE: publish  │
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│  ┌────────────┐        ┌────────────┐        ┌──────────┐   │
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>│  │  JOB       │  ───►  │  JOB       │  ───►  │  JOB     │   │
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>│  │  ┌──────┐  │        │  ┌──────┐  │        │ ┌──────┐ │   │
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>│  │  │ STEP │  │        │  │ STEP │  │        │ │ STEP │ │   │
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>│  │  │ STEP │  │        │  │ STEP │  │        │ │ STEP │ │   │
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>│  │  └──────┘  │        │  └──────┘  │        │ └──────┘ │   │
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>│  └────────────┘        └────────────┘        └──────────┘   │
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>│       RUNNER                RUNNER                RUNNER     │
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>└─────────────────────────────────────────────────────────────┘
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>                                                      │
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>                                              ARTIFACT (image)
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>                                              pushed to registry
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+<th>Analogy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pipeline / Workflow</strong></td>
+<td>The entire automated process defined in one YAML file</td>
+<td>The full recipe</td>
+</tr>
+<tr>
+<td><strong>Stage</strong></td>
+<td>A logical phase (build → test → deploy). Stages run in order.</td>
+<td>Course in a meal</td>
+</tr>
+<tr>
+<td><strong>Job</strong></td>
+<td>A unit of work within a stage. Jobs in the same stage run in parallel by default.</td>
+<td>A chef's station</td>
+</tr>
+<tr>
+<td><strong>Step</strong></td>
+<td>An individual command or action inside a job</td>
+<td>One instruction in a recipe</td>
+</tr>
+<tr>
+<td><strong>Runner</strong></td>
+<td>The ephemeral virtual machine that executes a job. Spun up fresh per job, discarded after.</td>
+<td>A hired helper who comes, does the work, then disappears</td>
+</tr>
+<tr>
+<td><strong>Trigger</strong></td>
+<td>The event that starts the pipeline: <code>push</code>, <code>pull_request</code>, <code>tag</code>, <code>schedule</code>, or <code>workflow_dispatch</code> (manual)</td>
+<td>The starting pistol</td>
+</tr>
+<tr>
+<td><strong>Artifact</strong></td>
+<td>Files produced by a job (a compiled binary, a test report, a Docker image) passed to later jobs or stored</td>
+<td>The handoff baton</td>
+</tr>
+<tr>
+<td><strong>Secrets</strong></td>
+<td>Encrypted credentials (registry login, AWS keys) injected at runtime, never written in plain text</td>
+<td>The locker key</td>
+</tr>
+<tr>
+<td><strong>Cache</strong></td>
+<td>Reused files between runs to speed up (e.g., <code>node_modules</code>) — different from artifact</td>
+<td>The prepped ingredients</td>
+</tr>
+<tr>
+<td><strong><code>uses</code></strong></td>
+<td>A pre-built action from the marketplace (<code>actions/checkout@v4</code>) — reusable, tested, maintained</td>
+<td>A plug-in tool</td>
+</tr>
+<tr>
+<td><strong><code>run</code></strong></td>
+<td>Raw shell command you write yourself</td>
+<td>A hand-written step</td>
+</tr>
+</tbody>
+</table>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Runner = ek baar ka helper jo kaam ke baad gayab ho jaata (ephemeral). Secrets = locker ki chaabi (encrypted, runtime pe inject). Artifact = ek stage ka output jo agla stage ko mile.</p>
+<hr />
+<h2 id="github-actions">GitHub Actions<a class="headerlink" href="#github-actions" title="Permanent link">&para;</a></h2>
+<p>GitHub Actions is the most widely used CI/CD system for code hosted on GitHub. The pipeline file lives at <code>.github/workflows/&lt;any-name&gt;.yml</code>. The folder path is fixed; the filename is free.</p>
+<h3 id="annotated-workflow-test-build-push-to-ecr-update-manifest">Annotated workflow — test, build, push to ECR, update manifest<a class="headerlink" href="#annotated-workflow-test-build-push-to-ecr-update-manifest" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># .github/workflows/ci.yml</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CI — Build and Push</span><span class="w">                  </span><span class="c1"># display name in GitHub UI</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nt">on</span><span class="p">:</span><span class="w">                                        </span><span class="c1"># TRIGGER: when does this run?</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">main</span><span class="p p-Indicator">]</span><span class="w">                       </span><span class="c1"># only on pushes to main</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">    </span><span class="nt">paths</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;app/**&#39;</span><span class="p p-Indicator">]</span><span class="w">                      </span><span class="c1"># only when app/ files change (loop prevention)</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="nt">pull_request</span><span class="p">:</span><span class="w">                            </span><span class="c1"># also on any PR (test gate before merge)</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="nt">permissions</span><span class="p">:</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="w">  </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w">                          </span><span class="c1"># REQUIRED to push the manifest commit back</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="nt">jobs</span><span class="p">:</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a><span class="w">  </span><span class="nt">test</span><span class="p">:</span><span class="w">                                    </span><span class="c1"># JOB 1: run tests first</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span><span class="w">                 </span><span class="c1"># RUNNER: fresh Ubuntu VM, managed by GitHub</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span><span class="w">          </span><span class="c1"># uses: = prebuilt action (checks out source code)</span>
+</span><span id="__span-1-18"><a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v5</span>
+</span><span id="__span-1-19"><a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+</span><span id="__span-1-20"><a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="w">          </span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3.12&#39;</span>
+</span><span id="__span-1-21"><a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install deps</span>
+</span><span id="__span-1-22"><a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install -r app/requirements.txt</span><span class="w">  </span><span class="c1"># run: = raw shell command</span>
+</span><span id="__span-1-23"><a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run tests</span>
+</span><span id="__span-1-24"><a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cd app &amp;&amp; pytest</span><span class="w">              </span><span class="c1"># TEST GATE: if this fails, pipeline stops here</span>
+</span><span id="__span-1-25"><a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>
+</span><span id="__span-1-26"><a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a><span class="w">  </span><span class="nt">build-push</span><span class="p">:</span><span class="w">                              </span><span class="c1"># JOB 2: build image only after tests pass</span>
+</span><span id="__span-1-27"><a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a><span class="w">    </span><span class="nt">needs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test</span><span class="w">                            </span><span class="c1"># needs: = dependency; waits for &#39;test&#39; job to succeed</span>
+</span><span id="__span-1-28"><a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+</span><span id="__span-1-29"><a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a><span class="w">    </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">github.ref == &#39;refs/heads/main&#39;</span><span class="w">    </span><span class="c1"># if: condition: only on main branch, not PRs</span>
+</span><span id="__span-1-30"><a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+</span><span id="__span-1-31"><a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+</span><span id="__span-1-32"><a id="__codelineno-1-32" name="__codelineno-1-32" href="#__codelineno-1-32"></a>
+</span><span id="__span-1-33"><a id="__codelineno-1-33" name="__codelineno-1-33" href="#__codelineno-1-33"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Configure AWS credentials</span>
+</span><span id="__span-1-34"><a id="__codelineno-1-34" name="__codelineno-1-34" href="#__codelineno-1-34"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-actions/configure-aws-credentials@v4</span>
+</span><span id="__span-1-35"><a id="__codelineno-1-35" name="__codelineno-1-35" href="#__codelineno-1-35"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+</span><span id="__span-1-36"><a id="__codelineno-1-36" name="__codelineno-1-36" href="#__codelineno-1-36"></a><span class="w">          </span><span class="nt">aws-access-key-id</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.AWS_KEY }}</span><span class="w">        </span><span class="c1"># secrets: encrypted, never in YAML</span>
+</span><span id="__span-1-37"><a id="__codelineno-1-37" name="__codelineno-1-37" href="#__codelineno-1-37"></a><span class="w">          </span><span class="nt">aws-secret-access-key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.AWS_SECRET }}</span>
+</span><span id="__span-1-38"><a id="__codelineno-1-38" name="__codelineno-1-38" href="#__codelineno-1-38"></a><span class="w">          </span><span class="nt">aws-region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ap-south-1</span>
+</span><span id="__span-1-39"><a id="__codelineno-1-39" name="__codelineno-1-39" href="#__codelineno-1-39"></a>
+</span><span id="__span-1-40"><a id="__codelineno-1-40" name="__codelineno-1-40" href="#__codelineno-1-40"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Log in to ECR</span>
+</span><span id="__span-1-41"><a id="__codelineno-1-41" name="__codelineno-1-41" href="#__codelineno-1-41"></a><span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-actions/amazon-ecr-login@v2</span>
+</span><span id="__span-1-42"><a id="__codelineno-1-42" name="__codelineno-1-42" href="#__codelineno-1-42"></a><span class="w">        </span><span class="c1"># ECR (Elastic Container Registry) = AWS&#39;s private Docker registry</span>
+</span><span id="__span-1-43"><a id="__codelineno-1-43" name="__codelineno-1-43" href="#__codelineno-1-43"></a>
+</span><span id="__span-1-44"><a id="__codelineno-1-44" name="__codelineno-1-44" href="#__codelineno-1-44"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build and push image</span>
+</span><span id="__span-1-45"><a id="__codelineno-1-45" name="__codelineno-1-45" href="#__codelineno-1-45"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+</span><span id="__span-1-46"><a id="__codelineno-1-46" name="__codelineno-1-46" href="#__codelineno-1-46"></a><span class="w">          </span><span class="no"># github.sha = the exact commit hash — immutable, traceable image tag</span>
+</span><span id="__span-1-47"><a id="__codelineno-1-47" name="__codelineno-1-47" href="#__codelineno-1-47"></a><span class="w">          </span><span class="no"># NEVER use :latest in production — it is mutable and untraceable</span>
+</span><span id="__span-1-48"><a id="__codelineno-1-48" name="__codelineno-1-48" href="#__codelineno-1-48"></a><span class="w">          </span><span class="no">docker build -t ${{ secrets.ECR_URL }}:${{ github.sha }} ./app</span>
+</span><span id="__span-1-49"><a id="__codelineno-1-49" name="__codelineno-1-49" href="#__codelineno-1-49"></a><span class="w">          </span><span class="no">docker push ${{ secrets.ECR_URL }}:${{ github.sha }}</span>
+</span><span id="__span-1-50"><a id="__codelineno-1-50" name="__codelineno-1-50" href="#__codelineno-1-50"></a>
+</span><span id="__span-1-51"><a id="__codelineno-1-51" name="__codelineno-1-51" href="#__codelineno-1-51"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Update K8s manifest with new image tag</span>
+</span><span id="__span-1-52"><a id="__codelineno-1-52" name="__codelineno-1-52" href="#__codelineno-1-52"></a><span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+</span><span id="__span-1-53"><a id="__codelineno-1-53" name="__codelineno-1-53" href="#__codelineno-1-53"></a><span class="w">          </span><span class="no"># sed replaces the image line in deployment.yaml with the new SHA-tagged image</span>
+</span><span id="__span-1-54"><a id="__codelineno-1-54" name="__codelineno-1-54" href="#__codelineno-1-54"></a><span class="w">          </span><span class="no"># This is the CI→GitOps handoff: CI writes to Git, Argo CD reads from Git</span>
+</span><span id="__span-1-55"><a id="__codelineno-1-55" name="__codelineno-1-55" href="#__codelineno-1-55"></a><span class="w">          </span><span class="no">sed -i &quot;s|image: .*url-shortener.*|image: ${{ secrets.ECR_URL }}:${{ github.sha }}|&quot; \</span>
+</span><span id="__span-1-56"><a id="__codelineno-1-56" name="__codelineno-1-56" href="#__codelineno-1-56"></a><span class="w">            </span><span class="no">k8s/deployment.yaml</span>
+</span><span id="__span-1-57"><a id="__codelineno-1-57" name="__codelineno-1-57" href="#__codelineno-1-57"></a><span class="w">          </span><span class="no">git config user.name &quot;ci-bot&quot;</span>
+</span><span id="__span-1-58"><a id="__codelineno-1-58" name="__codelineno-1-58" href="#__codelineno-1-58"></a><span class="w">          </span><span class="no">git config user.email &quot;ci@bot.com&quot;</span>
+</span><span id="__span-1-59"><a id="__codelineno-1-59" name="__codelineno-1-59" href="#__codelineno-1-59"></a><span class="w">          </span><span class="no">git add k8s/deployment.yaml</span>
+</span><span id="__span-1-60"><a id="__codelineno-1-60" name="__codelineno-1-60" href="#__codelineno-1-60"></a><span class="w">          </span><span class="no">git commit -m &quot;ci: update image to ${{ github.sha }} [skip ci]&quot;</span>
+</span><span id="__span-1-61"><a id="__codelineno-1-61" name="__codelineno-1-61" href="#__codelineno-1-61"></a><span class="w">          </span><span class="no"># [skip ci] in the commit message prevents this commit from re-triggering CI</span>
+</span><span id="__span-1-62"><a id="__codelineno-1-62" name="__codelineno-1-62" href="#__codelineno-1-62"></a><span class="w">          </span><span class="no">git push</span>
+</span></code></pre></div>
+<h3 id="key-github-actions-concepts">Key GitHub Actions concepts<a class="headerlink" href="#key-github-actions-concepts" title="Permanent link">&para;</a></h3>
+<p><strong><code>on:</code> triggers — branch filter</strong>
+<code>branches: [main]</code> means the workflow only fires when a push lands on <code>main</code>. A push to <code>feature/my-branch</code> does nothing. Add <code>pull_request:</code> separately so that PRs also run the test job before merge — this is the <strong>test gate</strong> that protects <code>main</code>.</p>
+<p><strong><code>needs:</code> — job dependency</strong>
+By default, all jobs in a workflow run in parallel. <code>needs: test</code> serializes them: <code>build-push</code> waits for <code>test</code> to complete successfully. If <code>test</code> fails, <code>build-push</code> never starts. This is how you prevent broken code from reaching ECR.</p>
+<p><strong><code>${{ secrets.X }}</code> — secrets</strong>
+Secrets are stored in GitHub repo Settings → Secrets and variables → Actions. They are encrypted at rest and masked in logs. The <code>${{ }}</code> syntax is GitHub Actions expression syntax — the runtime substitutes the value. Never commit secrets to the YAML file.</p>
+<p><strong><code>${{ github.sha }}</code> — immutable image tag</strong>
+Every commit has a unique SHA (e.g., <code>a3f8c1d...</code>). Tagging the Docker image with this SHA creates a 1:1 traceability link: given any running pod, you know exactly which commit it was built from. This connects directly to M3's lesson on digest pinning — see <a href="../04-M3-docker/">04-M3-docker.md</a>.</p>
+<p><strong><code>if:</code> conditions</strong>
+<code>if: github.ref == 'refs/heads/main'</code> prevents the push job from running on pull requests. PRs should only run tests, not push images.</p>
+<p><strong>Matrix builds — fan-out</strong>
+When you have multiple services (like the MicroShop capstone), a matrix build creates N parallel job instances from one job definition:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="nt">strategy</span><span class="p">:</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">  </span><span class="nt">matrix</span><span class="p">:</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">catalog-api</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">order-api</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">frontend</span><span class="p p-Indicator">]</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="c1"># Result: 3 runners start simultaneously, each building one service</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="c1"># Wall-clock time = time for the slowest service (not the sum)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="c1"># Without matrix: sequential, 3x slower</span>
+</span></code></pre></div>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Matrix = ek job definition se teen runners ek saath shuru — parallel factory lines. Wall-clock = sabse dheele ki time (sum nahi). Interview mein: "3 Docker images best CI pattern?" → Matrix build.</p>
+<h3 id="three-production-grade-actions-patterns">Three production-grade Actions patterns<a class="headerlink" href="#three-production-grade-actions-patterns" title="Permanent link">&para;</a></h3>
+<p>These three patterns appear in nearly every mature GitHub Actions workflow. Learn them once; apply everywhere.</p>
+<h4 id="a-actionscache-skip-the-re-download">(a) <code>actions/cache</code> — skip the re-download<a class="headerlink" href="#a-actionscache-skip-the-re-download" title="Permanent link">&para;</a></h4>
+<p>Without caching, every runner installs all dependencies from scratch on every run — 30–90 seconds wasted per job.</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/cache@v4</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="nt">with</span><span class="p">:</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">~/.cache/pip</span><span class="w">                 </span><span class="c1"># (or ~/.npm, ~/go/pkg/mod, ~/.m2/repository, etc.)</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ runner.os }}-pip-${{ hashFiles(&#39;requirements.txt&#39;) }}</span>
+</span></code></pre></div>
+<p>The <code>key</code> is the cache identity. It is derived from a hash of the lockfile (<code>requirements.txt</code>, <code>package-lock.json</code>, <code>go.sum</code>). If the lockfile has not changed since the last run, the key matches, the cache is restored, and the install step is skipped entirely — a <strong>cache hit</strong>. If the lockfile changes (new or upgraded dependency), the key changes, the cache misses, a fresh install runs, and the new cache is saved for the next run.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Cache = pehle se tayyar ingredients. Lockfile same hai? Same ingredients use karo — install skip. Lockfile badli? Fresh ingredients, naya cache save karo next run ke liye.</p>
+</blockquote>
+<h4 id="b-concurrency-cancel-in-progress-kill-the-stale-run">(b) <code>concurrency</code> + <code>cancel-in-progress</code> — kill the stale run<a class="headerlink" href="#b-concurrency-cancel-in-progress-kill-the-stale-run" title="Permanent link">&para;</a></h4>
+<p>When a developer pushes two commits quickly, two pipeline runs start. The first is already stale — you only care about the second. Without <code>concurrency</code>, both run to completion: two Docker builds, two deploys potentially racing each other to the cluster.</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nt">concurrency</span><span class="p">:</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">group</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ github.workflow }}-${{ github.ref }}</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">cancel-in-progress</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span>
+</span></code></pre></div>
+<p><code>group</code> is the key that identifies concurrent runs. Two runs with the same group key are considered concurrent. <code>cancel-in-progress: true</code> cancels any still-running workflow in that group the moment a newer one starts. The <code>github.ref</code> in the group key scopes cancellation to the same branch — <code>main</code> runs never cancel each other, but a stale <code>feature/x</code> run is cancelled as soon as the next <code>feature/x</code> push arrives.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Do commits ek ke baad ek? Pehla run cancel karo — second ki hi zaroorat hai. Isse do deploys ek saath race nahi karte aur runner minutes waste nahi hote.</p>
+</blockquote>
+<h4 id="c-oidc-auth-to-aws-with-no-long-lived-secrets">(c) OIDC — auth to AWS with no long-lived secrets<a class="headerlink" href="#c-oidc-auth-to-aws-with-no-long-lived-secrets" title="Permanent link">&para;</a></h4>
+<p>The static-key pattern (<code>AWS_ACCESS_KEY_ID</code> + <code>AWS_SECRET_ACCESS_KEY</code> stored in GitHub Secrets) is the legacy approach. Keys can leak, they require periodic rotation, and they are a permanently standing credential.</p>
+<p>The modern approach is <strong>OIDC</strong> (OpenID Connect): GitHub mints a short-lived identity token for each job; AWS is configured to trust tokens from GitHub's OIDC provider and exchanges the token for a temporary role session — no stored secrets anywhere.</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">permissions</span><span class="p">:</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">id-token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w">       </span><span class="c1"># let the job mint a short-lived OIDC token</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">read</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="nt">steps</span><span class="p">:</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">aws-actions/configure-aws-credentials@v4</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">    </span><span class="nt">with</span><span class="p">:</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">      </span><span class="nt">role-to-assume</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">arn:aws:iam::&lt;acct&gt;:role/github-actions</span><span class="w">   </span><span class="c1"># assume a role, no stored keys</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">      </span><span class="nt">aws-region</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ap-south-1</span>
+</span></code></pre></div>
+<p>Why this matters: the job receives temporary credentials that expire when the job ends. There is no <code>AWS_ACCESS_KEY_ID</code>/<code>AWS_SECRET_ACCESS_KEY</code> sitting in GitHub Settings to rotate or leak. AWS verifies the token's audience and subject claims (e.g., <code>repo:org/repo:ref:refs/heads/main</code>) before granting the role, so a compromised runner on a different repo cannot assume your role. Static keys are the fallback only when OIDC trust cannot be established (e.g., self-hosted runners without internet access to GitHub's OIDC endpoint).</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> OIDC = ek-use visitor pass jo kaam ke baad khud expire ho jaata — kho bhi gaya toh koi farak nahi. Static keys = permanent entry card jo kho sakti hai aur rotate karni padti hai. Senior engineer OIDC lagate hain from day one.</p>
+</blockquote>
+<hr />
+<h2 id="gitlab-ci-and-the-jenkins-comparison">GitLab CI and the Jenkins comparison<a class="headerlink" href="#gitlab-ci-and-the-jenkins-comparison" title="Permanent link">&para;</a></h2>
+<h3 id="gitlab-ci-annotated-example">GitLab CI — annotated example<a class="headerlink" href="#gitlab-ci-annotated-example" title="Permanent link">&para;</a></h3>
+<p>GitLab CI uses a single file <code>.gitlab-ci.yml</code> at the repository root. GitLab's own CI runners execute it automatically.</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># .gitlab-ci.yml</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nt">stages</span><span class="p">:</span><span class="w">            </span><span class="c1"># ordered phases; jobs in the same stage run in parallel</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">build</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">publish</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="nt">variables</span><span class="p">:</span>
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">  </span><span class="nt">IMAGE</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">registry.gitlab.com/$CI_PROJECT_PATH:$CI_COMMIT_SHA</span>
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">  </span><span class="c1"># $CI_* = GitLab&#39;s predefined environment variables (no setup needed)</span>
+</span><span id="__span-6-10"><a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">  </span><span class="c1"># $CI_PROJECT_PATH = group/repo name   $CI_COMMIT_SHA = current commit hash</span>
+</span><span id="__span-6-11"><a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a>
+</span><span id="__span-6-12"><a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="nt">test_job</span><span class="p">:</span>
+</span><span id="__span-6-13"><a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">  </span><span class="nt">stage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test</span>
+</span><span id="__span-6-14"><a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python:3.12-slim</span><span class="w">            </span><span class="c1"># run this job inside this Docker image</span>
+</span><span id="__span-6-15"><a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">  </span><span class="nt">script</span><span class="p">:</span>
+</span><span id="__span-6-16"><a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install -r app/requirements.txt</span>
+</span><span id="__span-6-17"><a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cd app &amp;&amp; pytest</span>
+</span><span id="__span-6-18"><a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">  </span><span class="c1"># if this fails, the &#39;build&#39; and &#39;publish&#39; stages never run</span>
+</span><span id="__span-6-19"><a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a>
+</span><span id="__span-6-20"><a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a><span class="nt">build_job</span><span class="p">:</span>
+</span><span id="__span-6-21"><a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">  </span><span class="nt">stage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">build</span>
+</span><span id="__span-6-22"><a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python:3.12-slim</span>
+</span><span id="__span-6-23"><a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="w">  </span><span class="nt">script</span><span class="p">:</span>
+</span><span id="__span-6-24"><a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install -r app/requirements.txt</span>
+</span><span id="__span-6-25"><a id="__codelineno-6-25" name="__codelineno-6-25" href="#__codelineno-6-25"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">python -m py_compile app/main.py</span>
+</span><span id="__span-6-26"><a id="__codelineno-6-26" name="__codelineno-6-26" href="#__codelineno-6-26"></a><span class="w">  </span><span class="nt">artifacts</span><span class="p">:</span><span class="w">                         </span><span class="c1"># artifacts: pass files to later stages</span>
+</span><span id="__span-6-27"><a id="__codelineno-6-27" name="__codelineno-6-27" href="#__codelineno-6-27"></a><span class="w">    </span><span class="nt">paths</span><span class="p">:</span>
+</span><span id="__span-6-28"><a id="__codelineno-6-28" name="__codelineno-6-28" href="#__codelineno-6-28"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app/</span>
+</span><span id="__span-6-29"><a id="__codelineno-6-29" name="__codelineno-6-29" href="#__codelineno-6-29"></a><span class="w">    </span><span class="nt">expire_in</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1 hour</span>
+</span><span id="__span-6-30"><a id="__codelineno-6-30" name="__codelineno-6-30" href="#__codelineno-6-30"></a>
+</span><span id="__span-6-31"><a id="__codelineno-6-31" name="__codelineno-6-31" href="#__codelineno-6-31"></a><span class="nt">publish_job</span><span class="p">:</span>
+</span><span id="__span-6-32"><a id="__codelineno-6-32" name="__codelineno-6-32" href="#__codelineno-6-32"></a><span class="w">  </span><span class="nt">stage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">publish</span>
+</span><span id="__span-6-33"><a id="__codelineno-6-33" name="__codelineno-6-33" href="#__codelineno-6-33"></a><span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker:latest</span>
+</span><span id="__span-6-34"><a id="__codelineno-6-34" name="__codelineno-6-34" href="#__codelineno-6-34"></a><span class="w">  </span><span class="nt">services</span><span class="p">:</span>
+</span><span id="__span-6-35"><a id="__codelineno-6-35" name="__codelineno-6-35" href="#__codelineno-6-35"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker:dind</span><span class="w">                    </span><span class="c1"># dind = Docker-in-Docker; lets this job build Docker images</span>
+</span><span id="__span-6-36"><a id="__codelineno-6-36" name="__codelineno-6-36" href="#__codelineno-6-36"></a><span class="w">  </span><span class="nt">script</span><span class="p">:</span>
+</span><span id="__span-6-37"><a id="__codelineno-6-37" name="__codelineno-6-37" href="#__codelineno-6-37"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY</span>
+</span><span id="__span-6-38"><a id="__codelineno-6-38" name="__codelineno-6-38" href="#__codelineno-6-38"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker build -t $IMAGE ./app</span>
+</span><span id="__span-6-39"><a id="__codelineno-6-39" name="__codelineno-6-39" href="#__codelineno-6-39"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docker push $IMAGE</span>
+</span><span id="__span-6-40"><a id="__codelineno-6-40" name="__codelineno-6-40" href="#__codelineno-6-40"></a><span class="w">  </span><span class="nt">rules</span><span class="p">:</span><span class="w">                             </span><span class="c1"># rules: is the modern replacement for only:/except:</span>
+</span><span id="__span-6-41"><a id="__codelineno-6-41" name="__codelineno-6-41" href="#__codelineno-6-41"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">if</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;$CI_COMMIT_BRANCH</span><span class="nv"> </span><span class="s">==</span><span class="nv"> </span><span class="s">&quot;main&quot;&#39;</span>
+</span></code></pre></div>
+<p><strong>Key GitLab CI concepts:</strong></p>
+<ul>
+<li><code>stages:</code> defines order. All jobs with <code>stage: test</code> run before any job with <code>stage: build</code>.</li>
+<li><code>$CI_*</code> variables: GitLab injects dozens of predefined vars (<code>$CI_COMMIT_SHA</code>, <code>$CI_REGISTRY</code>, <code>$CI_PROJECT_PATH</code>). No configuration needed.</li>
+<li><code>artifacts:</code> makes files from one job available to later jobs. Equivalent to GitHub Actions' <code>upload-artifact</code> / <code>download-artifact</code>.</li>
+<li><code>services: docker:dind</code> (Docker in Docker): allows a job to run <code>docker build</code> inside a container. Required because GitLab runners themselves run inside Docker.</li>
+<li><code>rules:</code> (newer) vs <code>only:</code> (older): <code>rules:</code> is more expressive and handles complex conditions. <code>only: - main</code> and <code>rules: - if: $CI_COMMIT_BRANCH == "main"</code> are roughly equivalent.</li>
+</ul>
+<h3 id="jenkins-vs-github-actions-vs-gitlab-ci">Jenkins vs GitHub Actions vs GitLab CI<a class="headerlink" href="#jenkins-vs-github-actions-vs-gitlab-ci" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Aspect</th>
+<th>Jenkins</th>
+<th>GitHub Actions</th>
+<th>GitLab CI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Hosting</strong></td>
+<td>Self-hosted server you install and maintain</td>
+<td>GitHub-managed (free tier available)</td>
+<td>Built into GitLab (SaaS or self-hosted)</td>
+</tr>
+<tr>
+<td><strong>Config file</strong></td>
+<td><code>Jenkinsfile</code> (Groovy DSL)</td>
+<td><code>.github/workflows/*.yml</code> (YAML)</td>
+<td><code>.gitlab-ci.yml</code> (YAML)</td>
+</tr>
+<tr>
+<td><strong>Setup effort</strong></td>
+<td>High — server, plugins, agents, maintenance</td>
+<td>Low — repo + YAML file</td>
+<td>Low — already in GitLab</td>
+</tr>
+<tr>
+<td><strong>Runners</strong></td>
+<td>Self-managed Jenkins agents</td>
+<td>GitHub-hosted or self-hosted runners</td>
+<td>GitLab-hosted or self-hosted</td>
+</tr>
+<tr>
+<td><strong>Ecosystem</strong></td>
+<td>Largest plugin library (1,800+ plugins)</td>
+<td>GitHub Marketplace actions</td>
+<td>GitLab-native features</td>
+</tr>
+<tr>
+<td><strong>Secrets</strong></td>
+<td>Jenkins credentials store</td>
+<td>GitHub Secrets</td>
+<td>GitLab CI/CD Variables</td>
+</tr>
+<tr>
+<td><strong>Best when</strong></td>
+<td>Complex legacy pipelines; full control; on-prem</td>
+<td>Code is on GitHub; fast setup</td>
+<td>All-in-one GitLab shop</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Interview one-liner:</strong> "Jenkins is a powerful self-hosted server with the widest plugin ecosystem but requires significant maintenance. GitHub Actions and GitLab CI are pipeline-as-code built into the platform — much lower setup cost. The concepts transfer directly: stages, agents/runners, artifacts, secrets — same idea, different syntax."</p>
+<hr />
+<h2 id="the-handoff-to-gitops-manifest-update">The handoff to GitOps: manifest-update<a class="headerlink" href="#the-handoff-to-gitops-manifest-update" title="Permanent link">&para;</a></h2>
+<p>This is the single most important concept in this module. It is the bridge between CI (this module) and GitOps (M7).</p>
+<h3 id="the-two-deployment-models">The two deployment models<a class="headerlink" href="#the-two-deployment-models" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Model</th>
+<th>How it works</th>
+<th>Problem</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Push deploy</strong></td>
+<td>CI runs <code>kubectl apply</code> directly against the cluster</td>
+<td>CI needs cluster credentials. A compromised CI system = compromised cluster. Credentials must be managed and rotated.</td>
+</tr>
+<tr>
+<td><strong>Manifest-update (GitOps)</strong></td>
+<td>CI updates the image tag in the K8s manifest YAML and commits to Git. Argo CD (inside the cluster) detects the change and applies it.</td>
+<td>None — this is the recommended model.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-manifest-update-flow">The manifest-update flow<a class="headerlink" href="#the-manifest-update-flow" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart LR
+    PUSH(["git push&lt;br/&gt;app code"]):::ci
+    CHECKOUT["Checkout&lt;br/&gt;source code"]:::ci
+    TEST{"Tests&lt;br/&gt;pass?"}:::ci
+    BUILD["Build image&lt;br/&gt;tag with SHA"]:::ci
+    SCAN{"Trivy scan&lt;br/&gt;no critical CVEs?"}:::ci
+    ECR[("Push to ECR&lt;br/&gt;immutable SHA tag")]:::store
+    MANIFEST["Update manifest&lt;br/&gt;git commit + push"]:::ci
+    ARGO["ArgoCD syncs&lt;br/&gt;(inside cluster)"]:::ok
+    FAIL(["Pipeline stops&lt;br/&gt;no image pushed"]):::warn
+
+    PUSH --&gt; CHECKOUT
+    CHECKOUT --&gt; TEST
+    TEST --&gt;|"pass"| BUILD
+    TEST --&gt;|"fail"| FAIL
+    BUILD --&gt; SCAN
+    SCAN --&gt;|"pass"| ECR
+    SCAN --&gt;|"fail"| FAIL
+    ECR --&gt; MANIFEST
+    MANIFEST -. "CI never touches cluster" .-&gt; ARGO
+
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef warn fill:#fdeeee,stroke:#d64545,color:#b23030;
+    classDef ok fill:#e8f5e9,stroke:#43a047,color:#1b5e20;</code></pre>
+<p><em>CI builds and gates quality; GitOps (ArgoCD) deploys — CI never holds cluster credentials.</em></p>
+<details class="note">
+<summary>Text version (ASCII)</summary>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>git push (app code change)
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>        │
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>        ▼ GitHub Actions triggered
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>   ┌─────────────────────────────────────────┐
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>   │  STEP 1: pytest                         │  ← test gate
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>   │  STEP 2: docker build + push → ECR      │  ← image tagged with github.sha
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>   │  STEP 3: sed k8s/deployment.yaml        │  ← update image tag in manifest
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>   │  STEP 4: git commit + git push          │  ← CI writes to Git, not cluster
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>   └─────────────────────────────────────────┘
+</span><span id="__span-7-10"><a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a>        │
+</span><span id="__span-7-11"><a id="__codelineno-7-11" name="__codelineno-7-11" href="#__codelineno-7-11"></a>        │  CI NEVER TOUCHES THE CLUSTER
+</span><span id="__span-7-12"><a id="__codelineno-7-12" name="__codelineno-7-12" href="#__codelineno-7-12"></a>        │
+</span><span id="__span-7-13"><a id="__codelineno-7-13" name="__codelineno-7-13" href="#__codelineno-7-13"></a>        ▼ Git repo (k8s/deployment.yaml updated)
+</span><span id="__span-7-14"><a id="__codelineno-7-14" name="__codelineno-7-14" href="#__codelineno-7-14"></a>        │
+</span><span id="__span-7-15"><a id="__codelineno-7-15" name="__codelineno-7-15" href="#__codelineno-7-15"></a>        ▼ Argo CD (running inside the cluster, polling Git)
+</span><span id="__span-7-16"><a id="__codelineno-7-16" name="__codelineno-7-16" href="#__codelineno-7-16"></a>   ┌─────────────────────────────────────────┐
+</span><span id="__span-7-17"><a id="__codelineno-7-17" name="__codelineno-7-17" href="#__codelineno-7-17"></a>   │  Detects: deployment.yaml changed       │
+</span><span id="__span-7-18"><a id="__codelineno-7-18" name="__codelineno-7-18" href="#__codelineno-7-18"></a>   │  Applies: kubectl apply (from inside)   │
+</span><span id="__span-7-19"><a id="__codelineno-7-19" name="__codelineno-7-19" href="#__codelineno-7-19"></a>   │  Result: new pods with new image        │
+</span><span id="__span-7-20"><a id="__codelineno-7-20" name="__codelineno-7-20" href="#__codelineno-7-20"></a>   └─────────────────────────────────────────┘
+</span><span id="__span-7-21"><a id="__codelineno-7-21" name="__codelineno-7-21" href="#__codelineno-7-21"></a>        │
+</span><span id="__span-7-22"><a id="__codelineno-7-22" name="__codelineno-7-22" href="#__codelineno-7-22"></a>        ▼ Cluster updated — new version running
+</span></code></pre></div>
+</details>
+<p><strong>Why this matters:</strong></p>
+<ol>
+<li><strong>Security:</strong> CI never holds cluster credentials. If the CI system is compromised, the attacker cannot deploy arbitrary code to production. Cluster access stays inside the cluster.</li>
+<li><strong>Git as truth:</strong> Every deployed version is traceable to a Git commit. Rollback means <code>git revert</code> — not remembering which image tag to manually roll back to.</li>
+<li><strong>Audit trail:</strong> Git history is the deployment history. Who deployed what, when, from which commit — it is all there.</li>
+</ol>
+<p>The <code>sed</code> command in the manifest-update step:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>sed<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;s|image: .*url-shortener.*|image: 336129194698.dkr.ecr.ap-south-1.amazonaws.com/url-shortener:a3f8c1d|&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">  </span>k8s/deployment.yaml
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="c1"># -i = in-place edit   s|old|new| = substitute pattern with new value</span>
+</span></code></pre></div></p>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> CI = menu likhne wala (Git mein naya tag likhta). Argo = rasoiya jo menu padh ke banata. CI ko kitchen ki chaabi nahi — cluster chhua hi nahi. Git = handshake in the middle.</p>
+<p>Cross-link: M7 covers Argo CD's pull model, sync states, selfHeal, and rollback in depth — see <a href="../08-M7-gitops/">08-M7-gitops.md</a>. Golden Thread 4 (push vs pull) is explained in context of the full system in <a href="../09-connected-system/">09-connected-system.md</a>.</p>
+<hr />
+<h2 id="the-infinite-loop-trap-and-its-fixes">The infinite-loop trap and its fixes<a class="headerlink" href="#the-infinite-loop-trap-and-its-fixes" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>🔮 <strong>Predict pehle (socho, phir aage padho):</strong> CI apni image tag manifest me commit karti hai Git me. Woh commit CI ko dobara trigger karta hai... phir? Kya hone wala hai?</p>
+</blockquote>
+<p>When CI commits the manifest update back to the repository, that commit lands on <code>main</code>. If the workflow triggers on any push to <code>main</code>, it will trigger itself — and then trigger again, forever.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>git push (app change)
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>    → CI runs → updates k8s/deployment.yaml → git push
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>    → CI runs AGAIN (triggered by the manifest commit)
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>    → updates k8s/deployment.yaml → git push
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>    → CI runs AGAIN ...  ♾️
+</span></code></pre></div>
+<p>There are three independent fixes. In production, use at least two layers.</p>
+<table>
+<thead>
+<tr>
+<th>Fix</th>
+<th>Mechanism</th>
+<th>How it works</th>
+<th>Limitation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>paths:</code> filter</strong></td>
+<td>Structural exclusion</td>
+<td><code>on: push: paths: ['app/**']</code> — CI only triggers when files under <code>app/</code> change. The manifest commit touches <code>k8s/</code>, which is outside the filter, so it does not re-trigger.</td>
+<td>Only works if manifests live in a different directory than app code.</td>
+</tr>
+<tr>
+<td><strong><code>[skip ci]</code> in commit message</strong></td>
+<td>Explicit bailout</td>
+<td><code>git commit -m "ci: update image to $SHA [skip ci]"</code> — GitHub, GitLab, and most CI platforms recognize this tag and skip the workflow.</td>
+<td>Depends on the platform honoring the tag. A missing tag means the loop fires.</td>
+</tr>
+<tr>
+<td><strong><code>GITHUB_TOKEN</code> scoping</strong></td>
+<td>Default token protection</td>
+<td>When CI uses the built-in <code>GITHUB_TOKEN</code> to push, GitHub deliberately does not re-trigger workflows from that push. If you replace <code>GITHUB_TOKEN</code> with a Personal Access Token (PAT), this protection is lost.</td>
+<td>Only applies when using <code>GITHUB_TOKEN</code>, not PATs or deploy keys.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>In the capstone:</strong> The workflow uses <code>paths: ['app/**']</code> as layer 1 and <code>[skip ci]</code> in the manifest commit message as layer 2. Both together make the loop impossible.</p>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Loop = do aaine aamne-saamne (infinite reflection). <code>paths</code> = structural wall (manifest commit path alag hai). <code>[skip ci]</code> = explicit exit sign. <code>GITHUB_TOKEN</code> = platform ki built-in samajh (bot push = workflow trigger nahi).</p>
+<hr />
+<h2 id="the-contents-write-permission-gotcha">The <code>contents: write</code> permission gotcha<a class="headerlink" href="#the-contents-write-permission-gotcha" title="Permanent link">&para;</a></h2>
+<p>By default, the <code>GITHUB_TOKEN</code> has read-only access to the repository. When CI tries to <code>git push</code> the manifest update, it gets:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>remote: Permission to repo.git denied to github-actions[bot]
+</span></code></pre></div>
+<p>The fix requires changes in <strong>two places</strong> — missing either one causes the same error:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1"># 1. In the workflow YAML file:</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="nt">permissions</span><span class="p">:</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">  </span><span class="nt">contents</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">write</span><span class="w">   </span><span class="c1"># allow this workflow to push commits</span>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="c1"># 2. In GitHub UI:</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="c1"># Settings → Actions → General → Workflow permissions → Read and write permissions</span>
+</span></code></pre></div>
+<blockquote>
+<p>🔧 <strong>War story:</strong> CI pipeline ne ECR push kiya, fir manifest <code>git push</code> kiya — aur "Permission to repo.git denied to github-actions[bot]" mila. Ek ghante debug kiya: workflow YAML mein <code>permissions: contents: write</code> dala — phir bhi wohi error. Root cause: GitHub UI mein bhi repo Settings → Actions → General → "Read and write permissions" enable karna padta hai. Dono jagah change missing hai toh same error aata hai. Poori kahani + lesson → <a href="../14-interview-bank/">Interview Bank</a>.</p>
+</blockquote>
+<p>This is a deliberate security default: workflows should not be able to modify the repository unless explicitly granted permission.</p>
+<hr />
+<h2 id="real-production-example">Real production example<a class="headerlink" href="#real-production-example" title="Permanent link">&para;</a></h2>
+<p>This is the actual <code>ci.yml</code> from the URL Shortener capstone project, annotated with the reasoning behind each choice.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>git push app/main.py
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>    │
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>    ▼ GitHub detects push to main, path matches app/**
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>    │
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>    ▼ Runner: ubuntu-latest (fresh VM, nothing installed)
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>    │   actions/checkout@v4             ← get the code
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>    │   aws-actions/configure-aws-credentials@v4  ← inject AWS creds from secrets
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>    │   aws-actions/amazon-ecr-login@v2           ← authenticate to ECR
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>    │   docker build -t ECR:a3f8c1d ./app         ← build image, tag = commit SHA
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>    │   docker push ECR:a3f8c1d                   ← image in registry
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>    │   sed k8s/deployment.yaml                   ← replace old SHA with new SHA
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>    │   git commit &quot;ci: update image [skip ci]&quot;   ← write to Git
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>    │   git push                                  ← triggers Argo CD (not CI)
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>    │
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>    ▼ ECR: url-shortener:a3f8c1d (immutable, traceable)
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>    │
+</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>    ▼ Git: k8s/deployment.yaml updated
+</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>    │
+</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>    ▼ Argo CD (inside cluster) detects manifest change within 30 seconds
+</span><span id="__span-12-20"><a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>    │   kubectl apply (from inside cluster, no external creds)
+</span><span id="__span-12-21"><a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>    │
+</span><span id="__span-12-22"><a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a>    ▼ Kubernetes: rolling update, new pods start with new image
+</span><span id="__span-12-23"><a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>    │   Old pods terminated after new pods pass readiness probe
+</span><span id="__span-12-24"><a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a>    │
+</span><span id="__span-12-25"><a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>    ▼ Users see new version — zero manual steps from git push to deployment
+</span></code></pre></div>
+<p>Total elapsed time from <code>git push</code> to running pods: typically 3–5 minutes.</p>
+<hr />
+<h2 id="commands-and-config-explained">Commands and config, explained<a class="headerlink" href="#commands-and-config-explained" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Trigger a pipeline manually (GitHub CLI)</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>gh<span class="w"> </span>workflow<span class="w"> </span>run<span class="w"> </span>ci.yml<span class="w"> </span>--ref<span class="w"> </span>main
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="c1"># Why: useful for testing the workflow without making a code change</span>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="c1"># Check workflow run status</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>gh<span class="w"> </span>run<span class="w"> </span>list<span class="w"> </span>--workflow<span class="o">=</span>ci.yml
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>gh<span class="w"> </span>run<span class="w"> </span>view<span class="w"> </span>&lt;run-id&gt;<span class="w"> </span>--log
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="c1"># Why: faster than navigating the GitHub UI for quick status checks</span>
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="c1"># List secrets (names only, not values)</span>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>gh<span class="w"> </span>secret<span class="w"> </span>list
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="c1"># Why: verify secrets are configured before debugging &quot;Permission denied&quot; errors</span>
+</span><span id="__span-13-13"><a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a>
+</span><span id="__span-13-14"><a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="c1"># Set a secret from a file or value</span>
+</span><span id="__span-13-15"><a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a>gh<span class="w"> </span>secret<span class="w"> </span><span class="nb">set</span><span class="w"> </span>AWS_KEY<span class="w"> </span>--body<span class="w"> </span><span class="s2">&quot;AKIAIOSFODNN7EXAMPLE&quot;</span>
+</span><span id="__span-13-16"><a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a>gh<span class="w"> </span>secret<span class="w"> </span><span class="nb">set</span><span class="w"> </span>ECR_URL<span class="w"> </span>&lt;<span class="w"> </span>ecr_url.txt
+</span><span id="__span-13-17"><a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="c1"># Why: scripting secret setup for new environments</span>
+</span><span id="__span-13-18"><a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a>
+</span><span id="__span-13-19"><a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="c1"># Manually build and push with the same tag format CI uses</span>
+</span><span id="__span-13-20"><a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a><span class="nv">SHA</span><span class="o">=</span><span class="k">$(</span>git<span class="w"> </span>rev-parse<span class="w"> </span>HEAD<span class="k">)</span>
+</span><span id="__span-13-21"><a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span><span class="nv">$ECR_URL</span>:<span class="nv">$SHA</span><span class="w"> </span>./app
+</span><span id="__span-13-22"><a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a>docker<span class="w"> </span>push<span class="w"> </span><span class="nv">$ECR_URL</span>:<span class="nv">$SHA</span>
+</span><span id="__span-13-23"><a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="c1"># Why: reproduce the exact CI artifact locally for debugging</span>
+</span><span id="__span-13-24"><a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a>
+</span><span id="__span-13-25"><a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a><span class="c1"># Validate a GitHub Actions workflow file syntax</span>
+</span><span id="__span-13-26"><a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a>gh<span class="w"> </span>workflow<span class="w"> </span>list<span class="w">          </span><span class="c1"># check if the file is recognized</span>
+</span><span id="__span-13-27"><a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a><span class="c1"># Or: act (third-party tool to run Actions locally)</span>
+</span><span id="__span-13-28"><a id="__codelineno-13-28" name="__codelineno-13-28" href="#__codelineno-13-28"></a>act<span class="w"> </span>push<span class="w"> </span>--job<span class="w"> </span>build-push
+</span><span id="__span-13-29"><a id="__codelineno-13-29" name="__codelineno-13-29" href="#__codelineno-13-29"></a><span class="c1"># Why: catch YAML syntax errors before pushing</span>
+</span><span id="__span-13-30"><a id="__codelineno-13-30" name="__codelineno-13-30" href="#__codelineno-13-30"></a>
+</span><span id="__span-13-31"><a id="__codelineno-13-31" name="__codelineno-13-31" href="#__codelineno-13-31"></a><span class="c1"># GitLab CI: validate .gitlab-ci.yml syntax</span>
+</span><span id="__span-13-32"><a id="__codelineno-13-32" name="__codelineno-13-32" href="#__codelineno-13-32"></a>curl<span class="w"> </span>--header<span class="w"> </span><span class="s2">&quot;PRIVATE-TOKEN: &lt;token&gt;&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-33"><a id="__codelineno-13-33" name="__codelineno-13-33" href="#__codelineno-13-33"></a><span class="w">  </span><span class="s2">&quot;https://gitlab.com/api/v4/projects/&lt;id&gt;/ci/lint&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-13-34"><a id="__codelineno-13-34" name="__codelineno-13-34" href="#__codelineno-13-34"></a><span class="w">  </span>--form<span class="w"> </span><span class="s2">&quot;content=</span><span class="k">$(</span>cat<span class="w"> </span>.gitlab-ci.yml<span class="k">)</span><span class="s2">&quot;</span>
+</span><span id="__span-13-35"><a id="__codelineno-13-35" name="__codelineno-13-35" href="#__codelineno-13-35"></a><span class="c1"># Why: GitLab has a built-in linter; catch errors before committing</span>
+</span><span id="__span-13-36"><a id="__codelineno-13-36" name="__codelineno-13-36" href="#__codelineno-13-36"></a>
+</span><span id="__span-13-37"><a id="__codelineno-13-37" name="__codelineno-13-37" href="#__codelineno-13-37"></a><span class="c1"># sed manifest update — the exact command CI runs</span>
+</span><span id="__span-13-38"><a id="__codelineno-13-38" name="__codelineno-13-38" href="#__codelineno-13-38"></a>sed<span class="w"> </span>-i<span class="w"> </span><span class="s2">&quot;s|image: .*url-shortener.*|image: </span><span class="si">${</span><span class="nv">ECR_URL</span><span class="si">}</span><span class="s2">:</span><span class="si">${</span><span class="nv">SHA</span><span class="si">}</span><span class="s2">|&quot;</span><span class="w"> </span>k8s/deployment.yaml
+</span><span id="__span-13-39"><a id="__codelineno-13-39" name="__codelineno-13-39" href="#__codelineno-13-39"></a><span class="c1"># -i = in-place (edit the file directly)</span>
+</span><span id="__span-13-40"><a id="__codelineno-13-40" name="__codelineno-13-40" href="#__codelineno-13-40"></a><span class="c1"># s|pattern|replacement| = substitute (using | as delimiter to avoid escaping /)</span>
+</span><span id="__span-13-41"><a id="__codelineno-13-41" name="__codelineno-13-41" href="#__codelineno-13-41"></a><span class="c1"># Why: replaces whatever image tag was there with the new SHA-tagged image</span>
+</span><span id="__span-13-42"><a id="__codelineno-13-42" name="__codelineno-13-42" href="#__codelineno-13-42"></a>
+</span><span id="__span-13-43"><a id="__codelineno-13-43" name="__codelineno-13-43" href="#__codelineno-13-43"></a><span class="c1"># Verify the sed worked</span>
+</span><span id="__span-13-44"><a id="__codelineno-13-44" name="__codelineno-13-44" href="#__codelineno-13-44"></a>grep<span class="w"> </span><span class="s2">&quot;image:&quot;</span><span class="w"> </span>k8s/deployment.yaml
+</span><span id="__span-13-45"><a id="__codelineno-13-45" name="__codelineno-13-45" href="#__codelineno-13-45"></a><span class="c1"># Expected: image: 336129194698.dkr.ecr.ap-south-1.amazonaws.com/url-shortener:a3f8c1d</span>
+</span></code></pre></div>
+<hr />
+<h2 id="beginner-mistakes-vs-senior-insights">Beginner mistakes vs senior insights<a class="headerlink" href="#beginner-mistakes-vs-senior-insights" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Situation</th>
+<th>Beginner approach</th>
+<th>Senior insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Image tagging</td>
+<td><code>docker push myapp:latest</code></td>
+<td>Tag with <code>${{ github.sha }}</code> — immutable, traceable, rollback-safe</td>
+</tr>
+<tr>
+<td>Secrets</td>
+<td>Put AWS key in <code>env:</code> block in YAML</td>
+<td>Use GitHub Secrets; inject at runtime; never in source</td>
+</tr>
+<tr>
+<td>Build failure</td>
+<td>Re-run the pipeline</td>
+<td>Read the actual error log; fix the root cause</td>
+</tr>
+<tr>
+<td>Test failures in CI</td>
+<td>Comment out failing test</td>
+<td>Fix the test or the code; never bypass the test gate</td>
+</tr>
+<tr>
+<td>Deploying</td>
+<td>CI runs <code>kubectl apply</code> directly</td>
+<td>CI updates the manifest; Argo CD deploys (manifest-update pattern)</td>
+</tr>
+<tr>
+<td>Loop prevention</td>
+<td>Notice the loop after it fires</td>
+<td>Add <code>paths:</code> filter + <code>[skip ci]</code> proactively at design time</td>
+</tr>
+<tr>
+<td>Manifest update permission</td>
+<td>Confused by "Permission denied"</td>
+<td>Know to add <code>permissions: contents: write</code> in YAML AND in repo settings</td>
+</tr>
+<tr>
+<td>Runner choice</td>
+<td>Always use <code>ubuntu-latest</code></td>
+<td>Pin to <code>ubuntu-22.04</code> for reproducibility; <code>ubuntu-latest</code> changes over time</td>
+</tr>
+<tr>
+<td>Job order</td>
+<td>All jobs run; hope for the best</td>
+<td>Use <code>needs:</code> to enforce test → build → push ordering</td>
+</tr>
+<tr>
+<td>Matrix builds</td>
+<td>One service = one workflow</td>
+<td>Matrix strategy fans out N services to N parallel runners</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="memory-shortcuts">Memory shortcuts<a class="headerlink" href="#memory-shortcuts" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>CI = before the artifact. CD = after the artifact.</strong> CI integrates and packages. CD delivers and deploys.</li>
+<li><strong>Runner = ephemeral.</strong> Every job starts on a fresh VM. No state from previous runs. This is why you install dependencies in every run (or cache them).</li>
+<li><strong>SHA tag = your tracking number.</strong> From ECR image to running pod to Git commit — one SHA connects everything.</li>
+<li><strong><code>uses:</code> = someone else's tested code. <code>run:</code> = your shell command.</strong> Prefer <code>uses:</code> for common tasks (checkout, auth, login) — they handle edge cases you will miss.</li>
+<li><strong>CI does not touch the cluster.</strong> The manifest-update pattern keeps the blast radius of a CI compromise contained to the Git repository, not the production cluster.</li>
+<li><strong><code>paths:</code> + <code>[skip ci]</code> = loop insurance.</strong> Always add both when CI commits back to the repo.</li>
+<li><strong><code>contents: write</code> in two places.</strong> YAML permission block AND repo settings.</li>
+</ul>
+<p>🇮🇳 <strong>Hinglish intuition summary:</strong>
+- CI = har order pe quality-check (test gate)
+- Runner = ek baar ka helper jo kaam ke baad gayab (ephemeral VM)
+- Secrets = locker ki chaabi (encrypt, runtime inject)
+- <code>github.sha</code> = har commit ka unique fingerprint (image tag)
+- Manifest-update = CI ne cluster ko chhooha nahi, sirf Git mein tag badla</p>
+<hr />
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>A <code>git push</code> triggers a <strong>workflow</strong> defined in <code>.github/workflows/ci.yml</code>. The workflow runs on an <strong>ephemeral runner</strong> (fresh VM). Jobs execute in order (enforced by <code>needs:</code>). The test job runs <code>pytest</code> — if tests fail, the pipeline stops. If tests pass, the build job authenticates to ECR using <strong>secrets</strong>, builds a Docker image <strong>tagged with the commit SHA</strong>, and pushes it. Then it runs <code>sed</code> to update the image tag in <code>k8s/deployment.yaml</code>, commits the change with <code>[skip ci]</code> in the message, and pushes to Git. CI never runs <code>kubectl</code>. The <strong><code>paths:</code> filter</strong> prevents this manifest commit from re-triggering the pipeline.</p>
+<p>Argo CD (M7) watches the <code>k8s/</code> directory in Git. It detects the manifest change and applies it to the cluster — closing the loop from <code>git push</code> to running pods with zero manual steps.</p>
+<p><strong>The three-way CI/CD distinction:</strong> CI builds and tests on every push. Continuous Delivery keeps the artifact always deployable with a human approval gate to production. Continuous Deployment removes that gate entirely.</p>
+<hr />
+<h2 id="self-check-quiz">Self-check quiz<a class="headerlink" href="#self-check-quiz" title="Permanent link">&para;</a></h2>
+<p>Pehle memory se jawab do, phir neeche kholo.</p>
+<ol>
+<li>What is the difference between Continuous Delivery and Continuous Deployment?</li>
+<li>A job has <code>needs: test</code>. Under what conditions does this job NOT run?</li>
+<li>Why should you never use <code>:latest</code> as a production image tag? What should you use instead?</li>
+<li>You add <code>permissions: contents: write</code> to your workflow YAML, but CI still cannot push to the repo. What did you forget?</li>
+<li>What is Docker-in-Docker (<code>docker:dind</code>) and why is it needed in GitLab CI?</li>
+<li>Name three ways to prevent a CI manifest-update commit from triggering an infinite loop.</li>
+<li>A matrix build fans out across three services. Service A takes 4 minutes, B takes 6 minutes, C takes 3 minutes. What is the total wall-clock time?</li>
+<li>Why does the manifest-update pattern improve security compared to running <code>kubectl apply</code> directly from CI?</li>
+</ol>
+<details>
+<summary>Jawab dekho</summary>
+<ol>
+<li>Continuous Delivery: artifact is always production-ready but a human manually approves the final push to production. Continuous Deployment: no human gate — every passing build goes to production automatically.</li>
+<li>The <code>build-push</code> job does NOT run if the <code>test</code> job fails (exits non-zero). <code>needs: test</code> means it waits for <code>test</code> to complete successfully; failure cancels all downstream jobs.</li>
+<li><code>:latest</code> is mutable — can point to a different image at different times, making rollbacks impossible and builds non-reproducible. Use <code>${{ github.sha }}</code> — immutable, creates a 1:1 traceable link from running pod to the exact commit.</li>
+<li>You must also enable "Read and write permissions" in GitHub UI: Settings → Actions → General → Workflow permissions. Both the YAML <code>permissions</code> block AND the UI setting are required.</li>
+<li>Docker-in-Docker (dind) = a Docker daemon running inside a Docker container. Required in GitLab CI because runner jobs themselves execute inside containers; building a Docker image inside a container needs a nested daemon.</li>
+<li>Three fixes: (1) <code>paths: ['app/**']</code> filter — manifest commit touches <code>k8s/</code>, outside the filter, so no re-trigger; (2) <code>[skip ci]</code> in the commit message — CI platform recognizes this and skips the workflow; (3) use built-in <code>GITHUB_TOKEN</code> to push — GitHub will not re-trigger workflows from <code>GITHUB_TOKEN</code> pushes.</li>
+<li>Wall-clock = longest parallel job = 6 minutes (Service B). Jobs run in parallel — total is the maximum, not the sum (4+6+3 = 13m would be sequential).</li>
+<li>With <code>kubectl apply</code> from CI, CI holds cluster credentials — a compromised runner can deploy anything to production. With manifest-update, CI only writes to Git; cluster credentials never leave the cluster. Argo CD (inside the cluster) polls Git and applies. Blast radius of a CI compromise = Git repo only, not the production cluster.</li>
+</ol>
+</details>
+<hr />
+<h2 id="hands-on-lab">Hands-on lab<a class="headerlink" href="#hands-on-lab" title="Permanent link">&para;</a></h2>
+<h3 id="part-a-your-first-github-actions-pipeline">Part A — your first GitHub Actions pipeline<a class="headerlink" href="#part-a-your-first-github-actions-pipeline" title="Permanent link">&para;</a></h3>
+<p><strong>Goal:</strong> build a workflow that tests, builds, and pushes a Docker image on every push to <code>main</code>.</p>
+<ol>
+<li>
+<p>Take the URL Shortener app from the capstone (or any small app). Push it to a GitHub repository.</p>
+</li>
+<li>
+<p>Create <code>.github/workflows/ci.yml</code>:
+   <div class="language-yaml highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CI</span>
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="nt">on</span><span class="p">:</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">    </span><span class="nt">branches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">main</span><span class="p p-Indicator">]</span>
+</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="nt">paths</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="s">&#39;app/**&#39;</span><span class="p p-Indicator">]</span>
+</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>
+</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="nt">jobs</span><span class="p">:</span>
+</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">  </span><span class="nt">test</span><span class="p">:</span>
+</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v5</span>
+</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="w">          </span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;3.12&#39;</span>
+</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">pip install pytest &amp;&amp; cd app &amp;&amp; pytest</span>
+</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>
+</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="w">  </span><span class="nt">build-push</span><span class="p">:</span>
+</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="w">    </span><span class="nt">needs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test</span>
+</span><span id="__span-14-19"><a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a><span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+</span><span id="__span-14-20"><a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a><span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+</span><span id="__span-14-21"><a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+</span><span id="__span-14-22"><a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a><span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+</span><span id="__span-14-23"><a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a><span class="w">          </span><span class="no">docker build -t ghcr.io/${{ github.repository }}:${{ github.sha }} ./app</span>
+</span><span id="__span-14-24"><a id="__codelineno-14-24" name="__codelineno-14-24" href="#__codelineno-14-24"></a><span class="w">          </span><span class="no">echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin</span>
+</span><span id="__span-14-25"><a id="__codelineno-14-25" name="__codelineno-14-25" href="#__codelineno-14-25"></a><span class="w">          </span><span class="no">docker push ghcr.io/${{ github.repository }}:${{ github.sha }}</span>
+</span></code></pre></div>
+   Using GHCR (GitHub Container Registry) avoids needing AWS secrets for this lab.</p>
+</li>
+<li>
+<p>In repo Settings → Actions → General → Workflow permissions, enable "Read and write permissions".</p>
+</li>
+<li>
+<p>Push to <code>main</code>. Watch the Actions tab. Observe: test job runs first, build-push job waits, then both show green.</p>
+</li>
+<li>
+<p>Intentionally break a test (add <code>assert False</code> to a test). Push. Observe: test job goes red, build-push job never starts.</p>
+</li>
+<li>
+<p>Fix the test. Push. Watch the pipeline recover.</p>
+</li>
+</ol>
+<p><strong>What this proves:</strong> the test gate stops broken code from producing an image. Feedback arrives in under 3 minutes.</p>
+<h3 id="part-b-add-the-manifest-update-step">Part B — add the manifest-update step<a class="headerlink" href="#part-b-add-the-manifest-update-step" title="Permanent link">&para;</a></h3>
+<ol>
+<li>
+<p>Add a <code>k8s/deployment.yaml</code> with an image line (see the capstone for the full file).</p>
+</li>
+<li>
+<p>Add a third step to the <code>build-push</code> job:
+   <div class="language-yaml highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Update manifest</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">      </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">        </span><span class="no">sed -i &quot;s|image: .*|image: ghcr.io/${{ github.repository }}:${{ github.sha }}|&quot; \</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">          </span><span class="no">k8s/deployment.yaml</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">        </span><span class="no">git config user.name &quot;ci-bot&quot;</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">        </span><span class="no">git config user.email &quot;ci@bot.com&quot;</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">        </span><span class="no">git add k8s/deployment.yaml</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">        </span><span class="no">git commit -m &quot;ci: update image to ${{ github.sha }} [skip ci]&quot;</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">        </span><span class="no">git push</span>
+</span></code></pre></div></p>
+</li>
+<li>
+<p>Push an app code change. Verify: in the Git commit history, you see the bot commit updating the SHA. Verify the <code>[skip ci]</code> tag means it does not trigger another run.</p>
+</li>
+</ol>
+<p><strong>What this proves:</strong> the manifest-update pattern — CI writes to Git, does not touch the cluster. Argo CD would pick up this change automatically (covered in M7 — see <a href="../08-M7-gitops/">08-M7-gitops.md</a>).</p>
+<p><strong>✅ Sahi hua to aisa dikhega:</strong> Part A mein GitHub Actions tab test job pehle green dikhata hai, phir build-push job green — aur intentionally broken test (<code>assert False</code>) ke baad build-push job kabhi shuru hi nahi hota (red test = image push nahi, zero images in GHCR). Part B mein <code>git log</code> mein ek bot commit dikhta hai jisme <code>k8s/deployment.yaml</code> ka image tag bilkul naye commit SHA se updated hai, commit message mein <code>[skip ci]</code> hai, aur GitHub Actions tab confirm karta hai ki us commit ne koi naya workflow run trigger nahi kiya.</p>
+<hr />
+<h2 id="interview-questions">Interview questions<a class="headerlink" href="#interview-questions" title="Permanent link">&para;</a></h2>
+<p><strong>Q: What is the difference between CI, Continuous Delivery, and Continuous Deployment?</strong></p>
+<p>CI automatically integrates, builds, and tests every code change. Continuous Delivery extends this so the artifact is always production-ready, but a human approves the final push to production. Continuous Deployment removes the human gate — every passing build goes to production automatically. Most organizations use Delivery for safety; high-velocity SaaS teams often use Deployment with strong automated test suites.</p>
+<p><strong>Q: Walk me through what happens when a developer pushes code to the main branch.</strong></p>
+<p>The push triggers the GitHub Actions workflow via the <code>on: push: branches: [main]</code> event. A runner (fresh Ubuntu VM) is allocated. The test job checks out the code and runs the test suite — if tests fail, the pipeline stops. If they pass, the build job authenticates to the registry using secrets, builds a Docker image tagged with the commit SHA, and pushes it. Then a <code>sed</code> command updates the image tag in the Kubernetes manifest YAML, and the updated file is committed and pushed to Git with <code>[skip ci]</code> in the message. Argo CD detects the manifest change and applies it to the cluster. Total time: 3–5 minutes.</p>
+<p><strong>Q: Why use <code>${{ github.sha }}</code> as the image tag instead of <code>latest</code>?</strong></p>
+<p>The <code>latest</code> tag is mutable — it can point to different images at different times. If different environments pull at different moments, they may get different images. <code>latest</code> also makes rollback impossible because you cannot know which version you are rolling back to. The commit SHA is immutable: a given SHA always maps to the same image, forever. It creates a traceable link from the running pod back to the exact code change that produced it.</p>
+<p><strong>Q: Your CI pipeline commits a manifest update to the repo and then triggers itself in an infinite loop. How do you fix it?</strong></p>
+<p>Three approaches: First, use a <code>paths:</code> filter so the workflow only triggers when files under <code>app/</code> change — the manifest commit touches <code>k8s/</code>, which is outside the filter. Second, add <code>[skip ci]</code> to the manifest commit message — the CI platform recognizes this and skips the workflow. Third, ensure the workflow uses the built-in <code>GITHUB_TOKEN</code> rather than a PAT for pushing — GitHub does not re-trigger workflows from pushes made with <code>GITHUB_TOKEN</code>. In production, use at least two of these layers.</p>
+<p><strong>Q: Why does the manifest-update pattern improve security compared to <code>kubectl apply</code> from CI?</strong></p>
+<p>When CI runs <code>kubectl apply</code> directly, it must hold cluster credentials (a kubeconfig or a service account token). If the CI system is compromised — a malicious pull request executes arbitrary code in the runner, for example — the attacker has cluster credentials and can deploy anything. With manifest-update, CI only has write access to a Git repository. The cluster credentials never leave the cluster; Argo CD (running inside) polls Git and applies changes. A compromised CI system can write to Git, but Argo CD only applies changes that match the expected manifest structure. The blast radius is narrowed.</p>
+<p><strong>Q: How do Jenkins, GitHub Actions, and GitLab CI differ? When would you choose each?</strong></p>
+<p>Jenkins is a self-hosted server with the widest plugin ecosystem but requires ongoing maintenance (server patching, plugin updates, agent management). Choose it for complex legacy pipelines, on-premises requirements, or when you need deep customization. GitHub Actions is built into GitHub — zero setup beyond a YAML file, excellent for projects already on GitHub. GitLab CI is built into GitLab, ideal when your team uses GitLab for source control and wants a single platform. The core concepts — stages, runners/agents, artifacts, secrets, triggers — are identical across all three.</p>
+<hr />
+<h2 id="production-challenge">Production challenge<a class="headerlink" href="#production-challenge" title="Permanent link">&para;</a></h2>
+<p>You have been asked to migrate a three-service application (API, worker, frontend) from manual deployments to a fully automated CI/CD pipeline. Requirements: tests must pass before any image is built; each service must be built in parallel to keep total pipeline time under 5 minutes; the <code>main</code> branch is protected and requires CI to pass before merge; rollback must be possible by reverting a Git commit; the CI system must not hold cluster credentials.</p>
+<p>Design the workflow structure. Specify: how you structure the jobs (test gate, matrix build, manifest-update), what secrets are required, how you prevent the infinite loop, what permissions are needed in the YAML, and how Argo CD fits into the deployment side. Draw the data flow from <code>git push</code> to running pods.</p>
+<p>Consider: what happens if the manifest-update <code>sed</code> command matches the wrong line in a multi-service YAML file? How do you make the pattern match precise enough to update only the right service's image tag?</p>
+<hr />
+<p><strong>Next module:</strong> <a href="../08-M7-gitops/">08-M7-gitops.md</a> — Argo CD picks up exactly where this module ends: it watches the Git manifest that CI just updated and reconciles the cluster to match.</p>
+<p><strong>Connected system view:</strong> <a href="../09-connected-system/">09-connected-system.md</a> explains how CI/CD connects to Terraform, Ansible, Docker, Kubernetes, and GitOps as a single production pipeline — including Golden Thread 4 (push vs pull).</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../06-M5-sizing-and-cost/" class="md-footer__link md-footer__link--prev" aria-label="Previous: M5 · Sizing &amp; Cost">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                M5 · Sizing & Cost
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../08-M7-gitops/" class="md-footer__link md-footer__link--next" aria-label="Next: M7 · GitOps">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                M7 · GitOps
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 grvtech1 — licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/grvtech1/devops-handbook" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "announce.dismiss"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/progress.js"></script>
+      
+    
+  </body>
+</html>

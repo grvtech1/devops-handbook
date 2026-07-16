@@ -1,0 +1,5499 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free, zero-to-job-ready DevOps handbook — from "what is a terminal" to production- and interview-ready. Systems thinking, hands-on labs, capstones.">
+      
+      
+      
+        <link rel="canonical" href="https://grvtech1.github.io/devops-handbook/20-confusions-and-tradeoffs/">
+      
+      
+        <link rel="prev" href="../14-interview-bank/">
+      
+      
+        <link rel="next" href="../22-command-cheatsheets/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Confusions & Trade-offs (X-vs-Y) - The DevOps Engineer's Handbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%206a6%206%200%200%201%206%206c0%202.22-1.21%204.16-3%205.2V19a1%201%200%200%201-1%201h-4a1%201%200%200%201-1-1v-1.8c-1.79-1.04-3-2.98-3-5.2a6%206%200%200%201%206-6m2%2015v1a1%201%200%200%201-1%201h-2a1%201%200%200%201-1-1v-1zm6-10h3v2h-3zM1%2011h3v2H1zM13%201v3h-2V1zM4.92%203.5l2.13%202.14-1.42%201.41L3.5%204.93zm12.03%202.13%202.12-2.13%201.43%201.43-2.13%202.12z%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m13.13%2022.19-1.63-3.83c1.57-.58%203.04-1.36%204.4-2.27zM5.64%2012.5l-3.83-1.63%206.1-2.77C7%209.46%206.22%2010.93%205.64%2012.5M21.61%202.39S16.66.269%2011%205.93c-2.19%202.19-3.5%204.6-4.35%206.71-.28.75-.09%201.57.46%202.13l2.13%202.12c.55.56%201.37.74%202.12.46A19.1%2019.1%200%200%200%2018.07%2013c5.66-5.66%203.54-10.61%203.54-10.61m-7.07%207.07c-.78-.78-.78-2.05%200-2.83s2.05-.78%202.83%200c.77.78.78%202.05%200%202.83s-2.05.78-2.83%200m-5.66%207.07-1.41-1.41zM6.24%2022l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83%2022zM2%2022h1.41l4.77-4.76-1.42-1.41L2%2020.59zm0-2.83%204.09-4.08c-.21-.3-.36-.62-.45-.97L2%2017.76z%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M13%2014h-2V9h2m0%209h-2v-2h2M1%2021h22L12%202z%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M8%2015a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m2.5%202%201.5-3%201.5%203zm5.5-2a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m6-4A10%2010%200%200%200%2012%201%2010%2010%200%200%200%202%2011c0%202.8%201.2%205.3%203%207.1V22h14v-3.9c1.8-1.8%203-4.3%203-7.1m-5%209h-2v-2h-2v2h-2v-2H9v2H7v-2.8c-1.8-1.5-3-3.7-3-6.2a8%208%200%200%201%208-8%208%208%200%200%201%208%208c0%202.5-1.2%204.8-3%206.2z%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#20-confusions-trade-offs-the-x-vs-y-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  🚀 <strong>26 chapters</strong> · rendered diagrams · hands-on labs · a 26-scenario incident playbook — all free (CC BY 4.0).
+  &nbsp;
+  <a href="https://github.com/grvtech1/devops-handbook" style="color: inherit; text-decoration: underline; font-weight: 700;">⭐ Star it on GitHub</a>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-header__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The DevOps Engineer's Handbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Confusions & Trade-offs (X-vs-Y)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../study-plan/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Study Plan
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../progress/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  My Progress
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../00-INDEX/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Handbook
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-nav__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    The DevOps Engineer's Handbook
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../study-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    My Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handbook
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Handbook
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-INDEX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Curriculum (Index)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 0 — Pre-flight
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 0 — Pre-flight
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00a-preflight/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00a · Pre-flight ground floor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00b-setup-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00b · Setup runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-linux-toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux · the ground everything runs on
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part I — Core toolchain
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part I — Core toolchain
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-M0-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M0 · Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-M1-terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M1 · Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-M2-ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M2 · Ansible
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-M3-docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M3 · Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-M4-kubernetes-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M4 · Kubernetes Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-M5-sizing-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M5 · Sizing & Cost
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-M6-cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M6 · CI/CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-M7-gitops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M7 · GitOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part II — Systems thinking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part II — Systems thinking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-connected-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Connected System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-k8s-objects-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Objects · How They Connect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-10-day-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Learning Plan (understand)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29-confidence-sprint/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Confidence Sprint (drill)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../28-helm-real-projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Helm in the Real World (your 2 projects)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-cicd-hands-on-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Follow One Commit (hands-on CI/CD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part III — Operate
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part III — Operate
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-M8-observability-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M8 · Observability & SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-M9-advanced-k8s-internals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M9 · Advanced K8s Internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30-k8s-complete-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Complete Reference (Workloads · Scheduling · Ops)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-production-incident-playbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Incident Playbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part IV — Capstones
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part IV — Capstones
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-capstone-url-shortener/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone I · URL Shortener
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-capstone-microshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone II · MicroShop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part V — Reference & career
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part V — Reference & career
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-interview-bank/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview Bank
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Confusions & Trade-offs (X-vs-Y)
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Confusions & Trade-offs (X-vs-Y)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#foundational-mental-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Foundational mental models
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Foundational mental models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#container-isolated-linux-process-not-a-mini-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Container = isolated Linux process, not a mini-VM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#image-vs-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Image vs Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-runtime-stack-runc-containerd-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The runtime stack: runc → containerd → Docker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vm-vs-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VM vs Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localhost-vs-0000" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        localhost vs 0.0.0.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#port-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Port mapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-does-it-run-client-vs-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where does it run? Client vs server
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Where does it run? Client vs server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-core-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The core rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-location-cheat-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install location cheat-map
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-kube-trio-kubeadm-vs-kubelet-vs-kubectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The kube- trio: kubeadm vs kubelet vs kubectl
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-does-the-ci-runner-execute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where does the CI runner execute?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubernetes-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kubernetes objects
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kubernetes objects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pod-vs-deployment-vs-statefulset-vs-daemonset-vs-job" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pod vs Deployment vs StatefulSet vs DaemonSet vs Job
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ephemeral-pods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ephemeral pods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-types-ingress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service types + Ingress
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configmap-vs-secret" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ConfigMap vs Secret
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requests-vs-limits-and-oomkilled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        requests vs limits (and OOMKilled)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#labels-vs-annotations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Labels vs Annotations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoscaling-hpa-vs-vpa-vs-cluster-autoscaler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Autoscaling: HPA vs VPA vs Cluster Autoscaler
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubectl-apply-vs-create" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        kubectl apply vs create
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#namespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Namespace
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pv-vs-pvc-vs-storageclass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PV vs PVC vs StorageClass
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-data-survives-pod-death" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why data survives pod death
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ebs-vs-efs-vs-s3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EBS vs EFS vs S3
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emptydir-vs-pvc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        emptyDir vs PVC
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#networking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Networking
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Networking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-a-request-reaches-a-pod" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How a request reaches a pod
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-discovery-via-dns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service discovery via DNS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cni-what-it-is-and-why-you-need-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CNI — what it is and why you need it
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#l4-vs-l7-load-balancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        L4 vs L7 load balancing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reverse-proxy-vs-load-balancer-vs-forward-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reverse proxy vs Load balancer vs Forward proxy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nodeport-vs-kubectl-port-forward" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NodePort vs kubectl port-forward
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-blocks-in-a-real-app-what-you-need-vs-what-you-can-skip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building blocks in a real app — what you NEED vs what you can SKIP
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Building blocks in a real app — what you NEED vs what you can SKIP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-example-app-jotter-a-notes-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The example app: "Jotter" (a notes app)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#now-every-block-used-where-and-when-you-can-skip-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Now every block — used where, and when you can skip it
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress-vs-loadbalancer-the-clarity-you-asked-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Ingress vs LoadBalancer — the clarity you asked for
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-required-vs-optional-cheat-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The required-vs-optional cheat table
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cicd-gitops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI/CD &amp; GitOps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CI/CD &amp; GitOps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ci-vs-continuous-delivery-vs-continuous-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI vs Continuous Delivery vs Continuous Deployment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#push-based-vs-pull-based-deploy-gitops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Push-based vs Pull-based deploy (GitOps)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artifact-vs-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Artifact vs Image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-stages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline stages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registry
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iac-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IaC &amp; configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IaC &amp; configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#terraform-vs-ansible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terraform vs Ansible
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terraform-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terraform state
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#declarative-vs-imperative" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Declarative vs Imperative
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotency
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#git" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Git">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#merge-vs-rebase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Merge vs Rebase
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#origin-vs-upstream-vs-head" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        origin vs upstream vs HEAD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branching-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Branching strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aws-fundamentals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AWS fundamentals
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AWS fundamentals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rds-vs-self-managed-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RDS vs self-managed database
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rds-vs-dynamodb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RDS vs DynamoDB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-group-vs-nacl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Group vs NACL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iam-role-vs-user-vs-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IAM Role vs User vs Policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#region-vs-availability-zone-az" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Region vs Availability Zone (AZ)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#public-vs-private-subnet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public vs private subnet
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alb-vs-nlb-vs-clb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ALB vs NLB vs CLB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aws-azure-conceptual-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AWS → Azure conceptual map
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-build-side-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker build-side depth
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Docker build-side depth">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmd-vs-entrypoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CMD vs ENTRYPOINT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#copy-vs-add" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        COPY vs ADD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layers-and-build-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layers and build cache
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-stage-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-stage build
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-latest-tag-trap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The latest tag trap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#root-vs-non-root-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Root vs non-root images
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observability
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Observability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metrics-vs-logs-vs-traces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metrics vs Logs vs Traces
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prometheus-pull-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prometheus pull model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#red-vs-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RED vs USE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#liveness-vs-readiness-vs-startup-probe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Liveness vs Readiness vs Startup probe
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-strategies-reliability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment strategies &amp; reliability
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment strategies &amp; reliability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rolling-vs-recreate-vs-blue-green-vs-canary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rolling vs Recreate vs Blue-Green vs Canary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rollback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zero-downtime-readiness-probes-rolling-update-graceful-shutdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zero-downtime = readiness probes + rolling update + graceful shutdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failed-production-deploy-the-right-instinct" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failed production deploy — the right instinct
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-judgment-senior-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production judgment (senior signals)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#30-second-skim-the-anchors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        30-second skim — the anchors
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-command-cheatsheets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Command Cheat-Sheets & Labs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-roadmap-M11-M18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap · M11–M18
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-reference-appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Appendix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-career-job-ready/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Job-Ready
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part VI — The Production Gauntlet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part VI — The Production Gauntlet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-production-gauntlet-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build the Real System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-production-gauntlet-chaos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chaos Engineering · break & fix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#foundational-mental-models" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Foundational mental models
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Foundational mental models">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#container-isolated-linux-process-not-a-mini-vm" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Container = isolated Linux process, not a mini-VM
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#image-vs-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Image vs Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-runtime-stack-runc-containerd-docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The runtime stack: runc → containerd → Docker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#vm-vs-container" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VM vs Container
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#localhost-vs-0000" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        localhost vs 0.0.0.0
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#port-mapping" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Port mapping
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-does-it-run-client-vs-server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where does it run? Client vs server
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Where does it run? Client vs server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-core-rule" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The core rule
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#install-location-cheat-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Install location cheat-map
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-kube-trio-kubeadm-vs-kubelet-vs-kubectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The kube- trio: kubeadm vs kubelet vs kubectl
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-does-the-ci-runner-execute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where does the CI runner execute?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kubernetes-objects" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kubernetes objects
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Kubernetes objects">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pod-vs-deployment-vs-statefulset-vs-daemonset-vs-job" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pod vs Deployment vs StatefulSet vs DaemonSet vs Job
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ephemeral-pods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ephemeral pods
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-types-ingress" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service types + Ingress
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configmap-vs-secret" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ConfigMap vs Secret
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#requests-vs-limits-and-oomkilled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        requests vs limits (and OOMKilled)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#labels-vs-annotations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Labels vs Annotations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#autoscaling-hpa-vs-vpa-vs-cluster-autoscaler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Autoscaling: HPA vs VPA vs Cluster Autoscaler
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubectl-apply-vs-create" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        kubectl apply vs create
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#namespace" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Namespace
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#storage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Storage
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Storage">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pv-vs-pvc-vs-storageclass" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PV vs PVC vs StorageClass
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#why-data-survives-pod-death" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why data survives pod death
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ebs-vs-efs-vs-s3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        EBS vs EFS vs S3
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#emptydir-vs-pvc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        emptyDir vs PVC
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#networking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Networking
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Networking">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#how-a-request-reaches-a-pod" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How a request reaches a pod
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#service-discovery-via-dns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Service discovery via DNS
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cni-what-it-is-and-why-you-need-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CNI — what it is and why you need it
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#l4-vs-l7-load-balancing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        L4 vs L7 load balancing
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#reverse-proxy-vs-load-balancer-vs-forward-proxy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reverse proxy vs Load balancer vs Forward proxy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nodeport-vs-kubectl-port-forward" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        NodePort vs kubectl port-forward
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-blocks-in-a-real-app-what-you-need-vs-what-you-can-skip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building blocks in a real app — what you NEED vs what you can SKIP
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Building blocks in a real app — what you NEED vs what you can SKIP">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-example-app-jotter-a-notes-app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The example app: "Jotter" (a notes app)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#now-every-block-used-where-and-when-you-can-skip-it" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Now every block — used where, and when you can skip it
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ingress-vs-loadbalancer-the-clarity-you-asked-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Ingress vs LoadBalancer — the clarity you asked for
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-required-vs-optional-cheat-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The required-vs-optional cheat table
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cicd-gitops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI/CD &amp; GitOps
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="CI/CD &amp; GitOps">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ci-vs-continuous-delivery-vs-continuous-deployment" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI vs Continuous Delivery vs Continuous Deployment
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#push-based-vs-pull-based-deploy-gitops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Push-based vs Pull-based deploy (GitOps)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#artifact-vs-image" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Artifact vs Image
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pipeline-stages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline stages
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#registry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Registry
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#iac-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IaC &amp; configuration
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="IaC &amp; configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#terraform-vs-ansible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terraform vs Ansible
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#terraform-state" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terraform state
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#declarative-vs-imperative" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Declarative vs Imperative
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idempotency" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotency
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#git" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Git">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#merge-vs-rebase" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Merge vs Rebase
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#origin-vs-upstream-vs-head" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        origin vs upstream vs HEAD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#branching-strategy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Branching strategy
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#aws-fundamentals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AWS fundamentals
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="AWS fundamentals">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rds-vs-self-managed-database" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RDS vs self-managed database
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rds-vs-dynamodb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RDS vs DynamoDB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#security-group-vs-nacl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Security Group vs NACL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#iam-role-vs-user-vs-policy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        IAM Role vs User vs Policy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#region-vs-availability-zone-az" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Region vs Availability Zone (AZ)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#public-vs-private-subnet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Public vs private subnet
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#alb-vs-nlb-vs-clb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ALB vs NLB vs CLB
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#aws-azure-conceptual-map" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        AWS → Azure conceptual map
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#docker-build-side-depth" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker build-side depth
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Docker build-side depth">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cmd-vs-entrypoint" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CMD vs ENTRYPOINT
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#copy-vs-add" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        COPY vs ADD
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layers-and-build-cache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layers and build cache
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#multi-stage-build" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Multi-stage build
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-latest-tag-trap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The latest tag trap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#root-vs-non-root-images" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Root vs non-root images
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#observability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Observability
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Observability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metrics-vs-logs-vs-traces" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Metrics vs Logs vs Traces
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#prometheus-pull-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Prometheus pull model
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#red-vs-use" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RED vs USE
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#liveness-vs-readiness-vs-startup-probe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Liveness vs Readiness vs Startup probe
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-strategies-reliability" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment strategies &amp; reliability
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Deployment strategies &amp; reliability">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rolling-vs-recreate-vs-blue-green-vs-canary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rolling vs Recreate vs Blue-Green vs Canary
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rollback" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Rollback
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#zero-downtime-readiness-probes-rolling-update-graceful-shutdown" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Zero-downtime = readiness probes + rolling update + graceful shutdown
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#failed-production-deploy-the-right-instinct" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Failed production deploy — the right instinct
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-judgment-senior-signals" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production judgment (senior signals)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#30-second-skim-the-anchors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        30-second skim — the anchors
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="20-confusions-trade-offs-the-x-vs-y-reference">20 — Confusions &amp; Trade-offs (the X-vs-Y reference)<a class="headerlink" href="#20-confusions-trade-offs-the-x-vs-y-reference" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>What this is:</strong> Every entry is a place practitioners get stuck or interviewers probe. Read the <strong>bold one-liner</strong> as the anchor — it is designed to stick in memory. Where a topic has deep treatment elsewhere in the handbook, the anchor links you there; this chapter gives you the comparison frame so you know <em>what</em> to look up and <em>why it matters</em>. Pairs with the <a href="../14-interview-bank/">Interview Bank</a> and the <a href="../16-reference-appendix/">Reference Appendix</a>.</p>
+</blockquote>
+<hr />
+<h2 id="foundational-mental-models">Foundational mental models<a class="headerlink" href="#foundational-mental-models" title="Permanent link">&para;</a></h2>
+<h3 id="container-isolated-linux-process-not-a-mini-vm">Container = isolated Linux process, not a mini-VM<a class="headerlink" href="#container-isolated-linux-process-not-a-mini-vm" title="Permanent link">&para;</a></h3>
+<p><strong>A container is a normal Linux process wrapped in two kernel primitives: namespaces (what it sees) and cgroups (what it can use).</strong>
+Namespaces give the process its own view of PIDs, the network stack, the filesystem mount table, and hostname — it cannot see anything outside those walls. cgroups enforce hard resource limits (CPU, memory). There is no guest OS, no hypervisor, no separate kernel — just isolation. This is why containers are so light and start in milliseconds.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Container ek room ke andar band banda hai — bahar nahi dekh sakta, zyada khana nahi kha sakta. VM ek alag ghar hai, apna kitchen, apni electricity meter sab.</p>
+</blockquote>
+<h3 id="image-vs-container">Image vs Container<a class="headerlink" href="#image-vs-container" title="Permanent link">&para;</a></h3>
+<p><strong>Image = frozen read-only blueprint; Container = a running instance of that image.</strong>
+An image is built once, stored in a registry, and never changes. When you run it, the container engine adds a thin writable layer on top — that layer dies with the container. One image can spawn dozens of parallel containers. Think class vs object, or a cookie-cutter vs the actual cookie.</p>
+<h3 id="the-runtime-stack-runc-containerd-docker">The runtime stack: runc → containerd → Docker<a class="headerlink" href="#the-runtime-stack-runc-containerd-docker" title="Permanent link">&para;</a></h3>
+<p><strong>runc creates the container; containerd manages images + runc; Docker = containerd + CLI + build tools + networking (the full product).</strong></p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>What it does</th>
+<th>Who uses it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>runc</strong></td>
+<td>OCI-compliant process spawner — calls the kernel</td>
+<td>containerd calls it automatically</td>
+</tr>
+<tr>
+<td><strong>containerd</strong></td>
+<td>Image store, layer cache, runc lifecycle</td>
+<td>Kubernetes nodes (CRI)</td>
+</tr>
+<tr>
+<td><strong>Docker Engine</strong></td>
+<td>Wraps containerd + adds <code>docker build</code>, <code>docker push</code>, CLI</td>
+<td>Developers, CI pipelines</td>
+</tr>
+</tbody>
+</table>
+<p>Kubernetes speaks the CRI (Container Runtime Interface); it only needs containerd on nodes — Docker is for building images. That is why Kubernetes dropped the dockershim in 1.24: it was a translation layer that added complexity with no benefit for the cluster. <em>"Docker to build, containerd to run."</em> → Full containers treatment in <a href="../04-M3-docker/">M3</a>.</p>
+<h3 id="vm-vs-container">VM vs Container<a class="headerlink" href="#vm-vs-container" title="Permanent link">&para;</a></h3>
+<p><strong>VM virtualizes hardware (full guest OS, GBs, strong isolation); container virtualizes the OS (shares host kernel, MBs, starts in seconds).</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>VM</th>
+<th>Container</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Isolation</td>
+<td>Hardware-level, separate kernel</td>
+<td>OS-level, shared kernel</td>
+</tr>
+<tr>
+<td>Size</td>
+<td>Gigabytes (guest OS included)</td>
+<td>Megabytes (just the app + libs)</td>
+</tr>
+<tr>
+<td>Boot time</td>
+<td>Minutes</td>
+<td>Sub-second</td>
+</tr>
+<tr>
+<td>Security boundary</td>
+<td>Stronger (hypervisor)</td>
+<td>Weaker (shared kernel)</td>
+</tr>
+<tr>
+<td>Typical role</td>
+<td>The <em>node</em></td>
+<td>The <em>workload on the node</em></td>
+</tr>
+</tbody>
+</table>
+<p>In production: pods run inside VMs (EC2 nodes). Containers are what you deploy; VMs are the fleet those containers run on.</p>
+<h3 id="localhost-vs-0000">localhost vs 0.0.0.0<a class="headerlink" href="#localhost-vs-0000" title="Permanent link">&para;</a></h3>
+<p><strong>localhost / 127.0.0.1 = "only this machine"; 0.0.0.0 = "all interfaces, reachable from outside".</strong>
+A web server bound to 127.0.0.1 inside a container is invisible to anything outside that container — even if you port-map it. The fix is always: bind the server to <code>0.0.0.0</code>. This trips up every developer the first time they run a service in a container and can't reach it from the host.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> <code>127.0.0.1</code> = ghar ke andar baat karna. <code>0.0.0.0</code> = darwaza khol ke sabko sunna.</p>
+</blockquote>
+<h3 id="port-mapping">Port mapping<a class="headerlink" href="#port-mapping" title="Permanent link">&para;</a></h3>
+<p><strong><code>-p 8080:80</code> = "host port 8080 → container port 80". Left = outside, right = inside.</strong>
+The container's internal port is private by default — nothing can reach it without a mapping. The same mental model applies in Kubernetes: a Service's <code>port</code> is what clients use, <code>targetPort</code> is what the container listens on. NodePort is the node-level equivalent of <code>-p</code>.</p>
+<hr />
+<h2 id="where-does-it-run-client-vs-server">Where does it run? Client vs server<a class="headerlink" href="#where-does-it-run-client-vs-server" title="Permanent link">&para;</a></h2>
+<h3 id="the-core-rule">The core rule<a class="headerlink" href="#the-core-rule" title="Permanent link">&para;</a></h3>
+<p><strong>Client tools run from your laptop/CI and send commands to a remote; server-side tools run continuously on machines.</strong>
+Mixing these up is the single most common newcomer confusion. Terraform does not live on the cluster. kubelet does not live on your laptop.</p>
+<h3 id="install-location-cheat-map">Install location cheat-map<a class="headerlink" href="#install-location-cheat-map" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Installs on</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Terraform</td>
+<td>Laptop / CI runner</td>
+<td>Client — calls cloud APIs</td>
+</tr>
+<tr>
+<td>Ansible</td>
+<td>Laptop / control node</td>
+<td>Client — SSH-pushes to servers, agentless</td>
+</tr>
+<tr>
+<td>kubectl</td>
+<td>Laptop / CI runner</td>
+<td>Client — calls K8s API server</td>
+</tr>
+<tr>
+<td>Docker (build)</td>
+<td>Laptop / CI runner</td>
+<td>Build tool</td>
+</tr>
+<tr>
+<td>containerd + kubelet + kube-proxy</td>
+<td>Every K8s node</td>
+<td>Server — runs pods</td>
+</tr>
+<tr>
+<td>Control plane (API server, etcd, scheduler, CM)</td>
+<td>Master / control-plane node</td>
+<td>Server — the cluster brain</td>
+</tr>
+<tr>
+<td>ArgoCD</td>
+<td>Inside the cluster (pods)</td>
+<td>Server — watches Git, syncs</td>
+</tr>
+<tr>
+<td>Prometheus / Grafana</td>
+<td>Inside cluster or dedicated server</td>
+<td>Server — scrapes and stores metrics</td>
+</tr>
+</tbody>
+</table>
+<p>Terraform and Ansible are never "installed on the cluster." They run from outside and control remote infra.</p>
+<h3 id="the-kube-trio-kubeadm-vs-kubelet-vs-kubectl">The kube- trio: kubeadm vs kubelet vs kubectl<a class="headerlink" href="#the-kube-trio-kubeadm-vs-kubelet-vs-kubectl" title="Permanent link">&para;</a></h3>
+<p><strong>kubeadm builds the cluster (one-time); kubelet runs pods (always-on, per node); kubectl is your laptop CLI.</strong>
+They are three completely different binaries with different jobs. kubeadm is used once at cluster creation; you rarely touch it after. kubelet is a daemon that never stops; it watches the API server for pod assignments and ensures containers stay running. kubectl is stateless — install it anywhere you want to issue commands.</p>
+<h3 id="where-does-the-ci-runner-execute">Where does the CI runner execute?<a class="headerlink" href="#where-does-the-ci-runner-execute" title="Permanent link">&para;</a></h3>
+<p><strong>The CI controller schedules jobs; the runner/agent is the separate machine where <code>docker build</code> actually runs.</strong>
+In GitHub Actions: Actions service = controller, the GitHub-hosted (or self-hosted) runner = the worker. The runner is not your laptop and not the K8s cluster. In GitOps, the CI runner never touches the cluster directly — it only commits changed manifests to Git; ArgoCD inside the cluster does the actual apply. → Full pipeline treatment in <a href="../07-M6-cicd/">M6</a> and <a href="../08-M7-gitops/">M7</a>.</p>
+<hr />
+<h2 id="kubernetes-objects">Kubernetes objects<a class="headerlink" href="#kubernetes-objects" title="Permanent link">&para;</a></h2>
+<h3 id="pod-vs-deployment-vs-statefulset-vs-daemonset-vs-job">Pod vs Deployment vs StatefulSet vs DaemonSet vs Job<a class="headerlink" href="#pod-vs-deployment-vs-statefulset-vs-daemonset-vs-job" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Object</th>
+<th>Use for</th>
+<th>Key trait</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Pod</strong></td>
+<td>Never directly (always via a controller)</td>
+<td>Smallest unit — ephemeral, no self-healing</td>
+</tr>
+<tr>
+<td><strong>ReplicaSet</strong></td>
+<td>Managed by Deployment — don't use alone</td>
+<td>Keeps N identical pods</td>
+</tr>
+<tr>
+<td><strong>Deployment</strong></td>
+<td>Stateless apps (web, API)</td>
+<td>Rolling updates, random pod names</td>
+</tr>
+<tr>
+<td><strong>StatefulSet</strong></td>
+<td>Databases, Kafka, anything needing stable identity</td>
+<td>Ordered names (db-0, db-1), own PVC per pod</td>
+</tr>
+<tr>
+<td><strong>DaemonSet</strong></td>
+<td>Node-level agents (log shippers, metrics collectors)</td>
+<td>Exactly one pod per (matching) node</td>
+</tr>
+<tr>
+<td><strong>Job / CronJob</strong></td>
+<td>Batch tasks / scheduled tasks</td>
+<td>Runs to completion / on a schedule</td>
+</tr>
+</tbody>
+</table>
+<p>→ Deep treatment: <a href="../05-M4-kubernetes-core/">M4</a> and <a href="../11-M9-advanced-k8s-internals/">M9</a>.</p>
+<h3 id="ephemeral-pods">Ephemeral pods<a class="headerlink" href="#ephemeral-pods" title="Permanent link">&para;</a></h3>
+<p><strong>Pods die and get recreated with a new name and new IP anytime — never store data or identity inside a pod.</strong>
+The scheduler can evict a pod for node pressure, a rolling update replaces pods one by one, a node failure kills every pod on it. IPs change with every restart. This is intentional — it is why Services (stable virtual IP) and PersistentVolumeClaims (stable storage) exist as separate abstractions.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Pod ek temp worker hai — kal naya aayega, same naam nahi, same IP nahi. Service uska permanent address hai.</p>
+</blockquote>
+<h3 id="service-types-ingress">Service types + Ingress<a class="headerlink" href="#service-types-ingress" title="Permanent link">&para;</a></h3>
+<p><strong>ClusterIP = internal only (default); NodePort = node-level port (dev); LoadBalancer = cloud LB per service (prod); Ingress = one HTTP router for many services (prod front door).</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Reachable from</th>
+<th>Use case</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ClusterIP</td>
+<td>Inside the cluster only</td>
+<td>Microservice-to-microservice</td>
+</tr>
+<tr>
+<td>NodePort</td>
+<td>Node IP + high port (30000–32767)</td>
+<td>Local dev, quick testing</td>
+</tr>
+<tr>
+<td>LoadBalancer</td>
+<td>Internet (via cloud LB)</td>
+<td>Single service exposed at scale</td>
+</tr>
+<tr>
+<td>Ingress</td>
+<td>Internet → one IP, routes by host/path</td>
+<td>Multi-service HTTP front door</td>
+</tr>
+</tbody>
+</table>
+<p>Ingress is not a Service type — it is a separate resource that routes HTTP/HTTPS traffic to Services. It requires an Ingress controller (ingress-nginx, Traefik, etc.) to be installed. → <a href="../05-M4-kubernetes-core/">M4</a>.</p>
+<h3 id="configmap-vs-secret">ConfigMap vs Secret<a class="headerlink" href="#configmap-vs-secret" title="Permanent link">&para;</a></h3>
+<p><strong>ConfigMap = non-sensitive config (URLs, feature flags); Secret = sensitive values (passwords, tokens) — stored as base64, not encrypted by default.</strong>
+Base64 is encoding, not encryption — anyone with <code>kubectl get secret</code> access can decode it. For real security: enable Kubernetes encryption-at-rest, or use an external secret manager (HashiCorp Vault, AWS Secrets Manager, Sealed Secrets). Neither ConfigMap nor Secret should ever be baked into the image.</p>
+<h3 id="requests-vs-limits-and-oomkilled">requests vs limits (and OOMKilled)<a class="headerlink" href="#requests-vs-limits-and-oomkilled" title="Permanent link">&para;</a></h3>
+<p><strong>request = the scheduler's placement guarantee; limit = the hard ceiling — exceed CPU → throttled, exceed memory → pod killed (OOMKilled).</strong>
+The scheduler uses <code>requests</code> to decide which node has enough capacity. At runtime, a pod that exceeds its CPU limit is throttled (slowed down); one that exceeds its memory limit is sent SIGKILL by the kernel (<code>exit 137</code>, status <code>OOMKilled</code>). Setting both accurately is a production skill — too low and you get kills; too high and you waste money. → Sizing deep-dive in <a href="../06-M5-sizing-and-cost/">M5</a>.</p>
+<h3 id="labels-vs-annotations">Labels vs Annotations<a class="headerlink" href="#labels-vs-annotations" title="Permanent link">&para;</a></h3>
+<p><strong>Labels = identifying key/values you select/filter on; Annotations = non-identifying metadata you don't query on.</strong>
+Services find pods by matching label selectors — <code>app: frontend</code> in the Service selector must match <code>app: frontend</code> on the pod. Annotations hold out-of-band metadata: build timestamps, tool configs, links to runbooks. You can't do <code>kubectl get pods -l</code> on an annotation.</p>
+<h3 id="autoscaling-hpa-vs-vpa-vs-cluster-autoscaler">Autoscaling: HPA vs VPA vs Cluster Autoscaler<a class="headerlink" href="#autoscaling-hpa-vs-vpa-vs-cluster-autoscaler" title="Permanent link">&para;</a></h3>
+<p><strong>HPA = more pods when load rises; VPA = bigger pods; Cluster Autoscaler = more nodes when pods can't fit.</strong>
+These solve different layers of the same problem. HPA reacts to metrics (CPU, custom). VPA resizes requests/limits of existing pods (requires a restart). Cluster Autoscaler watches for <code>Pending</code> pods and adds nodes from the cloud provider's node group. All three can run together: HPA handles load spikes, CA handles node capacity, VPA helps you right-size over time. → <a href="../06-M5-sizing-and-cost/">M5</a>.</p>
+<h3 id="kubectl-apply-vs-create">kubectl apply vs create<a class="headerlink" href="#kubectl-apply-vs-create" title="Permanent link">&para;</a></h3>
+<p><strong><code>create</code> = imperative "make this now" (errors if it already exists); <code>apply</code> = declarative "make reality match this file" (creates or updates, idempotent).</strong>
+<code>apply</code> works by comparing the manifest you submit against the last-applied configuration stored as an annotation — it computes a patch. This makes it safe to run repeatedly. Production always uses <code>apply</code>, and ideally GitOps (ArgoCD) does the applying. → <a href="../08-M7-gitops/">M7</a>.</p>
+<h3 id="namespace">Namespace<a class="headerlink" href="#namespace" title="Permanent link">&para;</a></h3>
+<p><strong>A namespace is a virtual cluster inside the cluster — logical isolation for teams or environments, not a security boundary by itself.</strong>
+Resources in different namespaces can still reach each other unless you add NetworkPolicy. Pair namespaces with RBAC (who can do what in this namespace) and NetworkPolicy (which pods can talk to which) for real isolation. Default, kube-system, and kube-public are built-in namespaces; leave kube-system alone.</p>
+<hr />
+<h2 id="storage">Storage<a class="headerlink" href="#storage" title="Permanent link">&para;</a></h2>
+<h3 id="pv-vs-pvc-vs-storageclass">PV vs PVC vs StorageClass<a class="headerlink" href="#pv-vs-pvc-vs-storageclass" title="Permanent link">&para;</a></h3>
+<p><strong>PVC = the claim ("give me 10 Gi"); PV = the actual disk; StorageClass = the class that auto-creates the disk on demand.</strong>
+Think of it as: StorageClass is the catalogue, PVC is the order form, PV is the physical disk that arrives. In cloud environments, you usually define a StorageClass (backed by EBS, GCE PD, etc.) and create PVCs — the PV is provisioned automatically (dynamic provisioning). You rarely create PVs manually in cloud. → <a href="../05-M4-kubernetes-core/">M4</a>.</p>
+<pre class="mermaid"><code>flowchart LR
+    SC["StorageClass&lt;br/&gt;gp3 provisioner"]:::ci
+    PVC[("PVC&lt;br/&gt;10 Gi claim")]:::store
+    PV[("PV&lt;br/&gt;provisioned disk")]:::store
+    EBS[("EBS Volume&lt;br/&gt;AWS block storage")]:::store
+    POD["Pod&lt;br/&gt;(StatefulSet)"]:::run
+    NEWPOD["New pod&lt;br/&gt;(rescheduled)"]:::ok
+
+    SC -. "auto-provisions" .-&gt; PV
+    PV --&gt;|"backed by"| EBS
+    PVC --&gt;|"bound to"| PV
+    POD --&gt;|"mounts"| PVC
+    NEWPOD --&gt;|"re-mounts same"| PVC
+
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef warn fill:#fdeeee,stroke:#d64545,color:#b23030;
+    classDef ok fill:#e8f5e9,stroke:#43a047,color:#1b5e20;</code></pre>
+<p><em>Pod → PVC → PV → EBS; pod dies and restarts, but the PVC binding (and the data) survive.</em></p>
+<h3 id="why-data-survives-pod-death">Why data survives pod death<a class="headerlink" href="#why-data-survives-pod-death" title="Permanent link">&para;</a></h3>
+<p><strong>The EBS volume is independent of the pod — pod dies, volume and its data survive, new pod re-mounts the same volume.</strong>
+A StatefulSet (say a Postgres pod) has its own PVC. When the pod is restarted or rescheduled, Kubernetes re-attaches the same PVC to the new pod. The data was never in the pod — it was always on the external volume. This is the fundamental reason databases in Kubernetes use StatefulSets with PVCs, not Deployments with ephemeral storage.</p>
+<h3 id="ebs-vs-efs-vs-s3">EBS vs EFS vs S3<a class="headerlink" href="#ebs-vs-efs-vs-s3" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>EBS</th>
+<th>EFS</th>
+<th>S3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Type</strong></td>
+<td>Block storage</td>
+<td>Shared file system (NFS)</td>
+<td>Object storage</td>
+</tr>
+<tr>
+<td><strong>Access</strong></td>
+<td>One EC2/node at a time (RWO)</td>
+<td>Many pods simultaneously (RWX)</td>
+<td>HTTP API (not mounted)</td>
+</tr>
+<tr>
+<td><strong>Best for</strong></td>
+<td>Databases, single-writer workloads</td>
+<td>Shared config files, home dirs</td>
+<td>Backups, images, static assets</td>
+</tr>
+<tr>
+<td><strong>In K8s</strong></td>
+<td>Default PV for most StatefulSets</td>
+<td>When multiple pods need the same volume</td>
+<td>Not a PV — accessed via SDK/CLI</td>
+</tr>
+<tr>
+<td><strong>Cost</strong></td>
+<td>Per GB provisioned</td>
+<td>Per GB used</td>
+<td>Very cheap per GB</td>
+</tr>
+</tbody>
+</table>
+<p>EBS is the default choice for databases; EFS for anything that needs shared access across pods; S3 for anything that doesn't need to be mounted as a filesystem.</p>
+<h3 id="emptydir-vs-pvc">emptyDir vs PVC<a class="headerlink" href="#emptydir-vs-pvc" title="Permanent link">&para;</a></h3>
+<p><strong>emptyDir = scratch space that dies with the pod; PVC = persistent storage that survives pod death.</strong>
+Use <code>emptyDir</code> for temporary data within a single pod's lifetime (caches, build artifacts, inter-container scratch). Use a PVC for anything you must keep across restarts — databases, uploads, configuration files that aren't in a ConfigMap. Never store session state or user data in emptyDir.</p>
+<hr />
+<h2 id="networking">Networking<a class="headerlink" href="#networking" title="Permanent link">&para;</a></h2>
+<h3 id="how-a-request-reaches-a-pod">How a request reaches a pod<a class="headerlink" href="#how-a-request-reaches-a-pod" title="Permanent link">&para;</a></h3>
+<p><strong>Client → cloud LB → Ingress controller → Service (ClusterIP + kube-proxy routing) → Pod.</strong>
+Each layer serves a role: the cloud LB terminates external TCP; the Ingress controller inspects HTTP and routes by host/path to a Service; the Service is a stable virtual IP whose iptables rules (managed by kube-proxy) distribute traffic across healthy pod IPs. DNS lets pods reference Services by name — not by IP. → <a href="../05-M4-kubernetes-core/">M4</a>, <a href="../11-M9-advanced-k8s-internals/">M9</a>.</p>
+<pre class="mermaid"><code>flowchart LR
+    CLIENT["Client request&lt;br/&gt;(internet)"]:::run
+    LB["Cloud LB&lt;br/&gt;(ALB or NLB)"]:::ci
+    INGRESS["Ingress controller&lt;br/&gt;routes by host/path"]:::ci
+    SVC["Service&lt;br/&gt;stable ClusterIP"]:::ok
+    DNS["CoreDNS&lt;br/&gt;name lookup"]:::ci
+    POD1["Pod replica 1"]:::run
+    POD2["Pod replica 2"]:::run
+
+    CLIENT --&gt;|"HTTPS"| LB
+    LB --&gt;|"HTTP"| INGRESS
+    INGRESS --&gt;|"to Service"| SVC
+    SVC --&gt;|"kube-proxy"| POD1
+    SVC --&gt;|"kube-proxy"| POD2
+    DNS -. "svc.ns.svc.cluster.local" .-&gt; SVC
+
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef warn fill:#fdeeee,stroke:#d64545,color:#b23030;
+    classDef ok fill:#e8f5e9,stroke:#43a047,color:#1b5e20;</code></pre>
+<p><em>Client → LB → Ingress → Service → Pods; CoreDNS resolves Service names so pods never need to hard-code each other's IPs.</em></p>
+<h3 id="service-discovery-via-dns">Service discovery via DNS<a class="headerlink" href="#service-discovery-via-dns" title="Permanent link">&para;</a></h3>
+<p><strong>Pods find each other by Service name, not by IP — pod IPs change with every restart.</strong>
+CoreDNS (the cluster DNS) resolves <code>http://cartservice</code> to the ClusterIP of the <code>cartservice</code> Service. Full DNS name is <code>&lt;service&gt;.&lt;namespace&gt;.svc.cluster.local</code>, but within the same namespace the short name works. Hardcoding a pod IP is a bug — it breaks on the next restart.</p>
+<h3 id="cni-what-it-is-and-why-you-need-it">CNI — what it is and why you need it<a class="headerlink" href="#cni-what-it-is-and-why-you-need-it" title="Permanent link">&para;</a></h3>
+<p><strong>Kubernetes does not do pod networking — a CNI plugin does: it assigns pod IPs and enforces NetworkPolicy.</strong>
+Popular options: Calico (NetworkPolicy-capable, widely used in production), Flannel (simple overlay, no NetworkPolicy), Cilium (eBPF-based, high performance). When you bootstrap a cluster (<code>kubeadm init</code>), you must install a CNI plugin before any pods will become Ready. The choice of CNI affects which NetworkPolicy features you can use.</p>
+<h3 id="l4-vs-l7-load-balancing">L4 vs L7 load balancing<a class="headerlink" href="#l4-vs-l7-load-balancing" title="Permanent link">&para;</a></h3>
+<p><strong>L4 = routes by TCP/IP (fast, protocol-agnostic); L7 = routes by HTTP content (host, path, headers, cookies).</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>L4</th>
+<th>L7</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Operates at</td>
+<td>Transport (TCP/UDP)</td>
+<td>Application (HTTP/HTTPS)</td>
+</tr>
+<tr>
+<td>Can route by</td>
+<td>IP + port</td>
+<td>Host, path, headers, cookies</td>
+</tr>
+<tr>
+<td>TLS termination</td>
+<td>No (pass-through)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>AWS example</td>
+<td>NLB</td>
+<td>ALB</td>
+</tr>
+<tr>
+<td>K8s example</td>
+<td>Service type LoadBalancer</td>
+<td>Ingress + Ingress controller</td>
+</tr>
+<tr>
+<td>Speed</td>
+<td>Faster (no HTTP parsing)</td>
+<td>Slightly slower</td>
+</tr>
+</tbody>
+</table>
+<p>Ingress is always L7. Use L4 (NLB) when you need raw TCP, static IPs, or ultra-low latency (e.g. gaming, financial trading).</p>
+<h3 id="reverse-proxy-vs-load-balancer-vs-forward-proxy">Reverse proxy vs Load balancer vs Forward proxy<a class="headerlink" href="#reverse-proxy-vs-load-balancer-vs-forward-proxy" title="Permanent link">&para;</a></h3>
+<p><strong>Reverse proxy sits in front of servers (terminates TLS, routes, caches — Nginx/ingress-nginx). Load balancer spreads traffic across healthy backends. Forward proxy sits in front of clients (outbound/egress control).</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Sits in front of</th>
+<th>Controls</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Reverse proxy</td>
+<td>Servers</td>
+<td>Inbound traffic to backend pool</td>
+<td>Nginx, HAProxy, ingress-nginx</td>
+</tr>
+<tr>
+<td>Load balancer</td>
+<td>Backend pool</td>
+<td>Traffic distribution + health checks</td>
+<td>ALB, NLB, K8s Service</td>
+</tr>
+<tr>
+<td>Forward proxy</td>
+<td>Clients</td>
+<td>Outbound/egress — what clients can reach</td>
+<td>Squid, enterprise web filter</td>
+</tr>
+</tbody>
+</table>
+<p>In practice a reverse proxy often <em>is</em> the load balancer — Nginx both proxies and load-balances. The distinction matters for security: forward proxies control egress; reverse proxies control ingress. In K8s, the Ingress controller is a reverse proxy (nginx) behind a cloud load balancer.</p>
+<h3 id="nodeport-vs-kubectl-port-forward">NodePort vs kubectl port-forward<a class="headerlink" href="#nodeport-vs-kubectl-port-forward" title="Permanent link">&para;</a></h3>
+<p><strong>NodePort = a permanent port on every cluster node (accessible from outside); port-forward = a temporary tunnel from your local machine to a pod/service (dev only).</strong>
+NodePort survives pod restarts (the Service is stable) but requires knowing a node IP and firewall access. <code>kubectl port-forward</code> is better for quick local debugging — it proxies through the API server, requires no firewall changes, and is destroyed when you Ctrl-C. Never use <code>port-forward</code> in production or CI; never use NodePort as a production ingress strategy.</p>
+<hr />
+<h2 id="building-blocks-in-a-real-app-what-you-need-vs-what-you-can-skip">Building blocks in a real app — what you NEED vs what you can SKIP<a class="headerlink" href="#building-blocks-in-a-real-app-what-you-need-vs-what-you-can-skip" title="Permanent link">&para;</a></h2>
+<p>Most tutorials show every Kubernetes object as if you always need all of them. <strong>You don't.</strong> The senior skill is knowing <em>when each block is required, and when you can happily skip it.</em> Let's build <strong>one real app</strong> and walk every block through it.</p>
+<h3 id="the-example-app-jotter-a-notes-app">The example app: "Jotter" (a notes app)<a class="headerlink" href="#the-example-app-jotter-a-notes-app" title="Permanent link">&para;</a></h3>
+<p>Three components, deployed for a small team on a cloud cluster:</p>
+<pre class="mermaid"><code>flowchart LR
+  U(["🌐 User"]):::ext --&gt; ING["Ingress&lt;br/&gt;jotter.com · TLS"]:::net
+  ING --&gt;|"/"| WEB["web (frontend)&lt;br/&gt;stateless · 2 pods"]:::run
+  ING --&gt;|"/api"| API["api (backend)&lt;br/&gt;stateless · 3 pods"]:::run
+  WEB --&gt;|"ClusterIP"| API
+  API --&gt;|"ClusterIP"| PG[("postgres&lt;br/&gt;stateful · 1 pod + PVC")]:::store
+  PG -. "PVC → PV" .-&gt; EBS[("EBS disk")]:::store
+  classDef ext fill:#e8eaf6,stroke:#3f51b5,color:#1a237e;
+  classDef net fill:#ede7f6,stroke:#5e35b1,color:#311b92;
+  classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+  classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;</code></pre>
+<p><em><code>web</code> and <code>api</code> are </em><em>stateless</em><em>; <code>postgres</code> is </em><em>stateful</em><em>. That single distinction decides most of what follows.</em></p>
+<h3 id="now-every-block-used-where-and-when-you-can-skip-it">Now every block — used where, and when you can skip it<a class="headerlink" href="#now-every-block-used-where-and-when-you-can-skip-it" title="Permanent link">&para;</a></h3>
+<p><strong>🏷️ Labels &amp; Selectors</strong> — <em>the glue, never optional</em>
+- <strong>In Jotter:</strong> the <code>api</code> Service says <code>selector: app=api</code> → finds the 3 api pods by their <code>app=api</code> label. The Deployment manages those pods the same way. Everything wires through labels.
+- <strong>Kab zaroori / kab skip:</strong> you <strong>cannot skip</strong> them — a Service or controller literally <em>has</em> no way to find pods except by label. The only time you don't hand-write them is a throwaway <code>kubectl run test</code> pod.
+- &gt; 🇮🇳 <strong>Bina label ke Service pods dhoondh hi nahi sakti</strong> — traffic dead. Selector aur pod-label match na kiye = #1 galti.</p>
+<p><strong>🔌 ClusterIP</strong> — <em>default; required for internal talk</em>
+- <strong>In Jotter:</strong> <code>api</code> and <code>postgres</code> are <strong>ClusterIP</strong> — internal only. <code>web</code> calls <code>http://api</code>, <code>api</code> calls <code>postgres:5432</code>. Neither is exposed to the internet.
+- <strong>Kab zaroori / kab skip:</strong> required whenever one pod must reach another by a stable name (almost always). You <em>technically</em> could skip a Service and use raw pod IPs — but pod IPs change, so in practice <strong>every internal service needs a ClusterIP</strong>. (<code>clusterIP: None</code> = <em>headless</em>, for StatefulSets needing direct per-pod DNS like <code>postgres-0</code>.)
+- &gt; 🇮🇳 <strong>ClusterIP = ghar ke andar ka private number.</strong> Internal microservices ke liye default aur free — 99% Services yahi.</p>
+<p><strong>🚪 NodePort</strong> — <em>usually SKIP in cloud</em>
+- <strong>In Jotter (cloud):</strong> <strong>not used at all.</strong> We expose the frontend via Ingress, not a raw node port.
+- <strong>Kab zaroori:</strong> only on <strong>bare-metal / on-prem without a cloud load balancer</strong>, or a quick dev exposure (<code>minikube service</code>). <strong>Kab skip:</strong> any cloud production app — ugly high ports (30000+) and node-IP coupling.
+- &gt; 🇮🇳 <strong>NodePort = gate pe ek number-wala side-door.</strong> Dev/on-prem ke liye theek, cloud prod me nahi.</p>
+<p><strong>☁️ LoadBalancer</strong> — <em>only for internet-facing; often replaced by Ingress</em>
+- <strong>In Jotter:</strong> <code>postgres</code> and <code>api</code> = internal = <strong>no LoadBalancer</strong>. Only the <em>entry point</em> faces the internet — and even that we do via <strong>Ingress</strong> (which uses one shared LB), not a per-service LoadBalancer.
+- <strong>Kab zaroori:</strong> a service that must have its <strong>own public IP</strong> — a single non-HTTP service (raw TCP / gRPC / a database you deliberately expose), or where you need an <strong>NLB</strong> for raw performance. <strong>Kab skip:</strong> internal services (never), and HTTP services that can share one Ingress.
+- &gt; 🇮🇳 <strong>Har LoadBalancer service = ek naya cloud LB = alag IP + paisa.</strong> 5 services = 5 LB = 💸. Isliye HTTP ke liye <strong>Ingress</strong> (ek LB, many services).</p>
+<h3 id="ingress-vs-loadbalancer-the-clarity-you-asked-for">🎯 Ingress vs LoadBalancer — the clarity you asked for<a class="headerlink" href="#ingress-vs-loadbalancer-the-clarity-you-asked-for" title="Permanent link">&para;</a></h3>
+<p>Both get outside traffic in — but they operate at different layers and cost very differently:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>LoadBalancer (Service)</strong></th>
+<th><strong>Ingress</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Layer</td>
+<td><strong>L4</strong> (TCP/IP)</td>
+<td><strong>L7</strong> (HTTP/HTTPS)</td>
+</tr>
+<tr>
+<td>Routing</td>
+<td>dumb — forwards a port to pods</td>
+<td>smart — by <strong>host &amp; path</strong> (<code>/api</code>, <code>shop.com</code> vs <code>blog.com</code>)</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td><strong>one cloud LB per service</strong> (each = an IP + $)</td>
+<td><strong>one LB total</strong>, shared by many services</td>
+</tr>
+<tr>
+<td>TLS</td>
+<td>you handle it</td>
+<td><strong>terminates TLS</strong> centrally (one cert, cert-manager)</td>
+</tr>
+<tr>
+<td>Needs</td>
+<td>nothing extra</td>
+<td>an <strong>Ingress controller</strong> (nginx pod) running in the cluster</td>
+</tr>
+<tr>
+<td>Best for</td>
+<td>a single non-HTTP service, or a dedicated IP</td>
+<td><strong>many HTTP services behind one domain</strong> (the norm)</td>
+</tr>
+</tbody>
+</table>
+<pre class="mermaid"><code>flowchart TD
+  subgraph L["❌ 3 LoadBalancers = 3 LBs, 3 IPs, 3× cost"]
+    U1(["User"]):::ext --&gt; LB1["LB → web"]:::warn
+    U1 --&gt; LB2["LB → api"]:::warn
+    U1 --&gt; LB3["LB → admin"]:::warn
+  end
+  subgraph I["✅ 1 Ingress = 1 LB, host/path routing, 1 cert"]
+    U2(["User"]):::ext --&gt; IG["Ingress (1 LB)"]:::ok
+    IG --&gt;|"/"| W["web"]:::run
+    IG --&gt;|"/api"| A["api"]:::run
+    IG --&gt;|"admin.jotter.com"| AD["admin"]:::run
+  end
+  classDef ext fill:#e8eaf6,stroke:#3f51b5,color:#1a237e;
+  classDef warn fill:#fdeeee,stroke:#d64545,color:#b23030;
+  classDef ok fill:#e8f5e9,stroke:#43a047,color:#1b5e20;
+  classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;</code></pre>
+<blockquote>
+<p>🇮🇳 <strong>Instantly click:</strong> <em>LoadBalancer = ek service ke liye ek poora cloud LB (L4, dumb, mehnga). Ingress = </em><em>ek LB + ek smart receptionist</em><em> jo host/path se kai HTTP services ko route karta, TLS bhi ek jagah. Isliye production me many-services = </em><em>Ingress</em><em>, single raw-TCP service = </em><em>LoadBalancer</em><em>.</em> Note: Ingress <strong>khud</strong> ek LoadBalancer service ke peeche chalta hai (ingress-controller ka) — woh contradict nahi karta, woh <strong>usko efficient</strong> banata.</p>
+</blockquote>
+<p><strong>🏠 Namespace</strong> — <em>optional for small, required for scale</em>
+- <strong>In Jotter:</strong> we put everything in a <code>jotter</code> namespace (clean), but a tiny solo project would work fine in <code>default</code>.
+- <strong>Kab zaroori:</strong> multiple teams/environments (dev/staging/prod), <strong>ResourceQuota</strong>, or <strong>RBAC</strong> boundaries. <strong>Kab skip:</strong> a single small app — <code>default</code> is genuinely fine.
+- &gt; 🇮🇳 <strong>Chhoti single app? <code>default</code> chalega.</strong> Multi-team / dev-staging-prod / quota chahiye? Tab namespace. Aur yaad: <strong>security ke liye NetworkPolicy</strong> — namespace akela deewaar nahi.</p>
+<p><strong>💾 HostPath vs PersistentVolume</strong> — <em>skip storage entirely for stateless apps</em>
+- <strong>In Jotter:</strong> <code>web</code> and <code>api</code> are <strong>stateless → NO storage at all</strong> (no PV, no hostPath). Only <code>postgres</code> needs a <strong>PersistentVolume</strong> (EBS) so its data survives pod restarts and reschedules.
+- <strong>Kab zaroori:</strong> a <strong>PV</strong> whenever data must persist (databases, uploads). <strong>Kab skip PV:</strong> any stateless service (most microservices) — they need nothing. <strong>HostPath:</strong> basically always skip in production (only node-agents like a log collector, or single-node dev) — it ties the pod to one node, so a node failure loses the data.
+- &gt; 🇮🇳 <strong>Stateless app (web/api)? Storage ki zaroorat NAHI.</strong> Sirf database ko <strong>PV (bank locker)</strong> chahiye. <strong>HostPath = node ki local almari</strong> — node mara to data gaya, production me nahi.</p>
+<p><strong>📦 Helm &amp; Charts</strong> — <em>optional for tiny, essential at scale</em>
+- <strong>In Jotter:</strong> ~10 manifests × 3 envs. For a <em>tiny</em> app, plain <code>kubectl apply -f ./k8s/</code> is genuinely fine. But with 3 environments and versioning, a <strong>Helm chart + <code>values.yaml</code></strong> (image tag, replicas per env) removes the copy-paste. And we install postgres + the ingress-controller from <strong>community Helm charts</strong> in one command each.
+- <strong>Kab zaroori:</strong> many manifests, <strong>multi-environment</strong>, installing <strong>third-party apps</strong>, or wanting <strong>versioned install/rollback</strong>. <strong>Kab skip:</strong> one or two manifests, one environment — raw <code>kubectl apply</code> (or Kustomize) is simpler.
+- &gt; 🇮🇳 <strong>1-2 YAML, ek environment? Helm ki zaroorat nahi — <code>kubectl apply</code> bas.</strong> Bahut manifests / multi-env / third-party install / rollback chahiye? <strong>Helm.</strong> (Alternative: <strong>Kustomize</strong> — templating nahi, overlays se per-env patch.)</p>
+<h3 id="the-required-vs-optional-cheat-table">The required-vs-optional cheat table<a class="headerlink" href="#the-required-vs-optional-cheat-table" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Block</th>
+<th>Always needed?</th>
+<th>Need it when…</th>
+<th>Safe to SKIP when…</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Labels/Selectors</strong></td>
+<td>✅ effectively yes</td>
+<td>wiring any Service/controller</td>
+<td>never (it's the glue)</td>
+</tr>
+<tr>
+<td><strong>ClusterIP</strong></td>
+<td>✅ for internal talk</td>
+<td>one pod calls another by name</td>
+<td>a truly standalone one-off pod</td>
+</tr>
+<tr>
+<td><strong>NodePort</strong></td>
+<td>❌</td>
+<td>bare-metal/on-prem, quick dev</td>
+<td>any cloud app (use Ingress/LB)</td>
+</tr>
+<tr>
+<td><strong>LoadBalancer</strong></td>
+<td>❌</td>
+<td>a single non-HTTP public service / dedicated IP</td>
+<td>internal services; HTTP → use Ingress</td>
+</tr>
+<tr>
+<td><strong>Ingress</strong></td>
+<td>❌ (but usual)</td>
+<td>many HTTP services / TLS / one domain</td>
+<td>a single service or non-HTTP</td>
+</tr>
+<tr>
+<td><strong>Namespace</strong></td>
+<td>❌</td>
+<td>multi-team/env, quota, RBAC</td>
+<td>a small single app (<code>default</code> is fine)</td>
+</tr>
+<tr>
+<td><strong>PersistentVolume</strong></td>
+<td>❌</td>
+<td>stateful apps (databases, uploads)</td>
+<td><strong>stateless</strong> apps (most microservices)</td>
+</tr>
+<tr>
+<td><strong>HostPath</strong></td>
+<td>❌</td>
+<td>node-agents / single-node dev only</td>
+<td><strong>almost always</strong> in production</td>
+</tr>
+<tr>
+<td><strong>Helm</strong></td>
+<td>❌</td>
+<td>many manifests / multi-env / 3rd-party / rollback</td>
+<td>1–2 manifests, one env (<code>kubectl apply</code>)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🇮🇳 <strong>Golden takeaway:</strong> <em>Stateless app chahiye? → Deployment + ClusterIP + Ingress, bas — </em><em>koi PV nahi, koi hostPath nahi.</em><em> Database add hui? → PV. Kai services + ek domain? → Ingress (na ki har ek pe LoadBalancer). Kai environments? → Helm. Har object tabhi lo jab uska </em><em>kaam</em><em> ho — warna simplicity behtar.</em></p>
+</blockquote>
+<hr />
+<h2 id="cicd-gitops">CI/CD &amp; GitOps<a class="headerlink" href="#cicd-gitops" title="Permanent link">&para;</a></h2>
+<h3 id="ci-vs-continuous-delivery-vs-continuous-deployment">CI vs Continuous Delivery vs Continuous Deployment<a class="headerlink" href="#ci-vs-continuous-delivery-vs-continuous-deployment" title="Permanent link">&para;</a></h3>
+<p><strong>CI = auto build+test on every commit. Continuous Delivery = every passing change is ready to ship (manual gate to prod). Continuous Deployment = passing changes auto-ship to prod.</strong>
+The difference between the two "CDs" is exactly one gate: a human approval before prod. Continuous Delivery is common in regulated industries; Continuous Deployment is common in tech companies with strong test coverage and canary deployments. Both require CI as their foundation. → <a href="../07-M6-cicd/">M6</a>.</p>
+<h3 id="push-based-vs-pull-based-deploy-gitops">Push-based vs Pull-based deploy (GitOps)<a class="headerlink" href="#push-based-vs-pull-based-deploy-gitops" title="Permanent link">&para;</a></h3>
+<p><strong>Push = CI has cluster credentials and runs kubectl apply from outside. Pull (GitOps) = CI commits desired state to Git; ArgoCD inside the cluster pulls and applies.</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Push-based</th>
+<th>Pull-based (GitOps)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Who applies</td>
+<td>CI runner (external)</td>
+<td>ArgoCD / Flux (inside cluster)</td>
+</tr>
+<tr>
+<td>Cluster creds in CI</td>
+<td>Yes (security risk)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Drift detection</td>
+<td>None</td>
+<td>Automatic (ArgoCD alerts)</td>
+</tr>
+<tr>
+<td>Audit trail</td>
+<td>CI logs</td>
+<td>Git history</td>
+</tr>
+<tr>
+<td>Rollback</td>
+<td>Rerun pipeline</td>
+<td><code>git revert</code> + auto-sync</td>
+</tr>
+</tbody>
+</table>
+<p>Pull is safer and more auditable. Push is simpler for small teams. → <a href="../08-M7-gitops/">M7</a>.</p>
+<h3 id="artifact-vs-image">Artifact vs Image<a class="headerlink" href="#artifact-vs-image" title="Permanent link">&para;</a></h3>
+<p><strong>Artifact = any build output (jar, binary, zip); Image = a container image (an artifact, but the deployable unit for K8s).</strong>
+CI produces artifacts first; those artifacts are then packaged into an image and pushed to a registry. They are distinct steps — a Java service produces a <code>.jar</code> (artifact), which is then <code>COPY</code>-ed into a container image. Understanding the two-step process helps you debug build failures precisely.</p>
+<h3 id="pipeline-stages">Pipeline stages<a class="headerlink" href="#pipeline-stages" title="Permanent link">&para;</a></h3>
+<p><strong>Checkout → Test → Build image → Security scan → Push (SHA-tagged) → Deploy (via GitOps).</strong>
+Tagging with the commit SHA (<code>docker build -t myapp:${GITHUB_SHA}</code>) makes every running image traceable to an exact commit — this is the foundation of reliable rollbacks and audit. The security scan (Trivy, Grype) runs before push so vulnerable images never reach the registry. → <a href="../07-M6-cicd/">M6</a>, <a href="../19-cicd-hands-on-flow/">19</a>.</p>
+<h3 id="registry">Registry<a class="headerlink" href="#registry" title="Permanent link">&para;</a></h3>
+<p><strong>A registry is where images live — CI pushes, nodes pull. Never use <code>latest</code> as a production image tag.</strong>
+<code>latest</code> is a mutable pointer — "latest" today can be a completely different image tomorrow. If you roll back using <code>latest</code> you may not know what you are rolling back to. Use immutable tags: <code>myapp:a3f2c91</code> (commit SHA) or <code>myapp:1.4.2</code> (semver). This applies to base images in your Dockerfile too — pin them. → <a href="../04-M3-docker/">M3</a>.</p>
+<hr />
+<h2 id="iac-configuration">IaC &amp; configuration<a class="headerlink" href="#iac-configuration" title="Permanent link">&para;</a></h2>
+<h3 id="terraform-vs-ansible">Terraform vs Ansible<a class="headerlink" href="#terraform-vs-ansible" title="Permanent link">&para;</a></h3>
+<p><strong>Terraform = provisioning (create/manage infra, tracks state, declarative); Ansible = configuration (install/configure an existing machine, procedural, agentless over SSH).</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Terraform</th>
+<th>Ansible</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Purpose</td>
+<td>Build the infra</td>
+<td>Configure what's already built</td>
+</tr>
+<tr>
+<td>State</td>
+<td>Yes — tracks what exists</td>
+<td>No state file</td>
+</tr>
+<tr>
+<td>Language</td>
+<td>Declarative HCL</td>
+<td>Imperative YAML tasks</td>
+</tr>
+<tr>
+<td>Transport</td>
+<td>Cloud APIs</td>
+<td>SSH / WinRM</td>
+</tr>
+<tr>
+<td>Idempotent</td>
+<td>Yes (plan+apply)</td>
+<td>Yes (most modules)</td>
+</tr>
+<tr>
+<td>Typical use</td>
+<td>VPCs, subnets, EKS clusters</td>
+<td>Install nginx, configure users, deploy config</td>
+</tr>
+</tbody>
+</table>
+<p>Real-world combo: Terraform builds the EC2 fleet; Ansible configures Nginx and deploys the app. → <a href="../02-M1-terraform/">M1</a>, <a href="../03-M2-ansible/">M2</a>.</p>
+<h3 id="terraform-state">Terraform state<a class="headerlink" href="#terraform-state" title="Permanent link">&para;</a></h3>
+<p><strong>State is the map between your HCL code and real infrastructure — without it Terraform is blind.</strong>
+State is stored as JSON (<code>terraform.tfstate</code>). For teams: keep state in a remote backend (S3 bucket) with a DynamoDB table for locking — this prevents two engineers from running <code>apply</code> simultaneously and corrupting state. Always run <code>terraform plan</code> and review the diff before <code>apply</code>. Lost state = Terraform will try to create everything again and collide with what already exists.</p>
+<h3 id="declarative-vs-imperative">Declarative vs Imperative<a class="headerlink" href="#declarative-vs-imperative" title="Permanent link">&para;</a></h3>
+<p><strong>Declarative = "here is the desired end state" (Terraform, K8s YAML); Imperative = "do these steps" (a bash script).</strong>
+Declarative is reproducible and reviewable — the code IS the documentation. Imperative breaks idempotency (run it twice, get two of everything). Production DevOps is declarative wherever possible. A bash script that creates a server is not IaC; a Terraform resource that manages a server is.</p>
+<h3 id="idempotency">Idempotency<a class="headerlink" href="#idempotency" title="Permanent link">&para;</a></h3>
+<p><strong>Running the same operation N times gives the same result — no duplicates, no damage.</strong>
+<code>terraform apply</code> computes a diff against state and only changes what needs changing. <code>kubectl apply</code> patches only what differs. <code>ansible-playbook</code> checks current state before acting. This property is what makes automation safe to run in CI on every merge. A non-idempotent script (e.g. <code>echo "line" &gt;&gt; file</code> with no dedup check) is a production liability.</p>
+<hr />
+<h2 id="git">Git<a class="headerlink" href="#git" title="Permanent link">&para;</a></h2>
+<h3 id="merge-vs-rebase">Merge vs Rebase<a class="headerlink" href="#merge-vs-rebase" title="Permanent link">&para;</a></h3>
+<p><strong>Merge keeps full history + a merge commit (safe on shared branches); Rebase rewrites your commits onto latest main (clean linear history, only on private branches).</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Merge</th>
+<th>Rebase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>History</td>
+<td>Preserves branch topology</td>
+<td>Linear (no merge commits)</td>
+</tr>
+<tr>
+<td>Safe to use on</td>
+<td>Any branch, including shared</td>
+<td>Your own local branch only</td>
+</tr>
+<tr>
+<td>Conflict resolution</td>
+<td>Once, at merge time</td>
+<td>Once per commit being rebased</td>
+</tr>
+<tr>
+<td>Rollback</td>
+<td>Revert the merge commit</td>
+<td>Harder — commits are rewritten</td>
+</tr>
+<tr>
+<td>Best for</td>
+<td>Integrating completed feature branches</td>
+<td>Cleaning up before opening a PR</td>
+</tr>
+</tbody>
+</table>
+<p>The rule: <strong>rebase local, merge shared.</strong> Never force-push a rebased branch to main or any branch others are working on — it rewrites history and breaks their local copies.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Rebase = apni naukri ke papers dobara date se likhna (clean dikh ta hai). Merge = official rubber stamp ke saath original history rakhna.</p>
+</blockquote>
+<h3 id="origin-vs-upstream-vs-head">origin vs upstream vs HEAD<a class="headerlink" href="#origin-vs-upstream-vs-head" title="Permanent link">&para;</a></h3>
+<p><strong>origin = your remote (fork or own repo); upstream = the original you forked from; HEAD = where you are right now.</strong>
+<code>git push origin feature/x</code> pushes to your fork. <code>git fetch upstream main</code> pulls the original repo's latest. <code>HEAD</code> is a pointer — <code>main...HEAD</code> means "every commit on this branch since it diverged from main." Understanding this trio untangles 90 % of git confusion in open-source contribution workflows.</p>
+<h3 id="branching-strategy">Branching strategy<a class="headerlink" href="#branching-strategy" title="Permanent link">&para;</a></h3>
+<p><strong>Short-lived feature branches off a stable main, PR + review before merge. Simple and safe beats complex for most teams.</strong>
+Trunk-based development (commit to main frequently, use feature flags for incomplete work) scales better than long-lived branches. GitFlow adds complexity that slows down CI/CD. Unless you have a genuine need for long-lived release branches (packaged software with multiple maintained versions), trunk-based with short feature branches and mandatory PRs is the default good practice.</p>
+<hr />
+<h2 id="aws-fundamentals">AWS fundamentals<a class="headerlink" href="#aws-fundamentals" title="Permanent link">&para;</a></h2>
+<h3 id="rds-vs-self-managed-database">RDS vs self-managed database<a class="headerlink" href="#rds-vs-self-managed-database" title="Permanent link">&para;</a></h3>
+<p><strong>RDS = managed SQL — AWS handles backups, patching, Multi-AZ failover. Self-hosted (Postgres on K8s) = full control but you own all operations.</strong>
+RDS is almost always the right choice for production: automated backups, automated minor version patching, one-click Multi-AZ, monitoring built-in. Running Postgres inside Kubernetes (StatefulSet + EBS PVC) gives you flexibility and potentially cost savings at very high scale, but you own operator complexity, backup scripts, failover logic, and storage management. Default to managed.</p>
+<h3 id="rds-vs-dynamodb">RDS vs DynamoDB<a class="headerlink" href="#rds-vs-dynamodb" title="Permanent link">&para;</a></h3>
+<p><strong>RDS = managed relational SQL (joins, transactions, structured schema); DynamoDB = managed NoSQL (key-value / document, massive scale, no joins).</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>RDS (Postgres/MySQL)</th>
+<th>DynamoDB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Data model</td>
+<td>Relational tables</td>
+<td>Key-value / document</td>
+</tr>
+<tr>
+<td>Joins</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Transactions</td>
+<td>ACID</td>
+<td>Limited (per-item, or transactional API)</td>
+</tr>
+<tr>
+<td>Scale strategy</td>
+<td>Vertical + read replicas</td>
+<td>Horizontal, auto-scaling</td>
+</tr>
+<tr>
+<td>Query flexibility</td>
+<td>Full SQL</td>
+<td>Access by partition key primarily</td>
+</tr>
+<tr>
+<td>Best for</td>
+<td>E-commerce, ERP, most apps</td>
+<td>Session stores, gaming leaderboards, IoT</td>
+</tr>
+</tbody>
+</table>
+<p>If your access patterns are "give me item by ID at massive scale," DynamoDB. If your access patterns require aggregation, reporting, or multi-table joins, RDS.</p>
+<h3 id="security-group-vs-nacl">Security Group vs NACL<a class="headerlink" href="#security-group-vs-nacl" title="Permanent link">&para;</a></h3>
+<p><strong>Security Group = stateful firewall on the instance (return traffic auto-allowed, allow-only rules). NACL = stateless firewall on the subnet (both directions explicit, can deny).</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Security Group</th>
+<th>NACL</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Level</td>
+<td>Instance / ENI</td>
+<td>Subnet</td>
+</tr>
+<tr>
+<td>State</td>
+<td>Stateful (connection tracked)</td>
+<td>Stateless (each packet evaluated)</td>
+</tr>
+<tr>
+<td>Rules</td>
+<td>Allow only</td>
+<td>Allow and Deny</td>
+</tr>
+<tr>
+<td>Default</td>
+<td>All outbound allowed</td>
+<td>All traffic allowed</td>
+</tr>
+<tr>
+<td>Evaluation</td>
+<td>All rules evaluated together</td>
+<td>Rules evaluated in number order, first match wins</td>
+</tr>
+</tbody>
+</table>
+<p>Use Security Groups as your primary firewall (almost always). Use NACLs for subnet-wide blanket blocks (e.g. block an entire IP range from the subnet). Because NACLs are stateless, if you allow inbound on port 443 you must also explicitly allow outbound ephemeral ports (1024–65535) for the return traffic.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> SG = doorman jo aane-jaane wale ko yaad rakhta hai. NACL = building gate jo har baar ID check karta hai — return ticket alag chahiye.</p>
+</blockquote>
+<h3 id="iam-role-vs-user-vs-policy">IAM Role vs User vs Policy<a class="headerlink" href="#iam-role-vs-user-vs-policy" title="Permanent link">&para;</a></h3>
+<p><strong>User = a person/long-lived credentials; Role = temporary credentials a service/entity assumes (no stored keys); Policy = the JSON that defines permissions, attached to either.</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>IAM User</th>
+<th>IAM Role</th>
+<th>IAM Policy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>What it is</td>
+<td>A principal with permanent credentials</td>
+<td>A principal with temporary credentials (STS)</td>
+<td>A permission document (JSON)</td>
+</tr>
+<tr>
+<td>Credentials</td>
+<td>Access key + secret (long-lived)</td>
+<td>Temporary token (15 min–12 hr)</td>
+<td>Not credentials — attached to principal</td>
+</tr>
+<tr>
+<td>Best for</td>
+<td>CI/CD pipelines that can't use roles</td>
+<td>EC2, EKS pods, Lambda, cross-account</td>
+<td>Everything — always attach policies to roles</td>
+</tr>
+<tr>
+<td>Risk</td>
+<td>Key leak = permanent access</td>
+<td>Token expires automatically</td>
+<td>N/A</td>
+</tr>
+</tbody>
+</table>
+<p>Best practice: <strong>roles over long-lived keys everywhere.</strong> EC2 instances assume an instance profile (role). EKS pods use IRSA (IAM Roles for Service Accounts). Never embed access keys in code or environment variables you commit.</p>
+<h3 id="region-vs-availability-zone-az">Region vs Availability Zone (AZ)<a class="headerlink" href="#region-vs-availability-zone-az" title="Permanent link">&para;</a></h3>
+<p><strong>Region = a geographic area (e.g. <code>ap-south-1</code> Mumbai); AZ = an isolated datacenter within a region (<code>ap-south-1a</code>, <code>1b</code>, <code>1c</code>).</strong>
+AZs within a region are connected by low-latency private links. Multi-AZ deployments spread resources across AZs so a single datacenter failure (power, cooling, network) doesn't take down the service. Multi-region is for surviving an entire region failure — much rarer, much more expensive. RDS Multi-AZ = automatic failover to a standby in a different AZ, not a different region.</p>
+<h3 id="public-vs-private-subnet">Public vs private subnet<a class="headerlink" href="#public-vs-private-subnet" title="Permanent link">&para;</a></h3>
+<p><strong>Public subnet = has a route to an Internet Gateway (web-facing resources); Private subnet = no direct internet in, outbound via NAT Gateway (databases, internal services).</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Public Subnet</th>
+<th>Private Subnet</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Internet access</td>
+<td>Inbound + outbound via IGW</td>
+<td>Outbound only via NAT Gateway</td>
+</tr>
+<tr>
+<td>Resources</td>
+<td>Load balancers, bastion hosts</td>
+<td>Databases, internal services, K8s nodes</td>
+</tr>
+<tr>
+<td>Requires</td>
+<td>Route to Internet Gateway</td>
+<td>NAT Gateway in a public subnet</td>
+</tr>
+</tbody>
+</table>
+<p>Databases should always be in private subnets — no inbound internet path exists. Only your load balancer needs a public subnet; app servers can be private too (traffic comes from the LB).</p>
+<h3 id="alb-vs-nlb-vs-clb">ALB vs NLB vs CLB<a class="headerlink" href="#alb-vs-nlb-vs-clb" title="Permanent link">&para;</a></h3>
+<p><strong>ALB = L7 HTTP/HTTPS routing (most web apps); NLB = L4 TCP ultra-fast (raw TCP, static IP); CLB = legacy, avoid.</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>ALB</th>
+<th>NLB</th>
+<th>CLB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Layer</td>
+<td>7 (HTTP/HTTPS)</td>
+<td>4 (TCP/UDP)</td>
+<td>4+7 (limited)</td>
+</tr>
+<tr>
+<td>Routing</td>
+<td>Host, path, headers</td>
+<td>IP + port</td>
+<td>Port only</td>
+</tr>
+<tr>
+<td>TLS termination</td>
+<td>Yes</td>
+<td>Yes (pass-through or termination)</td>
+<td>Limited</td>
+</tr>
+<tr>
+<td>Static IP</td>
+<td>No (DNS-based)</td>
+<td>Yes (Elastic IP)</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Use for</td>
+<td>Web apps, microservices, APIs</td>
+<td>TCP workloads, high perf, static IPs</td>
+<td>Legacy — migrate away</td>
+</tr>
+</tbody>
+</table>
+<p>Default choice for Kubernetes Ingress + AWS: ALB via the AWS Load Balancer Controller.</p>
+<h3 id="aws-azure-conceptual-map">AWS → Azure conceptual map<a class="headerlink" href="#aws-azure-conceptual-map" title="Permanent link">&para;</a></h3>
+<p><strong>Fundamentals transfer across clouds; only the names change.</strong></p>
+<table>
+<thead>
+<tr>
+<th>AWS</th>
+<th>Azure</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>EC2</td>
+<td>Virtual Machine (VM)</td>
+<td>Compute instance</td>
+</tr>
+<tr>
+<td>VPC</td>
+<td>VNet</td>
+<td>Virtual private network</td>
+</tr>
+<tr>
+<td>IAM</td>
+<td>Entra ID (AAD)</td>
+<td>Identity &amp; access management</td>
+</tr>
+<tr>
+<td>S3</td>
+<td>Blob Storage</td>
+<td>Object storage</td>
+</tr>
+<tr>
+<td>RDS</td>
+<td>Azure SQL / Flexible Server</td>
+<td>Managed relational database</td>
+</tr>
+<tr>
+<td>DynamoDB</td>
+<td>Cosmos DB</td>
+<td>Managed NoSQL</td>
+</tr>
+<tr>
+<td>EKS</td>
+<td>AKS</td>
+<td>Managed Kubernetes</td>
+</tr>
+<tr>
+<td>Lambda</td>
+<td>Azure Functions</td>
+<td>Serverless compute</td>
+</tr>
+<tr>
+<td>CloudWatch</td>
+<td>Azure Monitor</td>
+<td>Observability platform</td>
+</tr>
+<tr>
+<td>ALB / NLB</td>
+<td>Application Gateway / Load Balancer</td>
+<td>L7 / L4 load balancing</td>
+</tr>
+<tr>
+<td>ECR</td>
+<td>Azure Container Registry</td>
+<td>Container image registry</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="docker-build-side-depth">Docker build-side depth<a class="headerlink" href="#docker-build-side-depth" title="Permanent link">&para;</a></h2>
+<h3 id="cmd-vs-entrypoint">CMD vs ENTRYPOINT<a class="headerlink" href="#cmd-vs-entrypoint" title="Permanent link">&para;</a></h3>
+<p><strong>ENTRYPOINT = the fixed command that always runs; CMD = default arguments you can override at <code>docker run</code>.</strong>
+Pattern: <code>ENTRYPOINT ["/app/server"]</code> + <code>CMD ["--port", "8080"]</code>. <code>docker run myimage --port 9090</code> overrides CMD but keeps ENTRYPOINT — the binary always runs, only arguments change. If you set only CMD, the entire CMD can be replaced by the user. Use ENTRYPOINT for the executable, CMD for its default flags. → <a href="../04-M3-docker/">M3</a>.</p>
+<h3 id="copy-vs-add">COPY vs ADD<a class="headerlink" href="#copy-vs-add" title="Permanent link">&para;</a></h3>
+<p><strong>Use COPY for copying files; ADD does that plus auto-extracts tarballs and fetches remote URLs — surprising side effects.</strong>
+The rule: use <code>COPY</code> unless you specifically need tar extraction. <code>ADD</code> fetching a URL bypasses layer caching in unpredictable ways. If you need to fetch something, use <code>RUN curl</code> or a multi-stage build so the intent is explicit.</p>
+<h3 id="layers-and-build-cache">Layers and build cache<a class="headerlink" href="#layers-and-build-cache" title="Permanent link">&para;</a></h3>
+<p><strong>Each Dockerfile instruction creates a cached layer. Order matters: put slow/stable steps early so cache is reused.</strong>
+<div class="language-dockerfile highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c"># Good: deps installed before source copy — cache is reused when only source changes</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">COPY</span><span class="w"> </span>requirements.txt<span class="w"> </span>.
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">COPY</span><span class="w"> </span>src/<span class="w"> </span>.<span class="w">          </span>#<span class="w"> </span>only<span class="w"> </span>this<span class="w"> </span>layer<span class="w"> </span>re-runs<span class="w"> </span>on<span class="w"> </span><span class="nb">source</span><span class="w"> </span>changes
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c"># Bad: source copied first → any source change invalidates pip install cache</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">COPY</span><span class="w"> </span>.<span class="w"> </span>.
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+</span></code></pre></div>
+Ordering instructions by change frequency (least → most) can cut CI build times from minutes to seconds.</p>
+<h3 id="multi-stage-build">Multi-stage build<a class="headerlink" href="#multi-stage-build" title="Permanent link">&para;</a></h3>
+<p><strong>Build stage = compilers + tools; final stage = only the compiled artifact on a minimal base image.</strong>
+<div class="language-dockerfile highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">FROM</span><span class="w"> </span><span class="s">golang:1.22</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="s">builder</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">WORKDIR</span><span class="w"> </span><span class="s">/app</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">COPY</span><span class="w"> </span>.<span class="w"> </span>.
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="k">RUN</span><span class="w"> </span>go<span class="w"> </span>build<span class="w"> </span>-o<span class="w"> </span>server<span class="w"> </span>.
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="k">FROM</span><span class="w"> </span><span class="s">gcr.io/distroless/static:nonroot</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="k">COPY</span><span class="w"> </span>--from<span class="o">=</span>builder<span class="w"> </span>/app/server<span class="w"> </span>/server
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="k">ENTRYPOINT</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;/server&quot;</span><span class="p">]</span>
+</span></code></pre></div>
+Result: a ~10 MB image with no Go toolchain, no shell, no package manager. Smaller attack surface, faster pulls. → <a href="../04-M3-docker/">M3</a>.</p>
+<h3 id="the-latest-tag-trap">The <code>latest</code> tag trap<a class="headerlink" href="#the-latest-tag-trap" title="Permanent link">&para;</a></h3>
+<p><strong><code>latest</code> is a mutable pointer — "latest" today is a different image than "latest" next week.</strong>
+If you deploy with <code>latest</code> and something breaks, you cannot roll back to the previous <code>latest</code> because it has already been overwritten. In production always use immutable tags: commit SHA (<code>a3f2c91</code>) or semantic version (<code>1.4.2</code>). This makes rollbacks exact and auditable.</p>
+<h3 id="root-vs-non-root-images">Root vs non-root images<a class="headerlink" href="#root-vs-non-root-images" title="Permanent link">&para;</a></h3>
+<p><strong>Containers running as root are a security risk — if the container escapes, the attacker has root on the node.</strong>
+Use non-root users in your Dockerfile (<code>USER nonroot</code>), or use distroless / scratch base images that have no root shell. In Kubernetes, enforce this with a Pod Security Standard (<code>restricted</code> profile) or PodSecurityContext <code>runAsNonRoot: true</code>. Production hardening baseline.</p>
+<hr />
+<h2 id="observability">Observability<a class="headerlink" href="#observability" title="Permanent link">&para;</a></h2>
+<h3 id="metrics-vs-logs-vs-traces">Metrics vs Logs vs Traces<a class="headerlink" href="#metrics-vs-logs-vs-traces" title="Permanent link">&para;</a></h3>
+<p><strong>Metrics = numbers over time (fast, cheap, alertable); Logs = discrete events (rich detail, for debugging); Traces = a request's journey across services (for finding latency bottlenecks).</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Metrics</th>
+<th>Logs</th>
+<th>Traces</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>What it is</td>
+<td>Time-series numbers</td>
+<td>Timestamped text events</td>
+<td>Linked spans across services</td>
+</tr>
+<tr>
+<td>Answers</td>
+<td>"How much? How often?"</td>
+<td>"What exactly happened?"</td>
+<td>"Where did the latency come from?"</td>
+</tr>
+<tr>
+<td>Cost</td>
+<td>Low (aggregated)</td>
+<td>Medium–high (volume)</td>
+<td>High (instrumentation + storage)</td>
+</tr>
+<tr>
+<td>Tool examples</td>
+<td>Prometheus, CloudWatch</td>
+<td>Loki, ELK, CloudWatch Logs</td>
+<td>Jaeger, Tempo, AWS X-Ray</td>
+</tr>
+<tr>
+<td>Alert on</td>
+<td>Yes (thresholds)</td>
+<td>Sometimes (log-based alerts)</td>
+<td>Rarely (trace-based SLOs possible)</td>
+</tr>
+</tbody>
+</table>
+<p>Start with metrics and logs. Add distributed tracing once you have microservices and need to find which service is adding latency. → <a href="../10-M8-observability-sre/">M8</a>.</p>
+<h3 id="prometheus-pull-model">Prometheus pull model<a class="headerlink" href="#prometheus-pull-model" title="Permanent link">&para;</a></h3>
+<p><strong>Prometheus scrapes (pulls) metrics from apps' <code>/metrics</code> endpoints on a schedule — apps do not push.</strong>
+This means Prometheus controls the scrape rate, and an unresponsive target simply shows as <code>up=0</code>. Apps expose metrics as a plain-text HTTP endpoint (<code>/metrics</code>). PromQL queries the time-series data. Alertmanager routes firing alerts to Slack/PagerDuty/email. Grafana builds dashboards from PromQL queries. The pipeline: <code>app /metrics → Prometheus scrape → PromQL → Grafana / Alertmanager</code>. → <a href="../10-M8-observability-sre/">M8</a>.</p>
+<h3 id="red-vs-use">RED vs USE<a class="headerlink" href="#red-vs-use" title="Permanent link">&para;</a></h3>
+<p><strong>RED (for services): Rate, Errors, Duration. USE (for resources): Utilization, Saturation, Errors.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Framework</th>
+<th>For</th>
+<th>Dimensions</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>RED</strong></td>
+<td>Services / APIs</td>
+<td><strong>R</strong>ate (req/s), <strong>E</strong>rror rate (%), <strong>D</strong>uration (latency)</td>
+<td>"API getting 500 rps, 2% errors, p99 = 800 ms"</td>
+</tr>
+<tr>
+<td><strong>USE</strong></td>
+<td>Infrastructure resources</td>
+<td><strong>U</strong>tilization (%), <strong>S</strong>aturation (queue depth), <strong>E</strong>rrors</td>
+<td>"CPU at 80%, run queue depth 4, 0 errors"</td>
+</tr>
+</tbody>
+</table>
+<p>Build your dashboards around RED for every service and USE for every critical resource. If RED is healthy, users are happy. If USE is red, capacity is the constraint. → <a href="../10-M8-observability-sre/">M8</a>.</p>
+<h3 id="liveness-vs-readiness-vs-startup-probe">Liveness vs Readiness vs Startup probe<a class="headerlink" href="#liveness-vs-readiness-vs-startup-probe" title="Permanent link">&para;</a></h3>
+<p><strong>Readiness = "ready to receive traffic?" (fail → removed from Service, not restarted); Liveness = "still alive?" (fail → restarted); Startup = "done starting?" (protects slow-boot apps from premature liveness kills).</strong></p>
+<table>
+<thead>
+<tr>
+<th>Probe</th>
+<th>On fail</th>
+<th>Typical use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Readiness</td>
+<td>Remove from Service endpoints — traffic stops</td>
+<td>App not ready (DB not connected, cache warming)</td>
+</tr>
+<tr>
+<td>Liveness</td>
+<td>Restart the container</td>
+<td>App deadlocked, hung, unresponsive</td>
+</tr>
+<tr>
+<td>Startup</td>
+<td>Delay liveness checks</td>
+<td>Slow-starting app (JVM warmup, migrations)</td>
+</tr>
+</tbody>
+</table>
+<p>Configure all three. Without readiness, rolling updates send traffic to pods before they are ready. Without liveness, a deadlocked pod sits in <code>Running</code> state forever serving errors. → <a href="../05-M4-kubernetes-core/">M4</a>.</p>
+<hr />
+<h2 id="deployment-strategies-reliability">Deployment strategies &amp; reliability<a class="headerlink" href="#deployment-strategies-reliability" title="Permanent link">&para;</a></h2>
+<h3 id="rolling-vs-recreate-vs-blue-green-vs-canary">Rolling vs Recreate vs Blue-Green vs Canary<a class="headerlink" href="#rolling-vs-recreate-vs-blue-green-vs-canary" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Strategy</th>
+<th>Mechanism</th>
+<th>Downtime</th>
+<th>Rollback speed</th>
+<th>Resources</th>
+<th>When to use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Rolling</strong> (K8s default)</td>
+<td>Replace pods gradually, N at a time</td>
+<td>Zero (with probes)</td>
+<td><code>rollout undo</code> (fast)</td>
+<td>1x</td>
+<td>Most production deploys</td>
+</tr>
+<tr>
+<td><strong>Recreate</strong></td>
+<td>Kill all old pods, then start new</td>
+<td>Yes — brief gap</td>
+<td>Redeploy old version</td>
+<td>1x</td>
+<td>When old + new can't coexist</td>
+</tr>
+<tr>
+<td><strong>Blue-Green</strong></td>
+<td>Two full environments; flip traffic at LB</td>
+<td>Zero</td>
+<td>Instant (flip back)</td>
+<td>2x</td>
+<td>Major changes, need instant rollback</td>
+</tr>
+<tr>
+<td><strong>Canary</strong></td>
+<td>Route small % to new version first, ramp up</td>
+<td>Zero</td>
+<td>Instant (route 0%)</td>
+<td>1x+</td>
+<td>Safest — validate before full rollout</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Rolling = dheere dheere guard badlna. Blue-Green = ek puri team standby pe; ek click mein swap. Canary = ek banda pehle bhejo, dekho kuch hota hai toh wapas.</p>
+</blockquote>
+<p>→ Full deployment treatment in <a href="../07-M6-cicd/">M6</a> and <a href="../11-M9-advanced-k8s-internals/">M9</a>.</p>
+<h3 id="rollback">Rollback<a class="headerlink" href="#rollback" title="Permanent link">&para;</a></h3>
+<p><strong>GitOps rollback = revert the Git commit (ArgoCD re-syncs automatically). Imperative rollback = <code>kubectl rollout undo deployment/&lt;name&gt;</code>.</strong>
+GitOps rollback is auditable and reproducible — it is just another commit. <code>kubectl rollout undo</code> is faster in an emergency but bypasses Git. Best practice: practice rollbacks before you need them in a real incident. → <a href="../08-M7-gitops/">M7</a>.</p>
+<h3 id="zero-downtime-readiness-probes-rolling-update-graceful-shutdown">Zero-downtime = readiness probes + rolling update + graceful shutdown<a class="headerlink" href="#zero-downtime-readiness-probes-rolling-update-graceful-shutdown" title="Permanent link">&para;</a></h3>
+<p><strong>All three must be configured correctly together — any one missing breaks the contract.</strong>
+1. <strong>Readiness probe</strong>: new pod not added to Service until it passes → no traffic before ready.
+2. <strong>Rolling update</strong> (<code>maxUnavailable: 0</code>, <code>maxSurge: 1</code>): old pods stay until new ones are ready.
+3. <strong>Graceful shutdown</strong>: on <code>SIGTERM</code>, stop accepting new requests, finish in-flight requests, then exit — avoid dropping connections.</p>
+<p>A pod that exits immediately on <code>SIGTERM</code> drops all in-flight requests. A missing readiness probe sends traffic to a pod that hasn't finished starting. The combination of all three is the minimum for truly zero-downtime deploys.</p>
+<h3 id="failed-production-deploy-the-right-instinct">Failed production deploy — the right instinct<a class="headerlink" href="#failed-production-deploy-the-right-instinct" title="Permanent link">&para;</a></h3>
+<p><strong>Stabilize first, root-cause second: roll back to restore service, then calmly investigate, fix, retest, redeploy, post-mortem.</strong>
+The wrong instinct is to debug the broken version under pressure while users are experiencing the outage. Roll back first — restore service in minutes. Then with the pressure off, examine pod status, events, logs, what changed in the last commit. Fix → retest in staging → redeploy → post-mortem with a guardrail so it cannot repeat. "Restore service first, root-cause second" is a senior engineer's reflex.</p>
+<hr />
+<h2 id="production-judgment-senior-signals">Production judgment (senior signals)<a class="headerlink" href="#production-judgment-senior-signals" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Managed over self-hosted by default.</strong> Use RDS, EKS, MSK, ElastiCache unless there is a concrete reason (cost at extreme scale, regulatory, special configuration). Self-hosting means you own backup, failover, patching, and the 3 a.m. pages.</li>
+<li><strong>Secrets maturity ladder.</strong> Hardcoded (bad) → environment variables → Kubernetes Secrets (base64) → Vault / Sealed Secrets / AWS Secrets Manager (good). Know where your team is on this ladder and push it higher.</li>
+<li><strong>Everything as code.</strong> Infra (Terraform), deploys (GitOps), config (versioned YAML). If it's clicked in a console, it's not reproducible, not reviewable, and will drift.</li>
+<li><strong>Least privilege everywhere.</strong> IAM roles not access keys. Non-root containers. NetworkPolicy between namespaces. RBAC on namespaces. Grant the minimum required, review quarterly.</li>
+<li><strong>Observability before incidents.</strong> Set up dashboards and alerts before you need them. Discovering you have no metrics when the incident starts is the worst time to instrument.</li>
+<li><strong>Cost awareness.</strong> Rightsize pods (requests/limits match actual usage). Kill idle resources. Use Spot for fault-tolerant batch. Tag everything. DevOps owns the bill as much as the product team.</li>
+<li><strong>Blast radius thinking.</strong> Canary over big-bang releases. Multi-AZ for stateful components. Quotas and limits on namespaces. Always ask: "If this breaks, what is the maximum blast radius? Can I scope it?"</li>
+<li><strong>Stabilize before root-cause.</strong> Roll back, restore service, then investigate. Never debug under fire when a rollback is available.</li>
+<li><strong>Reproducibility as a property.</strong> If you cannot recreate the exact state — the exact image, the exact config, the exact infra — you cannot trust your rollbacks or your staging environment.</li>
+</ul>
+<hr />
+<h2 id="30-second-skim-the-anchors">30-second skim — the anchors<a class="headerlink" href="#30-second-skim-the-anchors" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Container</strong> = isolated Linux process (namespaces + cgroups), not a VM</li>
+<li><strong>Image</strong> = frozen blueprint; container = a running instance; registry = where images live</li>
+<li><strong>Runtime stack</strong>: runc creates → containerd manages → Docker builds; K8s only needs containerd</li>
+<li><strong>VM</strong> = separate kernel + OS (GBs); <strong>container</strong> = shared kernel (MBs, seconds to start)</li>
+<li><strong>localhost</strong> = only this machine; <strong>0.0.0.0</strong> = all interfaces, reachable from outside; bind servers to 0.0.0.0</li>
+<li><strong>Client tools</strong> (Terraform/Ansible/kubectl) run from laptop/CI; <strong>server tools</strong> (kubelet/containerd) run on nodes; ArgoCD lives inside the cluster</li>
+<li><strong>kubeadm</strong> builds · <strong>kubelet</strong> runs pods · <strong>kubectl</strong> commands</li>
+<li><strong>Pod</strong> ephemeral · <strong>Deployment</strong> stateless · <strong>StatefulSet</strong> stateful + own PVC · <strong>DaemonSet</strong> one per node</li>
+<li><strong>PVC</strong> = claim, <strong>PV</strong> = real disk (EBS), pod mounts PVC → data survives pod death</li>
+<li><strong>EBS</strong> = one pod (RWO) · <strong>EFS</strong> = many pods (RWX) · <strong>S3</strong> = object via API (not mounted)</li>
+<li><strong>emptyDir</strong> dies with pod · <strong>PVC</strong> survives pod death</li>
+<li><strong>Service</strong> = stable internal IP; <strong>Ingress</strong> = HTTP front door; find pods by <strong>DNS name</strong>, never by IP</li>
+<li><strong>L4</strong> = TCP/IP routing (NLB); <strong>L7</strong> = HTTP routing by host/path (ALB, Ingress)</li>
+<li><strong>Reverse proxy</strong> = in front of servers; <strong>forward proxy</strong> = in front of clients</li>
+<li><strong>CI</strong> = build+test; <strong>Continuous Delivery</strong> = manual gate to prod; <strong>Continuous Deployment</strong> = auto to prod</li>
+<li><strong>Push deploy</strong> = CI has cluster creds; <strong>Pull (GitOps)</strong> = no cluster creds in CI, ArgoCD syncs</li>
+<li><strong>Terraform</strong> provisions (state, declarative) · <strong>Ansible</strong> configures (agentless, procedural)</li>
+<li><strong>Merge</strong> = safe on shared branches; <strong>Rebase</strong> = clean history, local branches only</li>
+<li><strong>SG</strong> = stateful firewall on instance (allow-only) · <strong>NACL</strong> = stateless on subnet (allow + deny)</li>
+<li><strong>IAM Role</strong> = temporary creds (preferred) · <strong>IAM User</strong> = long-lived keys (minimize)</li>
+<li><strong>Multi-AZ</strong> = survive one datacenter failing · <strong>Multi-region</strong> = survive a whole region failing</li>
+<li><strong>Public subnet</strong> = internet in via IGW · <strong>Private subnet</strong> = outbound only via NAT</li>
+<li><strong>ALB</strong> = L7 web apps · <strong>NLB</strong> = L4 raw TCP/static IP · <strong>CLB</strong> = legacy, avoid</li>
+<li><strong>Metrics/Logs/Traces</strong> = the three pillars; Prometheus <strong>pulls</strong> (never pushed to)</li>
+<li><strong>RED</strong> (services) = Rate, Errors, Duration · <strong>USE</strong> (resources) = Utilization, Saturation, Errors</li>
+<li><strong>Readiness</strong> = traffic gate (fail → removed from LB) · <strong>Liveness</strong> = restart gate · <strong>Startup</strong> = slow-boot guard</li>
+<li><strong>Rolling</strong> = default · <strong>Blue-Green</strong> = instant rollback, 2× resources · <strong>Canary</strong> = safest, validate with small %</li>
+<li><strong>Stabilize first, root-cause second</strong> · <strong>least privilege everywhere</strong> · <strong>managed by default</strong></li>
+<li><strong>latest tag</strong> = mutable trap; use immutable tags (SHA / semver) in production</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../14-interview-bank/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Interview Bank">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Interview Bank
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../22-command-cheatsheets/" class="md-footer__link md-footer__link--next" aria-label="Next: Command Cheat-Sheets &amp; Labs">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Command Cheat-Sheets & Labs
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 grvtech1 — licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/grvtech1/devops-handbook" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "announce.dismiss"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/progress.js"></script>
+      
+    
+  </body>
+</html>

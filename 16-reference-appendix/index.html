@@ -1,0 +1,4949 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free, zero-to-job-ready DevOps handbook — from "what is a terminal" to production- and interview-ready. Systems thinking, hands-on labs, capstones.">
+      
+      
+      
+        <link rel="canonical" href="https://grvtech1.github.io/devops-handbook/16-reference-appendix/">
+      
+      
+        <link rel="prev" href="../15-roadmap-M11-M18/">
+      
+      
+        <link rel="next" href="../17-flashcards/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Reference Appendix - The DevOps Engineer's Handbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%206a6%206%200%200%201%206%206c0%202.22-1.21%204.16-3%205.2V19a1%201%200%200%201-1%201h-4a1%201%200%200%201-1-1v-1.8c-1.79-1.04-3-2.98-3-5.2a6%206%200%200%201%206-6m2%2015v1a1%201%200%200%201-1%201h-2a1%201%200%200%201-1-1v-1zm6-10h3v2h-3zM1%2011h3v2H1zM13%201v3h-2V1zM4.92%203.5l2.13%202.14-1.42%201.41L3.5%204.93zm12.03%202.13%202.12-2.13%201.43%201.43-2.13%202.12z%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m13.13%2022.19-1.63-3.83c1.57-.58%203.04-1.36%204.4-2.27zM5.64%2012.5l-3.83-1.63%206.1-2.77C7%209.46%206.22%2010.93%205.64%2012.5M21.61%202.39S16.66.269%2011%205.93c-2.19%202.19-3.5%204.6-4.35%206.71-.28.75-.09%201.57.46%202.13l2.13%202.12c.55.56%201.37.74%202.12.46A19.1%2019.1%200%200%200%2018.07%2013c5.66-5.66%203.54-10.61%203.54-10.61m-7.07%207.07c-.78-.78-.78-2.05%200-2.83s2.05-.78%202.83%200c.77.78.78%202.05%200%202.83s-2.05.78-2.83%200m-5.66%207.07-1.41-1.41zM6.24%2022l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83%2022zM2%2022h1.41l4.77-4.76-1.42-1.41L2%2020.59zm0-2.83%204.09-4.08c-.21-.3-.36-.62-.45-.97L2%2017.76z%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M13%2014h-2V9h2m0%209h-2v-2h2M1%2021h22L12%202z%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M8%2015a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m2.5%202%201.5-3%201.5%203zm5.5-2a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m6-4A10%2010%200%200%200%2012%201%2010%2010%200%200%200%202%2011c0%202.8%201.2%205.3%203%207.1V22h14v-3.9c1.8-1.8%203-4.3%203-7.1m-5%209h-2v-2h-2v2h-2v-2H9v2H7v-2.8c-1.8-1.5-3-3.7-3-6.2a8%208%200%200%201%208-8%208%208%200%200%201%208%208c0%202.5-1.2%204.8-3%206.2z%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#16-reference-appendix" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  🚀 <strong>26 chapters</strong> · rendered diagrams · hands-on labs · a 26-scenario incident playbook — all free (CC BY 4.0).
+  &nbsp;
+  <a href="https://github.com/grvtech1/devops-handbook" style="color: inherit; text-decoration: underline; font-weight: 700;">⭐ Star it on GitHub</a>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-header__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The DevOps Engineer's Handbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Reference Appendix
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../study-plan/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Study Plan
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../progress/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  My Progress
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../00-INDEX/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Handbook
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-nav__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    The DevOps Engineer's Handbook
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../study-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    My Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handbook
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Handbook
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-INDEX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Curriculum (Index)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 0 — Pre-flight
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 0 — Pre-flight
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00a-preflight/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00a · Pre-flight ground floor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00b-setup-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00b · Setup runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-linux-toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux · the ground everything runs on
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part I — Core toolchain
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part I — Core toolchain
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-M0-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M0 · Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-M1-terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M1 · Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../03-M2-ansible/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M2 · Ansible
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-M3-docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M3 · Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-M4-kubernetes-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M4 · Kubernetes Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-M5-sizing-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M5 · Sizing & Cost
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-M6-cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M6 · CI/CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-M7-gitops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M7 · GitOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part II — Systems thinking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part II — Systems thinking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-connected-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Connected System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-k8s-objects-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Objects · How They Connect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-10-day-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Learning Plan (understand)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29-confidence-sprint/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Confidence Sprint (drill)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../28-helm-real-projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Helm in the Real World (your 2 projects)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-cicd-hands-on-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Follow One Commit (hands-on CI/CD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part III — Operate
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part III — Operate
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-M8-observability-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M8 · Observability & SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-M9-advanced-k8s-internals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M9 · Advanced K8s Internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30-k8s-complete-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Complete Reference (Workloads · Scheduling · Ops)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-production-incident-playbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Incident Playbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part IV — Capstones
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part IV — Capstones
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-capstone-url-shortener/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone I · URL Shortener
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-capstone-microshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone II · MicroShop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part V — Reference & career
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part V — Reference & career
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-interview-bank/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview Bank
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-confusions-and-tradeoffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Confusions & Trade-offs (X-vs-Y)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-command-cheatsheets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Command Cheat-Sheets & Labs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-roadmap-M11-M18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap · M11–M18
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Appendix
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Appendix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-this-appendix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to use this appendix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#glossary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Glossary
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Glossary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#m0-foundations-01-m0-foundationsmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M0 — Foundations (01-M0-foundations.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#m1-terraform-02-m1-terraformmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M1 — Terraform (02-M1-terraform.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#m2-ansible-03-m2-ansiblemd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M2 — Ansible (03-M2-ansible.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#m3-docker-04-m3-dockermd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M3 — Docker (04-M3-docker.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#m4-kubernetes-05-m4-kubernetes-coremd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M4 — Kubernetes (05-M4-kubernetes-core.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#m5-sizing-cost-06-m5-sizing-and-costmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M5 — Sizing &amp; Cost (06-M5-sizing-and-cost.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#m6-cicd-07-m6-cicdmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M6 — CI/CD (07-M6-cicd.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#m7-gitops-08-m7-gitopsmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M7 — GitOps (08-M7-gitops.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#m8-observability-sre-10-m8-observability-sremd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M8 — Observability &amp; SRE (10-M8-observability-sre.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-5-golden-threads-quick-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 5 Golden Threads — quick card
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-vs-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concepts vs Tools
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Concepts vs Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-distinction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The distinction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idempotent-vs-reconciliation-one-line-each" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotent vs Reconciliation — one-line each
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-status-cause-reflex-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error / Status → Cause reflex table
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-troubleshoot-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Troubleshoot Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sizing-quick-ref" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sizing quick-ref
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sizing quick-ref">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#instance-family-cheat-sheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instance family cheat sheet
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instance-name-decode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instance name decode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#size-ladder-m-family-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Size ladder (M family reference)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sizing-formulas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sizing formulas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-project-profiles-quick-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6 project profiles quick table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-golden-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10 golden rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#command-cheat-sheets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Command cheat-sheets
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Command cheat-sheets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terraform
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ansible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ansible
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        kubectl
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#argo-cd-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Argo CD CLI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git-ops-relevant-subset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git (ops-relevant subset)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-6-universal-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 6 Universal Rules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#master-recall-sheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Master Recall Sheet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-hooks-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory hooks index
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-career-job-ready/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Job-Ready
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part VI — The Production Gauntlet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part VI — The Production Gauntlet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-production-gauntlet-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build the Real System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-production-gauntlet-chaos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chaos Engineering · break & fix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#how-to-use-this-appendix" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How to use this appendix
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#glossary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Glossary
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Glossary">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#m0-foundations-01-m0-foundationsmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M0 — Foundations (01-M0-foundations.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#m1-terraform-02-m1-terraformmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M1 — Terraform (02-M1-terraform.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#m2-ansible-03-m2-ansiblemd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M2 — Ansible (03-M2-ansible.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#m3-docker-04-m3-dockermd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M3 — Docker (04-M3-docker.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#m4-kubernetes-05-m4-kubernetes-coremd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M4 — Kubernetes (05-M4-kubernetes-core.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#m5-sizing-cost-06-m5-sizing-and-costmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M5 — Sizing &amp; Cost (06-M5-sizing-and-cost.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#m6-cicd-07-m6-cicdmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M6 — CI/CD (07-M6-cicd.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#m7-gitops-08-m7-gitopsmd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M7 — GitOps (08-M7-gitops.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#m8-observability-sre-10-m8-observability-sremd" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        M8 — Observability &amp; SRE (10-M8-observability-sre.md)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-5-golden-threads-quick-card" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 5 Golden Threads — quick card
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts-vs-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concepts vs Tools
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Concepts vs Tools">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-distinction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The distinction
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#idempotent-vs-reconciliation-one-line-each" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotent vs Reconciliation — one-line each
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#error-status-cause-reflex-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Error / Status → Cause reflex table
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#quick-troubleshoot-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Quick Troubleshoot Reference
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sizing-quick-ref" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sizing quick-ref
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sizing quick-ref">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#instance-family-cheat-sheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instance family cheat sheet
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#instance-name-decode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Instance name decode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#size-ladder-m-family-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Size ladder (M family reference)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sizing-formulas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sizing formulas
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#6-project-profiles-quick-table" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6 project profiles quick table
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#10-golden-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        10 golden rules
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#command-cheat-sheets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Command cheat-sheets
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Command cheat-sheets">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#terraform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Terraform
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ansible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ansible
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#docker" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Docker
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#kubectl" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        kubectl
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#argo-cd-cli" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Argo CD CLI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#git-ops-relevant-subset" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Git (ops-relevant subset)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-6-universal-rules" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 6 Universal Rules
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#master-recall-sheet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Master Recall Sheet
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-hooks-index" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory hooks index
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="16-reference-appendix">16 — Reference Appendix<a class="headerlink" href="#16-reference-appendix" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Keep this open in a second tab. Scan, don't read. Every table is a lookup, not a lesson.
+Teaching detail lives in the module files; this file is the index to all of it.</p>
+</blockquote>
+<hr />
+<h2 id="how-to-use-this-appendix">How to use this appendix<a class="headerlink" href="#how-to-use-this-appendix" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Need</th>
+<th>Go to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Forgot what a term means</td>
+<td>§ Glossary — find by module</td>
+</tr>
+<tr>
+<td>On-call, something is broken</td>
+<td>§ Error / status reflex table first, then § Quick Troubleshoot</td>
+</tr>
+<tr>
+<td>Choosing EC2 instance type</td>
+<td>§ Sizing quick-ref → instance families + formulas</td>
+</tr>
+<tr>
+<td>Running a command, forgot exact syntax</td>
+<td>§ Command cheat-sheets</td>
+</tr>
+<tr>
+<td>Pre-interview 30-minute review</td>
+<td>§ Master Recall Sheet + § 5 Golden Threads</td>
+</tr>
+<tr>
+<td>"How does X connect to Y?"</td>
+<td>§ Memory hooks index or <a href="../09-connected-system/">09-connected-system.md</a></td>
+</tr>
+<tr>
+<td>Why does idempotency differ from reconciliation</td>
+<td>§ Concepts vs Tools</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="glossary">Glossary<a class="headerlink" href="#glossary" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Format: <strong>Term</strong> — one-line definition — <code>🎓 hook</code>
+Module coverage: M0 Foundations → M8 Observability. Detail: respective module files.</p>
+</blockquote>
+<h3 id="m0-foundations-01-m0-foundationsmd">M0 — Foundations (<code>01-M0-foundations.md</code>)<a class="headerlink" href="#m0-foundations-01-m0-foundationsmd" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+<th>🎓 Hook</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>DevOps</strong></td>
+<td>Code-to-live pipeline automated for speed, safety, repeatability</td>
+<td>recipe + machine, same result every time</td>
+</tr>
+<tr>
+<td><strong>Provisioning</strong></td>
+<td>Creating infra (machines, networks, storage)</td>
+<td>building the house</td>
+</tr>
+<tr>
+<td><strong>Configuration</strong></td>
+<td>Setting up software inside an already-provisioned machine</td>
+<td>putting stove + spices in the kitchen</td>
+</tr>
+<tr>
+<td><strong>Packaging</strong></td>
+<td>Wrapping an app + its runtime into a portable image/box</td>
+<td>sealing a dish in a container</td>
+</tr>
+<tr>
+<td><strong>Orchestration</strong></td>
+<td>Running, healing, and scaling packaged apps across machines</td>
+<td>the manager who keeps the kitchen running</td>
+</tr>
+<tr>
+<td><strong>Stateful</strong></td>
+<td>Precious data lives inside — destroy = data gone</td>
+<td>Pet 🐶 (keep, fix, cannot replace)</td>
+</tr>
+<tr>
+<td><strong>Stateless</strong></td>
+<td>Nothing inside worth saving — every request is fresh</td>
+<td>Cattle 🐄 (replace, not fix)</td>
+</tr>
+<tr>
+<td><strong>Pet vs Cattle</strong></td>
+<td>Fix-and-name vs kill-and-replace operational model</td>
+<td>sick cow → new cow</td>
+</tr>
+<tr>
+<td><strong>IaC (Infra as Code)</strong></td>
+<td>Infra defined in version-controlled code, no manual console clicks</td>
+<td>blueprint, not memory</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="m1-terraform-02-m1-terraformmd">M1 — Terraform (<code>02-M1-terraform.md</code>)<a class="headerlink" href="#m1-terraform-02-m1-terraformmd" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+<th>🎓 Hook</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Terraform</strong></td>
+<td>Declarative IaC tool that provisions and manages infra via state</td>
+<td>builder 🏗️</td>
+</tr>
+<tr>
+<td><strong>Declarative</strong></td>
+<td>You say <em>what</em> you want; the tool figures out <em>how</em></td>
+<td>"3 servers please" — not "run these 12 steps"</td>
+</tr>
+<tr>
+<td><strong>Imperative</strong></td>
+<td>You write every step yourself</td>
+<td>the opposite of declarative</td>
+</tr>
+<tr>
+<td><strong>State / <code>tfstate</code></strong></td>
+<td>Terraform's JSON diary mapping code resources to real-world IDs</td>
+<td>diary 📔</td>
+</tr>
+<tr>
+<td><strong>Idempotent</strong></td>
+<td>Running the same operation N times produces the same result (SET, not +=)</td>
+<td>press the light switch — stays ON</td>
+</tr>
+<tr>
+<td><strong><code>terraform init</code></strong></td>
+<td>Downloads providers and plugins, sets up backend</td>
+<td>project kickoff</td>
+</tr>
+<tr>
+<td><strong><code>terraform plan</code></strong></td>
+<td>Preview of what will change — reads state, touches nothing</td>
+<td>reading the bill before paying 🧾</td>
+</tr>
+<tr>
+<td><strong><code>terraform apply</code></strong></td>
+<td>Executes the plan; actually creates/changes/destroys</td>
+<td>paying 💳</td>
+</tr>
+<tr>
+<td><strong><code>terraform destroy</code></strong></td>
+<td>Tears down all resources tracked in state</td>
+<td>demolition</td>
+</tr>
+<tr>
+<td><strong><code>terraform output</code></strong></td>
+<td>Prints declared output values (IPs, endpoints)</td>
+<td>receipt</td>
+</tr>
+<tr>
+<td><strong><code>terraform fmt</code></strong></td>
+<td>Auto-formats <code>.tf</code> files to canonical style</td>
+<td>prettier for HCL</td>
+</tr>
+<tr>
+<td><strong><code>terraform validate</code></strong></td>
+<td>Checks config syntax without connecting to provider</td>
+<td>spell-check</td>
+</tr>
+<tr>
+<td><strong><code>terraform state list</code></strong></td>
+<td>Lists all resources tracked in current state file</td>
+<td>diary table of contents</td>
+</tr>
+<tr>
+<td><strong><code>terraform import</code></strong></td>
+<td>Brings an existing real resource into state management</td>
+<td>"I made this manually — now track it"</td>
+</tr>
+<tr>
+<td><strong>Provider</strong></td>
+<td>Plugin that translates TF config into API calls (AWS, Azure, GCP)</td>
+<td>adapter plug</td>
+</tr>
+<tr>
+<td><strong>Resource</strong></td>
+<td>One thing Terraform creates (EC2, VPC, RDS instance)</td>
+<td>one brick</td>
+</tr>
+<tr>
+<td><strong>Backend</strong></td>
+<td>Where state is stored (local file or remote S3/GCS)</td>
+<td>the shelf the diary sits on</td>
+</tr>
+<tr>
+<td><strong>Remote state</strong></td>
+<td>State stored in S3 (shared); laptop state is disposable</td>
+<td>shared diary, not your personal copy</td>
+</tr>
+<tr>
+<td><strong>Lock (DynamoDB)</strong></td>
+<td>Prevents two simultaneous <code>apply</code> runs from corrupting state</td>
+<td>taala 🔒</td>
+</tr>
+<tr>
+<td><strong>Drift</strong></td>
+<td>Reality changed outside Terraform; state file is still intact</td>
+<td>menu unchanged, chef swapped the dish</td>
+</tr>
+<tr>
+<td><strong>Lost state</strong></td>
+<td>State file deleted/corrupted; TF is blind — will duplicate</td>
+<td>diary burned; now it'll order 5 more of everything</td>
+</tr>
+<tr>
+<td><strong>Orphaned resource</strong></td>
+<td>Real resource exists but TF no longer tracks it</td>
+<td>stray cattle with no owner</td>
+</tr>
+<tr>
+<td><strong><code>user_data</code> / cloud-init</strong></td>
+<td>Script that runs once at first boot of an EC2 instance</td>
+<td>"wire the lightbulb while the house is being built"</td>
+</tr>
+<tr>
+<td><strong>Provisioner</strong></td>
+<td>Run shell commands from inside TF config (last resort)</td>
+<td>wrong tool — builder doing interior design</td>
+</tr>
+<tr>
+<td><strong><code>variables.tf</code></strong></td>
+<td>Input declarations (type, default, sensitive flag)</td>
+<td>knobs on the dashboard</td>
+</tr>
+<tr>
+<td><strong><code>outputs.tf</code></strong></td>
+<td>Values to export after apply (IPs, URLs)</td>
+<td>delivery receipt</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="m2-ansible-03-m2-ansiblemd">M2 — Ansible (<code>03-M2-ansible.md</code>)<a class="headerlink" href="#m2-ansible-03-m2-ansiblemd" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+<th>🎓 Hook</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Ansible</strong></td>
+<td>Agentless, push-based config management tool</td>
+<td>setup-wala 🔧</td>
+</tr>
+<tr>
+<td><strong>Agentless</strong></td>
+<td>No daemon installed on target; uses SSH + Python only</td>
+<td>plumber who leaves no tools behind</td>
+</tr>
+<tr>
+<td><strong>Control node</strong></td>
+<td>Machine where Ansible is installed and playbooks run from</td>
+<td>your HQ</td>
+</tr>
+<tr>
+<td><strong>Managed node</strong></td>
+<td>Target server — needs only SSH + Python</td>
+<td>job site</td>
+</tr>
+<tr>
+<td><strong>Bastion</strong></td>
+<td>Jump server in public subnet to reach private servers</td>
+<td>society gate 🏰</td>
+</tr>
+<tr>
+<td><strong>Push model</strong></td>
+<td>Control node pushes commands to targets on-demand</td>
+<td>boss calls the worker</td>
+</tr>
+<tr>
+<td><strong>Pull model</strong></td>
+<td>Target periodically fetches and applies its own config</td>
+<td>worker checks the bulletin board</td>
+</tr>
+<tr>
+<td><strong>Inventory</strong></td>
+<td>List of target hosts and groups</td>
+<td>guest list</td>
+</tr>
+<tr>
+<td><strong>Playbook</strong></td>
+<td>YAML file of ordered tasks to run on hosts</td>
+<td>recipe book</td>
+</tr>
+<tr>
+<td><strong>Module</strong></td>
+<td>Single idempotent operation (<code>apt</code>, <code>copy</code>, <code>service</code>, <code>user</code>)</td>
+<td>one tool in the toolbox</td>
+</tr>
+<tr>
+<td><strong>Task</strong></td>
+<td>One invocation of one module</td>
+<td>one line in the recipe</td>
+</tr>
+<tr>
+<td><strong><code>state=present</code></strong></td>
+<td>Declarative: "this must exist" — check then act</td>
+<td>desire, not instruction</td>
+</tr>
+<tr>
+<td><strong><code>ok</code></strong></td>
+<td>Task result: already correct, nothing changed</td>
+<td>already done</td>
+</tr>
+<tr>
+<td><strong><code>changed</code></strong></td>
+<td>Task result: Ansible had to act</td>
+<td>something was fixed</td>
+</tr>
+<tr>
+<td><strong>Convergence</strong></td>
+<td>Second run = all <code>ok</code>, <code>changed=0</code> — healthy idempotent playbook</td>
+<td>system has settled</td>
+</tr>
+<tr>
+<td><strong>Handler</strong></td>
+<td>Special task that only runs when notified</td>
+<td>bawarchi who cooks only when the bell rings 🔔</td>
+</tr>
+<tr>
+<td><strong><code>notify</code></strong></td>
+<td>Triggers a handler — fires only on <code>changed</code>, not <code>ok</code></td>
+<td>ring the bell</td>
+</tr>
+<tr>
+<td><strong><code>--check</code></strong></td>
+<td>Dry-run mode — shows what would change without doing it</td>
+<td>Ansible's <code>terraform plan</code></td>
+</tr>
+<tr>
+<td><strong><code>-vvv</code></strong></td>
+<td>Verbose output — shows SSH commands, module args, raw output</td>
+<td>debug magnifier</td>
+</tr>
+<tr>
+<td><strong><code>ansible-galaxy</code></strong></td>
+<td>Package manager for Ansible roles and collections</td>
+<td>npm for Ansible</td>
+</tr>
+<tr>
+<td><strong>Vault</strong></td>
+<td>Ansible's secret encryption (<code>ansible-vault encrypt/edit</code>)</td>
+<td>encrypted locker</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="m3-docker-04-m3-dockermd">M3 — Docker (<code>04-M3-docker.md</code>)<a class="headerlink" href="#m3-docker-04-m3-dockermd" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+<th>🎓 Hook</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Docker</strong></td>
+<td>Tool to build and run OCI-compliant container images</td>
+<td>packer 📦</td>
+</tr>
+<tr>
+<td><strong>Image</strong></td>
+<td>Read-only blueprint: code + libs + runtime + config</td>
+<td>recipe 📜 / class</td>
+</tr>
+<tr>
+<td><strong>Container</strong></td>
+<td>Running instance of an image — has its own PID, network, FS</td>
+<td>dish 🍛 / object</td>
+</tr>
+<tr>
+<td><strong>Layer</strong></td>
+<td>Each Dockerfile instruction creates one immutable layer</td>
+<td>game save-point 💾</td>
+</tr>
+<tr>
+<td><strong>Cache</strong></td>
+<td>Unchanged layers are reused from previous builds</td>
+<td>yesterday's dough</td>
+</tr>
+<tr>
+<td><strong>Cache invalidation</strong></td>
+<td>A changed layer breaks cache for all layers below it</td>
+<td>crack propagates downward only</td>
+</tr>
+<tr>
+<td><strong>Build context</strong></td>
+<td>Directory sent to Docker daemon for the build (the <code>.</code> in <code>docker build .</code>)</td>
+<td>the box COPY can reach into</td>
+</tr>
+<tr>
+<td><strong><code>.dockerignore</code></strong></td>
+<td>File that excludes paths from build context</td>
+<td><code>.gitignore</code> for Docker</td>
+</tr>
+<tr>
+<td><strong>Registry</strong></td>
+<td>Remote store for images (push/pull)</td>
+<td>app store / warehouse</td>
+</tr>
+<tr>
+<td><strong>Docker Hub</strong></td>
+<td>Default public registry</td>
+<td>public warehouse</td>
+</tr>
+<tr>
+<td><strong>GHCR</strong></td>
+<td>GitHub Container Registry</td>
+<td>GitHub's warehouse</td>
+</tr>
+<tr>
+<td><strong>ECR</strong></td>
+<td>AWS Elastic Container Registry (private, IAM-controlled)</td>
+<td>AWS warehouse</td>
+</tr>
+<tr>
+<td><strong>Tag</strong></td>
+<td>Version label on an image (<code>myapp:v1</code>)</td>
+<td>sticky note</td>
+</tr>
+<tr>
+<td><strong><code>latest</code> (trap)</strong></td>
+<td>Mutable label — does NOT guarantee newest; avoid in prod</td>
+<td>lying sticky note ⚠️</td>
+</tr>
+<tr>
+<td><strong>SHA / digest</strong></td>
+<td>Immutable content-hash fingerprint of an image</td>
+<td>exact DNA</td>
+</tr>
+<tr>
+<td><strong><code>docker push</code></strong></td>
+<td>Upload image from local to registry</td>
+<td>upload ⬆️</td>
+</tr>
+<tr>
+<td><strong><code>docker pull</code></strong></td>
+<td>Download image from registry</td>
+<td>download ⬇️</td>
+</tr>
+<tr>
+<td><strong>Mutable infra</strong></td>
+<td>Patch machines in-place (Ansible approach)</td>
+<td>Pet 🐶 + Ansible</td>
+</tr>
+<tr>
+<td><strong>Immutable infra</strong></td>
+<td>Bake everything into an image; replace machines</td>
+<td>Cattle 🐄 + Packer/Docker</td>
+</tr>
+<tr>
+<td><strong>Packer</strong></td>
+<td>HashiCorp tool that builds machine images (AMIs) at build-time</td>
+<td>mold-maker</td>
+</tr>
+<tr>
+<td><strong>AMI</strong></td>
+<td>AWS Machine Image — blueprint for an EC2 instance</td>
+<td>EC2's recipe</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="m4-kubernetes-05-m4-kubernetes-coremd">M4 — Kubernetes (<code>05-M4-kubernetes-core.md</code>)<a class="headerlink" href="#m4-kubernetes-05-m4-kubernetes-coremd" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+<th>🎓 Hook</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Kubernetes / K8s</strong></td>
+<td>Container orchestrator: run, heal, scale, load-balance</td>
+<td>manager 👨‍🍳</td>
+</tr>
+<tr>
+<td><strong>Reconciliation loop</strong></td>
+<td>Continuous compare of desired vs current state → auto-fix</td>
+<td>chowkidar who counts pods 24/7</td>
+</tr>
+<tr>
+<td><strong>Desired state</strong></td>
+<td>What you declared (<code>replicas: 3</code>)</td>
+<td>the order / menu</td>
+</tr>
+<tr>
+<td><strong>Current state</strong></td>
+<td>What is actually running right now</td>
+<td>reality</td>
+</tr>
+<tr>
+<td><strong>Deployment</strong></td>
+<td>Controller that enforces desired pod count, rolling updates, rollback</td>
+<td>floor manager 👔</td>
+</tr>
+<tr>
+<td><strong>ReplicaSet</strong></td>
+<td>Controller that keeps exactly N pods alive (Deployment creates it)</td>
+<td>the counter</td>
+</tr>
+<tr>
+<td><strong>Pod</strong></td>
+<td>Smallest deployable unit — wraps 1+ containers, shares network/storage</td>
+<td>tiffin 🍱</td>
+</tr>
+<tr>
+<td><strong>Sidecar</strong></td>
+<td>Helper container in the same Pod (same network/storage)</td>
+<td>motorcycle sidecar</td>
+</tr>
+<tr>
+<td><strong>Service</strong></td>
+<td>Stable virtual IP + DNS name + load-balancer in front of pods</td>
+<td>fixed phone number ☎️</td>
+</tr>
+<tr>
+<td><strong>Label</strong></td>
+<td>Key-value tag on a Pod or Node</td>
+<td>name tag 🏷️</td>
+</tr>
+<tr>
+<td><strong>Selector</strong></td>
+<td>Filter that matches labels — Service uses it to find pods</td>
+<td>"these are mine"</td>
+</tr>
+<tr>
+<td><strong><code>nodeSelector</code> / affinity</strong></td>
+<td>Pod constraint: which node label must match for scheduling</td>
+<td>"I'll sit at that table"</td>
+</tr>
+<tr>
+<td><strong>Readiness probe</strong></td>
+<td>"Ready to take traffic?" Fail → removed from Service; pod lives</td>
+<td>traffic light 🚦</td>
+</tr>
+<tr>
+<td><strong>Liveness probe</strong></td>
+<td>"Still alive?" Fail → pod killed and restarted</td>
+<td>heartbeat 💓</td>
+</tr>
+<tr>
+<td><strong><code>Running</code> vs <code>Ready</code></strong></td>
+<td>Container process started vs app is ready to serve</td>
+<td>shop open vs checkout ready</td>
+</tr>
+<tr>
+<td><strong>Node</strong></td>
+<td>A single machine (VM or bare metal) in the cluster</td>
+<td>one house in the block</td>
+</tr>
+<tr>
+<td><strong>Control plane / Master</strong></td>
+<td>Cluster brain: scheduler, API server, etcd, controller-manager</td>
+<td>manager's office 🧠</td>
+</tr>
+<tr>
+<td><strong>Worker node</strong></td>
+<td>Where pods actually run</td>
+<td>factory floor 💪</td>
+</tr>
+<tr>
+<td><strong>Taint</strong></td>
+<td>"No-Entry" marker on a node — repels pods without matching toleration</td>
+<td>No-Entry board 🚷</td>
+</tr>
+<tr>
+<td><strong>Toleration</strong></td>
+<td>Pod's pass that lets it land on a tainted node</td>
+<td>VIP pass</td>
+</tr>
+<tr>
+<td><strong><code>NoSchedule</code></strong></td>
+<td>Taint effect: pods won't be scheduled here</td>
+<td>hard block</td>
+</tr>
+<tr>
+<td><strong>kubeadm</strong></td>
+<td>CLI tool to bootstrap a self-managed K8s cluster</td>
+<td>build-your-own assembly kit</td>
+</tr>
+<tr>
+<td><strong>EKS</strong></td>
+<td>AWS-managed Kubernetes (control plane run by AWS)</td>
+<td>flat for rent — AWS owns the roof</td>
+</tr>
+<tr>
+<td><strong>Namespace</strong></td>
+<td>Logical isolation within a cluster (not a security boundary)</td>
+<td>separate room in the house</td>
+</tr>
+<tr>
+<td><strong>kubectl</strong></td>
+<td>Client CLI to interact with K8s API server</td>
+<td>remote control</td>
+</tr>
+<tr>
+<td><strong>NodePort</strong></td>
+<td>Service type that exposes a port on every node's IP</td>
+<td>self-managed cluster's front door</td>
+</tr>
+<tr>
+<td><strong>ClusterIP</strong></td>
+<td>Service type accessible only inside the cluster (default)</td>
+<td>internal extension</td>
+</tr>
+<tr>
+<td><strong>LoadBalancer</strong></td>
+<td>Service type that provisions a cloud LB (EKS/GKE/AKS only)</td>
+<td>cloud's front door</td>
+</tr>
+<tr>
+<td><strong>StatefulSet</strong></td>
+<td>Like Deployment but gives pods stable identity + persistent storage</td>
+<td>Deployment for Pet workloads</td>
+</tr>
+<tr>
+<td><strong>ConfigMap</strong></td>
+<td>Non-secret configuration data injected into pods</td>
+<td>settings file</td>
+</tr>
+<tr>
+<td><strong>Secret</strong></td>
+<td>Base64-encoded sensitive data (passwords, tokens)</td>
+<td>encrypted settings file</td>
+</tr>
+<tr>
+<td><strong>HPA</strong></td>
+<td>Horizontal Pod Autoscaler — scales pod count based on metrics</td>
+<td>more waiters at rush hour</td>
+</tr>
+<tr>
+<td><strong>Cluster Autoscaler</strong></td>
+<td>Scales node count when pods can't be scheduled</td>
+<td>more tables when the restaurant is full</td>
+</tr>
+<tr>
+<td><strong>Ingress</strong></td>
+<td>L7 HTTP routing: host/path → Service</td>
+<td>reception desk that routes guests</td>
+</tr>
+<tr>
+<td><strong>CNI</strong></td>
+<td>Container Network Interface — plugin that wires pod networking (Calico, Flannel)</td>
+<td>the cable team</td>
+</tr>
+<tr>
+<td><strong>etcd</strong></td>
+<td>Distributed key-value store — holds all cluster state</td>
+<td>cluster's brain memory</td>
+</tr>
+<tr>
+<td><strong>Fragmentation</strong></td>
+<td>Total free resources exist but no single node has enough for a pod</td>
+<td>bus seats free but not side-by-side</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="m5-sizing-cost-06-m5-sizing-and-costmd">M5 — Sizing &amp; Cost (<code>06-M5-sizing-and-cost.md</code>)<a class="headerlink" href="#m5-sizing-cost-06-m5-sizing-and-costmd" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+<th>🎓 Hook</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Sizing / right-sizing</strong></td>
+<td>Choosing the correct CPU/RAM/type for the workload</td>
+<td>tailored clothes — not one-size-fits-all</td>
+</tr>
+<tr>
+<td><strong>Instance family</strong></td>
+<td>Group of instances optimized for a workload type (T/M/C/R/I/P/G)</td>
+<td>different tools for different hunger</td>
+</tr>
+<tr>
+<td><strong>Graviton (<code>g</code>)</strong></td>
+<td>AWS ARM-based chip — ~20 % cheaper + better perf-per-$</td>
+<td>value chip</td>
+</tr>
+<tr>
+<td><strong>Burstable (T)</strong></td>
+<td>Credits-based burst; throttles when credits exhaust</td>
+<td>prepaid mobile — runs out at peak</td>
+</tr>
+<tr>
+<td><strong>CPU credits</strong></td>
+<td>T-series burst budget that accrues at idle and drains under load</td>
+<td>credit balance</td>
+</tr>
+<tr>
+<td><strong>Requests</strong></td>
+<td>Minimum resources guaranteed by the scheduler for a pod</td>
+<td>reserved seat on the train</td>
+</tr>
+<tr>
+<td><strong>Limits</strong></td>
+<td>Maximum ceiling a pod may consume</td>
+<td>"don't leave the room"</td>
+</tr>
+<tr>
+<td><strong>Throttle</strong></td>
+<td>CPU limit exceeded → pod slows down (stays alive)</td>
+<td>🐢 sluggish but not dead</td>
+</tr>
+<tr>
+<td><strong>OOMKilled / exit 137</strong></td>
+<td>RAM limit exceeded → kernel kills the pod</td>
+<td>💀 exit 137 = SIGKILL from OOM</td>
+</tr>
+<tr>
+<td><strong>On-Demand</strong></td>
+<td>Pay full price, no commitment</td>
+<td>hotel walk-in rate</td>
+</tr>
+<tr>
+<td><strong>Reserved / Savings Plans</strong></td>
+<td>1–3 year commit → 40–70 % discount</td>
+<td>annual lease</td>
+</tr>
+<tr>
+<td><strong>Spot</strong></td>
+<td>Up to 90 % off; AWS can reclaim with 2-min notice</td>
+<td>standby seat — may get bumped</td>
+</tr>
+<tr>
+<td><strong>Headroom</strong></td>
+<td>Leave ~20–30 % of node capacity unused (spikes, OS, restarts)</td>
+<td>don't fill the pot to the brim</td>
+</tr>
+<tr>
+<td><strong>VPA</strong></td>
+<td>Vertical Pod Autoscaler — adjusts pod requests/limits automatically</td>
+<td>chef getting a bigger pan</td>
+</tr>
+<tr>
+<td><strong>EBS / gp3 / io2</strong></td>
+<td>AWS block storage; gp3 = cost-effective baseline; io2 = high IOPS</td>
+<td>disk speed dial</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="m6-cicd-07-m6-cicdmd">M6 — CI/CD (<code>07-M6-cicd.md</code>)<a class="headerlink" href="#m6-cicd-07-m6-cicdmd" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+<th>🎓 Hook</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CI (Continuous Integration)</strong></td>
+<td>Automated build + test + package on every commit</td>
+<td>factory QA line</td>
+</tr>
+<tr>
+<td><strong>CD (Continuous Delivery/Deploy)</strong></td>
+<td>Automated release + deploy after CI passes</td>
+<td>delivery truck</td>
+</tr>
+<tr>
+<td><strong>Pipeline</strong></td>
+<td>Chain of automated steps from commit to production</td>
+<td>assembly line</td>
+</tr>
+<tr>
+<td><strong>Workflow</strong></td>
+<td>GitHub Actions YAML file defining the pipeline</td>
+<td>recipe for the assembly line</td>
+</tr>
+<tr>
+<td><strong>Trigger (<code>on:</code>)</strong></td>
+<td>Event that starts a workflow (push, PR, schedule)</td>
+<td>doorbell</td>
+</tr>
+<tr>
+<td><strong>Job</strong></td>
+<td>Group of steps that run on one runner</td>
+<td>one department's work</td>
+</tr>
+<tr>
+<td><strong>Runner</strong></td>
+<td>Machine (GitHub-hosted or self-hosted) that executes a job</td>
+<td>rental workstation</td>
+</tr>
+<tr>
+<td><strong>Step</strong></td>
+<td>Single command or action inside a job</td>
+<td>one task on the checklist</td>
+</tr>
+<tr>
+<td><strong><code>uses:</code></strong></td>
+<td>Reference to a pre-built Action from the marketplace</td>
+<td>ready-made tool</td>
+</tr>
+<tr>
+<td><strong><code>run:</code></strong></td>
+<td>Raw shell command in a step</td>
+<td>manual command</td>
+</tr>
+<tr>
+<td><strong>Branch filter</strong></td>
+<td><code>branches: [main]</code> — workflow only fires on matching branches</td>
+<td>main-gate filter</td>
+</tr>
+<tr>
+<td><strong>Secrets</strong></td>
+<td>Encrypted credentials stored in GitHub, injected at runtime</td>
+<td>locker 🔐</td>
+</tr>
+<tr>
+<td><strong><code>github.sha</code></strong></td>
+<td>Unique 40-char commit hash — ideal immutable image tag</td>
+<td>exact fingerprint</td>
+</tr>
+<tr>
+<td><strong>Test gate</strong></td>
+<td>Step that runs tests; failure stops pipeline before deploy</td>
+<td>quality checkpoint 🚦</td>
+</tr>
+<tr>
+<td><strong>Artifact</strong></td>
+<td>Build output (image, binary, report) produced by CI</td>
+<td>finished product off the line</td>
+</tr>
+<tr>
+<td><strong>Manifest-update</strong></td>
+<td>CI step that writes the new image tag into <code>k8s/*.yaml</code> + git-pushes</td>
+<td>updating the menu, not serving the dish</td>
+</tr>
+<tr>
+<td><strong><code>GITHUB_TOKEN</code></strong></td>
+<td>Default short-lived token; GitHub won't re-trigger workflows from its pushes</td>
+<td>built-in loop prevention</td>
+</tr>
+<tr>
+<td><strong><code>paths:</code> filter</strong></td>
+<td>Trigger only when specific files change (loop-prevention layer 2)</td>
+<td>"only ring the bell for the kitchen door"</td>
+</tr>
+<tr>
+<td><strong><code>[skip ci]</code></strong></td>
+<td>Commit message keyword that tells GitHub Actions to skip</td>
+<td>"don't disturb" sign</td>
+</tr>
+<tr>
+<td><strong>Matrix build</strong></td>
+<td>One job definition fanned out to N parallel runners</td>
+<td>photocopier × N</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="m7-gitops-08-m7-gitopsmd">M7 — GitOps (<code>08-M7-gitops.md</code>)<a class="headerlink" href="#m7-gitops-08-m7-gitopsmd" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+<th>🎓 Hook</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>GitOps</strong></td>
+<td>Git is the single source of truth; cluster continuously reconciles to match Git</td>
+<td>menu = boss</td>
+</tr>
+<tr>
+<td><strong>Argo CD</strong></td>
+<td>Pull-based GitOps controller that syncs cluster to Git manifests</td>
+<td>head-waiter who reads the menu 🧑‍🍳</td>
+</tr>
+<tr>
+<td><strong>Flux</strong></td>
+<td>Alternative pull-based GitOps controller</td>
+<td>same role, different chef</td>
+</tr>
+<tr>
+<td><strong>Application (Argo)</strong></td>
+<td>Argo CRD that tells Argo what repo/path/cluster/namespace to watch</td>
+<td>job description given to Argo</td>
+</tr>
+<tr>
+<td><strong>Synced</strong></td>
+<td>Cluster state matches Git</td>
+<td>✅ in sync</td>
+</tr>
+<tr>
+<td><strong>OutOfSync</strong></td>
+<td>Cluster diverged from Git (drift detected)</td>
+<td>⚠️ mismatch</td>
+</tr>
+<tr>
+<td><strong>Healthy</strong></td>
+<td>Pods/resources are running correctly</td>
+<td>💚 all good</td>
+</tr>
+<tr>
+<td><strong>Degraded</strong></td>
+<td>Resources deployed but not working (pods crashing)</td>
+<td>❤️‍🩹 deployed but broken</td>
+</tr>
+<tr>
+<td><strong>selfHeal</strong></td>
+<td>Argo auto-reverts manual cluster changes back to Git state</td>
+<td>drift → instant revert</td>
+</tr>
+<tr>
+<td><strong>prune</strong></td>
+<td>Deleting from Git → Argo also deletes from cluster</td>
+<td>no orphans</td>
+</tr>
+<tr>
+<td><strong>Rollback (<code>git revert</code>)</strong></td>
+<td>Revert a Git commit; Argo re-deploys the previous state</td>
+<td>time machine ↩️</td>
+</tr>
+<tr>
+<td><strong>Source of truth</strong></td>
+<td>Git — what's in Git is what the cluster should look like</td>
+<td>the one menu that matters</td>
+</tr>
+<tr>
+<td><strong>branch = environment</strong></td>
+<td><code>main</code> → prod app, <code>staging</code> → staging app</td>
+<td>one branch, one env</td>
+</tr>
+<tr>
+<td><strong>Pull model</strong></td>
+<td>Argo polls Git and applies; CI never touches the cluster</td>
+<td>the restaurant polls the menu, menu doesn't call the chef</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="m8-observability-sre-10-m8-observability-sremd">M8 — Observability &amp; SRE (<code>10-M8-observability-sre.md</code>)<a class="headerlink" href="#m8-observability-sre-10-m8-observability-sremd" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Definition</th>
+<th>🎓 Hook</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Observability</strong></td>
+<td>Ability to understand system internal state from external outputs</td>
+<td>CCTV + fire alarm + feedback cards</td>
+</tr>
+<tr>
+<td><strong>Metrics</strong></td>
+<td>Numeric time-series measurements (CPU %, RPS, latency)</td>
+<td>dials on a dashboard</td>
+</tr>
+<tr>
+<td><strong>Logs</strong></td>
+<td>Timestamped event records from apps and infra</td>
+<td>diary entries</td>
+</tr>
+<tr>
+<td><strong>Traces</strong></td>
+<td>End-to-end request journey across services</td>
+<td>bread-crumb trail</td>
+</tr>
+<tr>
+<td><strong>Prometheus</strong></td>
+<td>Pull-based metrics collection and storage</td>
+<td>data collector who visits every machine</td>
+</tr>
+<tr>
+<td><strong>Grafana</strong></td>
+<td>Dashboard and visualization layer over metrics</td>
+<td>the control-room screen</td>
+</tr>
+<tr>
+<td><strong>Alertmanager</strong></td>
+<td>Routes Prometheus alerts to Slack/email/PagerDuty</td>
+<td>the person who calls you at 3 AM</td>
+</tr>
+<tr>
+<td><strong>SLI</strong></td>
+<td>Service Level Indicator — the metric you measure (e.g., latency p99)</td>
+<td>the thermometer reading</td>
+</tr>
+<tr>
+<td><strong>SLO</strong></td>
+<td>Service Level Objective — the target (e.g., p99 &lt; 200 ms)</td>
+<td>the "acceptable temperature" range</td>
+</tr>
+<tr>
+<td><strong>SLA</strong></td>
+<td>Service Level Agreement — contractual commitment to customers</td>
+<td>the written promise</td>
+</tr>
+<tr>
+<td><strong>Error budget</strong></td>
+<td>100 % − SLO — how much "bad" you're allowed before burning budget</td>
+<td>the forgiveness allowance</td>
+</tr>
+<tr>
+<td><strong>MTTD</strong></td>
+<td>Mean Time To Detect — how long until you know something broke</td>
+<td>time to first alert</td>
+</tr>
+<tr>
+<td><strong>MTTR</strong></td>
+<td>Mean Time To Resolve — how long to fix after detecting</td>
+<td>time from alarm to fix</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="the-5-golden-threads-quick-card">The 5 Golden Threads — quick card<a class="headerlink" href="#the-5-golden-threads-quick-card" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>These five ideas appear in every module. Understand them → everything else connects.
+Full narrative: <a href="../09-connected-system/">09-connected-system.md</a></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Thread</th>
+<th>One-line summary</th>
+<th>Where it shows up</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1. Reconciliation</strong></td>
+<td>"Declare what you want; the tool maintains it continuously"</td>
+<td>TF <code>apply</code>, Ansible <code>state=present</code>, K8s controller, Argo selfHeal</td>
+</tr>
+<tr>
+<td><strong>2. State outside compute</strong></td>
+<td>"Precious data lives outside the disposable unit"</td>
+<td>tfstate → S3, app state → RDS, K8s pods are cattle</td>
+</tr>
+<tr>
+<td><strong>3. Preview before apply</strong></td>
+<td>"Show me the trailer before the movie"</td>
+<td>TF <code>plan</code>, Ansible <code>--check</code>, K8s <code>--dry-run</code>, CI test gate</td>
+</tr>
+<tr>
+<td><strong>4. Push vs Pull</strong></td>
+<td>"Who initiates the action — caller or callee?"</td>
+<td>Ansible/Actions = push 📤; Argo = pull 📥; Git = handshake</td>
+</tr>
+<tr>
+<td><strong>5. Idempotent</strong></td>
+<td>"Safe to run N times; result is always the same"</td>
+<td>TF apply, Ansible module, K8s desired-state, git revert</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="concepts-vs-tools">Concepts vs Tools<a class="headerlink" href="#concepts-vs-tools" title="Permanent link">&para;</a></h2>
+<h3 id="the-distinction">The distinction<a class="headerlink" href="#the-distinction" title="Permanent link">&para;</a></h3>
+<p>A <strong>concept / property</strong> describes <em>how something behaves</em>. A <strong>tool</strong> is the software artifact.
+Interviewers penalize answers that say "Idempotency is Terraform" — idempotency is a <em>property</em>; Terraform <em>exhibits</em> it.</p>
+<table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>What it is</th>
+<th>Tools that exhibit it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Idempotency</strong></td>
+<td>Property — re-running an operation is safe; result unchanged</td>
+<td>Terraform, Ansible modules, Kubernetes desired-state, Argo sync</td>
+</tr>
+<tr>
+<td><strong>Reconciliation</strong></td>
+<td>Process — a control loop that continuously detects and fixes drift</td>
+<td>Kubernetes controllers, Argo CD (continuous); TF/Ansible (on-trigger only)</td>
+</tr>
+<tr>
+<td><strong>Declarative</strong></td>
+<td>Style — you specify <em>what</em>, the tool handles <em>how</em></td>
+<td>Terraform HCL, K8s YAML, Argo Application CRD</td>
+</tr>
+<tr>
+<td><strong>Stateless / Stateful</strong></td>
+<td>Property of an app — does it persist data internally?</td>
+<td>Any app; not a tool</td>
+</tr>
+<tr>
+<td><strong>Mutable / Immutable infra</strong></td>
+<td>Operational approach — patch in-place vs replace</td>
+<td>Ansible (mutable), Packer/Docker (immutable)</td>
+</tr>
+<tr>
+<td><strong>Push / Pull delivery</strong></td>
+<td>Architectural pattern — who initiates the sync?</td>
+<td>Ansible = push; Argo CD = pull</td>
+</tr>
+</tbody>
+</table>
+<h3 id="idempotent-vs-reconciliation-one-line-each">Idempotent vs Reconciliation — one-line each<a class="headerlink" href="#idempotent-vs-reconciliation-one-line-each" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Idempotent</strong> = "Re-running is safe." <em>You</em> trigger it. 🎓 Light switch — press again, still ON.</li>
+<li><strong>Reconciliation</strong> = "A loop automatically fixes mismatches." <em>The tool</em> runs it. 🎓 Thermostat — senses and self-adjusts.</li>
+<li><strong>Key nuance:</strong> Terraform is idempotent but does NOT continuously reconcile (drift only fixed when you run <code>apply</code>). Kubernetes and Argo CD do both — they reconcile continuously, 24/7, without you asking.</li>
+</ul>
+<hr />
+<h2 id="error-status-cause-reflex-table">Error / Status → Cause reflex table<a class="headerlink" href="#error-status-cause-reflex-table" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>The single most useful page for on-call. See symptom, know where to look.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Probable cause</th>
+<th>First check command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UNREACHABLE</code> / connection timeout</td>
+<td>Network: SG rule, route table, machine not started</td>
+<td><code>ping &lt;ip&gt;</code> / <code>curl -4 ifconfig.me</code> vs SG CIDR</td>
+</tr>
+<tr>
+<td><code>Permission denied (publickey)</code></td>
+<td>Wrong SSH key, wrong user, key not authorized</td>
+<td><code>ssh -i correct.pem ubuntu@&lt;ip&gt;</code></td>
+</tr>
+<tr>
+<td><code>OOMKilled</code> / exit code <code>137</code></td>
+<td>Pod exceeded RAM limit; kernel sent SIGKILL</td>
+<td><code>kubectl describe pod &lt;n&gt;</code> → <code>OOMKilled</code>; raise <code>limits.memory</code></td>
+</tr>
+<tr>
+<td><code>CrashLoopBackOff</code></td>
+<td>App is crashing repeatedly on startup</td>
+<td><code>kubectl logs &lt;pod&gt; --previous</code></td>
+</tr>
+<tr>
+<td><code>Pending</code> (pod)</td>
+<td>No node can satisfy: fragmentation, IP exhaustion, taint, nodeSelector mismatch</td>
+<td><code>kubectl describe pod &lt;n&gt;</code> → Events section</td>
+</tr>
+<tr>
+<td><code>ImagePullBackOff</code></td>
+<td>Wrong image tag, registry auth failed, ECR token expired</td>
+<td><code>kubectl describe pod &lt;n&gt;</code> → image name + pull-secret</td>
+</tr>
+<tr>
+<td><code>OutOfSync</code> (Argo)</td>
+<td>Cluster state differs from Git</td>
+<td><code>argocd app diff &lt;app&gt;</code></td>
+</tr>
+<tr>
+<td><code>READY 0/1</code></td>
+<td>Pod running but readiness probe failing</td>
+<td><code>kubectl describe pod</code> → readiness probe + <code>kubectl logs</code></td>
+</tr>
+<tr>
+<td><code>TLS handshake timeout</code> (kubectl)</td>
+<td>API server OOM-killed (low RAM node)</td>
+<td><code>free -h</code> on master node</td>
+</tr>
+<tr>
+<td><code>localhost:8080 connection refused</code> (kubectl)</td>
+<td><code>~/.kube/config</code> missing</td>
+<td><code>cp /etc/kubernetes/admin.conf ~/.kube/config</code></td>
+</tr>
+<tr>
+<td><code>Throttling</code> / slow CPU</td>
+<td>Pod hit CPU limit (<code>limits.cpu</code>)</td>
+<td><code>kubectl top pod</code> — if near limit, raise it or use C-family node</td>
+</tr>
+<tr>
+<td><code>Degraded</code> (Argo)</td>
+<td>Resources synced but pods unhealthy</td>
+<td><code>kubectl get pods -n &lt;ns&gt;</code> → logs</td>
+</tr>
+<tr>
+<td><code>Synced</code> + pods down</td>
+<td>Argo applied but app crashed (app bug, not GitOps issue)</td>
+<td><code>kubectl logs</code> / <code>kubectl describe</code></td>
+</tr>
+<tr>
+<td><code>404 Not Found, nginx</code> (Ingress)</td>
+<td>Host header not matching any Ingress rule</td>
+<td><code>curl -H "Host: myapp.example.com" http://&lt;node-ip&gt;/</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="quick-troubleshoot-reference">Quick Troubleshoot Reference<a class="headerlink" href="#quick-troubleshoot-reference" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Symptom-to-fix table from live lab failures (P1–P8). See <a href="../14-interview-bank/">the Interview Bank war-stories</a>.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Check command / location</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>aws</code> not found on EC2 node</td>
+<td><code>which aws</code></td>
+<td>Generate ECR token on laptop; use node IAM role in prod</td>
+</tr>
+<tr>
+<td>Billing spike after <code>terraform apply</code></td>
+<td><code>instance_type</code> in <code>main.tf</code></td>
+<td>t3.micro = free-tier; k8s needs t3.medium+; use k3s on t3.micro</td>
+</tr>
+<tr>
+<td>RDS <code>InvalidParameterValue</code> (password)</td>
+<td>password string</td>
+<td>Letters + numbers only — no <code>/</code>, <code>@</code>, <code>"</code>, space</td>
+</tr>
+<tr>
+<td>SSH timeout after IP change</td>
+<td><code>curl -4 ifconfig.me</code> vs SG rule</td>
+<td>Update <code>ssh_allowed_cidr</code> in tfvars + <code>terraform apply</code></td>
+</tr>
+<tr>
+<td><code>kubectl</code> → <code>localhost:8080 refused</code></td>
+<td><code>ls ~/.kube/config</code></td>
+<td><code>cp /etc/kubernetes/admin.conf ~/.kube/config</code></td>
+</tr>
+<tr>
+<td>k3s <code>TLS handshake timeout</code></td>
+<td><code>free -h</code> (RAM?)</td>
+<td>Add 2 GB swap; <code>sudo swapon /swapfile &amp;&amp; sudo systemctl restart k3s</code></td>
+</tr>
+<tr>
+<td>Swap gone after reboot</td>
+<td><code>cat /etc/fstab \| grep swap</code></td>
+<td><code>echo '/swapfile none swap sw 0 0' \| sudo tee -a /etc/fstab</code></td>
+</tr>
+<tr>
+<td>Worker won't join cluster</td>
+<td>IP used in <code>K3S_URL</code></td>
+<td>Use master's <strong>private</strong> IP (<code>10.0.x.x</code>), not public</td>
+</tr>
+<tr>
+<td>ECR <code>ImagePullBackOff</code> on node</td>
+<td><code>kubectl get secret ecr-secret</code></td>
+<td>Recreate pull-secret (ECR tokens expire ~12 h)</td>
+</tr>
+<tr>
+<td>CI push → "Permission denied" to repo</td>
+<td><code>permissions:</code> in workflow YAML</td>
+<td>Add <code>permissions: contents: write</code> in yaml + enable in repo Settings → Actions</td>
+</tr>
+<tr>
+<td><code>sed: No such file</code> in CI manifest step</td>
+<td>Filename of <code>k8s/*.yaml</code> vs loop variable</td>
+<td>Rename manifests to match service names exactly</td>
+</tr>
+<tr>
+<td>CI triggers infinite loop</td>
+<td>workflow trigger config</td>
+<td>Add <code>paths: ['services/**']</code> filter + <code>[skip ci]</code> in commit message</td>
+</tr>
+<tr>
+<td>Argo pods <code>Pending</code>, kubectl slow</td>
+<td><code>free -h</code></td>
+<td>Argo needs ~1 GB; ensure swap (G5/G6); wait for swap pages</td>
+</tr>
+<tr>
+<td><code>kubectl apply</code> → <code>TLS timeout</code> (API stress)</td>
+<td>API server under load</td>
+<td><code>kubectl apply --validate=false</code> (workaround, not best practice)</td>
+</tr>
+<tr>
+<td><code>selfHeal</code> not reverting drift</td>
+<td><code>selfHeal: true</code> in Application CRD?</td>
+<td>Check <code>kubectl describe application -n argocd</code></td>
+</tr>
+<tr>
+<td>PVC / pod stuck <code>Pending</code></td>
+<td><code>kubectl get sc</code> (StorageClass list)</td>
+<td>Install local-path provisioner + patch as default SC + delete &amp; recreate PVC</td>
+</tr>
+<tr>
+<td>Browser shows "404 Not Found, nginx" on node IP</td>
+<td>Host header</td>
+<td>Map hostname in <code>/etc/hosts</code>; use <code>http://</code> not <code>https://</code>; <code>curl -H "Host:"</code> to test</td>
+</tr>
+<tr>
+<td>RDS connection refused from pod</td>
+<td>SG rule + password</td>
+<td>Self-referencing SG rule for port 5432; letters-only password</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="sizing-quick-ref">Sizing quick-ref<a class="headerlink" href="#sizing-quick-ref" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Teaching detail: <a href="../06-M5-sizing-and-cost/">06-M5-sizing-and-cost.md</a></p>
+</blockquote>
+<h3 id="instance-family-cheat-sheet">Instance family cheat sheet<a class="headerlink" href="#instance-family-cheat-sheet" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Family</th>
+<th>Optimized for</th>
+<th>CPU:RAM</th>
+<th>Use when</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>T</strong> (t3/t4g)</td>
+<td>Burst</td>
+<td>1:2–4, variable</td>
+<td>Dev, demo, low / spiky traffic — NOT steady high load</td>
+</tr>
+<tr>
+<td><strong>M</strong> (m5/m6/m7)</td>
+<td>General / balanced</td>
+<td>1:4</td>
+<td>Default: web APIs, microservices, mixed workloads</td>
+</tr>
+<tr>
+<td><strong>C</strong> (c5/c6/c7)</td>
+<td>Compute / CPU</td>
+<td>1:2</td>
+<td>Video encode, ML inference, batch, HPC</td>
+</tr>
+<tr>
+<td><strong>R</strong> (r5/r6/r7)</td>
+<td>RAM / memory</td>
+<td>1:8</td>
+<td>Databases, in-memory cache, real-time analytics</td>
+</tr>
+<tr>
+<td><strong>X</strong> (x2)</td>
+<td>Extreme RAM</td>
+<td>1:16+</td>
+<td>SAP HANA, giant in-memory datasets</td>
+</tr>
+<tr>
+<td><strong>I</strong> (i3/i4)</td>
+<td>Storage I/O</td>
+<td>1:8 + NVMe</td>
+<td>NoSQL, data warehouse, search clusters</td>
+</tr>
+<tr>
+<td><strong>P/G</strong></td>
+<td>GPU</td>
+<td>—</td>
+<td>ML training (P), ML inference / graphics (G)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="instance-name-decode">Instance name decode<a class="headerlink" href="#instance-name-decode" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>m  6  g  .  x large
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>│  │  │     └─ size ladder: medium &lt; large &lt; xlarge &lt; 2xlarge &lt; 4xlarge
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│  │  └─ processor: g=Graviton/ARM (~20% cheaper), i=Intel, a=AMD
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│  └─ generation: higher = newer, cheaper, faster → always prefer latest gen
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>└─ family: workload type (m=general, c=compute, r=memory, i=IO, t=burst)
+</span></code></pre></div>
+<h3 id="size-ladder-m-family-reference">Size ladder (M family reference)<a class="headerlink" href="#size-ladder-m-family-reference" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Size</th>
+<th>vCPU</th>
+<th>RAM</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>medium¹</td>
+<td>1–2</td>
+<td>4 GB</td>
+</tr>
+<tr>
+<td>large</td>
+<td>2</td>
+<td>8 GB</td>
+</tr>
+<tr>
+<td>xlarge</td>
+<td>4</td>
+<td>16 GB</td>
+</tr>
+<tr>
+<td>2xlarge</td>
+<td>8</td>
+<td>32 GB</td>
+</tr>
+<tr>
+<td>4xlarge</td>
+<td>16</td>
+<td>64 GB</td>
+</tr>
+</tbody>
+</table>
+<p>¹ <code>.medium</code> exists only on <strong>T-series</strong> (<code>t3.medium</code> = 2 vCPU / 4 GB) and <strong>Graviton</strong> (<code>m6g/m7g.medium</code> = 1 vCPU / 4 GB); <code>m5</code>/<code>m6i</code> start at <code>.large</code>. Pattern to remember: from <code>.large</code> up, each step <strong>doubles</strong> vCPU <em>and</em> RAM.</p>
+<h3 id="sizing-formulas">Sizing formulas<a class="headerlink" href="#sizing-formulas" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a># Per-pod
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Pod CPU request    = avg_cpu_per_request × peak_concurrent_requests / replicas
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>Pod memory request = base_process_RAM + (per_connection_RAM × connections)
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>Pod limit          = request × 1.5 to 2   # spike headroom
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a># Per-node
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>Node RAM   = (pods_per_node × pod_RAM)  + 1.5 GB system + 0.5 GB kubelet/CNI
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>Node CPU   = (pods_per_node × pod_CPU)  + 0.5 vCPU system
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>Pods/node  = min(110, node_RAM/pod_RAM, node_CPU/pod_CPU, VPC_IP_limit)
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a># Node count
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>Total nodes = ceil(total_pods / pods_per_node) + 1   # +1 for HA buffer
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a># Postgres RAM
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>shared_buffers = RAM × 0.25
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>connections    = (core_count × 2) + spindle_count   # starting point
+</span></code></pre></div>
+<h3 id="6-project-profiles-quick-table">6 project profiles quick table<a class="headerlink" href="#6-project-profiles-quick-table" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Profile</th>
+<th>Nodes</th>
+<th>DB</th>
+<th>Scaling</th>
+<th>Est. monthly</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Demo / learning</td>
+<td>2× t3.medium</td>
+<td>RDS db.t3.micro</td>
+<td>manual</td>
+<td>~$30–60</td>
+</tr>
+<tr>
+<td>Startup MVP</td>
+<td>2× m6g.large</td>
+<td>RDS db.t3.small</td>
+<td>HPA</td>
+<td>~$50–100</td>
+</tr>
+<tr>
+<td>Growing SaaS</td>
+<td>3–5× m6g.xlarge</td>
+<td>RDS db.r6g.large Multi-AZ</td>
+<td>HPA + Cluster Autoscaler</td>
+<td>~$500–1500</td>
+</tr>
+<tr>
+<td>High traffic</td>
+<td>mixed m/c + spot batch</td>
+<td>Aurora + read replicas</td>
+<td>full autoscale + CDN</td>
+<td>$5k–50k+</td>
+</tr>
+<tr>
+<td>ML / CPU batch</td>
+<td>c6g.2xlarge / g5.xlarge</td>
+<td>minimal + SQS queue</td>
+<td>KEDA queue-depth</td>
+<td>GPU-hours driven</td>
+</tr>
+<tr>
+<td>Cache / analytics</td>
+<td>r6g.xlarge+</td>
+<td>ElastiCache r6g</td>
+<td>RAM-driven</td>
+<td>RAM-cost driven</td>
+</tr>
+</tbody>
+</table>
+<h3 id="10-golden-rules">10 golden rules<a class="headerlink" href="#10-golden-rules" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Family first, size second.</strong> Wrong family = no amount of tuning helps.</li>
+<li><strong>Stateless → K8s pod. Stateful → managed service (RDS/ElastiCache).</strong> Never run a production primary DB in a K8s pod.</li>
+<li><strong>Default confused? → M family.</strong> Balanced; migrate later after measuring.</li>
+<li><strong>T-series = dev / low-traffic only.</strong> Sustained high CPU exhausts credits → throttle. Use M/C/R for prod.</li>
+<li><strong>Always latest generation + Graviton.</strong> <code>m7g</code> &gt; <code>m6g</code> &gt; <code>m5</code>. ~20 % cheaper, faster.</li>
+<li><strong>Estimate → Deploy → Measure → Right-size.</strong> Never expect perfection on first pick. <code>kubectl top</code> + CloudWatch tell the truth.</li>
+<li><strong>Headroom + HA always.</strong> +1 node for failure buffer. Limits = 1.5–2× requests. Multi-AZ in prod.</li>
+<li><strong>Over-provision &gt; crash; right-size &gt; over-provision.</strong> Start safe, then tighten.</li>
+<li><strong>Autoscale, don't manual-scale.</strong> HPA (pods) + Cluster Autoscaler (nodes). Spiky traffic = non-negotiable.</li>
+<li><strong>Spot = stateless only.</strong> 70–90 % savings. Never for production primary databases.</li>
+</ol>
+<hr />
+<h2 id="command-cheat-sheets">Command cheat-sheets<a class="headerlink" href="#command-cheat-sheets" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>One command, one line of purpose. Flag details in the module files.</p>
+</blockquote>
+<h3 id="terraform">Terraform<a class="headerlink" href="#terraform" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>terraform<span class="w"> </span>init<span class="w">                              </span><span class="c1"># download providers + set up backend</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>terraform<span class="w"> </span>plan<span class="w">                              </span><span class="c1"># preview changes — safe, reads state only</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>terraform<span class="w"> </span>plan<span class="w"> </span>-var<span class="o">=</span><span class="s2">&quot;db_password=X&quot;</span><span class="w">        </span><span class="c1"># pass sensitive variable at plan time</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>terraform<span class="w"> </span>apply<span class="w">                             </span><span class="c1"># execute the plan (creates/changes/destroys)</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>terraform<span class="w"> </span>apply<span class="w"> </span>-auto-approve<span class="w">              </span><span class="c1"># skip confirmation (CI only)</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>terraform<span class="w"> </span>destroy<span class="w">                           </span><span class="c1"># tear down all tracked resources</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>terraform<span class="w"> </span>output<span class="w">                            </span><span class="c1"># print declared output values</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>terraform<span class="w"> </span>fmt<span class="w">                               </span><span class="c1"># auto-format all .tf files</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>terraform<span class="w"> </span>validate<span class="w">                          </span><span class="c1"># check syntax without calling provider</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>terraform<span class="w"> </span>state<span class="w"> </span>list<span class="w">                        </span><span class="c1"># list all resources in state</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>terraform<span class="w"> </span>state<span class="w"> </span>show<span class="w"> </span>&lt;resource&gt;<span class="w">            </span><span class="c1"># inspect one resource&#39;s state record</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>terraform<span class="w"> </span>import<span class="w"> </span>&lt;resource.name&gt;<span class="w"> </span>&lt;id&gt;<span class="w">      </span><span class="c1"># bring existing resource under TF management</span>
+</span></code></pre></div>
+<h3 id="ansible">Ansible<a class="headerlink" href="#ansible" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>ansible<span class="w"> </span>all<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>-m<span class="w"> </span>ping<span class="w">                        </span><span class="c1"># connectivity check — first thing always</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>ansible<span class="w"> </span>all<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>-m<span class="w"> </span>shell<span class="w"> </span>-a<span class="w"> </span><span class="s2">&quot;uptime&quot;</span><span class="w">          </span><span class="c1"># ad-hoc command on all hosts</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>ansible<span class="w"> </span>webservers<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>-m<span class="w"> </span>apt<span class="w"> </span>-a<span class="w"> </span><span class="s2">&quot;name=nginx state=present&quot;</span><span class="w"> </span>--become<span class="w">   </span><span class="c1"># ad-hoc module</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w">                 </span><span class="c1"># run a playbook</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>--check<span class="w">         </span><span class="c1"># dry-run (like terraform plan)</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>--diff<span class="w">          </span><span class="c1"># show line-by-line file diffs</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>--limit<span class="w"> </span>master<span class="w">  </span><span class="c1"># run only on the &#39;master&#39; group</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>--tags<span class="w"> </span>nginx<span class="w">    </span><span class="c1"># run only tagged tasks</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>-vvv<span class="w">            </span><span class="c1"># verbose — shows SSH + module output</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>ansible-galaxy<span class="w"> </span>init<span class="w"> </span>my_role<span class="w">                                 </span><span class="c1"># scaffold a new role directory structure</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>ansible-vault<span class="w"> </span>encrypt<span class="w"> </span>secrets.yml<span class="w">                          </span><span class="c1"># encrypt a secrets file</span>
+</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>ansible-vault<span class="w"> </span>edit<span class="w"> </span>secrets.yml<span class="w">                             </span><span class="c1"># open encrypted file in editor</span>
+</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>ansible-playbook<span class="w"> </span>site.yml<span class="w"> </span>--ask-vault-pass<span class="w">                 </span><span class="c1"># run playbook with vault passphrase prompt</span>
+</span></code></pre></div>
+<h3 id="docker">Docker<a class="headerlink" href="#docker" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>myapp:v1<span class="w"> </span>.<span class="w">                          </span><span class="c1"># build image from Dockerfile in current dir</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>myapp:v1<span class="w"> </span>./app<span class="w">                      </span><span class="c1"># build from subdirectory</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:8000<span class="w"> </span>myapp:v1<span class="w">                 </span><span class="c1"># run detached, map host:container port</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>docker<span class="w"> </span>run<span class="w"> </span>-e<span class="w"> </span><span class="nv">DB_HOST</span><span class="o">=</span>...<span class="w"> </span>myapp:v1<span class="w">                  </span><span class="c1"># pass environment variable</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>docker<span class="w"> </span>ps<span class="w">                                            </span><span class="c1"># list running containers</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>docker<span class="w"> </span>ps<span class="w"> </span>-a<span class="w">                                         </span><span class="c1"># list all containers including stopped</span>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>docker<span class="w"> </span>logs<span class="w"> </span>&lt;container&gt;<span class="w">                              </span><span class="c1"># stream stdout/stderr of a container</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>docker<span class="w"> </span>logs<span class="w"> </span>-f<span class="w"> </span>&lt;container&gt;<span class="w">                           </span><span class="c1"># follow (tail -f) logs</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;container&gt;<span class="w"> </span>bash<span class="w">                    </span><span class="c1"># open interactive shell in running container</span>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>docker<span class="w"> </span>images<span class="w">                                        </span><span class="c1"># list local images</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>docker<span class="w"> </span>push<span class="w"> </span>&lt;ecr_url&gt;:v1<span class="w">                            </span><span class="c1"># push image to registry</span>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>docker<span class="w"> </span>pull<span class="w"> </span>nginx:1.27<span class="w">                              </span><span class="c1"># pull image from registry</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>docker<span class="w"> </span>tag<span class="w"> </span>myapp:v1<span class="w"> </span>&lt;ecr_url&gt;:v1<span class="w">                   </span><span class="c1"># tag image for a specific registry</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>docker<span class="w"> </span>system<span class="w"> </span>prune<span class="w"> </span>-f<span class="w">                              </span><span class="c1"># remove stopped containers, dangling images</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>docker<span class="w"> </span>compose<span class="w"> </span>up<span class="w"> </span>-d<span class="w">                                 </span><span class="c1"># start services defined in docker-compose.yml</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a>docker<span class="w"> </span>compose<span class="w"> </span>down<span class="w">                                  </span><span class="c1"># stop and remove compose services</span>
+</span></code></pre></div>
+<h3 id="kubectl">kubectl<a class="headerlink" href="#kubectl" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w">                                     </span><span class="c1"># list pods in default namespace</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>argocd<span class="w">                          </span><span class="c1"># list pods in a specific namespace</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-A<span class="w">                                  </span><span class="c1"># list pods in all namespaces</span>
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-o<span class="w"> </span>wide<span class="w">                            </span><span class="c1"># include node + IP in output</span>
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>&lt;name&gt;<span class="w">                         </span><span class="c1"># full detail including Events (debug first stop)</span>
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;pod&gt;<span class="w">                                  </span><span class="c1"># stdout of pod&#39;s main container</span>
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;pod&gt;<span class="w"> </span>--previous<span class="w">                       </span><span class="c1"># logs of the crashed previous container instance</span>
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>&lt;pod&gt;<span class="w"> </span>-f<span class="w">                               </span><span class="c1"># follow logs live</span>
+</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;pod&gt;<span class="w"> </span>--<span class="w"> </span>bash<span class="w">                      </span><span class="c1"># open shell inside running pod</span>
+</span><span id="__span-5-10"><a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>k8s/<span class="w">                               </span><span class="c1"># apply all manifests in directory</span>
+</span><span id="__span-5-11"><a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>kubectl<span class="w"> </span>apply<span class="w"> </span>-f<span class="w"> </span>deployment.yaml<span class="w">                    </span><span class="c1"># apply single manifest</span>
+</span><span id="__span-5-12"><a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>-f<span class="w"> </span>k8s/<span class="w">                              </span><span class="c1"># delete resources defined in manifests</span>
+</span><span id="__span-5-13"><a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>&lt;name&gt;<span class="w">                           </span><span class="c1"># delete (K8s will recreate if Deployment)</span>
+</span><span id="__span-5-14"><a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>kubectl<span class="w"> </span>scale<span class="w"> </span>deployment<span class="w"> </span>&lt;name&gt;<span class="w"> </span>--replicas<span class="o">=</span><span class="m">5</span><span class="w">        </span><span class="c1"># manually scale a Deployment</span>
+</span><span id="__span-5-15"><a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a>kubectl<span class="w"> </span>rollout<span class="w"> </span>status<span class="w"> </span>deployment/&lt;name&gt;<span class="w">            </span><span class="c1"># watch rolling update progress</span>
+</span><span id="__span-5-16"><a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>kubectl<span class="w"> </span>rollout<span class="w"> </span>undo<span class="w"> </span>deployment/&lt;name&gt;<span class="w">              </span><span class="c1"># roll back to previous ReplicaSet</span>
+</span><span id="__span-5-17"><a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>kubectl<span class="w"> </span>top<span class="w"> </span>pods<span class="w">                                     </span><span class="c1"># live CPU + RAM per pod</span>
+</span><span id="__span-5-18"><a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a>kubectl<span class="w"> </span>top<span class="w"> </span>nodes<span class="w">                                    </span><span class="c1"># live CPU + RAM per node</span>
+</span><span id="__span-5-19"><a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a>kubectl<span class="w"> </span>port-forward<span class="w"> </span>svc/argocd-server<span class="w"> </span>-n<span class="w"> </span>argocd<span class="w"> </span><span class="m">8080</span>:443<span class="w">   </span><span class="c1"># tunnel service to localhost</span>
+</span><span id="__span-5-20"><a id="__codelineno-5-20" name="__codelineno-5-20" href="#__codelineno-5-20"></a>kubectl<span class="w"> </span>get<span class="w"> </span>endpointslices<span class="w">                          </span><span class="c1"># see which pod IPs a Service is routing to</span>
+</span><span id="__span-5-21"><a id="__codelineno-5-21" name="__codelineno-5-21" href="#__codelineno-5-21"></a>kubectl<span class="w"> </span>auth<span class="w"> </span>can-i<span class="w"> </span>create<span class="w"> </span>pods<span class="w"> </span>--as<span class="o">=</span>developer<span class="w">      </span><span class="c1"># check RBAC permissions for a user</span>
+</span><span id="__span-5-22"><a id="__codelineno-5-22" name="__codelineno-5-22" href="#__codelineno-5-22"></a>kubectl<span class="w"> </span>get<span class="w"> </span>events<span class="w"> </span>--sort-by<span class="o">=</span><span class="s1">&#39;.lastTimestamp&#39;</span><span class="w">       </span><span class="c1"># chronological cluster events</span>
+</span><span id="__span-5-23"><a id="__codelineno-5-23" name="__codelineno-5-23" href="#__codelineno-5-23"></a>kubectl<span class="w"> </span>get<span class="w"> </span>sc<span class="w">                                       </span><span class="c1"># list StorageClasses (debug PVC Pending)</span>
+</span><span id="__span-5-24"><a id="__codelineno-5-24" name="__codelineno-5-24" href="#__codelineno-5-24"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w">                                      </span><span class="c1"># list PersistentVolumeClaims</span>
+</span><span id="__span-5-25"><a id="__codelineno-5-25" name="__codelineno-5-25" href="#__codelineno-5-25"></a>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>db-secret<span class="w"> </span>--from-literal<span class="o">=</span><span class="nv">password</span><span class="o">=</span>X<span class="w">   </span><span class="c1"># create a secret</span>
+</span><span id="__span-5-26"><a id="__codelineno-5-26" name="__codelineno-5-26" href="#__codelineno-5-26"></a>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>docker-registry<span class="w"> </span>ecr-secret<span class="w"> </span>...<span class="w">               </span><span class="c1"># ECR pull secret</span>
+</span></code></pre></div>
+<h3 id="argo-cd-cli">Argo CD CLI<a class="headerlink" href="#argo-cd-cli" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>argocd<span class="w"> </span>app<span class="w"> </span>list<span class="w">                             </span><span class="c1"># list all Argo CD Applications</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>argocd<span class="w"> </span>app<span class="w"> </span>get<span class="w"> </span>&lt;app-name&gt;<span class="w">                   </span><span class="c1"># full status of one app (sync + health)</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>argocd<span class="w"> </span>app<span class="w"> </span>diff<span class="w"> </span>&lt;app-name&gt;<span class="w">                  </span><span class="c1"># show diff between Git and cluster</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>argocd<span class="w"> </span>app<span class="w"> </span>sync<span class="w"> </span>&lt;app-name&gt;<span class="w">                  </span><span class="c1"># manually trigger a sync</span>
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>argocd<span class="w"> </span>app<span class="w"> </span><span class="nb">history</span><span class="w"> </span>&lt;app-name&gt;<span class="w">              </span><span class="c1"># deployment history (Git SHAs)</span>
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>argocd<span class="w"> </span>app<span class="w"> </span>rollback<span class="w"> </span>&lt;app-name&gt;<span class="w"> </span>&lt;history-id&gt;<span class="w"> </span><span class="c1"># roll back to a previous sync</span>
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>argocd<span class="w"> </span>app<span class="w"> </span><span class="nb">set</span><span class="w"> </span>&lt;app-name&gt;<span class="w"> </span>--sync-policy<span class="w"> </span>automated<span class="w">   </span><span class="c1"># enable auto-sync via CLI</span>
+</span></code></pre></div>
+<h3 id="git-ops-relevant-subset">Git (ops-relevant subset)<a class="headerlink" href="#git-ops-relevant-subset" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>git<span class="w"> </span>revert<span class="w"> </span>&lt;commit-sha&gt;<span class="w">                     </span><span class="c1"># create a new commit that undoes a past commit — GitOps rollback</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>git<span class="w"> </span>revert<span class="w"> </span>HEAD<span class="w">                             </span><span class="c1"># undo last commit (creates new revert commit)</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w">                           </span><span class="c1"># compact history — find the commit SHA to revert</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>git<span class="w"> </span>log<span class="w"> </span>--oneline<span class="w"> </span>-20<span class="w">                       </span><span class="c1"># last 20 commits</span>
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>git<span class="w"> </span>diff<span class="w"> </span>main...HEAD<span class="w">                        </span><span class="c1"># all changes on current branch vs main</span>
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>git<span class="w"> </span>diff<span class="w"> </span>HEAD~1<span class="w">                             </span><span class="c1"># diff of last commit only</span>
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>git<span class="w"> </span>checkout<span class="w"> </span>-b<span class="w"> </span>feature/my-feature<span class="w">         </span><span class="c1"># create and switch to new branch</span>
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>git<span class="w"> </span>merge<span class="w"> </span>feature/my-feature<span class="w">               </span><span class="c1"># merge branch into current</span>
+</span><span id="__span-7-9"><a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a>git<span class="w"> </span>push<span class="w"> </span>-u<span class="w"> </span>origin<span class="w"> </span>main<span class="w">                     </span><span class="c1"># push and set upstream tracking</span>
+</span></code></pre></div>
+<hr />
+<h2 id="the-6-universal-rules">The 6 Universal Rules<a class="headerlink" href="#the-6-universal-rules" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Cross-module truths. Violate any of these and something downstream breaks.</p>
+</blockquote>
+<ol>
+<li><strong>Preview before apply</strong> — TF <code>plan</code>, Ansible <code>--check</code>, K8s <code>--dry-run</code>, CI test gate. Blind apply = disaster.</li>
+<li><strong>Idempotency is the goal</strong> — Every config operation must be safe to re-run. If a step is not idempotent, fix it (use modules over <code>shell:</code>).</li>
+<li><strong>Error type = problem location</strong> — <code>UNREACHABLE</code> → network/machine. <code>Permission denied</code> → access/key. <code>syntax error</code> → your code. Don't fix the wrong layer.</li>
+<li><strong>State outside, compute disposable</strong> — Anything with state inside is a Pet; move state out and it becomes Cattle. Applies to apps, TF state, pods, CI runners.</li>
+<li><strong>Error location ≠ root cause location</strong> — Docker <code>RUN</code> fails because <code>COPY</code> was missing. K8s pod <code>Pending</code> because a node has fragmented resources. Check upstream.</li>
+<li><strong>Stable things first, volatile things last</strong> — Docker layers: deps above, code below. General design: what changes least goes first/higher in the stack.</li>
+</ol>
+<hr />
+<h2 id="master-recall-sheet">Master Recall Sheet<a class="headerlink" href="#master-recall-sheet" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>18-row rapid Q→A. Use for pre-interview 10-minute review.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Question</th>
+<th>Answer</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>4 tools in order</td>
+<td>Terraform → Ansible → Docker → Kubernetes</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Why is a DB stateful?</td>
+<td>Precious data lives inside — destroy = data lost</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>plan</code> vs <code>apply</code></td>
+<td>plan = safe preview (no changes); apply = execute</td>
+</tr>
+<tr>
+<td>4</td>
+<td>5 servers, run <code>apply</code> 3 times — how many servers?</td>
+<td>5 (idempotent: SET not +=)</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Remote state needs two things</td>
+<td>S3 (sharing) + DynamoDB lock (safety)</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Drift vs lost state</td>
+<td>Drift = reality changed, state intact; Lost = state file gone, TF is blind</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Agentless — what does target need?</td>
+<td>SSH + Python only</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Ansible <code>changed</code> vs <code>ok</code></td>
+<td>changed = Ansible had to act; ok = already correct</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Why handler + notify?</td>
+<td>Restart only when something actually changed — no needless restarts</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Image vs container</td>
+<td>Blueprint (class) vs running instance (object)</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Why deps above, code below in Dockerfile?</td>
+<td>Code changes daily (only it rebuilds); deps rarely change (cache preserved)</td>
+</tr>
+<tr>
+<td>12</td>
+<td><code>latest</code> tag in prod?</td>
+<td>Never — mutable label; no rollback guarantee; use SHA or semver</td>
+</tr>
+<tr>
+<td>13</td>
+<td>Reconciliation in one sentence</td>
+<td>Desired vs current, mismatch → auto-fix, continuously</td>
+</tr>
+<tr>
+<td>14</td>
+<td>Bare pod crashes — gets recreated?</td>
+<td>No — no Deployment = no desired-state controller watching it</td>
+</tr>
+<tr>
+<td>15</td>
+<td>How pods are reached despite IP changes</td>
+<td>Service (stable ClusterIP/DNS + label selector)</td>
+</tr>
+<tr>
+<td>16</td>
+<td>Why no app pods on master?</td>
+<td>Taint <code>NoSchedule</code> — control plane does cluster thinking; workers do the work</td>
+</tr>
+<tr>
+<td>17</td>
+<td>Pod Pending with free cluster resources</td>
+<td>Fragmentation / IP pool exhausted / taint mismatch / nodeSelector no-match</td>
+</tr>
+<tr>
+<td>18</td>
+<td>Actions push + Argo pull — what's in the middle?</td>
+<td>Git — CI writes to Git, Argo reads from Git. Git = handshake / source of truth</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="memory-hooks-index">Memory hooks index<a class="headerlink" href="#memory-hooks-index" title="Permanent link">&para;</a></h2>
+<blockquote>
+<p>Analogy → concept → module. See one, recall the other.</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Analogy 🎓</th>
+<th>Concept</th>
+<th>Module</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Pet 🐶 (name, fix, can't replace)</td>
+<td>Stateful — data lives inside</td>
+<td>M0</td>
+</tr>
+<tr>
+<td>Cattle 🐄 (replace, don't fix)</td>
+<td>Stateless — nothing valuable inside</td>
+<td>M0</td>
+</tr>
+<tr>
+<td>Restaurant: builder / setup / packer / manager</td>
+<td>Terraform / Ansible / Docker / K8s</td>
+<td>M0</td>
+</tr>
+<tr>
+<td>Diary 📔</td>
+<td>Terraform state (<code>tfstate</code>)</td>
+<td>M1</td>
+</tr>
+<tr>
+<td>Reading the bill 🧾</td>
+<td><code>terraform plan</code></td>
+<td>M1</td>
+</tr>
+<tr>
+<td>Paying 💳</td>
+<td><code>terraform apply</code></td>
+<td>M1</td>
+</tr>
+<tr>
+<td>Taala 🔒</td>
+<td>DynamoDB state lock</td>
+<td>M1</td>
+</tr>
+<tr>
+<td>Menu same, chef swapped the dish</td>
+<td>Drift (state intact, reality changed)</td>
+<td>M1</td>
+</tr>
+<tr>
+<td>Diary burned → re-ordered everything twice</td>
+<td>Lost state → orphaned + duplicate resources</td>
+<td>M1</td>
+</tr>
+<tr>
+<td>Plumber: visits, does work, leaves no copy</td>
+<td>Ansible agentless (SSH only)</td>
+<td>M2</td>
+</tr>
+<tr>
+<td>Bell 🔔 (rings only when something changed)</td>
+<td><code>notify</code> → handler fires only on <code>changed</code></td>
+<td>M2</td>
+</tr>
+<tr>
+<td>Recipe 📜 vs Dish 🍛</td>
+<td>Docker image vs container</td>
+<td>M3</td>
+</tr>
+<tr>
+<td>Game save-point 💾</td>
+<td>Docker layer cache</td>
+<td>M3</td>
+</tr>
+<tr>
+<td>Crack propagates downward from the changed floor</td>
+<td>Cache invalidation: change → all below rebuilt</td>
+<td>M3</td>
+</tr>
+<tr>
+<td>Lying sticky note</td>
+<td><code>latest</code> tag — mutable, untrustworthy</td>
+<td>M3</td>
+</tr>
+<tr>
+<td>Tiffin 🍱 (manager carries it, doesn't know the food)</td>
+<td>Pod — smallest K8s unit</td>
+<td>M4</td>
+</tr>
+<tr>
+<td>Chowkidar counting pods at 2 AM</td>
+<td>Reconciliation loop — never sleeps</td>
+<td>M4</td>
+</tr>
+<tr>
+<td>Fixed phone number ☎️</td>
+<td>Service — stable IP despite pod IP churn</td>
+<td>M4</td>
+</tr>
+<tr>
+<td>No-Entry board 🚷</td>
+<td>Taint on master node (<code>NoSchedule</code>)</td>
+<td>M4</td>
+</tr>
+<tr>
+<td>VIP pass</td>
+<td>Toleration — pod allowed past the taint</td>
+<td>M4</td>
+</tr>
+<tr>
+<td>Traffic light 🚦</td>
+<td>Readiness probe</td>
+<td>M4</td>
+</tr>
+<tr>
+<td>Heartbeat 💓</td>
+<td>Liveness probe</td>
+<td>M4</td>
+</tr>
+<tr>
+<td>Bus seats free but not adjacent</td>
+<td>Fragmentation — pod Pending despite total free resources</td>
+<td>M4</td>
+</tr>
+<tr>
+<td>Tailored clothes — not one-size</td>
+<td>Right-sizing</td>
+<td>M5</td>
+</tr>
+<tr>
+<td>Reserved seat vs "don't leave the room"</td>
+<td>requests (guaranteed min) vs limits (max ceiling)</td>
+<td>M5</td>
+</tr>
+<tr>
+<td>🐢 slows down</td>
+<td>Throttle — CPU limit hit, pod alive but slow</td>
+<td>M5</td>
+</tr>
+<tr>
+<td>💀 exit 137</td>
+<td>OOMKilled — RAM limit hit, kernel killed pod</td>
+<td>M5</td>
+</tr>
+<tr>
+<td>Prepaid mobile credits</td>
+<td>T-series CPU credits</td>
+<td>M5</td>
+</tr>
+<tr>
+<td>Menu-writer vs head-waiter</td>
+<td>Actions (push) vs Argo (pull)</td>
+<td>M6 / M7</td>
+</tr>
+<tr>
+<td>Git = the one menu that matters</td>
+<td>Source of truth</td>
+<td>M6 / M7</td>
+</tr>
+<tr>
+<td>Time machine ↩️</td>
+<td><code>git revert</code> + Argo auto-redeploy</td>
+<td>M7</td>
+</tr>
+<tr>
+<td>CCTV + fire alarm + feedback cards</td>
+<td>Observability: metrics + logs + traces</td>
+<td>M8</td>
+</tr>
+<tr>
+<td>The forgiveness allowance</td>
+<td>Error budget (100 % − SLO)</td>
+<td>M8</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>Cross-references: <a href="../01-M0-foundations/">01-M0-foundations.md</a> · <a href="../02-M1-terraform/">02-M1-terraform.md</a> · <a href="../03-M2-ansible/">03-M2-ansible.md</a> · <a href="../04-M3-docker/">04-M3-docker.md</a> · <a href="../05-M4-kubernetes-core/">05-M4-kubernetes-core.md</a> · <a href="../06-M5-sizing-and-cost/">06-M5-sizing-and-cost.md</a> · <a href="../07-M6-cicd/">07-M6-cicd.md</a> · <a href="../08-M7-gitops/">08-M7-gitops.md</a> · <a href="../09-connected-system/">09-connected-system.md</a> · <a href="../10-M8-observability-sre/">10-M8-observability-sre.md</a> · <a href="../14-interview-bank/">14-interview-bank.md</a></em></p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../15-roadmap-M11-M18/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Roadmap · M11–M18">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Roadmap · M11–M18
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../17-flashcards/" class="md-footer__link md-footer__link--next" aria-label="Next: Flashcards">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                Flashcards
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 grvtech1 — licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/grvtech1/devops-handbook" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "announce.dismiss"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/progress.js"></script>
+      
+    
+  </body>
+</html>

@@ -1,0 +1,3628 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Free, zero-to-job-ready DevOps handbook — from "what is a terminal" to production- and interview-ready. Systems thinking, hands-on labs, capstones.">
+      
+      
+      
+        <link rel="canonical" href="https://grvtech1.github.io/devops-handbook/03-M2-ansible/">
+      
+      
+        <link rel="prev" href="../02-M1-terraform/">
+      
+      
+        <link rel="next" href="../04-M3-docker/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/favicon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>M2 · Ansible - The DevOps Engineer's Handbook</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M12%206a6%206%200%200%201%206%206c0%202.22-1.21%204.16-3%205.2V19a1%201%200%200%201-1%201h-4a1%201%200%200%201-1-1v-1.8c-1.79-1.04-3-2.98-3-5.2a6%206%200%200%201%206-6m2%2015v1a1%201%200%200%201-1%201h-2a1%201%200%200%201-1-1v-1zm6-10h3v2h-3zM1%2011h3v2H1zM13%201v3h-2V1zM4.92%203.5l2.13%202.14-1.42%201.41L3.5%204.93zm12.03%202.13%202.12-2.13%201.43%201.43-2.13%202.12z%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22m13.13%2022.19-1.63-3.83c1.57-.58%203.04-1.36%204.4-2.27zM5.64%2012.5l-3.83-1.63%206.1-2.77C7%209.46%206.22%2010.93%205.64%2012.5M21.61%202.39S16.66.269%2011%205.93c-2.19%202.19-3.5%204.6-4.35%206.71-.28.75-.09%201.57.46%202.13l2.13%202.12c.55.56%201.37.74%202.12.46A19.1%2019.1%200%200%200%2018.07%2013c5.66-5.66%203.54-10.61%203.54-10.61m-7.07%207.07c-.78-.78-.78-2.05%200-2.83s2.05-.78%202.83%200c.77.78.78%202.05%200%202.83s-2.05.78-2.83%200m-5.66%207.07-1.41-1.41zM6.24%2022l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83%2022zM2%2022h1.41l4.77-4.76-1.42-1.41L2%2020.59zm0-2.83%204.09-4.08c-.21-.3-.36-.62-.45-.97L2%2017.76z%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M13%2014h-2V9h2m0%209h-2v-2h2M1%2021h22L12%202z%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Cpath%20d%3D%22M8%2015a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m2.5%202%201.5-3%201.5%203zm5.5-2a2%202%200%200%201-2-2%202%202%200%200%201%202-2%202%202%200%200%201%202%202%202%202%200%200%201-2%202m6-4A10%2010%200%200%200%2012%201%2010%2010%200%200%200%202%2011c0%202.8%201.2%205.3%203%207.1V22h14v-3.9c1.8-1.8%203-4.3%203-7.1m-5%209h-2v-2h-2v2h-2v-2H9v2H7v-2.8c-1.8-1.5-3-3.7-3-6.2a8%208%200%200%201%208-8%208%208%200%200%201%208%208c0%202.5-1.2%204.8-3%206.2z%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#m2-ansible-configuration-management" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+        <aside class="md-banner">
+          <div class="md-banner__inner md-grid md-typeset">
+            
+              <button class="md-banner__button md-icon" aria-label="Don't show this again">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            
+            
+  🚀 <strong>26 chapters</strong> · rendered diagrams · hands-on labs · a 26-scenario incident playbook — all free (CC BY 4.0).
+  &nbsp;
+  <a href="https://github.com/grvtech1/devops-handbook" style="color: inherit; text-decoration: underline; font-weight: 700;">⭐ Star it on GitHub</a>
+
+          </div>
+          
+            <script>var el=document.querySelector("[data-md-component=announce]");if(el){var content=el.querySelector(".md-typeset");__md_hash(content.innerHTML)===__md_get("__announce")&&(el.hidden=!0)}</script>
+          
+        </aside>
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-header__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            The DevOps Engineer's Handbook
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              M2 · Ansible
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href=".." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../study-plan/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Study Plan
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../progress/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  My Progress
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../00-INDEX/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Handbook
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="The DevOps Engineer&#39;s Handbook" class="md-nav__button md-logo" aria-label="The DevOps Engineer's Handbook" data-md-component="logo">
+      
+  <img src="../assets/logo.svg" alt="logo">
+
+    </a>
+    The DevOps Engineer's Handbook
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/grvtech1/devops-handbook" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    grvtech1/devops-handbook
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../study-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Study Plan
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../progress/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    My Progress
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Handbook
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Handbook
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00-INDEX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Curriculum (Index)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part 0 — Pre-flight
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part 0 — Pre-flight
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00a-preflight/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00a · Pre-flight ground floor
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../00b-setup-runbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    00b · Setup runbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../21-linux-toolkit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Linux · the ground everything runs on
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part I — Core toolchain
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part I — Core toolchain
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../01-M0-foundations/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M0 · Foundations
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../02-M1-terraform/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M1 · Terraform
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M2 · Ansible
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M2 · Ansible
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#recall-gate-shuru-karne-se-pehle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ↩️ Recall gate — shuru karne se pehle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-60-second-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 60-second version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists-what-it-replaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists / what it replaced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agentless-and-the-push-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agentless and the push model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building blocks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Building blocks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inventory-ini-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inventory (INI format)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#annotated-playbook-install-and-configure-nginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Annotated playbook — install and configure nginx
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#role-structure-from-ansible-galaxy-init-myrole" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Role structure (from ansible-galaxy init myrole)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idempotency-the-ansible-way" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotency, the Ansible way
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Idempotency, the Ansible way">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ok-vs-changed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ok vs changed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-vs-shell-why-it-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module vs shell — why it matters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-check-ansibles-plan-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        --check: Ansible's plan mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serial-roll-across-hosts-safely" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        serial: — roll across hosts safely
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-production-example-building-a-kubernetes-cluster-with-ansible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real production example: building a Kubernetes cluster with Ansible
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-not-to-reach-for-ansible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When NOT to reach for Ansible
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands, explained
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beginner-mistakes-vs-senior-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beginner mistakes vs senior insights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-shortcuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory shortcuts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-check-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-check quiz
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hands-on lab
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hands-on lab">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — Inventory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-connectivity-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — Connectivity check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-write-the-playbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Write the playbook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-dry-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Dry run
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-first-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — First run
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-second-run-the-idempotency-proof" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6 — Second run (the idempotency proof)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-trigger-the-handler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7 — Trigger the handler
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production challenge
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../04-M3-docker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M3 · Docker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../05-M4-kubernetes-core/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M4 · Kubernetes Core
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../06-M5-sizing-and-cost/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M5 · Sizing & Cost
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../07-M6-cicd/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M6 · CI/CD
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../08-M7-gitops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M7 · GitOps
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_4" id="__nav_4_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part II — Systems thinking
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part II — Systems thinking
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../09-connected-system/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    The Connected System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../26-k8s-objects-map/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Objects · How They Connect
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../27-10-day-plan/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Learning Plan (understand)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../29-confidence-sprint/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    10-Day Confidence Sprint (drill)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../28-helm-real-projects/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Helm in the Real World (your 2 projects)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../19-cicd-hands-on-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Follow One Commit (hands-on CI/CD)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_5" id="__nav_4_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part III — Operate
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part III — Operate
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../10-M8-observability-sre/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M8 · Observability & SRE
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../11-M9-advanced-k8s-internals/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    M9 · Advanced K8s Internals
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../30-k8s-complete-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    K8s Complete Reference (Workloads · Scheduling · Ops)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../23-production-incident-playbook/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Production Incident Playbook
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_6" id="__nav_4_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part IV — Capstones
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part IV — Capstones
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../12-capstone-url-shortener/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone I · URL Shortener
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../13-capstone-microshop/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Capstone II · MicroShop
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_7" id="__nav_4_7_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part V — Reference & career
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part V — Reference & career
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../14-interview-bank/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interview Bank
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../20-confusions-and-tradeoffs/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Confusions & Trade-offs (X-vs-Y)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../22-command-cheatsheets/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Command Cheat-Sheets & Labs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../15-roadmap-M11-M18/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap · M11–M18
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../16-reference-appendix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference Appendix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../17-flashcards/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flashcards
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../18-career-job-ready/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Job-Ready
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+          
+          
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_8" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_8" id="__nav_4_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Part VI — The Production Gauntlet
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_8_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Part VI — The Production Gauntlet
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../24-production-gauntlet-build/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Build the Real System
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../25-production-gauntlet-chaos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Chaos Engineering · break & fix
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#recall-gate-shuru-karne-se-pehle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ↩️ Recall gate — shuru karne se pehle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-60-second-version" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The 60-second version
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-this-exists-what-it-replaced" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why this exists / what it replaced
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#agentless-and-the-push-model" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Agentless and the push model
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#building-blocks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Building blocks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Building blocks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#inventory-ini-format" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inventory (INI format)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#annotated-playbook-install-and-configure-nginx" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Annotated playbook — install and configure nginx
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#role-structure-from-ansible-galaxy-init-myrole" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Role structure (from ansible-galaxy init myrole)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#idempotency-the-ansible-way" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Idempotency, the Ansible way
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Idempotency, the Ansible way">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ok-vs-changed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ok vs changed
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-vs-shell-why-it-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Module vs shell — why it matters
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#-check-ansibles-plan-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        --check: Ansible's plan mode
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#serial-roll-across-hosts-safely" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        serial: — roll across hosts safely
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#real-production-example-building-a-kubernetes-cluster-with-ansible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Real production example: building a Kubernetes cluster with Ansible
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#when-not-to-reach-for-ansible" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        When NOT to reach for Ansible
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#commands-explained" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Commands, explained
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#beginner-mistakes-vs-senior-insights" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Beginner mistakes vs senior insights
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#memory-shortcuts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Memory shortcuts
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#self-check-quiz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Self-check quiz
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hands-on-lab" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hands-on lab
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Hands-on lab">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-inventory" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1 — Inventory
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-connectivity-check" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2 — Connectivity check
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-write-the-playbook" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3 — Write the playbook
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-4-dry-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 4 — Dry run
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-5-first-run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 5 — First run
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-6-second-run-the-idempotency-proof" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 6 — Second run (the idempotency proof)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-7-trigger-the-handler" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 7 — Trigger the handler
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#interview-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Interview questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#production-challenge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Production challenge
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="m2-ansible-configuration-management">M2 — Ansible &amp; Configuration Management<a class="headerlink" href="#m2-ansible-configuration-management" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p><strong>Core question:</strong> Terraform gave you empty servers — how do you turn them into identical, configured machines without touching any of them by hand?</p>
+<p><strong>⏱️ Time:</strong> ~50 min padho + 20 min lab · <strong>🎚️ Level:</strong> Intermediate · <strong>📋 Pehle chahiye:</strong> <a href="../01-M0-foundations/">M0</a>, <a href="../02-M1-terraform/">M1</a></p>
+<p><strong>Is module ke baad tum kar paoge:</strong>
+- Ansible inventory aur annotated playbook likhna — modules, handlers, Jinja2 templates sahi jagah lagana
+- Idempotency prove karna: pehle run mein <code>changed</code>, doosre run mein <code>changed=0</code> dikhana
+- Kubernetes cluster bootstrap karna teen ordered playbooks se (common → master → workers)</p>
+<h3 id="recall-gate-shuru-karne-se-pehle">↩️ Recall gate — shuru karne se pehle<a class="headerlink" href="#recall-gate-shuru-karne-se-pehle" title="Permanent link">&para;</a></h3>
+<p>Pichhle modules se 3 sawaal. <strong>Pehle memory se jawab do, phir kholo.</strong> (Yeh retrieve karna hi lifetime yaad rakhta hai — dobara padhna nahi.)</p>
+<ol>
+<li><em>(M1)</em> Terraform mein "idempotent apply" ka kya matlab hai? <code>count = 3</code> wala code 5 baar apply karo — kitne servers honge, aur kyun?</li>
+<li><em>(M0)</em> "Provisioning" aur "configuration management" alag layers kyun hain? Har ek ka ek real tool name karo.</li>
+<li><em>(M1)</em> <code>tfstate</code> file laptop pe kyun nahi rakhna chahiye — remote S3 mein kyun store karte hain?</li>
+</ol>
+<p><details markdown="1"><summary>Jawab</summary></p>
+<ol>
+<li>Idempotent apply = SET operation (desired = 3), ADD nahi. 5 baar apply karo — sirf 3 servers. Terraform desired state se compare karta, duplicates kabhi nahi banata. &nbsp; 2. Provisioning = raw machine banana (Terraform EC2 spin up karta); configuration = uss machine ke andar software daalna (Ansible nginx install karta). Alag concerns, alag tools — mix mat karo. &nbsp; 3. Laptop pe sirf aapke paas — teammate ka TF andha ho jaata, zero resources sochta, duplicates banata. Plus simultaneous apply se state corrupt. S3 = shared almari; DynamoDB lock = taala, ek waqt mein ek hi likhе.
+</details></li>
+</ol>
+</blockquote>
+<p><strong>MODULE MAP:</strong> <a href="../00-INDEX/">00-INDEX</a> · <a href="../01-M0-foundations/">01-M0-foundations</a> · <a href="../02-M1-terraform/">02-M1-terraform</a> · <strong>03-M2-ansible</strong> · <a href="../04-M3-docker/">04-M3-docker</a> · <a href="../05-M4-kubernetes-core/">05-M4-kubernetes-core</a> · <a href="../06-M5-sizing-and-cost/">06-M5-sizing-and-cost</a> · <a href="../07-M6-cicd/">07-M6-cicd</a> · <a href="../08-M7-gitops/">08-M7-gitops</a> · <a href="../09-connected-system/">09-connected-system</a> · <a href="../10-M8-observability-sre/">10-M8-observability-sre</a> · <a href="../11-M9-advanced-k8s-internals/">11-M9-advanced-k8s-internals</a> · <a href="../12-capstone-url-shortener/">12-capstone-url-shortener</a> · <a href="../13-capstone-microshop/">13-capstone-microshop</a> · <a href="../14-interview-bank/">14-interview-bank</a> · <a href="../15-roadmap-M11-M18/">15-roadmap-M11-M18</a> · <a href="../16-reference-appendix/">16-reference-appendix</a></p>
+<hr />
+<h2 id="the-60-second-version">The 60-second version<a class="headerlink" href="#the-60-second-version" title="Permanent link">&para;</a></h2>
+<p>Ansible is a <strong>configuration management</strong> tool. You write YAML (YAML Ain't Markup Language) that describes what each server should look like — packages installed, files in place, services running. Ansible reads that YAML, SSHs into every target server, and enforces the described state. If something is already correct, it skips it. If it is wrong or missing, it fixes it. Run it a hundred times; the result is the same every time.</p>
+<p>Three properties define it:</p>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>What it means</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Agentless</strong></td>
+<td>Nothing is installed on target servers. Ansible connects over SSH (Secure Shell) using Python, which is already present on every Linux machine.</td>
+</tr>
+<tr>
+<td><strong>Push model</strong></td>
+<td>The control node pushes instructions out to managed nodes when you run a command — targets do not phone home on a schedule.</td>
+</tr>
+<tr>
+<td><strong>Idempotent</strong></td>
+<td>Describes desired end-state, not a sequence of commands. Running the same playbook twice leaves the system in the same final state.</td>
+</tr>
+</tbody>
+</table>
+<p>Handoff from M1: Terraform outputs the IP addresses of your raw EC2 instances. You put those IPs into an Ansible <strong>inventory</strong> file. Ansible then configures what is <em>inside</em> those servers. See <a href="../02-M1-terraform/">02-M1-terraform</a> for the Terraform side.</p>
+<hr />
+<h2 id="why-this-exists-what-it-replaced">Why this exists / what it replaced<a class="headerlink" href="#why-this-exists-what-it-replaced" title="Permanent link">&para;</a></h2>
+<p>Before configuration management, the standard workflow was: SSH into each server, run commands by hand, hope you remembered the right flags, document nothing. This produced <strong>snowflake servers</strong> — each one slightly different from the others, because each one was configured by a different person on a different day with slightly different commands.</p>
+<p>Problems with hand-SSHing:</p>
+<ul>
+<li><strong>Drift</strong> — two servers configured a month apart diverge silently. When one breaks, nobody knows why the other works.</li>
+<li><strong>Bus factor</strong> — the engineer who knows "the exact sequence" leaves the company, and nobody can rebuild the setup.</li>
+<li><strong>No repeatability</strong> — spinning up a new server for disaster recovery requires days of detective work.</li>
+<li><strong>No auditability</strong> — there is no record of what was done, when, or by whom.</li>
+</ul>
+<p>Ansible solves this by making server configuration <strong>code</strong> — committed to Git, peer-reviewed, executed consistently, and self-documenting.</p>
+<p><strong>Ansible vs Terraform — the canonical confusion:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Question</th>
+<th>Terraform</th>
+<th>Ansible</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>What does it manage?</td>
+<td>Cloud resources (servers, networks, databases as <em>objects</em>)</td>
+<td>What is <em>inside</em> a running server</td>
+</tr>
+<tr>
+<td>Analogy</td>
+<td>Builds the house</td>
+<td>Furnishes and wires the house</td>
+</tr>
+<tr>
+<td>Primary verb</td>
+<td>Provision / destroy</td>
+<td>Configure / converge</td>
+</tr>
+<tr>
+<td>State file?</td>
+<td>Yes — <code>tfstate</code> tracks resource IDs</td>
+<td>No persistent state file; queries live system</td>
+</tr>
+<tr>
+<td>When to run?</td>
+<td>When infra topology changes</td>
+<td>When server config changes, or to enforce drift</td>
+</tr>
+</tbody>
+</table>
+<p>They are complementary. Terraform creates the empty EC2 instance. Ansible installs containerd, kubeadm, and configures the kernel — turning raw compute into a Kubernetes node.</p>
+<hr />
+<h2 id="agentless-and-the-push-model">Agentless and the push model<a class="headerlink" href="#agentless-and-the-push-model" title="Permanent link">&para;</a></h2>
+<p><strong>Agentless</strong> means there is no daemon running on managed nodes waiting to receive instructions. Puppet and Chef — older configuration management tools — require you to install an agent on every server before you can manage it. That agent runs continuously, consuming resources and requiring its own lifecycle management (upgrades, certificates, crashes).</p>
+<p>Ansible's approach: connect over SSH when work needs to be done, execute Python modules, disconnect. The server retains no trace of Ansible when the playbook finishes.</p>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Plumber har ghar SSH se jaata — kaam karta, nikal jaata. Har ghar mein apni copy nahi chhodta. Agent-based tools = har ghar mein permanent chowkidar (maintain, upgrade, feed karo).</p>
+<p><strong>What the target server actually needs:</strong> SSH access + Python 3 (installed by default on Ubuntu, Debian, RHEL, Amazon Linux). That is the entire prerequisite.</p>
+<p><strong>Push model</strong> (Golden Thread 4 — see <a href="../09-connected-system/">09-connected-system</a>):</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>PUSH (Ansible)                    PULL (Argo CD / Puppet agent)
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>─────────────────────────────     ──────────────────────────────
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>You run:                          Target polls on its own schedule:
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>  ansible-playbook site.yml         &quot;Is there new config for me?&quot;
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        │                                       │
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        ▼ SSH                                   ▼ HTTPS to server/Git
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>  Managed nodes receive it          Config pulled and applied
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>  immediately                       on agent&#39;s timer
+</span></code></pre></div>
+<p>Push gives you on-demand execution and full control of timing. Pull gives continuous enforcement without human intervention. Ansible is push. Argo CD (M7) is pull. They are not competing — they solve different layers of the same problem.</p>
+<p><strong>Bastion / jump host:</strong> In a secure architecture, managed nodes live in private subnets with no direct internet access. A <strong>bastion server</strong> (also called a jump host) sits in the public subnet and acts as the single entry point. Ansible reaches private nodes by proxying through the bastion:</p>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">[all:vars]</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="na">ansible_ssh_common_args</span><span class="o">=</span><span class="s">&#39;-o ProxyJump=ubuntu@&lt;BASTION_IP&gt;&#39;</span>
+</span></code></pre></div>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Bastion = society ka main gate. Directly private flat pe nahi ja sakte — pehle gate se, phir flat.</p>
+<hr />
+<h2 id="building-blocks">Building blocks<a class="headerlink" href="#building-blocks" title="Permanent link">&para;</a></h2>
+<pre class="mermaid"><code>flowchart LR
+    Inv["inventory.ini&lt;br/&gt;(who to configure)"]:::store --&gt; CN["Control Node&lt;br/&gt;(Ansible installed)"]:::shared
+    PB["playbook.yml&lt;br/&gt;(tasks and modules)"]:::ci --&gt; CN
+    CN --&gt;|"SSH push&lt;br/&gt;agentless"| W1["web1&lt;br/&gt;webservers"]:::run
+    CN --&gt;|"SSH push&lt;br/&gt;agentless"| W2["web2&lt;br/&gt;webservers"]:::run
+    CN --&gt;|"SSH push&lt;br/&gt;agentless"| DB1["db1&lt;br/&gt;dbservers"]:::run
+    W1 --&gt; DS(["desired state&lt;br/&gt;enforced"]):::infra
+    W2 --&gt; DS
+    DB1 --&gt; DS
+
+    classDef infra fill:#fce4ec,stroke:#d81b60,color:#880e4f;
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+    classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;</code></pre>
+<p><em>Ansible pushes config via SSH from a single control node; inventory names who to configure, playbook defines the tasks and modules to run.</em></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>                 ┌─────────────────────────────────────────────────────┐
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>                 │              CONTROL NODE                           │
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>                 │   (your laptop / CI runner — Ansible installed here) │
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>                 │                                                     │
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>                 │  inventory.ini  ─────► which hosts, which groups    │
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>                 │  site.yml       ─────► what to do on each group     │
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>                 │  roles/         ─────► reusable bundles of tasks    │
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>                 └──────────────┬──────────────────────────────────────┘
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>                                │ SSH (port 22) — push
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>              ┌─────────────────┼────────────────────┐
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>              ▼                 ▼                    ▼
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>    ┌──────────────┐  ┌──────────────┐   ┌──────────────┐
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>    │  web1        │  │  web2        │   │  db1         │
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    │ [webservers] │  │ [webservers] │   │ [dbservers]  │
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>    │ SSH + Python │  │ SSH + Python │   │ SSH + Python │
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>    └──────────────┘  └──────────────┘   └──────────────┘
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>         MANAGED NODES — nothing else required
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th>Building block</th>
+<th>What it is</th>
+<th>One-liner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Control node</strong></td>
+<td>Machine running Ansible</td>
+<td>Your laptop or CI runner</td>
+</tr>
+<tr>
+<td><strong>Managed node</strong></td>
+<td>Target server being configured</td>
+<td>Needs only SSH + Python</td>
+</tr>
+<tr>
+<td><strong>Inventory</strong></td>
+<td>List of managed nodes, optionally grouped</td>
+<td>"Who to configure"</td>
+</tr>
+<tr>
+<td><strong>Playbook</strong></td>
+<td>YAML file containing plays</td>
+<td>"What to configure"</td>
+</tr>
+<tr>
+<td><strong>Play</strong></td>
+<td>Maps a host group to a list of tasks</td>
+<td>One intent, one group</td>
+</tr>
+<tr>
+<td><strong>Task</strong></td>
+<td>A single call to one module</td>
+<td>One unit of work</td>
+</tr>
+<tr>
+<td><strong>Module</strong></td>
+<td>Idempotent unit of work (<code>apt</code>, <code>copy</code>, <code>service</code>)</td>
+<td>The actual tool</td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>Reusable bundle of tasks, templates, handlers, variables</td>
+<td>Packaged playbook logic</td>
+</tr>
+<tr>
+<td><strong>Handler</strong></td>
+<td>Task that fires only when notified of a change</td>
+<td>Conditional side-effect</td>
+</tr>
+<tr>
+<td><strong>Jinja2 template</strong></td>
+<td><code>.j2</code> file with <code>{{ variable }}</code> placeholders</td>
+<td>Dynamic config generation</td>
+</tr>
+</tbody>
+</table>
+<h3 id="inventory-ini-format">Inventory (INI format)<a class="headerlink" href="#inventory-ini-format" title="Permanent link">&para;</a></h3>
+<p>INI stands for Initialization — a simple flat text format using <code>[section]</code> headers.</p>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">[webservers]</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="na">web1 ansible_host</span><span class="o">=</span><span class="s">10.0.1.10</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="na">web2 ansible_host</span><span class="o">=</span><span class="s">10.0.1.11</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="k">[dbservers]</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="na">db1 ansible_host</span><span class="o">=</span><span class="s">10.0.2.10</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="k">[all:vars]</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="na">ansible_user</span><span class="o">=</span><span class="s">ubuntu</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="na">ansible_ssh_private_key_file</span><span class="o">=</span><span class="s">~/.ssh/id_rsa</span>
+</span></code></pre></div>
+<h3 id="annotated-playbook-install-and-configure-nginx">Annotated playbook — install and configure nginx<a class="headerlink" href="#annotated-playbook-install-and-configure-nginx" title="Permanent link">&para;</a></h3>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nn">---</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># A &quot;play&quot; begins here — maps hosts to tasks</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Configure web servers</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webservers</span><span class="w">          </span><span class="c1"># targets the [webservers] group in inventory</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">  </span><span class="nt">become</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span><span class="w">                </span><span class="c1"># escalate privileges — equivalent to sudo</span>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">  </span><span class="nt">vars</span><span class="p">:</span>
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="nt">app_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3000</span><span class="w">           </span><span class="c1"># Jinja2 variable; referenced as {{ app_port }} in templates</span>
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install nginx</span>
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">      </span><span class="nt">apt</span><span class="p">:</span><span class="w">                   </span><span class="c1"># MODULE: apt — manages packages on Debian/Ubuntu</span>
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span>
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span><span class="w">       </span><span class="c1"># desired end-state: &quot;nginx must be installed&quot;</span>
+</span><span id="__span-4-16"><a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">                             </span><span class="c1"># Ansible checks first; skips if already present</span>
+</span><span id="__span-4-17"><a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a>
+</span><span id="__span-4-18"><a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deploy nginx config from template</span>
+</span><span id="__span-4-19"><a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="w">      </span><span class="nt">template</span><span class="p">:</span><span class="w">              </span><span class="c1"># MODULE: template — renders a .j2 file with variables</span>
+</span><span id="__span-4-20"><a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="w">        </span><span class="nt">src</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx.conf.j2</span><span class="w">   </span><span class="c1"># source on control node</span>
+</span><span id="__span-4-21"><a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="w">        </span><span class="nt">dest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/etc/nginx/nginx.conf</span>
+</span><span id="__span-4-22"><a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="w">      </span><span class="nt">notify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Restart nginx</span><span class="w">  </span><span class="c1"># HANDLER trigger — fires only if this task reports &#39;changed&#39;</span>
+</span><span id="__span-4-23"><a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a>
+</span><span id="__span-4-24"><a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure nginx is running and enabled on boot</span>
+</span><span id="__span-4-25"><a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="w">      </span><span class="nt">service</span><span class="p">:</span><span class="w">               </span><span class="c1"># MODULE: service — manages systemd/init services</span>
+</span><span id="__span-4-26"><a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span>
+</span><span id="__span-4-27"><a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">started</span><span class="w">       </span><span class="c1"># desired state: must be running</span>
+</span><span id="__span-4-28"><a id="__codelineno-4-28" name="__codelineno-4-28" href="#__codelineno-4-28"></a><span class="w">        </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span><span class="w">         </span><span class="c1"># must survive reboots</span>
+</span><span id="__span-4-29"><a id="__codelineno-4-29" name="__codelineno-4-29" href="#__codelineno-4-29"></a>
+</span><span id="__span-4-30"><a id="__codelineno-4-30" name="__codelineno-4-30" href="#__codelineno-4-30"></a><span class="w">  </span><span class="nt">handlers</span><span class="p">:</span>
+</span><span id="__span-4-31"><a id="__codelineno-4-31" name="__codelineno-4-31" href="#__codelineno-4-31"></a><span class="w">    </span><span class="c1"># Handlers flush ONCE at the end of each PLAY (not the whole playbook), only if notified.</span>
+</span><span id="__span-4-32"><a id="__codelineno-4-32" name="__codelineno-4-32" href="#__codelineno-4-32"></a><span class="w">    </span><span class="c1"># Use `meta: flush_handlers` as a task to force them to fire mid-play.</span>
+</span><span id="__span-4-33"><a id="__codelineno-4-33" name="__codelineno-4-33" href="#__codelineno-4-33"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Restart nginx</span>
+</span><span id="__span-4-34"><a id="__codelineno-4-34" name="__codelineno-4-34" href="#__codelineno-4-34"></a><span class="w">      </span><span class="nt">service</span><span class="p">:</span>
+</span><span id="__span-4-35"><a id="__codelineno-4-35" name="__codelineno-4-35" href="#__codelineno-4-35"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span>
+</span><span id="__span-4-36"><a id="__codelineno-4-36" name="__codelineno-4-36" href="#__codelineno-4-36"></a><span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">restarted</span><span class="w">     </span><span class="c1"># only reaches here if the template task changed the file</span>
+</span></code></pre></div>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Handler = bell jo sirf <code>changed</code> pe bajti hai. Config same rahi? Notify nahi gaya, restart nahi hua, downtime nahi hua. Config badli? Bell baji, restart ek baar, done. Bina handler ke har run pe restart = needless downtime.</p>
+<h3 id="role-structure-from-ansible-galaxy-init-myrole">Role structure (from <code>ansible-galaxy init myrole</code>)<a class="headerlink" href="#role-structure-from-ansible-galaxy-init-myrole" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>myrole/
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>  tasks/main.yml        # the task list
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>  handlers/main.yml     # handlers
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>  templates/            # .j2 templates
+</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>  vars/main.yml         # role-scoped variables
+</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>  defaults/main.yml     # overridable defaults
+</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>  files/                # static files to copy
+</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>  meta/main.yml         # role dependencies
+</span></code></pre></div>
+<p>Roles are how you share and reuse Ansible logic — publish to Ansible Galaxy (the community registry) or keep internal. The capstone uses three flat playbooks instead of roles, which is fine for learning; roles become essential when you are managing dozens of services.</p>
+<hr />
+<h2 id="idempotency-the-ansible-way">Idempotency, the Ansible way<a class="headerlink" href="#idempotency-the-ansible-way" title="Permanent link">&para;</a></h2>
+<p><strong>Idempotency</strong> means: running the operation multiple times produces the same result as running it once. This is not about speed — it is about safety and predictability.</p>
+<blockquote>
+<p>🔮 <strong>Predict pehle (socho, phir aage padho):</strong> Playbook pehli baar chalao: 6 changed. Bilkul wahi playbook doosri baar chalao — kitne changed honge, aur kyun?</p>
+</blockquote>
+<h3 id="ok-vs-changed">ok vs changed<a class="headerlink" href="#ok-vs-changed" title="Permanent link">&para;</a></h3>
+<p>When Ansible runs a task, it reports one of two outcomes:</p>
+<table>
+<thead>
+<tr>
+<th>Outcome</th>
+<th>Meaning</th>
+<th>What Ansible did</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ok</code></td>
+<td>System was already in the desired state</td>
+<td>Checked, found correct, did nothing</td>
+</tr>
+<tr>
+<td><code>changed</code></td>
+<td>System was not in the desired state</td>
+<td>Made a change to bring it to desired state</td>
+</tr>
+</tbody>
+</table>
+<p>A healthy second run looks like this:</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>PLAY RECAP ─────────────────────────────────────────────────────────
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>web1   : ok=5   changed=0   unreachable=0   failed=0
+</span></code></pre></div>
+<p>Zero <code>changed</code> on the second run is called <strong>convergence</strong> — the system has converged to the desired state and no further action is needed. This is the proof you want to show in an interview.</p>
+<h3 id="module-vs-shell-why-it-matters">Module vs shell — why it matters<a class="headerlink" href="#module-vs-shell-why-it-matters" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>MODULE (apt: state=present)        SHELL (shell: apt-get install nginx)
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>──────────────────────────         ────────────────────────────────────
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>1. Query: is nginx installed?       1. Run the command blindly
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>2. If yes → ok (skip)              2. apt-get runs regardless
+</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>3. If no  → install → changed       Every run = re-executed
+</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>                                    Side-effects accumulate:
+</span><span id="__span-7-7"><a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>                                      echo &quot;config&quot; &gt;&gt; /etc/app.conf
+</span><span id="__span-7-8"><a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a>                                      → appends EVERY run → corruption
+</span></code></pre></div>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Module = smart check-then-act. Shell = andha — har baar chalata, side effects build up karte hain. <code>echo &gt;&gt; file</code> = har run pe hello aur hello aur hello. Shell ka use karo jab koi module nahi — aur tab <code>creates:</code> ya <code>when:</code> se guard karo.</p>
+<h3 id="-check-ansibles-plan-mode">--check: Ansible's plan mode<a class="headerlink" href="#-check-ansibles-plan-mode" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>--check
+</span></code></pre></div>
+<p><code>--check</code> is a dry run — Ansible evaluates what <em>would</em> change without making any actual change. It is Ansible's equivalent of <code>terraform plan</code> (see <a href="../02-M1-terraform/">02-M1-terraform</a>). Add <code>--diff</code> to see line-by-line file diffs. Always run <code>--check</code> before applying a playbook to an unfamiliar environment.</p>
+<h3 id="serial-roll-across-hosts-safely"><code>serial:</code> — roll across hosts safely<a class="headerlink" href="#serial-roll-across-hosts-safely" title="Permanent link">&para;</a></h3>
+<p>By default, Ansible runs every task in a play on <strong>all</strong> hosts in parallel. A bad change hits every server simultaneously — the entire fleet fails at once.</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webservers</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">serial</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w">          </span><span class="c1"># update this many hosts at a time (also accepts &quot;25%&quot;)</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">tasks</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="w"> </span><span class="nv">...</span><span class="w"> </span><span class="p p-Indicator">]</span>
+</span></code></pre></div>
+<p><code>serial: 1</code> processes one host at a time. <code>serial: "25%"</code> batches 25% of the inventory per wave. Ansible completes all tasks on the first batch, reports the result, then moves to the next batch. If a task fails on the first host, Ansible stops — the remaining hosts are untouched.</p>
+<p>This is the same <strong>blast-radius</strong> thinking as Kubernetes rolling updates (see <a href="../05-M4-kubernetes-core/">05-M4-kubernetes-core.md</a>): never update the entire fleet at once; limit how much is at risk at any moment. In Kubernetes, <code>maxUnavailable</code> and <code>maxSurge</code> control the rolling window; in Ansible, <code>serial:</code> does the same job at the SSH layer.</p>
+<p>Practical pattern: use <code>serial: 1</code> for sensitive changes (config rewrites, service restarts, kernel upgrades); use <code>serial: "25%"</code> for routine package updates across a large fleet where speed matters and risk is lower.</p>
+<blockquote>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> <code>serial: 1</code> = ek ek server update karo — pehla fail hua toh baaki fleet safe hai. Sab ek saath update = ek galti se poora fleet down. Kubernetes rolling update wala same idea, Ansible mein SSH level pe.</p>
+</blockquote>
+<hr />
+<h2 id="real-production-example-building-a-kubernetes-cluster-with-ansible">Real production example: building a Kubernetes cluster with Ansible<a class="headerlink" href="#real-production-example-building-a-kubernetes-cluster-with-ansible" title="Permanent link">&para;</a></h2>
+<p>This is the exact sequence used in the capstone (see <a href="../12-capstone-url-shortener/">12-capstone-url-shortener</a>). Terraform outputs three raw EC2 IPs; Ansible turns them into a functioning Kubernetes cluster.</p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>TERRAFORM OUTPUT                  ANSIBLE EXECUTION ORDER
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>─────────────────────             ──────────────────────────────────────────
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>master_ip  = 10.0.1.10     ──►   1-common.yml  (runs on ALL nodes)
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>worker_ips = [10.0.1.11,          ├── swapoff -a
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>              10.0.1.12]   ──►   ├── kernel modules: overlay, br_netfilter
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>                                  ├── sysctl for pod networking
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>                                  ├── apt install containerd
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>                                  ├── containerd config (SystemdCgroup=true)
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>                                  └── apt install kubelet kubeadm kubectl
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>                                           │
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>                                           ▼
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>                                  2-master.yml  (runs on master ONLY)
+</span><span id="__span-10-13"><a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a>                                  ├── kubeadm init (creates: /etc/kubernetes/admin.conf)
+</span><span id="__span-10-14"><a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a>                                  ├── setup kubeconfig for ubuntu user
+</span><span id="__span-10-15"><a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>                                  ├── kubectl apply Calico CNI
+</span><span id="__span-10-16"><a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a>                                  └── kubeadm token create → save join.sh locally
+</span><span id="__span-10-17"><a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a>                                           │
+</span><span id="__span-10-18"><a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>                                           ▼
+</span><span id="__span-10-19"><a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a>                                  3-workers.yml  (runs on workers ONLY)
+</span><span id="__span-10-20"><a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a>                                  ├── copy join.sh to /tmp/join.sh
+</span><span id="__span-10-21"><a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>                                  └── bash /tmp/join.sh (creates: /etc/kubernetes/kubelet.conf)
+</span><span id="__span-10-22"><a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a>                                           │
+</span><span id="__span-10-23"><a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a>                                           ▼
+</span><span id="__span-10-24"><a id="__codelineno-10-24" name="__codelineno-10-24" href="#__codelineno-10-24"></a>                                  kubectl get nodes → 3 nodes Ready
+</span><span id="__span-10-25"><a id="__codelineno-10-25" name="__codelineno-10-25" href="#__codelineno-10-25"></a>                                  Kubernetes cluster handed to M4
+</span></code></pre></div>
+<pre class="mermaid"><code>flowchart TD
+    TF["Terraform&lt;br/&gt;(provision)"]:::infra --&gt;|"creates raw EC2"| EC2["EC2 Instance&lt;br/&gt;(empty server)"]:::run
+    EC2 --&gt;|"IPs to inventory"| ANS["Ansible&lt;br/&gt;(configure)"]:::ci
+    ANS --&gt;|"installs containerd&lt;br/&gt;kubeadm kubelet"| NODE["K8s Node&lt;br/&gt;(configured OS)"]:::shared
+    NODE --&gt;|"managed by"| K8S["Kubernetes&lt;br/&gt;(orchestrate)"]:::run
+    K8S --&gt;|"schedules"| P1["Pod A&lt;br/&gt;(app container)"]:::infra
+    K8S --&gt;|"schedules"| P2["Pod B&lt;br/&gt;(app container)"]:::infra
+
+    classDef infra fill:#fce4ec,stroke:#d81b60,color:#880e4f;
+    classDef ci fill:#e3f2fd,stroke:#1976d2,color:#0d47a1;
+    classDef run fill:#e0f2f1,stroke:#00897b,color:#004d40;
+    classDef store fill:#fff3e0,stroke:#ef6c00,color:#e65100;
+    classDef shared fill:#fff9c4,stroke:#f9a825,color:#4a3800;</code></pre>
+<p><em>The four-layer DevOps stack: Terraform provisions the raw server, Ansible configures the OS and runtime, Kubernetes orchestrates the pods.</em></p>
+<p><strong>CNI</strong> stands for Container Network Interface — the plugin that enables pod-to-pod networking across nodes. Calico is one popular CNI implementation.</p>
+<p><strong>Key idempotency guard:</strong> Notice <code>args: { creates: /etc/kubernetes/admin.conf }</code> on the <code>kubeadm init</code> task. This tells Ansible: if that file already exists, skip the task entirely. Without this guard, re-running the playbook would attempt a second <code>kubeadm init</code> and fail. This is the correct pattern when using <code>shell:</code> — you must give Ansible a way to detect whether the work was already done.</p>
+<p><strong>Inventory fed by Terraform outputs:</strong></p>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="k">[master]</span>
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="na">master ansible_host</span><span class="o">=</span><span class="s">&lt;MASTER_IP&gt;</span>
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="k">[workers]</span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="na">w0 ansible_host</span><span class="o">=</span><span class="s">&lt;WORKER0_IP&gt;</span>
+</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="na">w1 ansible_host</span><span class="o">=</span><span class="s">&lt;WORKER1_IP&gt;</span>
+</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="k">[all:vars]</span>
+</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="na">ansible_user</span><span class="o">=</span><span class="s">ubuntu</span>
+</span><span id="__span-11-10"><a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="na">ansible_ssh_private_key_file</span><span class="o">=</span><span class="s">~/.ssh/urlshort</span>
+</span><span id="__span-11-11"><a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="na">ansible_ssh_common_args</span><span class="o">=</span><span class="s">&#39;-o StrictHostKeyChecking=no&#39;</span>
+</span></code></pre></div>
+<p>The three-playbook structure (common → master → workers) is not arbitrary. It reflects a real dependency chain: you cannot run <code>kubeadm init</code> until containerd is running, and workers cannot join until the master has generated a join token. Ordering the playbooks enforces these dependencies.</p>
+<blockquote>
+<p>🔧 <strong>War story:</strong> Worker node playbook chala, <code>kubeadm join</code> hung karta raha — phir timeout. Root cause: inventory mein public IP thi, par worker nodes sirf private subnet se master ko reach kar sakte the; public IP pe koi port open hi nahi tha. Poori kahani + lesson → <a href="../14-interview-bank/">Interview Bank</a>.</p>
+</blockquote>
+<p>Cross-link: the cluster this builds is what <a href="../05-M4-kubernetes-core/">05-M4-kubernetes-core</a> manages and what <a href="../12-capstone-url-shortener/">12-capstone-url-shortener</a> deploys onto. The full pipeline is described in <a href="../09-connected-system/">09-connected-system</a>.</p>
+<hr />
+<h2 id="when-not-to-reach-for-ansible">When NOT to reach for Ansible<a class="headerlink" href="#when-not-to-reach-for-ansible" title="Permanent link">&para;</a></h2>
+<p>This is where senior engineers distinguish themselves from juniors who reach for the same tool regardless of context.</p>
+<p><strong>Managed services remove the host entirely:</strong>
+- EKS (Elastic Kubernetes Service) — AWS manages the control plane. There is no master EC2 to SSH into, no kubeadm to run.
+- RDS (Relational Database Service) — the database server is fully managed. You do not install PostgreSQL; you just connect to an endpoint.
+- Lambda — no server at all. Configuration is the function code and IAM policy.</p>
+<p>In these environments, Ansible's job evaporates. The "configuration" is expressed through cloud API calls (Terraform) or baked into container images (Docker).</p>
+<p><strong>Mutable vs immutable infrastructure:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Approach</th>
+<th>Pattern</th>
+<th>Ansible's role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Mutable</strong></td>
+<td>Run servers long-term; patch and reconfigure them in place</td>
+<td>Central — Ansible applies config changes to live servers</td>
+</tr>
+<tr>
+<td><strong>Immutable</strong></td>
+<td>Config baked into AMI or container image at build time; replace rather than patch</td>
+<td>Build-time only — Ansible runs during image bake, not at runtime</td>
+</tr>
+</tbody>
+</table>
+<p>In a fully immutable stack (Docker images deployed to EKS), Ansible survives for:
+- Configuring the bastion host and jump boxes (not containerized)
+- Running DB migrations before a deploy (one-off ops)
+- Managing on-premises or bare-metal nodes
+- Emergency one-off tasks against a fleet (<code>ansible all -m shell -a "..."</code>)</p>
+<p>🇮🇳 <strong>Hinglish intuition:</strong> Jab AWS managed services use karo (EKS + RDS), Ansible ki role sihrk jaati hai. Jo kaam Ansible karta tha (containerd install, kubeadm setup), wo ya image mein bake ho jaata ya Terraform ke API calls se ho jaata. Senior engineer tab hi Ansible laata jab actual SSH-able server ho.</p>
+<p>The honest answer in an interview: "In a self-managed Kubernetes cluster, Ansible is the critical piece that bootstraps the control plane. In a fully managed EKS environment, I would use Ansible only for bastion configuration and operational tasks — not for cluster setup."</p>
+<hr />
+<h2 id="commands-explained">Commands, explained<a class="headerlink" href="#commands-explained" title="Permanent link">&para;</a></h2>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="c1"># Test connectivity before running any playbook</span>
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>ansible<span class="w"> </span>all<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>-m<span class="w"> </span>ping
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="c1"># Why: confirms SSH + Python work on every host; catches key/permission</span>
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="c1"># problems before wasting time on a 10-minute playbook run.</span>
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="c1"># Ad-hoc: install a package on all web servers without a playbook</span>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>ansible<span class="w"> </span>webservers<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>-m<span class="w"> </span>apt<span class="w"> </span>-a<span class="w"> </span><span class="s2">&quot;name=htop state=present&quot;</span><span class="w"> </span>--become
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="c1"># Why: useful for quick one-off commands across a fleet; modules keep it idempotent.</span>
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>
+</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="c1"># Dry run — see what WOULD change without changing anything</span>
+</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>--check<span class="w"> </span>--diff
+</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="c1"># Why: review before touching production; --diff shows file-level line changes.</span>
+</span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="c1"># Run the playbook for real</span>
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="c1"># Why: this is the standard apply command.</span>
+</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a>
+</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="c1"># Limit execution to one host</span>
+</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>--limit<span class="w"> </span>web1
+</span><span id="__span-12-20"><a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a><span class="c1"># Why: test a change on one node before rolling to the fleet.</span>
+</span><span id="__span-12-21"><a id="__codelineno-12-21" name="__codelineno-12-21" href="#__codelineno-12-21"></a>
+</span><span id="__span-12-22"><a id="__codelineno-12-22" name="__codelineno-12-22" href="#__codelineno-12-22"></a><span class="c1"># Run only tasks tagged &#39;config&#39; — skip untagged tasks</span>
+</span><span id="__span-12-23"><a id="__codelineno-12-23" name="__codelineno-12-23" href="#__codelineno-12-23"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>--tags<span class="w"> </span><span class="s2">&quot;config&quot;</span>
+</span><span id="__span-12-24"><a id="__codelineno-12-24" name="__codelineno-12-24" href="#__codelineno-12-24"></a><span class="c1"># Why: large playbooks can take 10+ minutes; tags let you run one section.</span>
+</span><span id="__span-12-25"><a id="__codelineno-12-25" name="__codelineno-12-25" href="#__codelineno-12-25"></a>
+</span><span id="__span-12-26"><a id="__codelineno-12-26" name="__codelineno-12-26" href="#__codelineno-12-26"></a><span class="c1"># Verbose output — print SSH commands and module output</span>
+</span><span id="__span-12-27"><a id="__codelineno-12-27" name="__codelineno-12-27" href="#__codelineno-12-27"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>-vvv
+</span><span id="__span-12-28"><a id="__codelineno-12-28" name="__codelineno-12-28" href="#__codelineno-12-28"></a><span class="c1"># Why: debugging connection problems, module failures, or unexpected &#39;ok&#39; results.</span>
+</span><span id="__span-12-29"><a id="__codelineno-12-29" name="__codelineno-12-29" href="#__codelineno-12-29"></a>
+</span><span id="__span-12-30"><a id="__codelineno-12-30" name="__codelineno-12-30" href="#__codelineno-12-30"></a><span class="c1"># Scaffold a new role</span>
+</span><span id="__span-12-31"><a id="__codelineno-12-31" name="__codelineno-12-31" href="#__codelineno-12-31"></a>ansible-galaxy<span class="w"> </span>init<span class="w"> </span>myrole
+</span><span id="__span-12-32"><a id="__codelineno-12-32" name="__codelineno-12-32" href="#__codelineno-12-32"></a><span class="c1"># Why: creates the standard directory structure so you do not invent it each time.</span>
+</span><span id="__span-12-33"><a id="__codelineno-12-33" name="__codelineno-12-33" href="#__codelineno-12-33"></a>
+</span><span id="__span-12-34"><a id="__codelineno-12-34" name="__codelineno-12-34" href="#__codelineno-12-34"></a><span class="c1"># Encrypt a secrets file with AES-256</span>
+</span><span id="__span-12-35"><a id="__codelineno-12-35" name="__codelineno-12-35" href="#__codelineno-12-35"></a>ansible-vault<span class="w"> </span>encrypt<span class="w"> </span>secrets.yml
+</span><span id="__span-12-36"><a id="__codelineno-12-36" name="__codelineno-12-36" href="#__codelineno-12-36"></a><span class="c1"># Why: never store API keys or passwords in plaintext in a repo.</span>
+</span><span id="__span-12-37"><a id="__codelineno-12-37" name="__codelineno-12-37" href="#__codelineno-12-37"></a>
+</span><span id="__span-12-38"><a id="__codelineno-12-38" name="__codelineno-12-38" href="#__codelineno-12-38"></a><span class="c1"># Edit an encrypted file in your $EDITOR</span>
+</span><span id="__span-12-39"><a id="__codelineno-12-39" name="__codelineno-12-39" href="#__codelineno-12-39"></a>ansible-vault<span class="w"> </span>edit<span class="w"> </span>secrets.yml
+</span><span id="__span-12-40"><a id="__codelineno-12-40" name="__codelineno-12-40" href="#__codelineno-12-40"></a>
+</span><span id="__span-12-41"><a id="__codelineno-12-41" name="__codelineno-12-41" href="#__codelineno-12-41"></a><span class="c1"># Run a playbook that references vault-encrypted variables</span>
+</span><span id="__span-12-42"><a id="__codelineno-12-42" name="__codelineno-12-42" href="#__codelineno-12-42"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>--ask-vault-pass
+</span><span id="__span-12-43"><a id="__codelineno-12-43" name="__codelineno-12-43" href="#__codelineno-12-43"></a><span class="c1"># Why: vault password is supplied at runtime, never committed.</span>
+</span></code></pre></div>
+<hr />
+<h2 id="beginner-mistakes-vs-senior-insights">Beginner mistakes vs senior insights<a class="headerlink" href="#beginner-mistakes-vs-senior-insights" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Topic</th>
+<th>Beginner mistake</th>
+<th>Senior insight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Module vs shell</td>
+<td><code>shell: apt-get install nginx</code> every time</td>
+<td><code>apt: name=nginx state=present</code> — Ansible checks; shell re-executes blindly</td>
+</tr>
+<tr>
+<td>Second run</td>
+<td>Expects all tasks to show <code>changed</code></td>
+<td>Second run should show 0 <code>changed</code> — that is the convergence proof</td>
+</tr>
+<tr>
+<td>Handler placement</td>
+<td>Puts restart logic in a regular task</td>
+<td>Uses <code>notify</code> + handler so restart only fires on actual config change</td>
+</tr>
+<tr>
+<td>Secrets</td>
+<td>Hardcodes passwords in inventory or playbook vars</td>
+<td><code>ansible-vault encrypt secrets.yml</code>; never commit plaintext credentials</td>
+</tr>
+<tr>
+<td><code>--check</code></td>
+<td>Applies directly to production</td>
+<td>Always runs <code>--check</code> first on any unfamiliar playbook or environment</td>
+</tr>
+<tr>
+<td>shell idempotency</td>
+<td>Writes <code>shell: kubeadm init</code> with no guard</td>
+<td>Adds <code>args: { creates: /etc/kubernetes/admin.conf }</code> to prevent double-init</td>
+</tr>
+<tr>
+<td>Ansible vs Terraform</td>
+<td>"Can't I do software install in user_data?"</td>
+<td>Terraform = what exists (infra); Ansible = what is inside (config). Right tool, right job</td>
+</tr>
+<tr>
+<td>Ansible on EKS</td>
+<td>Installs Ansible agent "just in case"</td>
+<td>Recognizes managed services have no SSH-able host; omits Ansible from that layer</td>
+</tr>
+<tr>
+<td>Role vs flat playbook</td>
+<td>Ships one 800-line playbook</td>
+<td>Extracts reusable components into roles; keeps plays readable</td>
+</tr>
+<tr>
+<td>Inventory management</td>
+<td>Hard-codes IPs in inventory</td>
+<td>Uses <code>terraform output</code> to populate inventory, or uses dynamic inventory plugins</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="memory-shortcuts">Memory shortcuts<a class="headerlink" href="#memory-shortcuts" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Control node → Managed nodes</strong> = SSH push from one to many</li>
+<li><strong>Inventory</strong> = "kahan" (where) · <strong>Playbook</strong> = "kya" (what)</li>
+<li><strong>Module</strong> = smart (checks first) · <strong>Shell</strong> = blind (runs always)</li>
+<li><strong><code>ok</code></strong> = already correct · <strong><code>changed</code></strong> = Ansible fixed it</li>
+<li><strong>Convergence</strong> = second run → 0 changed</li>
+<li><strong>Handler</strong> = the bell that rings only on <code>changed</code></li>
+<li><strong>Jinja2 <code>.j2</code></strong> = template with <code>{{ variable }}</code> — generates config per host</li>
+<li><strong><code>--check</code></strong> = Ansible's <code>terraform plan</code> (preview without apply)</li>
+<li><strong><code>ansible-vault</code></strong> = encrypt secrets at rest</li>
+<li><strong><code>ansible-galaxy init</code></strong> = scaffold a new role</li>
+</ul>
+<p>Golden Thread 3 — preview before apply — appears here as <code>--check</code>. Golden Thread 4 — push vs pull — Ansible is push; Argo CD (M7) is pull. Golden Thread 5 — idempotency — <code>state=present</code> is the clearest expression of it.</p>
+<hr />
+<h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
+<p>Ansible sits at the second layer of the four-layer DevOps stack: Terraform provisions the raw server, Ansible configures what is inside it. Its three defining properties — agentless (SSH only, no resident software on targets), push-based (you trigger it, targets do not phone home), and idempotent (describes desired state, not steps) — make it predictable and safe to run repeatedly.</p>
+<p>The canonical production use case is bootstrapping a Kubernetes cluster: three ordered playbooks (common → master → workers) transform three empty EC2 instances into a functioning cluster that Kubernetes then manages. The <code>creates:</code> guard on shell tasks and the <code>notify</code>/handler pattern for service restarts are the two idiomatic techniques that separate clean Ansible from brittle shell scripting.</p>
+<p>In managed-service environments (EKS, RDS), Ansible's role shrinks to bastion configuration and operational one-off tasks. Knowing when to use it — and when to reach for Terraform, Docker, or cloud APIs instead — is what distinguishes a senior engineer from someone who applies every tool to every problem.</p>
+<hr />
+<h2 id="self-check-quiz">Self-check quiz<a class="headerlink" href="#self-check-quiz" title="Permanent link">&para;</a></h2>
+<p>Pehle memory se jawab do, phir neeche kholo.</p>
+<ol>
+<li>
+<p>What are Ansible's three defining properties, and what problem does each solve?</p>
+</li>
+<li>
+<p>What is the difference between <code>ok</code> and <code>changed</code> in an Ansible run? What does a second run showing 0 <code>changed</code> indicate?</p>
+</li>
+<li>
+<p>Why should you prefer <code>apt: name=nginx state=present</code> over <code>shell: apt-get install nginx</code>? Give a concrete scenario where the shell version causes a problem.</p>
+</li>
+<li>
+<p>You have a task that writes an nginx config file and a handler that restarts nginx. Under what conditions does the handler actually run? Under what conditions does it not run?</p>
+</li>
+<li>
+<p>In the kubeadm bootstrap playbook, <code>kubeadm init</code> uses <code>args: { creates: /etc/kubernetes/admin.conf }</code>. What happens if you omit that guard and re-run the playbook?</p>
+</li>
+<li>
+<p>Explain the push model. How does Ansible's push differ from Argo CD's pull (see M7)? When is each appropriate?</p>
+</li>
+<li>
+<p>Your team adopts Amazon EKS (Elastic Kubernetes Service) and RDS for a new project. A colleague says "we should add Ansible to configure the cluster nodes." What is your response, and what would you use Ansible for in this stack?</p>
+</li>
+<li>
+<p>What does <code>ansible-playbook --check</code> do? When would you use it instead of a plain <code>ansible-playbook</code> run?</p>
+</li>
+</ol>
+<details>
+<summary>Jawab dekho</summary>
+<ol>
+<li>Agentless (SSH + Python only — koi agent install/maintain overhead nahi on targets); push model (aap trigger karo, targets khud phone home nahi karte — timing ka full control); idempotent (desired end-state describe karta, steps nahi — twice chalao, same result, koi side effects nahi).</li>
+<li><code>ok</code> = system already desired state mein, Ansible ne check kiya aur kuch nahi kiya. <code>changed</code> = system desired state mein nahi tha, Ansible ne fix kiya. Second run mein <code>changed=0</code> = convergence — system reached and holds desired state. Idempotency ka proof — interview mein zaroor batao.</li>
+<li><code>apt</code> module pehle check karta (nginx installed hai kya?). Hai toh <code>ok</code>, skip. Nahi toh install karta, <code>changed</code>. Shell <code>apt-get install</code> blindly chalata — har baar. Worst case: <code>shell: echo "config" &gt;&gt; /etc/app.conf</code> har run pe line append karta — file corrupt ho jaati.</li>
+<li>Handler ONLY tab fire karta jab <code>copy</code> task <code>changed</code> report kare (config file actually different thi). <code>ok</code> aaya (config already correct) toh handler nahi chalta — unnecessary nginx restart aur downtime nahi hota. Regular task mein restart rakhte toh har playbook run pe restart — needless downtime.</li>
+<li><code>creates:</code> guard ke bina, re-run pe doosra <code>kubeadm init</code> attempt hota. Yeh fail karta ("cluster already running" error) aur existing cluster ki config corrupt kar sakta. Guard Ansible ko batata: yeh file exist karti hai toh kaam already ho chuka — skip karo.</li>
+<li>Push (Ansible) = aap <code>ansible-playbook</code> chalao, Ansible turant SSHes karta targets pe; on-demand ops, ek baar provisioning, timing ka control chahiye toh. Pull (Argo CD) = agent target pe Git poling karta schedule se; continuous GitOps enforcement, human trigger ki zaroorat nahi. Provisioning/ops tasks pe push; continuous delivery pe pull.</li>
+<li>EKS control plane manage karta AWS — koi master EC2 SSH karne ke liye nahi hai. RDS fully managed — koi host configure karne ke liye nahi. Ansible ka cluster-setup kaam khatam. Rakho Ansible ke liye: bastion host config, fleet pe one-off ops tasks, on-prem/bare-metal nodes. Managed service nodes pe "just in case" agents mat daalo.</li>
+<li><code>--check</code> = dry run; Ansible evaluate karta kya WOULD change bina koi actual change kiye — Ansible ka <code>terraform plan</code>. Unfamiliar ya production environment pe seedha apply karne se pehle hamesha <code>--check</code> chalao. <code>--diff</code> add karo file-level line changes dekhne ke liye.</li>
+</ol>
+</details>
+<hr />
+<h2 id="hands-on-lab">Hands-on lab<a class="headerlink" href="#hands-on-lab" title="Permanent link">&para;</a></h2>
+<p><strong>Goal:</strong> Configure a server from scratch with a small Ansible playbook. Prove idempotency by showing 0 changed on the second run.</p>
+<p><strong>Prerequisites:</strong> One Linux VM or EC2 instance you can SSH into. Ansible installed on your local machine (<code>pip install ansible</code> or <code>brew install ansible</code>).</p>
+<h3 id="step-1-inventory">Step 1 — Inventory<a class="headerlink" href="#step-1-inventory" title="Permanent link">&para;</a></h3>
+<p>Create <code>inventory.ini</code>:
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">[webservers]</span>
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="na">myserver ansible_host</span><span class="o">=</span><span class="s">&lt;YOUR_SERVER_IP&gt;</span>
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="k">[webservers:vars]</span>
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="na">ansible_user</span><span class="o">=</span><span class="s">ubuntu</span>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="na">ansible_ssh_private_key_file</span><span class="o">=</span><span class="s">~/.ssh/your-key.pem</span>
+</span></code></pre></div></p>
+<h3 id="step-2-connectivity-check">Step 2 — Connectivity check<a class="headerlink" href="#step-2-connectivity-check" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>ansible<span class="w"> </span>all<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>-m<span class="w"> </span>ping
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="c1"># Expected: SUCCESS + &quot;ping&quot;: &quot;pong&quot;</span>
+</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="c1"># If UNREACHABLE: check IP, key path, and security group port 22</span>
+</span></code></pre></div>
+<h3 id="step-3-write-the-playbook">Step 3 — Write the playbook<a class="headerlink" href="#step-3-write-the-playbook" title="Permanent link">&para;</a></h3>
+<p><code>webserver.yml</code>:
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="nn">---</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Configure web server</span>
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webservers</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">  </span><span class="nt">become</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install nginx</span>
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">      </span><span class="nt">apt</span><span class="p">:</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a><span class="w">        </span><span class="nt">update_cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a custom index page</span>
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="w">      </span><span class="nt">copy</span><span class="p">:</span>
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="w">        </span><span class="nt">dest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/www/html/index.html</span>
+</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="w">        </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">Ansible</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">configured</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">inventory_hostname</span><span class="nv"> </span><span class="s">}}\n&quot;</span>
+</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="w">      </span><span class="nt">notify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Reload nginx</span>
+</span><span id="__span-15-17"><a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a>
+</span><span id="__span-15-18"><a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure nginx is running and enabled</span>
+</span><span id="__span-15-19"><a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="w">      </span><span class="nt">service</span><span class="p">:</span>
+</span><span id="__span-15-20"><a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span>
+</span><span id="__span-15-21"><a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a><span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">started</span>
+</span><span id="__span-15-22"><a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a><span class="w">        </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
+</span><span id="__span-15-23"><a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a>
+</span><span id="__span-15-24"><a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a><span class="w">  </span><span class="nt">handlers</span><span class="p">:</span>
+</span><span id="__span-15-25"><a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Reload nginx</span>
+</span><span id="__span-15-26"><a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a><span class="w">      </span><span class="nt">service</span><span class="p">:</span>
+</span><span id="__span-15-27"><a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span>
+</span><span id="__span-15-28"><a id="__codelineno-15-28" name="__codelineno-15-28" href="#__codelineno-15-28"></a><span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reloaded</span>
+</span></code></pre></div></p>
+<h3 id="step-4-dry-run">Step 4 — Dry run<a class="headerlink" href="#step-4-dry-run" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>webserver.yml<span class="w"> </span>--check<span class="w"> </span>--diff
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="c1"># Review: what would change? No actual changes yet.</span>
+</span></code></pre></div>
+<h3 id="step-5-first-run">Step 5 — First run<a class="headerlink" href="#step-5-first-run" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>webserver.yml
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="c1"># Observe: changed=3 (install + copy + ensure running)</span>
+</span></code></pre></div>
+<p>Verify:
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a>curl<span class="w"> </span>http://&lt;YOUR_SERVER_IP&gt;
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="c1"># → Hello from Ansible — configured myserver</span>
+</span></code></pre></div></p>
+<h3 id="step-6-second-run-the-idempotency-proof">Step 6 — Second run (the idempotency proof)<a class="headerlink" href="#step-6-second-run-the-idempotency-proof" title="Permanent link">&para;</a></h3>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>webserver.yml
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="c1"># Observe: changed=0 — everything was already in the desired state</span>
+</span></code></pre></div>
+<p>This is the output you describe in every interview when asked about idempotency. Save both run outputs.</p>
+<h3 id="step-7-trigger-the-handler">Step 7 — Trigger the handler<a class="headerlink" href="#step-7-trigger-the-handler" title="Permanent link">&para;</a></h3>
+<p>Edit <code>webserver.yml</code> — change the <code>content:</code> line to something different, then re-run. Observe: the copy task shows <code>changed</code>, the handler fires once at the end. Now run again without any change: copy task is <code>ok</code>, handler does not fire.</p>
+<p><strong>✅ Sahi hua to aisa dikhega:</strong> Step 6 (second run) mein <code>PLAY RECAP</code> shows <code>myserver : ok=3   changed=0   unreachable=0   failed=0</code> — yahi convergence proof hai, interview mein exactly yahi output dikhao. Step 7 mein content change ke baad ek run pe <code>changed=1</code> aur handler fire hogi; fir bina change ke doosra run karo toh wapas <code>changed=0</code> aur handler silent.</p>
+<hr />
+<h2 id="interview-questions">Interview questions<a class="headerlink" href="#interview-questions" title="Permanent link">&para;</a></h2>
+<p><strong>Q: What is Ansible? What makes it different from Chef or Puppet?</strong></p>
+<p>Ansible is an agentless, push-based configuration management tool. Unlike Chef and Puppet — which require a resident agent installed on every managed node — Ansible connects over SSH and requires only Python on the target. This reduces the operational overhead of managing the management tool itself.</p>
+<p><strong>Q: Explain idempotency in Ansible with a concrete example.</strong></p>
+<p>Idempotency means the playbook produces the same final state regardless of how many times you run it. For example, <code>apt: name=nginx state=present</code> first checks whether nginx is installed. If it is, the task reports <code>ok</code> and does nothing. If not, it installs and reports <code>changed</code>. A Bash script with <code>apt-get install nginx</code> re-runs the command every time, producing output and potential side effects even when there is nothing to do.</p>
+<p><strong>Q: What is a handler? Why not just put the restart in a regular task?</strong></p>
+<p>A handler is a task that fires only when notified by a change in another task. If a config file task reports <code>ok</code> (the file was already correct), the handler never runs — no unnecessary service restart, no brief downtime. A regular restart task would restart the service on every playbook run regardless of whether the config changed.</p>
+<p><strong>Q: Walk me through how you bootstrapped a Kubernetes cluster with Ansible.</strong></p>
+<p>I used three ordered playbooks: <code>common.yml</code> ran on all nodes to disable swap, load kernel modules (<code>overlay</code> and <code>br_netfilter</code>), configure sysctl for pod networking, install containerd with SystemdCgroup enabled, and install kubeadm, kubelet, and kubectl with version holds. Then <code>master.yml</code> ran <code>kubeadm init</code> with a <code>creates:</code> guard (so it is idempotent), set up kubeconfig, applied the Calico CNI, and saved the join command to a local file. Finally <code>workers.yml</code> copied that join script to each worker and ran it with the same <code>creates:</code> guard. After all three ran, <code>kubectl get nodes</code> showed three Ready nodes.</p>
+<p><strong>Q: Ansible or Terraform — which one installs software on a server?</strong></p>
+<p>Ansible. Terraform provisions the server into existence (creates the EC2 instance, the VPC, the security groups). Ansible configures what is inside that server (installs packages, writes config files, manages services). Using Terraform's <code>user_data</code> for software installation is possible but wrong for anything more than simple bootstrapping — Terraform does not check current state or handle drift, and it runs only once on first boot.</p>
+<p><strong>Q: How do you handle secrets in Ansible?</strong></p>
+<p>With <code>ansible-vault</code>. Sensitive files or variable files are encrypted with AES-256 before committing to Git. The vault password is supplied at runtime via <code>--ask-vault-pass</code> or a vault password file referenced in <code>ansible.cfg</code>. Credentials are never stored in plaintext in inventory files, variable files, or playbooks.</p>
+<hr />
+<h2 id="production-challenge">Production challenge<a class="headerlink" href="#production-challenge" title="Permanent link">&para;</a></h2>
+<p>You are on-call. A team member ran <code>apt upgrade</code> directly on one of your three application servers, which upgraded nginx from 1.18 to 1.24. The other two servers are still on 1.18. Your Ansible playbook specifies <code>state: present</code> (install if absent, but do not enforce a specific version).</p>
+<p><strong>Tasks:</strong></p>
+<ol>
+<li>What command would you run first to check actual nginx versions across all three servers without using a playbook?</li>
+<li>How would you modify the playbook task to pin nginx to a specific version and prevent unintended upgrades?</li>
+<li>After pinning the version, what does your first playbook run show on the drifted server? What does the second run show?</li>
+<li>How would you add an <code>apt-mark hold nginx</code> step to prevent manual <code>apt upgrade</code> from overriding the pinned version, and how would you make that step idempotent?</li>
+<li>If this environment were EKS with a containerized nginx (nginx as a sidecar or ingress controller), would Ansible be involved at all? Explain your reasoning.</li>
+</ol>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../02-M1-terraform/" class="md-footer__link md-footer__link--prev" aria-label="Previous: M1 · Terraform">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                M1 · Terraform
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../04-M3-docker/" class="md-footer__link md-footer__link--next" aria-label="Next: M3 · Docker">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                M3 · Docker
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 grvtech1 — licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/grvtech1/devops-handbook" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+      <div class="md-progress" data-md-component="progress" role="progressbar"></div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.instant", "navigation.instant.progress", "navigation.tracking", "navigation.tabs", "navigation.sections", "navigation.top", "navigation.indexes", "navigation.footer", "toc.follow", "search.suggest", "search.highlight", "search.share", "content.code.copy", "content.code.annotate", "content.tabs.link", "content.tooltips", "announce.dismiss"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../javascripts/progress.js"></script>
+      
+    
+  </body>
+</html>
