@@ -129,6 +129,7 @@ nav:
       - "Part III — Operate":
           - "M8 · Observability & SRE": 10-M8-observability-sre.md
           - "M9 · Advanced K8s Internals": 11-M9-advanced-k8s-internals.md
+          - "K8s Complete Reference (Workloads · Scheduling · Ops)": 30-k8s-complete-reference.md
           - "Production Incident Playbook": 23-production-incident-playbook.md
       - "Part IV — Capstones":
           - "Capstone I · URL Shortener": 12-capstone-url-shortener.md
