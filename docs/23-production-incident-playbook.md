@@ -104,6 +104,7 @@ Cross-link: [ch14 "deploy failed in prod" scenario](14-interview-bank.md) has wa
 | PVC stuck `Pending` | No StorageClass, zone mismatch | [E1 — PVC stuck Pending](#e1--pvc-stuck-pending) |
 | Volume won't attach / Multi-Attach | EBS + pod rescheduled to other AZ | [E2 — Volume attach / Multi-Attach error](#e2--volume-wont-attach--multi-attach-error) |
 | Accidental data loss / PVC deleted | `reclaimPolicy: Delete` | [E3 — Accidental data loss](#e3--accidental-data-loss) |
+| PVC stuck `Terminating` / namespace won't delete | `pvc-protection` finalizer — a pod still mounts it | [E4 — PVC stuck Terminating](#e4--pvc-stuck-terminating) |
 | CI build fails / flaky tests | Non-determinism, cache, resources | [F1 — Build fails / flaky tests](#f1--build-fails--flaky-tests) |
 | Image push denied in CI | Registry auth, expired token | [F2 — Image push denied](#f2--image-push-denied) |
 | Trivy blocks build on CVE | Vulnerable base image or dep | [F3 — Trivy CVE block](#f3--trivy-blocks-the-build-on-a-cve) |
@@ -614,7 +615,15 @@ git push origin main
 ```bash
 # Confirm the ConfigMap/Secret was actually updated
 kubectl get configmap <name> -n <namespace> -o yaml
-kubectl get secret <name> -n <namespace> -o jsonpath='{.data}' | base64 -d
+# Decode ONE key (jsonpath must point at a key — '{.data}' returns the whole
+# JSON map, and piping that to base64 -d just errors out):
+kubectl get secret <name> -n <namespace> -o jsonpath='{.data.DB_PASSWORD}' | base64 -d; echo
+
+# List the keys first if you don't know them:
+kubectl get secret <name> -n <namespace> -o jsonpath='{.data}' | jq -r 'keys[]'
+
+# Or decode every key at once:
+kubectl get secret <name> -n <namespace> -o json | jq -r '.data | to_entries[] | "\(.key)=\(.value|@base64d)"'
 
 # Check what the running pod sees
 kubectl exec -it <pod-name> -n <namespace> -- env | grep <VAR_NAME>
@@ -906,6 +915,70 @@ Cross-link: [ch20 EBS / EFS / S3 trade-offs](20-confusions-and-tradeoffs.md).
 
 ---
 
+### E4 — PVC stuck `Terminating`
+
+**Symptom:** `kubectl delete pvc data-postgres-0` hangs, or returns and the PVC sits in `Terminating` forever. Namespace deletion also hangs (a namespace cannot finish deleting while a PVC in it will not go).
+
+> ⚠️ Different from [E1 (Pending)](#e1--pvc-stuck-pending) — that one never bound. This one is bound, in use, and refusing to die.
+
+**Diagnose:**
+
+```bash
+# 1. Confirm state and look at the finalizer
+kubectl get pvc data-postgres-0 -n billfree
+# STATUS: Terminating
+
+kubectl describe pvc data-postgres-0 -n billfree | grep -A3 Finalizers
+# Finalizers:  [kubernetes.io/pvc-protection]   ← this is holding it
+
+# 2. The real question: WHO is still mounting it?
+kubectl describe pvc data-postgres-0 -n billfree | grep -A3 "Used By"
+# Used By:  postgres-0                          ← there's your answer
+
+# 3. If "Used By: <none>" but it still hangs, hunt for the pod yourself:
+kubectl get pods -n billfree -o json \
+  | jq -r '.items[] | select(.spec.volumes[]?.persistentVolumeClaim.claimName=="data-postgres-0") | .metadata.name'
+```
+
+**Root cause:** `pvc-protection` is a **finalizer**, not a bug. Kubernetes added it deliberately in 1.10 so you cannot yank a volume out from under a running pod. The rule is simple: **a PVC will not delete while any pod still references it.** The delete request is recorded (`deletionTimestamp` set), then blocked until the last consumer is gone — at which point the finalizer clears itself and the PVC disappears on its own.
+
+**Fix:**
+
+```bash
+# The correct fix — remove the consumer, not the finalizer
+kubectl delete pod postgres-0 -n billfree
+# → last consumer gone → pvc-protection clears itself → PVC deletes automatically
+
+# If it's a StatefulSet, the controller will just recreate the pod.
+# Scale the controller down first:
+kubectl scale statefulset postgres --replicas=0 -n billfree
+kubectl delete pvc data-postgres-0 -n billfree        # now it goes
+
+# Pod already gone but PVC still stuck? The pod is a zombie on a dead node:
+kubectl get pods -n billfree -o wide | grep Terminating
+kubectl delete pod <zombie> -n billfree --grace-period=0 --force
+```
+
+!!! danger "Do NOT patch the finalizer away"
+    Google will hand you this in ten seconds:
+    ```bash
+    kubectl patch pvc data-postgres-0 -n billfree -p '{"metadata":{"finalizers":null}}'
+    ```
+    It "works" instantly — and that is the trap. You have removed the guard, **not** the reason for the guard. The PVC object vanishes from the API while a pod still has the volume mounted, so you get: the PV orphaned in `Released`, the underlying EBS volume still attached to a node and still billing, a `VolumeAttachment` that no controller will ever clean up, and — if the pod was still writing — a filesystem torn away mid-write.
+
+    A PVC in `Terminating` is Kubernetes **doing its job**. Ask *"which pod still holds it?"*, never *"how do I force this?"*
+
+> 🛡️ **Prevent:**
+>
+> 1. Delete in dependency order — workload first, then its claims. For StatefulSets: `scale --replicas=0`, *then* delete PVCs.
+> 2. Remember StatefulSet PVCs **outlive** the StatefulSet by design (that is the whole point) — deleting the StatefulSet does not delete `data-postgres-0`. Cleanup is a separate, deliberate step.
+> 3. Before deleting a namespace, check for bound PVCs — one stuck PVC hangs the whole namespace deletion.
+> 4. Confirm `reclaimPolicy` before any of this: with `Delete`, a successful PVC deletion also **destroys the EBS volume and its data** (see [E3](#e3--accidental-data-loss)).
+
+Cross-link: [E1 — PVC stuck Pending](#e1--pvc-stuck-pending) · [E3 — Accidental data loss](#e3--accidental-data-loss) · [A5 — Pod stuck Terminating](#a5--pod-stuck-terminating)
+
+---
+
 ## F · CI/CD pipeline
 
 ### F1 — Build fails / flaky tests
@@ -1015,7 +1088,9 @@ CVE found
 
 > 🔴 **Symptom:** A deploy succeeded. But the running pods are still on the old code. The new feature is not live.
 
-**Root cause:** Using `image: my-app:latest` with `imagePullPolicy: IfNotPresent`. If the node already has a `latest` image cached, Kubernetes will not pull the new one — it assumes it already has it.
+**Root cause:** A **mutable tag** (`:latest`, `:dev`, `:v1`) combined with `imagePullPolicy: IfNotPresent`. If the node already has that tag cached, Kubernetes will not pull again — it assumes the tag still means what it meant last time.
+
+> ⚠️ **Know the default, it is a classic interview trap:** when you omit `imagePullPolicy`, Kubernetes infers it from the tag — `:latest` (or no tag) → **`Always`**; any other tag → **`IfNotPresent`**. So plain `image: my-app:latest` actually pulls every time. This bug bites when someone *explicitly* sets `IfNotPresent` alongside `:latest`, or uses a mutable non-latest tag like `:dev` where `IfNotPresent` is the silent default.
 
 > 🔍 **Diagnose:**
 

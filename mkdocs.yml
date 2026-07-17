@@ -16,18 +16,21 @@ theme:
   language: en
   logo: assets/logo.svg
   favicon: assets/favicon.svg
+  font:
+    text: Inter
+    code: JetBrains Mono
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
       primary: indigo
-      accent: indigo
+      accent: deep purple
       toggle:
         icon: material/weather-night
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
       primary: indigo
-      accent: indigo
+      accent: deep purple
       toggle:
         icon: material/weather-sunny
         name: Switch to light mode

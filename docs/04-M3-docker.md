@@ -88,7 +88,16 @@ Isolation in a container comes from two Linux kernel primitives:
 | `mnt` | Filesystem — own root (`/`) via an overlay |
 | `uts` | Hostname — container has its own hostname |
 | `ipc` | Inter-process communication — shared memory |
-| `user` | User IDs — UID 0 in container ≠ UID 0 on host |
+| `user` | User IDs — *can* map UID 0 in container to an unprivileged host UID — **but Docker does NOT enable this by default** (see warning below) |
+
+!!! warning "The `user` namespace is the one you probably do NOT have"
+    The other five namespaces are on by default. The **user namespace is not** — unless you run rootless Docker or set `--userns-remap`. Without it, **root inside the container is the same UID 0 as root on the host**; only capability dropping and seccomp stand between them. That is exactly why [running as non-root](#non-root) matters — you cannot rely on isolation that is switched off.
+
+    ```bash
+    docker info | grep -i userns   # prints "userns" only if remapping is ON
+    ```
+
+    In Kubernetes, assume no user namespace and enforce it in the pod spec instead: `runAsNonRoot: true`, `runAsUser: 1000`, `allowPrivilegeEscalation: false`, `capabilities.drop: ["ALL"]`.
 
 **cgroups** (control groups) enforce resource limits:
 - CPU quota (`cpu.shares` / `cpu.cfs_quota_us` + `cpu.cfs_period_us`) — Kubernetes expresses this as millicores, but the native cgroup primitive is `cpu.shares` and CPU bandwidth quotas
@@ -364,7 +373,8 @@ RUN npm ci --omit=dev                 # Install ONLY production dependencies
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 USER appuser
 
-# Document the port (kubectl and compose can read this)
+# Documentation only. Kubernetes IGNORES this — you must still declare
+# containerPort in the pod spec. (Compose uses it only with `docker run -P`.)
 EXPOSE 3000
 
 # Health check: Docker will mark the container unhealthy if this fails

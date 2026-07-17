@@ -276,13 +276,25 @@ re-apply Git's version without waiting for a human.
 # Demo: create drift
 kubectl scale deployment url-shortener --replicas=5   # Git says replicas: 2
 
-# Within ~30 seconds:
+# Typically within ~30s (see "why the range" below):
 # Argo detects: live=5, Git=2 → OutOfSync (Cause B)
 # selfHeal: true → kubectl apply → replicas back to 2
 kubectl get deployment url-shortener   # READY: 2/2
 ```
 
 > 🔧 **War story:** Production mein ek slow pod issue tha — engineer ne `kubectl scale deployment app --replicas=5` kiya quick hotfix ke liye (Git mein replicas: 3 tha). 3 minute baad pods wapas 3 ho gaye. Log confused: "Kisi ne mera change revert kiya kya?" Root cause: selfHeal:true — Argo cluster ko Git ki taraf wapas kheeench laata hai, silently. Lesson: Argo ke saath `kubectl` changes temporary hain — permanent change sirf Git se hoga. Poori kahani + lesson → [Interview Bank](14-interview-bank.md).
+
+!!! question "Why does selfHeal take ~30s in the demo but 3 minutes in the war story?"
+    Because Argo watches **two different things at two different speeds** — and drift can be caught by either:
+
+    | Path | How it works | Speed |
+    |---|---|---|
+    | **Cluster watch** | Argo keeps a Kubernetes informer/watch on the live resources. Your `kubectl scale` fires a watch event almost immediately. | seconds → **~30s** |
+    | **Git poll** | Argo re-checks the repo on a timer (`timeout.reconciliation`, **default 3m**) unless a webhook pushes it sooner. | up to **3 min** |
+
+    A hand-edit to the cluster *should* be caught by the watch (fast). It slips to the poll interval when the watch is degraded, the app is mid-sync/`Progressing`, the controller is busy or restarted, or the resource is in `ignoreDifferences`. So the honest answer is **"typically ~30s via the cluster watch, worst case ~3m at the next reconciliation"** — and the design lesson is unchanged: **never rely on the timing, `kubectl` changes are temporary either way.**
+
+    Add a Git **webhook** to make the Git-side path near-instant instead of waiting up to 3 minutes.
 
 ### prune
 

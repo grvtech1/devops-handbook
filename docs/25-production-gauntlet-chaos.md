@@ -549,9 +549,9 @@ kubectl delete networkpolicy block-redis -n shopfast
 
 **Steady state:** `orders-api` connected to RDS Multi-AZ primary. DB query p99 < 20 ms.
 
-**Hypothesis:** RDS Multi-AZ failover takes 30–60 s. During this window, existing connections break. The app's **connection pool + retry logic** absorbs the blip. No user-visible errors beyond a brief latency spike.
+**Hypothesis:** RDS Multi-AZ failover typically takes 60–120 s (AWS documented range; matches [23 — J3](23-production-incident-playbook.md)). During this window, existing connections break. The app's **connection pool + retry logic** absorbs the blip. No user-visible errors beyond a brief latency spike.
 
-**Blast radius:** All DB writes fail for 30–60 s. **Abort:** if error rate stays > 1% for > 3 min post-failover, rollback app config.
+**Blast radius:** All DB writes fail for 60–120 s. **Abort:** if error rate stays > 1% for > 3 min post-failover, rollback app config.
 
 #### Inject — AWS CLI
 

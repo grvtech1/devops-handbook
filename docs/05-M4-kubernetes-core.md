@@ -625,6 +625,67 @@ A node can run a maximum of approximately **110 pods** (hard cap in default K8s)
 
 Debug reflex: pod stuck in `Pending` with CPU and RAM appearing free? Run `kubectl describe pod <name>` and read the Events section. The scheduler writes the exact reason there — IP exhaustion, affinity mismatch, taint rejection.
 
+### Allocatable vs Capacity — why "free RAM" lies
+
+A node's advertised size is **not** what you can use. The kubelet reserves resources for itself and the OS before offering anything to pods:
+
+```
+Capacity            = the hardware       e.g. 4 vCPU / 16 GiB
+  − kube-reserved     kubelet, container runtime
+  − system-reserved   sshd, systemd, kernel
+  − eviction-hard     the buffer kubelet keeps so it can evict BEFORE the node dies
+─────────────────────────────────────────────────────────────────────────
+= Allocatable         what the scheduler is actually allowed to hand out
+                                          e.g. ~3.9 vCPU / ~14.5 GiB
+```
+
+**The scheduler only ever looks at `Allocatable`.** This is why a "16 GiB node" refuses a pod requesting 15.5 GiB, and why `free -h` on the node is the wrong tool for this question.
+
+```bash
+kubectl describe node <node> | grep -A8 "Allocatable"
+
+# Allocatable vs what is already spoken for:
+kubectl describe node <node> | grep -A6 "Allocated resources"
+#   → shows Requests (booked) and Limits (ceiling) per resource
+```
+
+!!! warning "Allocated ≠ used"
+    `Allocated resources` counts **requests** (bookings), not live usage. A node can show *"CPU Requests: 95%"* and sit at 10% real CPU — because everyone over-requested. Scheduling fails on the 95%; `kubectl top node` shows the 10%. Both numbers are true, and they answer different questions: **requests decide placement, usage decides performance.**
+
+### How the scheduler actually picks a node — Filter → Score
+
+Every `Pending` pod goes through two phases. Knowing the split tells you *which* phase rejected you, and therefore what to fix:
+
+```
+All nodes  ──▶  ① FILTER (predicates)  ──▶  feasible nodes  ──▶  ② SCORE  ──▶  winner
+                "CAN this pod run here?"                          "WHICH is best?"
+                hard pass/fail                                    ranking 0–10
+```
+
+**① Filter — hard constraints. Fail any one and the node is out:**
+
+| Check | Rejection message you'll see |
+|---|---|
+| Enough **Allocatable** for the pod's `requests`? | `Insufficient cpu` / `Insufficient memory` |
+| Node's **taints** tolerated? | `node(s) had untolerated taint {...}` |
+| `nodeSelector` / **required** nodeAffinity match? | `node(s) didn't match Pod's node affinity/selector` |
+| Its **PV** reachable from this node (zone)? | `node(s) had volume node affinity conflict` |
+| Ports free, pod count < `--max-pods`, node Ready? | `node(s) didn't have free ports` / `too many pods` |
+
+If **zero** nodes survive Filter → `Pending` forever, and the Events line names the failing check. Read it literally — each message maps to a different fix, and they can appear together (`0/5 nodes: 2 had untolerated taint, 3 Insufficient memory`).
+
+**② Score — soft preferences. Only the survivors compete:**
+
+- `LeastRequestedPriority` — prefers the emptier node (spreads load)
+- `PodTopologySpread` / `podAntiAffinity` — pushes replicas onto different nodes/zones (this is why your 3 replicas land on 3 nodes without you asking)
+- `preferred` nodeAffinity weights, image-locality (node already has the image)
+
+Highest total score wins; ties break randomly.
+
+> 🇮🇳 **Hinglish intuition:** Filter = **eligibility** (degree hai? experience hai? — nahi to bahar). Score = **interview ranking** (jo bache, unme se best kaun). `Pending` ka matlab hai tum Filter mein hi bahar ho gaye — Score tak pahunche hi nahi. Isliye "score improve karna" bekaar hai; **Filter ka jo check fail hua wahi theek karo.**
+
+> ⭐ **Senior reflex:** `Pending` dikhe → `kubectl describe pod` → Events → **exact rejection string padho**. `Insufficient memory` = capacity ka masla (requests kam karo ya node lao). `untolerated taint` = permission ka masla (toleration do). `volume node affinity conflict` = zone ka masla (us AZ mein node chahiye — ye Kubernetes se nahi, **Terraform** se fix hoga). Teeno "Pending" dikhte hain, teeno ka ilaaj alag hai.
+
 ---
 
 ## Namespaces and kubectl basics

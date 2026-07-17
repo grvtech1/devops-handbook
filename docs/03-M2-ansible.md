@@ -219,6 +219,89 @@ ansible_ssh_private_key_file=~/.ssh/id_rsa
 
 🇮🇳 **Hinglish intuition:** Handler = bell jo sirf `changed` pe bajti hai. Config same rahi? Notify nahi gaya, restart nahi hua, downtime nahi hua. Config badli? Bell baji, restart ek baar, done. Bina handler ke har run pe restart = needless downtime.
 
+### `loop:` — one task, many items
+
+Copy-pasting a task five times is the beginner tell. `loop:` runs one task once per item, and each iteration reports its own `ok`/`changed`:
+
+```yaml
+- name: Install base packages
+  apt:
+    name: "{{ item }}"        # `item` = the current loop value
+    state: present
+  loop: [git, curl, vim, htop, jq]
+
+- name: Create app users
+  user:
+    name: "{{ item.name }}"
+    groups: "{{ item.groups }}"
+  loop:                        # list of dicts — item.name, item.groups
+    - { name: deploy, groups: docker }
+    - { name: monitor, groups: adm }
+
+- name: Push config files
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/app/{{ item }}"
+  loop: "{{ config_files }}"   # loop over a variable
+  notify: Restart app
+```
+
+!!! tip "Loop vs the module's own list — a real performance trap"
+    Package modules already accept a list, and that is **much** faster:
+
+    ```yaml
+    # ✅ ONE apt transaction — fast
+    - apt: name={{ ['git','curl','vim'] }} state=present
+
+    # ❌ THREE apt transactions — 3× the lock/dep-resolve work
+    - apt: name={{ item }} state=present
+      loop: [git, curl, vim]
+    ```
+    Rule: if the module takes a list, pass a list. Use `loop:` when the module takes **one** thing per call (`user`, `template`, `copy`).
+
+> 📎 `with_items:` is the old spelling of the same idea. You will meet it in existing playbooks; write `loop:` in new ones.
+
+### `when:` — run a task only if it applies
+
+`when:` takes a bare Jinja expression (**no `{{ }}`**) and skips the task when it is false — the task reports `skipped`, not `changed`:
+
+```yaml
+- name: Install nginx (Debian family)
+  apt: name=nginx state=present
+  when: ansible_facts['os_family'] == "Debian"
+
+- name: Install nginx (RedHat family)
+  yum: name=nginx state=present
+  when: ansible_facts['os_family'] == "RedHat"
+
+- name: Open the kubelet port on workers only
+  ufw: rule=allow port=10250
+  when: "'workers' in group_names"      # group_names = this host's groups
+
+- name: Drain the node before upgrading
+  command: kubectl drain {{ inventory_hostname }} --ignore-daemonsets
+  when:
+    - upgrade_enabled | bool             # a list of conditions = AND
+    - inventory_hostname != 'master-1'
+```
+
+Combine with a registered result to make decisions from the host's real state:
+
+```yaml
+- name: Check if the cluster is already initialised
+  stat:
+    path: /etc/kubernetes/admin.conf
+  register: kubeadm_done
+
+- name: kubeadm init
+  command: kubeadm init --pod-network-cidr=10.244.0.0/16
+  when: not kubeadm_done.stat.exists    # ← this is what makes it idempotent
+```
+
+That last pattern is exactly how the [kubeadm playbook](#real-production-example-building-a-kubernetes-cluster-with-ansible) below stays safe to re-run: `when:` is how you guard a `command:`/`shell:` task that has no idempotency of its own.
+
+> 🇮🇳 **Hinglish intuition:** `loop:` = "yeh kaam har item pe karo" (ek task, kai baar). `when:` = "yeh kaam **karna bhi hai ya nahi**?" (task chalega ya skip). Dono saath: `loop` decide karta hai *kitni baar*, `when` decide karta hai *bilkul chalega ya nahi* — aur `when` ko `loop` ke andar har item pe alag se evaluate kiya jaata hai.
+
 ### Role structure (from `ansible-galaxy init myrole`)
 
 ```
