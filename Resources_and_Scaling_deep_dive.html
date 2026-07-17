@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resources & Scaling — Node layer (Terraform) vs Pod layer (K8s)</title>
+<style>
+  :root{
+    --bg:#0A1220;--bg2:#0D1728;--surface:#101E33;--surface2:#16263F;
+    --border:#1F3355;--border2:#2C4A78;
+    --text:#C6DBF5;--text-dim:#718AAF;--text-bright:#EAF3FF;
+    --green:#34D399;--green-bg:rgba(52,211,153,.10);--green-br:rgba(52,211,153,.30);
+    --cyan:#38BDF8;--cyan-bg:rgba(56,189,248,.10);--cyan-br:rgba(56,189,248,.30);
+    --amber:#FBBF24;--amber-bg:rgba(251,191,36,.10);--amber-br:rgba(251,191,36,.30);
+    --rose:#FB7185;--rose-bg:rgba(251,113,133,.10);--rose-br:rgba(251,113,133,.30);
+    --purple:#A78BFA;--purple-bg:rgba(167,139,250,.10);--purple-br:rgba(167,139,250,.30);
+    --mono:'JetBrains Mono','SF Mono','Cascadia Code','Consolas',monospace;
+    --sans:system-ui,-apple-system,'Segoe UI',sans-serif;
+  }
+  :root[data-theme="light"]{
+    --bg:#EEF3FB;--bg2:#E4EBF7;--surface:#FFF;--surface2:#F1F5FD;
+    --border:#D2DEF0;--border2:#B4C6E4;--text:#223B5E;--text-dim:#5F7898;--text-bright:#0C1B33;
+    --green:#0E9D68;--cyan:#0C8CC8;--amber:#B57F0A;--rose:#D6446A;--purple:#6D4BD6;
+    --green-bg:rgba(16,150,100,.09);--cyan-bg:rgba(14,140,200,.09);--amber-bg:rgba(180,130,10,.10);
+    --rose-bg:rgba(200,50,80,.09);--purple-bg:rgba(110,70,220,.09);
+  }
+  @media(prefers-color-scheme:light){:root:not([data-theme="dark"]){
+    --bg:#EEF3FB;--bg2:#E4EBF7;--surface:#FFF;--surface2:#F1F5FD;
+    --border:#D2DEF0;--border2:#B4C6E4;--text:#223B5E;--text-dim:#5F7898;--text-bright:#0C1B33;
+    --green:#0E9D68;--cyan:#0C8CC8;--amber:#B57F0A;--rose:#D6446A;--purple:#6D4BD6;
+    --green-bg:rgba(16,150,100,.09);--cyan-bg:rgba(14,140,200,.09);--amber-bg:rgba(180,130,10,.10);
+    --rose-bg:rgba(200,50,80,.09);--purple-bg:rgba(110,70,220,.09);
+  }}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;scroll-padding-top:16px}
+  body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:15px;line-height:1.68;-webkit-font-smoothing:antialiased;padding:0 20px 80px}
+  .wrap{max-width:860px;margin:0 auto}
+  .theme-btn{position:fixed;top:14px;right:16px;z-index:50;background:var(--surface);border:1px solid var(--border2);color:var(--text);border-radius:20px;padding:6px 13px;font-family:var(--mono);font-size:12px;cursor:pointer}
+
+  .hero{padding:50px 0 28px;border-bottom:1px solid var(--border);margin-bottom:10px}
+  .hero .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px}
+  .hero h1{font-size:32px;line-height:1.14;color:var(--text-bright);font-weight:800;letter-spacing:-.02em;text-wrap:balance;margin-bottom:12px}
+  .hero p{font-size:16px;color:var(--text-dim)}
+  .nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
+  .nav a{font-family:var(--mono);font-size:12.5px;text-decoration:none;padding:6px 13px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--text-dim)}
+  .nav a:hover{color:var(--text-bright);border-color:var(--cyan)}
+
+  /* layer banner */
+  .layers{margin:32px 0}
+  .layer{border-radius:12px;padding:16px 18px;border:1.5px solid;margin-bottom:8px;display:flex;gap:14px;align-items:flex-start}
+  .layer.pod{background:var(--cyan-bg);border-color:var(--cyan-br)}
+  .layer.node{background:var(--rose-bg);border-color:var(--rose-br)}
+  .layer .ic{font-size:22px;flex-shrink:0}
+  .layer h3{font-size:15px;color:var(--text-bright);margin-bottom:3px}
+  .layer.pod h3 em{color:var(--cyan);font-style:normal;font-family:var(--mono);font-size:12px}
+  .layer.node h3 em{color:var(--rose);font-style:normal;font-family:var(--mono);font-size:12px}
+  .layer p{font-size:13.5px;color:var(--text-dim)}
+  .layer-sep{text-align:center;font-family:var(--mono);font-size:11px;color:var(--text-dim);padding:4px 0}
+
+  .part-head{display:flex;align-items:center;gap:13px;margin:52px 0 8px;padding-bottom:12px;border-bottom:2px solid var(--border)}
+  .part-badge{width:44px;height:44px;border-radius:11px;display:grid;place-items:center;font-size:20px;flex-shrink:0}
+  .pA .part-badge{background:var(--cyan-bg)} .pB .part-badge{background:var(--rose-bg)} .pC .part-badge{background:var(--purple-bg)}
+  .part-head h2{font-size:24px;color:var(--text-bright);font-weight:700;letter-spacing:-.01em}
+  .part-head .sub{font-family:var(--mono);font-size:12px;color:var(--text-dim)}
+
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:13px;padding:20px 22px;margin:16px 0;position:relative;overflow:hidden;scroll-margin-top:16px}
+  .card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--ac)}
+  .card.c{--ac:var(--cyan)} .card.r{--ac:var(--rose)} .card.a{--ac:var(--amber)} .card.p{--ac:var(--purple)} .card.g{--ac:var(--green)}
+  .card h3{font-size:18px;color:var(--text-bright);margin-bottom:4px;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+  .card .q{font-size:13px;color:var(--text-dim);font-style:italic;margin-bottom:12px}
+  .card p{margin:11px 0;font-size:14.5px}
+  .card b{color:var(--text-bright)}
+
+  pre{background:var(--bg2);border:1px solid var(--border);border-radius:9px;padding:13px 15px;overflow-x:auto;margin:13px 0}
+  pre code{font-family:var(--mono);font-size:12.5px;line-height:1.7;color:var(--text)}
+  .k{color:var(--rose)} .s{color:var(--green)} .n{color:var(--amber)} .cm{color:var(--text-dim);font-style:italic} .hl{color:var(--cyan)}
+  code.inl{font-family:var(--mono);font-size:12.5px;background:var(--surface2);padding:1px 6px;border-radius:4px;color:var(--cyan)}
+
+  /* wrong vs right */
+  .wr{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:15px 0}
+  @media(max-width:660px){.wr{grid-template-columns:1fr}}
+  .wr-box{border-radius:10px;padding:13px 15px;border:1px solid}
+  .wr-box.bad{background:var(--rose-bg);border-color:var(--rose-br)}
+  .wr-box.good{background:var(--green-bg);border-color:var(--green-br)}
+  .wr-box .t{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;margin-bottom:7px}
+  .wr-box.bad .t{color:var(--rose)} .wr-box.good .t{color:var(--green)}
+  .wr-box p{font-size:13.5px;margin:5px 0}
+  .wr-box pre{margin:7px 0;background:rgba(0,0,0,.15);border:none;padding:9px 11px}
+  .wr-box pre code{font-size:11.5px}
+
+  /* lab */
+  .lab{background:var(--purple-bg);border:1px solid var(--purple-br);border-radius:11px;padding:15px 17px;margin:16px 0}
+  .lab .t{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--purple);margin-bottom:9px;display:flex;align-items:center;gap:7px}
+  .lab ol{margin-left:17px;font-size:13.5px}
+  .lab li{margin:5px 0;padding-left:3px}
+  .lab pre{margin:8px 0;background:rgba(0,0,0,.2);border:none}
+  .lab .expect{font-size:12.5px;color:var(--green);font-family:var(--mono);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border2)}
+
+  .callout{border-radius:10px;padding:13px 16px;margin:14px 0;font-size:14px;border:1px solid;display:flex;gap:11px}
+  .callout .i{flex-shrink:0;font-size:15px}
+  .callout.warn{background:var(--amber-bg);border-color:var(--amber-br)} .callout.warn .i{color:var(--amber)}
+  .callout.note{background:var(--cyan-bg);border-color:var(--cyan-br)} .callout.note .i{color:var(--cyan)}
+  .callout.senior{background:var(--purple-bg);border-color:var(--purple-br)} .callout.senior .i{color:var(--purple)}
+  .callout b{color:var(--text-bright)}
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px;margin:13px 0}
+  .tw{overflow-x:auto;border:1px solid var(--border);border-radius:11px;background:var(--surface)}
+  th,td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--border);vertical-align:top}
+  thead th{font-family:var(--mono);font-size:11.5px;color:var(--text-dim);border-bottom:2px solid var(--border2)}
+  td:first-child{font-weight:600;color:var(--text-bright)}
+  td code,th code{font-family:var(--mono);font-size:12px;color:var(--cyan)}
+  .ok{color:var(--green)} .no{color:var(--rose)}
+
+  .diag{background:var(--bg2);border:1px solid var(--border);border-radius:11px;padding:16px;margin:14px 0;overflow-x:auto}
+  .diag pre{background:none;border:none;padding:0;margin:0}
+  .diag code{font-family:var(--mono);font-size:12.5px;line-height:1.75;color:var(--text)}
+
+  .proj{display:inline-block;font-family:var(--mono);font-size:10px;font-weight:700;padding:1px 6px;border-radius:4px;margin-right:5px}
+  .proj.v{color:var(--green);background:var(--green-bg);border:1px solid var(--green-br)}
+  .proj.bf{color:var(--cyan);background:var(--cyan-bg);border:1px solid var(--cyan-br)}
+
+  .foot{text-align:center;padding:36px 0 0;margin-top:36px;border-top:1px solid var(--border);font-family:var(--mono);font-size:12px;color:var(--text-dim)}
+</style>
+</head>
+<body>
+<button class="theme-btn" onclick="toggleTheme()" id="themeBtn">◐ theme</button>
+<div class="wrap">
+
+<header class="hero">
+  <div class="eyebrow">Sprint deep-dive · Day 2/3 + Day 7</div>
+  <h1>Resources &amp; Scaling — Pod layer vs Node layer</h1>
+  <p>Har cheez ka <b style="color:var(--text-bright)">why → how → ❌ galat → ✅ sahi → 🧪 lab</b>. Kyunki 90% production galtiyan yahi hoti hain: <b style="color:var(--text-bright)">layer confuse karna</b>.</p>
+  <div class="nav">
+    <a href="#pod">🧊 Pod layer (Day 2/3)</a>
+    <a href="#onethreeseven">💀 exit 137 ke 2 baap</a>
+    <a href="#qos">QoS classes</a>
+    <a href="#node">🖥️ Node layer (Day 7)</a>
+    <a href="#replace">forces replacement</a>
+    <a href="#decide">🎯 Decision table</a>
+  </div>
+</header>
+
+<!-- LAYERS -->
+<div class="layers">
+  <div class="layer pod">
+    <div class="ic">🧊</div>
+    <div>
+      <h3>LAYER 2 — POD <em>· kubectl · Git · ArgoCD</em></h3>
+      <p><code class="inl">resources: requests/limits</code> · HPA · VPA — <b>container</b> kitna bada. Kubernetes ka ilaaka.</p>
+    </div>
+  </div>
+  <div class="layer-sep">▲ pod isi ke andar chalta hai ▼</div>
+  <div class="layer node">
+    <div class="ic">🖥️</div>
+    <div>
+      <h3>LAYER 1 — NODE <em>· terraform</em></h3>
+      <p><code class="inl">instance_type</code> · ASG · Cluster Autoscaler — <b>machine</b> kitni badi. Terraform ka ilaaka.</p>
+    </div>
+  </div>
+</div>
+
+<div class="callout senior"><span class="i">★</span><div><b>Ek golden rule jo sab kuch decide karta hai:</b> Terraform <b>kabhi</b> pod ko haath nahi lagata. Kubernetes <b>kabhi</b> EC2 ka size nahi badalta. Galat layer pe kaam karoge → ya to kuch nahi hoga, ya production gir jayega.</div></div>
+
+<!-- ===================== PART A — POD LAYER ===================== -->
+<div class="part-head pA">
+  <div class="part-badge">🧊</div>
+  <div><h2>Part A — Pod layer: requests &amp; limits</h2><div class="sub">Day 2/3 · Kubernetes</div></div>
+</div>
+
+<!-- requests vs limits -->
+<div class="card c" id="pod">
+  <h3>requests vs limits — do bilkul alag cheezein</h3>
+  <div class="q">Sabse zyada confuse hone wali jodi. Inka kaam ekdum alag hai.</div>
+
+  <p><b>requests = booking.</b> "Mujhe kam se kam itna chahiye." <b>Scheduler</b> isi ko dekh ke decide karta hai ki Pod kis node pe jayega. Ye <b>guarantee</b> hai.</p>
+  <p><b>limits = ceiling.</b> "Isse zyada mat lena." <b>Runtime</b> (kubelet/kernel) isko enforce karta hai. Ye <b>hadd</b> hai.</p>
+
+  <pre><code><span class="k">resources:</span>
+  <span class="k">requests:</span> { <span class="k">cpu:</span> <span class="s">50m</span>,  <span class="k">memory:</span> <span class="s">96Mi</span> }   <span class="cm"># booking — scheduler dekhta hai</span>
+  <span class="k">limits:</span>   { <span class="k">cpu:</span> <span class="s">500m</span>, <span class="k">memory:</span> <span class="s">256Mi</span> }  <span class="cm"># ceiling — kernel enforce karta hai</span></code></pre>
+
+  <div class="callout note"><span class="i">ℹ</span><div><b>Units:</b> <code class="inl">1000m</code> = 1 poora CPU core (m = millicore). <code class="inl">500m</code> = aadha core. <code class="inl">Mi</code> = mebibyte (1024-based), <code class="inl">M</code> = megabyte (1000-based) — hamesha <code class="inl">Mi</code> use karo.</div></div>
+
+  <p><b>Restaurant analogy:</b> requests = table reserve karna (guaranteed milegi). limits = "ek banda 3 plate se zyada nahi khayega" (hadd).</p>
+
+  <h3 style="margin-top:22px;font-size:16px">🔒 "Enforce" ka matlab kya — aur requests enforce hote hi nahi</h3>
+
+  <p><b>Speed limit vs speed governor:</b></p>
+  <div class="diag"><pre><code>Sadak pe board "60 km/h"   →  sirf LIKHA hai. Tum 100 chala sakte ho.
+                              koi PHYSICALLY nahi rok raha.
+
+Gaadi mein speed governor  →  60 se upar jaa HI NAHI SAKTI.
+                              accelerator dabate raho — kuch nahi hoga.</code></pre></div>
+
+  <div class="tw"><table>
+    <thead><tr><th></th><th>Enforce hota hai?</th><th>Kaun dekhta hai</th></tr></thead>
+    <tbody>
+      <tr><td>requests</td><td class="no">❌ <b>NAHI</b> — sirf ek number</td><td><b>Scheduler</b> — node choose karne ke liye</td></tr>
+      <tr><td>limits</td><td class="ok">✅ <b>HAAN</b> — asli deewar</td><td><b>Kernel</b> — runtime pe physically rokta hai</td></tr>
+    </tbody>
+  </table></div>
+
+  <p>Matlab: <code class="inl">requests: 100m</code> likha aur app <b>500m kha raha hai</b>, node pe CPU khaali hai? <b>Koi nahi rokega.</b> requests koi guard nahi — wo kaagaz pe booking hai. Par <code class="inl">limits: 500m</code> pe pahunchte hi — <b>deewar</b>.</p>
+
+  <p><b>Hota kaise hai — cgroups.</b> Kubernetes jaadu nahi karta, wo Linux se kehta hai:</p>
+  <div class="diag"><pre><code>tumhara YAML: limits: {memory: 256Mi, cpu: 500m}
+        ↓
+kubelet container banata hai
+        ↓
+kubelet ye numbers <span class="hl">cgroup files mein LIKH deta hai</span>
+        ↓
+Linux kernel ab inhe PHYSICALLY enforce karta hai</code></pre></div>
+
+  <pre><code><span class="cm"># container ke andar ye files SACH mein hoti hain:</span>
+/sys/fs/cgroup/memory.max   → <span class="n">268435456</span>      <span class="cm"># 256Mi bytes mein</span>
+/sys/fs/cgroup/cpu.max      → <span class="n">50000 100000</span>  <span class="cm"># har 100ms mein sirf 50ms CPU</span></code></pre>
+
+  <div class="wr">
+    <div class="wr-box good">
+      <div class="t">🐢 CPU — "quota khatam, ruk jao"</div>
+      <pre><code>100ms period:
+[■■■■■ chal raha 50ms][░░░░░ ROKA 50ms]
+                          ↑ throttling</code></pre>
+      <p>App <b>marta nahi</b> — jabardasti sulaa diya jaata hai agla period aane tak. Isliye latency badhti hai.</p>
+    </div>
+    <div class="wr-box bad">
+      <div class="t">💀 Memory — "jagah nahi, mar jao"</div>
+      <pre><code>app: "10MB aur chahiye" → malloc()
+kernel: memory.max cross!
+kernel: SIGKILL → exit 137</code></pre>
+      <p>Memory ko <b>throttle nahi kar sakte</b> — jo byte chahiye wo chahiye. Kernel ke paas ek hi option: <b>maar do.</b></p>
+    </div>
+  </div>
+
+  <div class="lab">
+    <div class="t">🧪 LAB — apne limits ko kernel ke andar dekho (2 min)</div>
+    <pre><code>kubectl exec -it &lt;frontend-pod&gt; -- sh
+
+cat /sys/fs/cgroup/memory.max    <span class="cm"># tumhara memory limit, bytes mein</span>
+cat /sys/fs/cgroup/cpu.max       <span class="cm"># "quota period"</span>
+cat /sys/fs/cgroup/cpu.stat      <span class="cm"># throttled_usec ← kitna roka gaya</span></code></pre>
+    <div class="expect">✅ Wahi numbers milenge jo YAML mein likhe the — kubelet ne kernel ko bata diya. <code>throttled_usec</code> badh raha hai? CPU limit tight hai.</div>
+  </div>
+</div>
+
+<!-- CPU vs Memory -->
+<div class="card a">
+  <h3>⚡ CPU aur Memory — limit cross karne pe alag anjaam</h3>
+  <div class="q">Ye ek baat 90% log nahi jaante. Interview mein direct poocha jaata hai.</div>
+
+  <div class="tw"><table>
+    <thead><tr><th>Resource</th><th>Nature</th><th>Limit cross kiya to?</th></tr></thead>
+    <tbody>
+      <tr><td>CPU</td><td><b>Compressible</b> (dabaya ja sakta)</td><td class="ok">🐢 <b>Throttle</b> — dheema kar diya. Pod zinda rehta hai, bas slow.</td></tr>
+      <tr><td>Memory</td><td><b>Incompressible</b> (dabaya nahi ja sakta)</td><td class="no">💀 <b>OOMKilled</b> — Pod maar diya. Exit code <b>137</b>.</td></tr>
+    </tbody>
+  </table></div>
+
+  <p><b>Kyun?</b> CPU time-share ho sakta hai — thodi der ruk jao, baad mein mil jayega. Memory nahi — jo byte chahiye wo chahiye. Nahi mila → kernel ka OOM-killer aake process maar deta hai.</p>
+
+  <div class="diag"><pre><code>CPU limit cross    →  CFS throttling  →  app slow  →  latency ↑  (zinda)
+Memory limit cross →  OOM killer      →  SIGKILL   →  exit 137   (murda)
+                                                        ↓
+                                              CrashLoopBackOff</code></pre></div>
+
+  <div class="callout warn"><span class="i">⚠</span><div><b>Ye tune khud dekha hai!</b> VANTA pe emailservice/recommendationservice <b>exit 137</b> de rahe the — liveness probe timeout 1s bahut aggressive tha, kubelet ne SIGKILL bhej diya. <b>Memory ka usse koi lena-dena nahi tha.</b> Neeche wala card isi ke liye hai.</div></div>
+</div>
+
+<!-- 137 two parents -->
+<div class="card r" id="onethreeseven">
+  <h3>💀 exit 137 ke <b style="color:var(--rose)">DO</b> baap hain</h3>
+  <div class="q">Ye sabse mehnga misdiagnosis hai. Zyadatar course (aur log) "137 = OOM" ratate hain — aur aadhe waqt galat fix karte hain.</div>
+
+  <p><code class="inl">137</code> = <code class="inl">128 + 9</code> = process ko <b>SIGKILL</b> mila. Par SIGKILL bhejne wale <b>do</b> hain — aur dono ka ilaaj <b>ulta</b> hai:</p>
+
+  <div class="diag"><pre><code>                        exit 137 = SIGKILL
+                               │
+              ┌────────────────┴────────────────┐
+              ▼                                 ▼
+   <span class="hl">kernel ka OOM killer</span>              <span class="hl">kubelet</span>
+   "tune apni RAM limit todi"        "teri liveness probe fail hui"
+              │                                 │
+   Reason: <span class="s">OOMKilled</span>                 Reason: <span class="s">Error</span>
+              │                                 │
+   ✅ RAM limit badhao               ✅ probe relax karo
+   ❌ probe chhuna bekaar            ❌ <span class="k">RAM badhana BEKAAR</span></code></pre></div>
+
+  <p><b>Isliye ek hi rule hai —</b> exit code se nahi, <b><code class="inl">Reason:</code> field se</b> diagnose karo:</p>
+
+  <pre><code>kubectl describe pod &lt;name&gt; | grep -A3 <span class="s">"Last State"</span>
+
+<span class="cm">#   Reason: OOMKilled  → memory ka masla    → limits.memory badhao</span>
+<span class="cm">#   Reason: Error      → probe/kubelet kill → probe relax karo</span></code></pre>
+
+  <div class="callout senior"><span class="i">★</span><div><b>Direction yaad rakh — ek taraf sahi, dusri galat:</b><br>
+  ✅ <i>"RAM limit toota → OOMKilled → 137"</i> — ye sahi hai.<br>
+  ❌ <i>"137 dikha → RAM limit badhao"</i> — ye <b>ulta</b> hai aur galat. Har OOM 137 deta hai, par har 137 OOM nahi hota.</div></div>
+
+  <p style="margin-top:16px"><b>Do scenario — bilkul same symptom, ulta fix:</b></p>
+  <div class="wr">
+    <div class="wr-box bad">
+      <div class="t">SCENARIO A — auth-service</div>
+      <pre><code>Reason:  <span class="hl">OOMKilled</span>
+Exit:    137
+top:     254Mi / 256Mi  ← 99%</code></pre>
+      <p><b>Diagnosis:</b> sach mein RAM khatam. <b>Fix:</b> <code class="inl">limits.memory</code> 256Mi → 512Mi.<br><span style="color:var(--text-dim)">Phir poochho: memory badhi kyun? (leak?) — limit bump bandage hai, ilaaj nahi.</span></p>
+    </div>
+    <div class="wr-box good">
+      <div class="t">SCENARIO B — analytics-service</div>
+      <pre><code>Reason:  <span class="hl">Error</span>
+Exit:    137
+top:     118Mi / 512Mi  ← 23% !!
+Events:  Liveness probe failed</code></pre>
+      <p><b>Diagnosis:</b> RAM bilkul theek hai. Probe ne healthy pod maar diya. <b>Fix:</b> <code class="inl">timeoutSeconds</code> 1s → 5s.<br><span style="color:var(--rose)">Yahan limit badhaoge to kuch nahi hoga — pod phir marega.</span></p>
+    </div>
+  </div>
+
+  <div class="callout note"><span class="i">ℹ</span><div><b>Dono mein exit 137 hai. Dono CrashLoopBackOff dikhte hain.</b> Farak sirf ek shabd — <code class="inl">Reason:</code>. Isliye <code class="inl">top</code> hamesha chalao: memory 23% pe ho aur tum limit badha rahe ho, to tum galat ped pe bhonk rahe ho. 🐕</div></div>
+
+  <div class="lab" style="margin-top:16px">
+    <div class="t">🧪 LAB — dono khud banao aur farak dekho (VANTA)</div>
+    <ol>
+      <li><b>OOM banao</b> → <code class="inl">kubectl set resources deploy/frontend --limits=memory=20Mi</code></li>
+      <li><code class="inl">kubectl describe pod &lt;pod&gt; | grep -A3 "Last State"</code> → <b>Reason: OOMKilled</b> ✓</li>
+      <li>Wapas theek karo: <code class="inl">--limits=memory=128Mi</code></li>
+      <li><b>Ab probe-kill banao</b> → liveness <code class="inl">timeoutSeconds: 1</code>, <code class="inl">periodSeconds: 2</code> patch karo</li>
+      <li>Wahi command → ab <b>Reason: Error</b> + <code class="inl">Liveness probe failed</code> events ✓</li>
+    </ol>
+    <div class="expect">✅ Dono baar exit 137 — par Reason alag. Yahi ek field poora diagnosis hai.</div>
+  </div>
+</div>
+
+<!-- QoS -->
+<div class="card p" id="qos">
+  <h3>🏅 QoS Classes — node bhar gaya to kaun pehle marega</h3>
+  <div class="q">Node pe memory khatam. Kubernetes kisi ko to nikaalna hi padega. Kise? Ye QoS decide karta hai.</div>
+
+  <p>Tum QoS class <b>likhte nahi</b> — Kubernetes tumhare requests/limits dekh ke <b>khud assign</b> karta hai.</p>
+
+  <div class="tw"><table>
+    <thead><tr><th>QoS Class</th><th>Kab milti hai</th><th>Eviction (nikalne) mein</th></tr></thead>
+    <tbody>
+      <tr><td><span style="color:var(--green)">Guaranteed</span></td><td>requests <b>==</b> limits (CPU + memory dono, har container)</td><td class="ok">Sabse aakhir mein — sabse safe 🛡️</td></tr>
+      <tr><td><span style="color:var(--amber)">Burstable</span></td><td>requests set hain, par limits se kam</td><td>Beech mein</td></tr>
+      <tr><td><span style="color:var(--rose)">BestEffort</span></td><td>Kuch bhi set nahi 😬</td><td class="no"><b>Sabse pehle nikala jayega</b> ☠️</td></tr>
+    </tbody>
+  </table></div>
+
+  <pre><code><span class="cm"># Guaranteed — requests == limits</span>
+<span class="k">resources:</span>
+  <span class="k">requests:</span> { <span class="k">cpu:</span> <span class="s">500m</span>, <span class="k">memory:</span> <span class="s">512Mi</span> }
+  <span class="k">limits:</span>   { <span class="k">cpu:</span> <span class="s">500m</span>, <span class="k">memory:</span> <span class="s">512Mi</span> }   <span class="cm"># ← bilkul same</span>
+
+<span class="cm"># Burstable — requests &lt; limits (zyadatar apps)</span>
+<span class="k">resources:</span>
+  <span class="k">requests:</span> { <span class="k">cpu:</span> <span class="s">50m</span>,  <span class="k">memory:</span> <span class="s">96Mi</span> }
+  <span class="k">limits:</span>   { <span class="k">cpu:</span> <span class="s">500m</span>, <span class="k">memory:</span> <span class="s">256Mi</span> }
+
+<span class="cm"># BestEffort — kuch nahi (KABHI production mein nahi!)</span>
+<span class="cm"># resources: {}</span></code></pre>
+
+  <div class="callout senior"><span class="i">★</span><div><b>Senior call:</b> Database / critical service → <b>Guaranteed</b> (requests == limits) taaki wo kabhi evict na ho. Normal web app → <b>Burstable</b> theek hai. <b>BestEffort kabhi nahi</b> — wo pehla shikaar hai.</div></div>
+</div>
+
+<!-- Pending -->
+<div class="card r">
+  <h3>⏳ Pod "Pending" atka hai — requests ki wajah se</h3>
+  <div class="q">Pod ban gaya par chal nahi raha, status Pending. Kyun?</div>
+
+  <p>Scheduler <b>requests</b> dekh ke node dhundhta hai. Agar kisi bhi node pe utni <b>free (allocatable)</b> capacity nahi — Pod hamesha ke liye Pending.</p>
+
+  <div class="callout note"><span class="i">ℹ</span><div><b>Zaroori:</b> Node ki poori RAM tumhe nahi milti! <br><code class="inl">Allocatable = Capacity − kube-reserved − system-reserved − eviction-threshold</code><br>Ek 4GB node pe shayad ~3.2GB hi pods ke liye ho. Isliye "4GB node pe 4GB ka pod" kabhi schedule nahi hoga.</div></div>
+
+  <pre><code>kubectl describe pod &lt;name&gt;
+<span class="cm"># Events:</span>
+<span class="cm">#   Warning  FailedScheduling  0/3 nodes are available:</span>
+<span class="cm">#   3 Insufficient cpu, 3 Insufficient memory.   ← yahi clue</span>
+
+kubectl describe node &lt;node&gt;    <span class="cm"># Allocatable vs Allocated dekho</span>
+kubectl top nodes                <span class="cm"># actual usage</span></code></pre>
+
+  <p><b>Fix ke 2 raaste:</b> (1) Pod ke requests kam karo — agar wo zyada maang raha tha. (2) <b>Node layer</b> pe jao — aur nodes lao ya bada instance (Part B).</p>
+
+  <h3 style="margin-top:22px;font-size:16px">🎯 Scheduler kaam kaise karta hai — Filter → Score</h3>
+
+  <p>Har Pending pod do phase se guzarta hai. Ye jaanna zaroori hai kyunki <b>Pending ka matlab hai tum phase ① mein hi bahar ho gaye</b>:</p>
+
+  <div class="diag"><pre><code>Saare nodes ──▶ <span class="hl">① FILTER</span> ──▶ jo bache ──▶ <span class="hl">② SCORE</span> ──▶ winner
+                "yahan CHAL SAKTA hai?"          "inme se BEST kaun?"
+                hard pass/fail                    ranking 0–10</code></pre></div>
+
+  <p><b>① Filter — koi bhi ek fail, node bahar.</b> Har check ka <b>alag message</b> hai — aur alag ilaaj:</p>
+
+  <div class="tw"><table>
+    <thead><tr><th>Check</th><th>Message jo dikhega</th><th>Ilaaj</th></tr></thead>
+    <tbody>
+      <tr><td>Allocatable kaafi hai?</td><td><code>Insufficient cpu / memory</code></td><td>requests kam karo ya node lao</td></tr>
+      <tr><td>Taint tolerate karta hai?</td><td><code>untolerated taint {...}</code></td><td>toleration do (jagah hai, <b>permission</b> nahi)</td></tr>
+      <tr><td>nodeSelector/affinity match?</td><td><code>didn't match node affinity/selector</code></td><td>label/affinity theek karo</td></tr>
+      <tr><td>PV is zone se reachable?</td><td><code>volume node affinity conflict</code></td><td><b>Terraform</b> — us AZ mein node lao</td></tr>
+    </tbody>
+  </table></div>
+
+  <p><b>② Score — sirf survivors compete karte hain.</b> Emptier node prefer hota hai, aur <code class="inl">PodTopologySpread</code> replicas ko alag nodes pe faila deta hai — <b>isliye tere 3 replicas apne aap 3 nodes pe jaate hain</b>, tune kuch nahi kaha.</p>
+
+  <div class="callout senior"><span class="i">★</span><div><b>Filter = eligibility</b> (degree hai? experience hai? nahi to bahar). <b>Score = interview ranking</b> (jo bache unme best kaun). <br><br><b>Pending ka matlab: tum Filter mein hi bahar ho — Score tak pahunche hi nahi.</b> Isliye "node khaali hai phir bhi Pending" bilkul mumkin hai — jagah thi, par kisi <i>aur</i> check ne roka. <b>Exact rejection string padho, andaaza mat lagao.</b></div></div>
+
+  <div class="callout note"><span class="i">ℹ</span><div><b>Ek line mein teen alag "Pending":</b> <code class="inl">Insufficient memory</code> = capacity ka masla · <code class="inl">untolerated taint</code> = permission ka masla · <code class="inl">volume node affinity conflict</code> = zone ka masla (<b>ye Kubernetes se fix hi nahi hoga — Terraform chahiye</b>). Teeno "Pending" dikhte hain. Teeno ka ilaaj alag hai.</div></div>
+</div>
+
+<!-- MISTAKES -->
+<div class="card r">
+  <h3>❌ Pod layer ki 4 classic galtiyan — aur sahi tareeka</h3>
+
+  <div class="wr">
+    <div class="wr-box bad">
+      <div class="t">❌ GALAT — kuch set hi nahi kiya</div>
+      <pre><code><span class="cm"># resources: {}</span>
+<span class="cm"># "chalega to sahi"</span></code></pre>
+      <p><b>Anjaam:</b> BestEffort QoS. Node pe pressure aaya → <b>tumhara pod sabse pehle mara</b>. Scheduler ko bhi nahi pata kitni jagah chahiye → node overcommit.</p>
+    </div>
+    <div class="wr-box good">
+      <div class="t">✅ SAHI — hamesha requests set karo</div>
+      <pre><code><span class="k">requests:</span> { <span class="k">cpu:</span> <span class="s">50m</span>, <span class="k">memory:</span> <span class="s">96Mi</span> }
+<span class="k">limits:</span>   { <span class="k">memory:</span> <span class="s">256Mi</span> }</code></pre>
+      <p>Requests <b>hamesha</b> — bina iske scheduler andha hai.</p>
+    </div>
+  </div>
+
+  <div class="wr">
+    <div class="wr-box bad">
+      <div class="t">❌ GALAT — memory limit &gt;&gt; requests</div>
+      <pre><code><span class="k">requests:</span> { <span class="k">memory:</span> <span class="s">96Mi</span> }
+<span class="k">limits:</span>   { <span class="k">memory:</span> <span class="s">2Gi</span> }  <span class="cm"># bada gap</span></code></pre>
+      <p><b>Anjaam:</b> Node pe 96Mi book hui, par app 2Gi tak kha sakta hai → node <b>overcommit</b> → doosre pods evict, ya node hi <b>NotReady</b>.</p>
+    </div>
+    <div class="wr-box good">
+      <div class="t">✅ SAHI — memory limit ≈ requests</div>
+      <pre><code><span class="k">requests:</span> { <span class="k">memory:</span> <span class="s">256Mi</span> }
+<span class="k">limits:</span>   { <span class="k">memory:</span> <span class="s">256Mi</span> }</code></pre>
+      <p>Memory ke liye <b>gap chhota rakho</b>. Predictable — aur Guaranteed QoS mil jaati hai.</p>
+    </div>
+  </div>
+
+  <div class="wr">
+    <div class="wr-box bad">
+      <div class="t">❌ GALAT — CPU limit bahut tight</div>
+      <pre><code><span class="k">requests:</span> { <span class="k">cpu:</span> <span class="s">100m</span> }
+<span class="k">limits:</span>   { <span class="k">cpu:</span> <span class="s">100m</span> }</code></pre>
+      <p><b>Anjaam:</b> Node pe CPU <b>khaali pada hai</b> phir bhi app <b>throttle</b> ho raha → latency spike. Sabse chhupa hua performance bug.</p>
+    </div>
+    <div class="wr-box good">
+      <div class="t">✅ SAHI — CPU ko saans lene do</div>
+      <pre><code><span class="k">requests:</span> { <span class="k">cpu:</span> <span class="s">100m</span> }
+<span class="k">limits:</span>   { <span class="k">cpu:</span> <span class="s">500m</span> }
+<span class="cm"># ya CPU limit hi mat do</span></code></pre>
+      <p>CPU throttle karta hai, marta nahi — isliye limit dheeli (ya na) rakho. <b>Requests zaroori, CPU limit optional.</b></p>
+    </div>
+  </div>
+
+  <div class="wr">
+    <div class="wr-box bad">
+      <div class="t">❌ GALAT — value andaaze se</div>
+      <p>"1 CPU / 1Gi de dete hain, safe rahega." → 10 pods × 1 CPU = <b>10 CPU book</b>, actual use 0.5 CPU. Node bhara dikh raha, khaali hai. <b>Paisa barbaad + Pending pods.</b></p>
+    </div>
+    <div class="wr-box good">
+      <div class="t">✅ SAHI — naapo, phir set karo</div>
+      <pre><code>kubectl top pods
+<span class="cm"># ya VPA "Off" mode se</span>
+<span class="cm"># recommendation lo</span></code></pre>
+      <p>Actual usage dekho → requests ≈ p95 usage rakho → Git mein commit.</p>
+    </div>
+  </div>
+</div>
+
+<!-- LABS POD -->
+<div class="lab">
+  <div class="t">🧪 LAB 1 — OOMKilled khud banao (VANTA, kind)</div>
+  <ol>
+    <li>frontend ka memory limit bahut kam kar do:
+      <pre><code>kubectl set resources deploy/frontend --limits=memory=20Mi</code></pre></li>
+    <li>Watch karo — pod marega:
+      <pre><code>kubectl get pods -w
+kubectl describe pod &lt;frontend-pod&gt; | grep -A3 "Last State"</code></pre></li>
+    <li>Exit code dekho — <b>137</b> aur reason <b>OOMKilled</b> milega</li>
+    <li>Fix karo:
+      <pre><code>kubectl set resources deploy/frontend --limits=memory=128Mi</code></pre></li>
+  </ol>
+  <div class="expect">✅ Dikhna chahiye: Last State: Terminated · Reason: OOMKilled · Exit Code: 137</div>
+</div>
+
+<div class="lab">
+  <div class="t">🧪 LAB 2 — Pending pod banao (requests bahut zyada)</div>
+  <ol>
+    <li>Itna CPU maango jo node pe hai hi nahi:
+      <pre><code>kubectl set resources deploy/frontend --requests=cpu=50</code></pre></li>
+    <li><pre><code>kubectl get pods            <span class="cm"># Pending dikhega</span>
+kubectl describe pod &lt;pod&gt;  <span class="cm"># "Insufficient cpu"</span></code></pre></li>
+    <li>Node ki asli capacity dekho:
+      <pre><code>kubectl describe node | grep -A6 "Allocatable"</code></pre></li>
+    <li>Wapas theek karo: <code class="inl">--requests=cpu=100m</code></li>
+  </ol>
+  <div class="expect">✅ Samajh aana chahiye: Allocatable &lt; Capacity (kube/system reserved nikal ke)</div>
+</div>
+
+<div class="lab">
+  <div class="t">🧪 LAB 3 — QoS class check karo</div>
+  <pre><code>kubectl get pod &lt;pod&gt; -o jsonpath='{.status.qosClass}'
+<span class="cm"># Guaranteed | Burstable | BestEffort</span>
+
+<span class="cm"># saare pods ki QoS ek saath:</span>
+kubectl get pods -o custom-columns=NAME:.metadata.name,QOS:.status.qosClass</code></pre>
+  <div class="expect">✅ VANTA ke pods zyadatar Burstable milenge (requests &lt; limits)</div>
+</div>
+
+<!-- ===================== PART B — NODE LAYER ===================== -->
+<div class="part-head pB">
+  <div class="part-badge">🖥️</div>
+  <div><h2>Part B — Node layer: Terraform</h2><div class="sub">Day 7 · Infrastructure</div></div>
+</div>
+
+<div class="card r" id="node">
+  <h3>Terraform ka ilaaka — machine, pod nahi</h3>
+  <div class="q">Terraform kya banata hai, aur kahan rukta hai?</div>
+
+  <div class="diag"><pre><code>Terraform banata hai        │  Terraform NAHI chhoota
+────────────────────────────┼──────────────────────────
+EC2 instance (size, count)  │  Pod
+VPC, subnet, security group │  Deployment / replicas
+EBS volume, S3, IAM         │  ConfigMap / Secret
+Load balancer               │  container ke resources
+                            │
+   ↓ handoff: kubeadm/Ansible cluster banata hai
+   ↓ uske baad Kubernetes ka raaj</code></pre></div>
+
+  <p><span class="proj bf">BILLFREE</span>Tera <code class="inl">infra/terraform/compute.tf</code> EC2 banata hai, <code class="inl">cloud-init</code> se kubeadm chalta hai → cluster ban jaata hai. Uske baad Terraform ka kaam khatam — aage Helm/ArgoCD.</p>
+</div>
+
+<!-- forces replacement -->
+<div class="card r" id="replace">
+  <h3>💣 "forces replacement" — Day 7 ka sabse bada khatra</h3>
+  <div class="q">instance_type badla, apply kiya — aur production gir gaya. Kyun?</div>
+
+  <p>EC2 ka <code class="inl">instance_type</code> <b>in-place badalta nahi</b> (AWS mein stop→resize→start hota hai; Terraform default mein <b>replace</b> karta hai). To Terraform bolega:</p>
+
+  <pre><code>terraform plan
+
+<span class="cm"># aws_instance.worker must be </span><span class="k">replaced</span>
+<span class="k">-/+</span> resource "aws_instance" "worker" {
+      <span class="k">~</span> instance_type = "t3.medium" <span class="k">-&gt;</span> "t3.xlarge" <span class="cm"># forces replacement</span>
+    }
+<span class="cm">Plan: 1 to add, 0 to change, </span><span class="k">1 to destroy</span><span class="cm">.</span></code></pre>
+
+  <p><b>1 to destroy</b> = wo node <b>mar jayega</b>, uske saare Pods ke saath — bina kisi warning ke, bina drain ke.</p>
+
+  <div class="wr">
+    <div class="wr-box bad">
+      <div class="t">❌ GALAT — seedha apply</div>
+      <pre><code>terraform apply -auto-approve</code></pre>
+      <p><b>Anjaam:</b> Node instantly destroy → us pe chal rahe saare pods ek saath gaye → agar wahi replicas the to <b>downtime</b>. PVC attached tha to volume detach issues.</p>
+    </div>
+    <div class="wr-box good">
+      <div class="t">✅ SAHI — cordon → drain → apply</div>
+      <pre><code>kubectl cordon &lt;node&gt;
+kubectl drain &lt;node&gt; \
+  --ignore-daemonsets \
+  --delete-emptydir-data
+terraform apply
+kubectl uncordon &lt;new-node&gt;</code></pre>
+      <p>Pods pehle shift → phir machine replace. <b>Zero downtime.</b></p>
+    </div>
+  </div>
+
+  <div class="callout senior"><span class="i">★</span><div><b>PDB yahi bachata hai.</b> <code class="inl">drain</code> PDB respect karta hai — <code class="inl">minAvailable: 1</code> hai to ek saath sab pods nahi hatega, ek-ek karke shift honge. Tere Billfree chart mein PDB on hai — isliye drain safe hai. <b>Bina PDB ke drain = sab replicas ek saath ja sakte hain.</b></div></div>
+</div>
+
+<!-- terraform mistakes -->
+<div class="card a">
+  <h3>❌ Terraform ki 4 classic galtiyan</h3>
+
+  <div class="tw"><table>
+    <thead><tr><th>Galti</th><th>Kya hota hai</th><th>Sahi tareeka</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>plan skip karna</td>
+        <td class="no">Pata hi nahi chala ki 1 node destroy ho raha</td>
+        <td class="ok"><code>terraform plan</code> <b>hamesha</b> — "1 to destroy" dhoondo</td>
+      </tr>
+      <tr>
+        <td><code>-auto-approve</code> prod pe</td>
+        <td class="no">Confirm ka mauka nahi, galti seedha live</td>
+        <td class="ok">Prod mein manual approve, ya CI mein plan → review → apply</td>
+      </tr>
+      <tr>
+        <td>tfstate local rakhna</td>
+        <td class="no">Laptop gaya → state gaya → Terraform ko infra "dikhna" band</td>
+        <td class="ok">Remote backend (<b>S3</b> + <b>DynamoDB lock</b>) — team safe</td>
+      </tr>
+      <tr>
+        <td>Console se manually badalna</td>
+        <td class="no"><b>Drift</b> — Git kuch aur kehta, reality kuch aur. Agla apply usko ulta kar dega</td>
+        <td class="ok">Sab change <b>sirf Terraform se</b>. Drift check: <code>terraform plan</code></td>
+      </tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout warn"><span class="i">⚠</span><div><b>tfstate = Terraform ki yaaddasht.</b> Usme likha hai "maine kya-kya banaya". Delete ho gaya → Terraform samjhega kuch bana hi nahi → dobara sab banayega (duplicate infra!) ya orphan chhod dega. <b>Isliye S3 mein, versioning on, DynamoDB lock ke saath.</b></div></div>
+</div>
+
+<!-- vertical vs horizontal node -->
+<div class="card p">
+  <h3>📏 Node: vertical ya horizontal — kaunsa kab</h3>
+
+  <div class="tw"><table>
+    <thead><tr><th>Tareeka</th><th>Kaise</th><th>Kab</th><th>Dikkat</th></tr></thead>
+    <tbody>
+      <tr><td><b>Vertical</b><br>(bada instance)</td><td>Terraform <code>instance_type</code></td><td>Ek hi bada workload (DB), ya pod hi node mein fit nahi ho raha</td><td class="no">Ceiling hai (max size), replacement chahiye, single point of failure</td></tr>
+      <tr><td><b>Horizontal</b><br>(aur nodes)</td><td>ASG <code>desired_size</code> / Cluster Autoscaler / Karpenter</td><td><b>Default choice</b> — zyadatar cases</td><td class="ok">Koi replacement nahi, HA better, cost elastic</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout senior"><span class="i">★</span><div><b>Senior default: horizontal.</b> Vertical ki hadd hai (instance size infinite nahi), aur ek badi machine = ek badi failure. Vertical tab jab workload hi vertical ho — jaise ek bada database jo shard nahi ho sakta.</div></div>
+</div>
+
+<!-- LABS NODE -->
+<div class="lab">
+  <div class="t">🧪 LAB 4 — "forces replacement" apni aankhon se dekho (SAFE — sirf plan)</div>
+  <ol>
+    <li><span class="proj bf">BILLFREE</span><code class="inl">infra/terraform/</code> mein jao</li>
+    <li><code class="inl">terraform.tfvars</code> mein instance type badlo (ya variable override karo)</li>
+    <li><b>Sirf plan chalao — apply MAT karo:</b>
+      <pre><code>terraform plan</code></pre></li>
+    <li>Output mein dhoondho: <code class="inl"># forces replacement</code> aur <code class="inl">1 to destroy</code></li>
+    <li>Change wapas revert kar do</li>
+  </ol>
+  <div class="expect">✅ Samajh aana chahiye: plan hi wo jagah hai jahan tum tabaahi rokte ho</div>
+</div>
+
+<div class="lab">
+  <div class="t">🧪 LAB 5 — Full apply→destroy cycle (SAFE — sirf S3 bucket)</div>
+  <ol>
+    <li>Ek chhoti file <code class="inl">test.tf</code>:
+      <pre><code><span class="k">resource</span> <span class="s">"aws_s3_bucket"</span> <span class="s">"lab"</span> {
+  <span class="k">bucket</span> = <span class="s">"gaurav-tf-lab-2026"</span>
+}</code></pre></li>
+    <li><code class="inl">terraform init</code> → <code class="inl">terraform plan</code> → <code class="inl">terraform apply</code></li>
+    <li>AWS console mein bucket dekho ✓</li>
+    <li><code class="inl">terraform.tfstate</code> kholo — dekho usme kya likha hai</li>
+    <li><b>Zaroori:</b> <code class="inl">terraform destroy</code> — paisa mat jalao 💸</li>
+  </ol>
+  <div class="expect">✅ Sikho: plan → apply → state → destroy ka poora lifecycle, bina risk ke</div>
+</div>
+
+<div class="lab">
+  <div class="t">🧪 LAB 6 — Drain drill (VANTA, kind — multi-node)</div>
+  <ol>
+    <li><pre><code>kubectl get nodes
+kubectl cordon &lt;worker-node&gt;      <span class="cm"># naye pods band</span>
+kubectl get nodes                 <span class="cm"># SchedulingDisabled dikhega</span></code></pre></li>
+    <li><pre><code>kubectl drain &lt;worker-node&gt; --ignore-daemonsets --delete-emptydir-data</code></pre></li>
+    <li>Dekho pods dusre node pe shift ho rahe (DaemonSet pods nahi hatenge — wo har node pe hote hain)</li>
+    <li><pre><code>kubectl uncordon &lt;worker-node&gt;</code></pre></li>
+  </ol>
+  <div class="expect">✅ Yahi wo drill hai jo har node upgrade/resize se pehle hoti hai</div>
+</div>
+
+<!-- ===================== PART C — DECISION ===================== -->
+<div class="part-head pC">
+  <div class="part-badge">🎯</div>
+  <div><h2>Part C — Decision: kab kya karna</h2><div class="sub">dono layers ek saath</div></div>
+</div>
+
+<div class="card g" id="decide">
+  <h3>Symptom → kaunsi layer → kya karo</h3>
+
+  <div class="tw"><table>
+    <thead><tr><th>Dikh kya raha hai</th><th>Asli problem</th><th>Layer</th><th>Karo</th></tr></thead>
+    <tbody>
+      <tr><td>Pod <b>OOMKilled</b> (137)</td><td>Memory limit chhota</td><td>🧊 Pod</td><td><code>limits.memory</code> badhao (Git → ArgoCD)</td></tr>
+      <tr><td>App <b>slow</b>, CPU free hai</td><td>CPU limit throttle kar raha</td><td>🧊 Pod</td><td><code>limits.cpu</code> dheela karo / hatao</td></tr>
+      <tr><td>Pod <b>Pending</b></td><td>Node pe utni jagah nahi</td><td>🧊→🖥️</td><td>Pehle requests sahi karo; phir bhi na fit ho → aur nodes</td></tr>
+      <tr><td>Sab pods Pending, node full</td><td>Cluster mein capacity khatam</td><td>🖥️ Node</td><td>Horizontal: aur nodes (ASG/Autoscaler)</td></tr>
+      <tr><td>Ek pod hi node mein fit nahi</td><td>Node chhota hai</td><td>🖥️ Node</td><td>Vertical: bada <code>instance_type</code> (Terraform + drain)</td></tr>
+      <tr><td>Traffic spike pe slow</td><td>Replicas kam</td><td>🧊 Pod</td><td>HPA (horizontal pods) — 2→6</td></tr>
+      <tr><td>Node <b>NotReady</b></td><td>Overcommit / disk / memory pressure</td><td>🖥️ Node</td><td>Limits kaso, node badhao, <code>describe node</code></td></tr>
+    </tbody>
+  </table></div>
+</div>
+
+<div class="card c">
+  <h3>🗣️ Interview mein aise bolo</h3>
+  <p style="background:var(--surface2);border-radius:9px;padding:14px 16px;font-size:14.5px;line-height:1.7">
+    "Pehle main poochta hoon <b>bottleneck kis layer pe hai</b>. Pod OOMKilled ho raha hai (exit 137) to ye pod-level hai — <code class="inl">resources.limits</code> Git mein badhaunga, ArgoCD sync kar dega. Agar pods Pending hain to node capacity ka masla hai — main <code class="inl">describe node</code> se Allocatable dekhunga, aur <b>horizontal</b> jaunga (aur nodes) kyunki vertical ki ceiling hoti hai. <b>Agar</b> instance_type badalna hi pade to Terraform se — par pehle <code class="inl">terraform plan</code> mein 'forces replacement' check karunga, aur <b>cordon + drain</b> karunga taaki pods safely shift ho jayein; PDB unhe ek saath girne se rokega.<br><br>
+    Aur main <b>requests hamesha</b> set karta hoon — bina uske scheduler andha hai aur pod BestEffort QoS mein chala jaata hai, jo pressure pe sabse pehle evict hota hai. Memory ka limit main requests ke kareeb rakhta hoon (predictable, Guaranteed QoS), par CPU limit dheela — kyunki CPU throttle karta hai, marta nahi."
+  </p>
+</div>
+
+<div class="card p">
+  <h3>🧠 Yaad rakhne ke 6 hook</h3>
+  <div class="tw"><table>
+    <tbody>
+      <tr><td>requests</td><td>= <b>booking</b> (scheduler dekhta) · limits = <b>ceiling</b> (kernel enforce)</td></tr>
+      <tr><td>CPU</td><td>= <b>throttle</b> (zinda) · Memory = <b>OOMKill 137</b> (murda)</td></tr>
+      <tr><td>QoS</td><td>BestEffort = pehla shikaar · Guaranteed = sabse safe</td></tr>
+      <tr><td>Allocatable</td><td>&lt; Capacity (kube+system reserved nikal ke) — isliye pura node nahi milta</td></tr>
+      <tr><td>instance_type</td><td>badla = <b>forces replacement</b> → pehle <b>cordon + drain</b></td></tr>
+      <tr><td>Default</td><td><b>Horizontal</b> (aur nodes/pods) — vertical ki hadd hoti hai</td></tr>
+    </tbody>
+  </table></div>
+</div>
+
+<div class="foot">
+  Resources &amp; Scaling deep-dive · Sprint Day 2/3 + Day 7<br>
+  Handbook theory: 02-M1-terraform · 05-M4-kubernetes-core · 06-M5-sizing-and-cost · 11-M9-internals
+</div>
+
+</div>
+<script>
+  function toggleTheme(){var r=document.documentElement,c=r.getAttribute('data-theme');
+    if(!c)c=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+    var n=c==='dark'?'light':'dark';r.setAttribute('data-theme',n);
+    document.getElementById('themeBtn').textContent=n==='dark'?'☀ light':'☾ dark';}
+</script>
+</body>
+</html>
