@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROD — binge your way to production-ready</title>
+<style>
+  :root{
+    --bg:#08080D;--bg2:#0E0E16;--card:#14141F;--card2:#1B1B29;--line:#242436;--line2:#33334d;
+    --tx:#D6D9F0;--dim:#7A7E9E;--bright:#F4F5FF;
+    --violet:#8B5CF6;--violet2:#A78BFA;--v-bg:rgba(139,92,246,.14);
+    --cyan:#22D3EE;--c-bg:rgba(34,211,238,.13);
+    --green:#34D399;--g-bg:rgba(52,211,153,.13);
+    --amber:#FBBF24;--a-bg:rgba(251,191,36,.13);
+    --rose:#FB7185;--r-bg:rgba(251,113,133,.13);--flame:#FF6B35;
+    --mono:'JetBrains Mono','SF Mono','Consolas',monospace;--sans:system-ui,-apple-system,'Segoe UI',sans-serif;
+  }
+  :root[data-theme="light"]{
+    --bg:#F4F5FB;--bg2:#EAEBF5;--card:#FFFFFF;--card2:#F3F4FC;--line:#E0E2F0;--line2:#CBCEE4;
+    --tx:#2A2D45;--dim:#6E7290;--bright:#12132A;
+    --v-bg:rgba(139,92,246,.10);--c-bg:rgba(20,160,190,.10);--g-bg:rgba(16,150,100,.10);--a-bg:rgba(180,130,10,.10);--r-bg:rgba(200,60,90,.10);
+    --cyan:#0891B2;--green:#0E9D68;--amber:#B57F0A;--rose:#D6446A;
+  }
+  @media(prefers-color-scheme:light){:root:not([data-theme="dark"]){
+    --bg:#F4F5FB;--bg2:#EAEBF5;--card:#FFFFFF;--card2:#F3F4FC;--line:#E0E2F0;--line2:#CBCEE4;
+    --tx:#2A2D45;--dim:#6E7290;--bright:#12132A;
+    --v-bg:rgba(139,92,246,.10);--c-bg:rgba(20,160,190,.10);--g-bg:rgba(16,150,100,.10);--a-bg:rgba(180,130,10,.10);--r-bg:rgba(200,60,90,.10);
+    --cyan:#0891B2;--green:#0E9D68;--amber:#B57F0A;--rose:#D6446A;
+  }}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--tx);font-family:var(--sans);font-size:15px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  ::-webkit-scrollbar{height:8px;width:8px}::-webkit-scrollbar-thumb{background:var(--line2);border-radius:8px}
+  a{color:inherit}
+
+  .top{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:16px;padding:13px 26px;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+  .logo{font-family:var(--mono);font-weight:800;font-size:19px;letter-spacing:-.02em;color:var(--bright);display:flex;align-items:center;gap:9px}
+  .logo .dot{width:11px;height:11px;border-radius:50%;background:var(--green);box-shadow:0 0 12px var(--green);animation:live 2s ease-in-out infinite}
+  @keyframes live{0%,100%{opacity:1}50%{opacity:.4}}
+  .logo small{font-family:var(--sans);font-weight:500;font-size:11px;color:var(--dim)}
+  .top-right{margin-left:auto;display:flex;align-items:center;gap:14px}
+  .streak{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:13px;font-weight:700;color:var(--flame)}
+  .xp-mini{font-family:var(--mono);font-size:12px;color:var(--dim)}.xp-mini b{color:var(--cyan)}
+  .avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--violet),var(--cyan));display:grid;place-items:center;font-weight:700;color:#fff;font-size:14px}
+  .tbtn{background:var(--card);border:1px solid var(--line);color:var(--tx);border-radius:20px;padding:5px 11px;font-family:var(--mono);font-size:11px;cursor:pointer}
+  .tbtn:hover{border-color:var(--cyan)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 26px}
+
+  .hero{position:relative;margin:22px 0 8px;border-radius:22px;overflow:hidden;border:1px solid var(--line);
+    background:radial-gradient(120% 140% at 85% 15%,var(--v-bg),transparent 55%),radial-gradient(110% 120% at 10% 90%,var(--c-bg),transparent 50%),var(--card)}
+  .hero-in{padding:32px 36px;display:grid;grid-template-columns:1.4fr 1fr;gap:28px;align-items:center}
+  @media(max-width:820px){.hero-in{grid-template-columns:1fr;gap:20px}}
+  .badge-row{display:flex;gap:8px;margin-bottom:15px;flex-wrap:wrap}
+  .pill{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.04em;padding:4px 10px;border-radius:20px;display:inline-flex;align-items:center;gap:6px}
+  .pill.live{color:var(--rose);background:var(--r-bg);border:1px solid color-mix(in srgb,var(--rose) 40%,transparent)}
+  .pill.sev{color:var(--amber);background:var(--a-bg)}.pill.ep{color:var(--dim);background:var(--card2)}
+  .hero h1{font-size:31px;line-height:1.12;color:var(--bright);font-weight:800;letter-spacing:-.02em;margin-bottom:11px;text-wrap:balance}
+  .hero p{font-size:14.5px;color:var(--dim);margin-bottom:20px;max-width:46ch}
+  .cta-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .btn{border:none;border-radius:12px;padding:12px 21px;font-size:14px;font-weight:700;font-family:var(--sans);cursor:pointer;display:inline-flex;align-items:center;gap:9px;text-decoration:none}
+  .btn.play{background:linear-gradient(135deg,var(--violet),var(--cyan));color:#fff;box-shadow:0 8px 28px -8px var(--violet)}
+  .btn.play:hover{transform:translateY(-1px)}
+  .btn.ghost{background:var(--card2);color:var(--tx);border:1px solid var(--line2)}
+  .hero-meta{font-family:var(--mono);font-size:12px;color:var(--dim)}
+  .term{background:#07070c;border:1px solid var(--line2);border-radius:14px;overflow:hidden;box-shadow:0 20px 50px -20px #000}
+  .term-bar{display:flex;align-items:center;gap:7px;padding:9px 13px;background:#0d0d15;border-bottom:1px solid var(--line)}
+  .term-bar i{width:11px;height:11px;border-radius:50%;display:inline-block}.term-bar .t{margin-left:8px;font-family:var(--mono);font-size:11px;color:#7A7E9E}
+  .term-body{padding:14px 15px;font-family:var(--mono);font-size:11.5px;line-height:1.75;color:#c8d0e0;min-height:172px}
+  .term-body .p{color:#34D399}.term-body .hl{color:#FBBF24}.term-body .er{color:#FB7185}.term-body .cm{color:#5a6078}
+  .cursor{display:inline-block;width:7px;height:14px;background:#22D3EE;vertical-align:middle;animation:bl 1s step-end infinite}@keyframes bl{50%{opacity:0}}
+
+  .career{display:flex;align-items:center;gap:20px;margin:22px 0;padding:17px 22px;border-radius:16px;background:var(--card);border:1px solid var(--line);flex-wrap:wrap}
+  .career-lvl{font-family:var(--mono);font-size:12px;color:var(--dim);flex-shrink:0}.career-lvl b{display:block;font-size:16px;color:var(--bright);font-family:var(--sans)}
+  .track{flex:1;display:flex;align-items:center;min-width:280px}
+  .rank{flex:1;text-align:center;position:relative;font-size:11px;font-family:var(--mono);color:var(--dim)}
+  .rank .node{width:15px;height:15px;border-radius:50%;margin:0 auto 6px;background:var(--card2);border:2px solid var(--line2)}
+  .rank.done .node{background:var(--green);border-color:var(--green)}
+  .rank.now .node{background:var(--cyan);border-color:var(--cyan);box-shadow:0 0 14px var(--cyan)}
+  .rank.done,.rank.now{color:var(--bright)}
+  .rank:not(:last-child)::after{content:'';position:absolute;top:7px;left:50%;width:100%;height:2px;background:var(--line2)}
+  .rank.done::after{background:var(--green)}
+
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:22px 0 8px}
+  @media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:15px 18px}
+  .stat .n{font-family:var(--mono);font-size:25px;font-weight:800;color:var(--bright);line-height:1}.stat .n small{font-size:13px;color:var(--dim)}
+  .stat .l{font-size:12px;color:var(--dim);margin-top:6px}
+  .stat.v .n{color:var(--violet2)}.stat.c .n{color:var(--cyan)}.stat.g .n{color:var(--green)}.stat.f .n{color:var(--flame)}
+
+  .grid2{display:grid;grid-template-columns:1.3fr 1fr;gap:18px;margin:12px 0}@media(max-width:820px){.grid2{grid-template-columns:1fr}}
+  .fact{background:radial-gradient(120% 130% at 90% 10%,var(--a-bg),transparent 55%),var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 24px;position:relative}
+  .fact .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:11px;display:flex;align-items:center;gap:8px}
+  .fact .lbl .cnt{margin-left:auto;color:var(--dim)}
+  .fact h3{font-size:18px;color:var(--bright);margin-bottom:8px;line-height:1.25;text-wrap:balance}
+  .fact p{font-size:13.5px;color:var(--dim);line-height:1.6}
+  .fact-actions{margin-top:15px;display:flex;gap:9px}
+  .fact button{font-family:var(--mono);font-size:12px;border-radius:8px;padding:6px 12px;cursor:pointer;border:1px solid var(--line2);background:none;color:var(--tx)}
+  .fact button.collect{border-color:var(--amber);color:var(--amber)}.fact button.collect.got{background:var(--a-bg);cursor:default}
+  .fact button:hover{border-color:var(--cyan)}
+  .fact button.locked{opacity:.5;cursor:not-allowed}
+
+  .daily{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px 24px;display:flex;flex-direction:column}
+  .daily .lbl{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--flame);margin-bottom:10px}
+  .daily h3{font-size:17px;color:var(--bright);margin-bottom:3px}.daily p{font-size:12.5px;color:var(--dim);margin-bottom:14px}
+  .daily-steps{display:flex;flex-direction:column;gap:8px;margin-bottom:15px}
+  .dstep{display:flex;align-items:center;gap:10px;font-size:13px;cursor:pointer}
+  .dstep .b{width:20px;height:20px;border-radius:6px;background:var(--card2);border:1px solid var(--line2);display:grid;place-items:center;font-size:11px;flex-shrink:0}
+  .dstep.done .b{background:var(--green);border-color:var(--green);color:#04140c;font-weight:900}.dstep.done{color:var(--dim);text-decoration:line-through}
+  .daily .go{margin-top:auto;background:var(--flame);color:#fff;border:none;border-radius:11px;padding:11px;font-weight:700;font-size:13.5px;cursor:pointer}
+  .daily .go.done{background:var(--card2);color:var(--dim);cursor:default}
+
+  .sec-head{display:flex;align-items:baseline;gap:12px;margin:28px 0 13px}
+  .sec-head h2{font-size:19px;color:var(--bright);font-weight:800;letter-spacing:-.01em}
+  .sec-head .sub{font-size:12.5px;color:var(--dim)}.sec-head .prog{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--dim)}
+  .rail{display:grid;grid-auto-flow:column;grid-auto-columns:224px;gap:14px;overflow-x:auto;padding:4px 2px 14px;scroll-snap-type:x proximity}
+  .rail::-webkit-scrollbar{height:6px}
+  .ep{scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .15s,border-color .15s;position:relative;text-decoration:none;display:block}
+  .ep:hover{transform:translateY(-3px);border-color:var(--line2)}
+  .ep-thumb{height:98px;position:relative;display:flex;align-items:flex-end;padding:11px;font-family:var(--mono)}
+  .ep-thumb .ico{position:absolute;top:11px;right:13px;font-size:23px;opacity:.92}
+  .ep-thumb .num{font-size:32px;font-weight:800;color:rgba(255,255,255,.92);line-height:.9}
+  .t-v{background:linear-gradient(135deg,#3b2a6d,#1a1830)}.t-c{background:linear-gradient(135deg,#0e4a55,#10202b)}
+  .t-g{background:linear-gradient(135deg,#0f5138,#10221a)}.t-a{background:linear-gradient(135deg,#5c4410,#241b08)}
+  .t-r{background:linear-gradient(135deg,#5f1f2e,#241014)}.t-b{background:linear-gradient(135deg,#1e3a6e,#101a2e)}
+  .ep-body{padding:11px 13px}
+  .ep-body .tt{font-size:13px;font-weight:700;color:var(--bright);margin-bottom:3px;line-height:1.25}
+  .ep-body .mt{font-family:var(--mono);font-size:10.5px;color:var(--dim);display:flex;gap:7px;align-items:center}
+  .ep .chk{position:absolute;top:10px;left:11px;width:22px;height:22px;border-radius:50%;background:var(--card2);border:1px solid var(--line2);display:grid;place-items:center;font-size:12px;z-index:2}
+  .ep.done .chk{background:var(--green);border-color:var(--green);color:#04140c;font-weight:900}
+  .ep.locked{opacity:.5}.ep.locked .lock{position:absolute;inset:0;display:grid;place-items:center;font-size:22px;background:rgba(5,5,10,.35);z-index:1}
+
+  .foot{text-align:center;padding:22px 0 46px;font-family:var(--mono);font-size:12px;color:var(--dim)}
+  .foot a{color:var(--cyan);text-decoration:none;cursor:pointer}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(20px);z-index:80;background:var(--card2);border:1px solid var(--cyan);color:var(--bright);font-family:var(--mono);font-size:13px;padding:10px 18px;border-radius:12px;opacity:0;transition:.3s;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="logo"><span class="dot"></span>PROD<small>·&nbsp; binge to production-ready</small></div>
+  <div class="top-right">
+    <div class="streak" id="streakTop">🔥 0</div>
+    <div class="xp-mini">XP <b id="xpTop">0</b></div>
+    <button class="tbtn" onclick="toggleTheme()" id="tb">◐</button>
+    <div class="avatar">G</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-in">
+      <div>
+        <div class="badge-row">
+          <span class="pill live">● CONTINUE YOUR SHIFT</span>
+          <span class="pill sev">SEV-1 · critical</span>
+          <span class="pill ep">Season 5 · The On-Call</span>
+        </div>
+        <h1>analytics-service CrashLoopBackOff — again exit 137</h1>
+        <p>Pichhle hafte OOM tha. Same exit code. Par memory graph flat 23% pe. Kya sach mein RAM ka masla hai — ya kuch aur? <b style="color:var(--tx)">Reason:</b> field padhega ya jaal mein fasega?</p>
+        <div class="cta-row">
+          <a class="btn play" href="../platform/">▶ Resume incident</a>
+          <a class="btn ghost" href="../06-M5-sizing-and-cost/">📄 Briefing padho</a>
+          <span class="hero-meta" id="heroMeta">~14 min · earns XP</span>
+        </div>
+      </div>
+      <div class="term">
+        <div class="term-bar"><i style="background:#ff5f56"></i><i style="background:#ffbd2e"></i><i style="background:#27c93f"></i><span class="t">gaurav@billfree-prod ~ %</span></div>
+        <div class="term-body">
+<span class="p">$</span> kubectl describe pod analytics-... | grep "Last State"<br>
+&nbsp;&nbsp;<span class="cm">Last State:  Terminated</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;Reason:    <span class="er">Error</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;Exit Code: <span class="hl">137</span><br>
+<span class="p">$</span> kubectl top pod analytics-...<br>
+&nbsp;&nbsp;analytics-service  340m  <span class="hl">118Mi</span> / 512Mi<br>
+&nbsp;&nbsp;<span class="cm">💡 23% memory. Reason: Error, NOT OOMKilled.</span><br>
+<span class="p">$</span> <span class="cursor"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAREER -->
+  <section class="career">
+    <div class="career-lvl">TERA RANK<b id="rankNow">—</b></div>
+    <div class="track" id="track"></div>
+    <div class="career-lvl" style="text-align:right" id="nextRank">—</div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats" id="stats"></section>
+
+  <!-- FACT + DAILY -->
+  <section class="grid2">
+    <div class="fact" id="factCard">
+      <div class="lbl">💡 lore card · did you know <span class="cnt" id="loreCnt"></span></div>
+      <h3 id="factH"></h3>
+      <p id="factP"></p>
+      <div class="fact-actions">
+        <button onclick="prevFact()">←</button>
+        <button onclick="nextFact()">agli →</button>
+        <button class="collect" id="collectBtn" onclick="collectFact()">＋ collect</button>
+      </div>
+    </div>
+    <div class="daily">
+      <div class="lbl">🔥 daily streak · 5 min</div>
+      <h3>Aaj ka drill</h3>
+      <p>Streak zinda rakh — teeno tap karo.</p>
+      <div class="daily-steps" id="drillSteps"></div>
+      <button class="go" id="drillGo" onclick="finishDrill()">Finish → +50 XP</button>
+    </div>
+  </section>
+
+  <!-- SEASONS render here -->
+  <div id="seasons"></div>
+
+  <div class="foot">
+    PROD · your handbook (35 ch) + BillFree Labs sim (14 incidents) · progress localStorage mein save hai<br>
+    <a onclick="resetAll()">↺ reset all progress</a>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ DATA ============ */
+// Career ladder — SAME as the incident sim, so rank is consistent across both.
+const ROLES = [['Junior DevOps',0],['DevOps Engineer',980],['Platform Engineer',1960],
+  ['Senior Platform Eng',2940],['Site Reliability Eng',3920],['Principal Engineer',4900]];
+const MAXXP = 4900;
+const EP_XP = 120, LORE_XP = 40, DRILL_XP = 50;
+
+// Episodes → real handbook chapters (mkdocs pretty URLs, relative to /hub/)
+const SEASONS = [
+  {t:'Season 1 — Ground Floor', sub:'Linux · Git · Docker', cls:'t-g', eps:[
+    {s:'21-linux-toolkit', n:'01', ico:'🐧', tt:'Linux — the ground everything runs on', min:20, cls:'t-g'},
+    {s:'01-M0-foundations', n:'02', ico:'🧭', tt:'Foundations — the two loops', min:16, cls:'t-g'},
+    {s:'04-M3-docker', n:'03', ico:'📦', tt:'Docker — the sealed box', min:24, cls:'t-c'},
+    {s:'22-command-cheatsheets', n:'04', ico:'⌨️', tt:'Command muscle memory', min:18, cls:'t-c'},
+  ]},
+  {t:'Season 2 — The Cluster', sub:'Kubernetes core → internals', cls:'t-c', eps:[
+    {s:'05-M4-kubernetes-core', n:'05', ico:'☸️', tt:'Kubernetes Core — cook, manager, counter', min:26, cls:'t-c'},
+    {s:'26-k8s-objects-map', n:'06', ico:'🗺️', tt:'K8s Objects — how they connect', min:15, cls:'t-c'},
+    {s:'06-M5-sizing-and-cost', n:'07', ico:'⚖️', tt:'Sizing, cost & exit 137', min:22, cls:'t-a'},
+    {s:'11-M9-advanced-k8s-internals', n:'08', ico:'🔬', tt:'Advanced internals — probes, QoS, DNS', min:30, cls:'t-v'},
+    {s:'30-k8s-complete-reference', n:'09', ico:'📚', tt:'Complete K8s reference', min:20, cls:'t-c'},
+  ]},
+  {t:'Season 3 — The Pipeline', sub:'CI/CD · GitOps · Helm', cls:'t-v', eps:[
+    {s:'07-M6-cicd', n:'10', ico:'🧪', tt:'CI/CD — the test kitchen', min:22, cls:'t-v'},
+    {s:'19-cicd-hands-on-flow', n:'11', ico:'🔁', tt:'Follow one commit', min:18, cls:'t-v'},
+    {s:'08-M7-gitops', n:'12', ico:'🔄', tt:'GitOps — sync & drift', min:20, cls:'t-v'},
+    {s:'28-helm-real-projects', n:'13', ico:'⎈', tt:'Helm in the real world', min:24, cls:'t-v'},
+  ]},
+  {t:'Season 4 — The Foundation', sub:'Terraform · Ansible · AWS', cls:'t-a', eps:[
+    {s:'02-M1-terraform', n:'14', ico:'🏗️', tt:'Terraform — forces replacement', min:22, cls:'t-a'},
+    {s:'03-M2-ansible', n:'15', ico:'🔧', tt:'Ansible — configure the fleet', min:20, cls:'t-a'},
+    {s:'09-connected-system', n:'16', ico:'🕸️', tt:'The connected system', min:18, cls:'t-a'},
+    {s:'20-confusions-and-tradeoffs', n:'17', ico:'⚔️', tt:'Confusions & trade-offs (X vs Y)', min:20, cls:'t-a'},
+  ]},
+  {t:'Season 5 — 2 A.M.', sub:'Observability · incidents · chaos', cls:'t-r', eps:[
+    {s:'10-M8-observability-sre', n:'18', ico:'📊', tt:'Observability & SRE', min:22, cls:'t-r'},
+    {s:'23-production-incident-playbook', n:'19', ico:'🚑', tt:'Incident playbook (37 issues)', min:28, cls:'t-r'},
+    {s:'25-production-gauntlet-chaos', n:'20', ico:'🐒', tt:'Chaos engineering — break & fix', min:24, cls:'t-r'},
+    {oncall:true, n:'🚨', ico:'🚨', tt:'The On-Call — live boss fights', min:0, cls:'t-r'},
+  ]},
+  {t:'Bonus — Job Ready', sub:'interview · sprint · resume', cls:'t-b', eps:[
+    {s:'29-confidence-sprint', n:'21', ico:'🔥', tt:'10-Day Confidence Sprint', min:15, cls:'t-b'},
+    {s:'14-interview-bank', n:'22', ico:'🎤', tt:'Interview bank (40+ Q&A)', min:26, cls:'t-b'},
+    {s:'18-career-job-ready', n:'23', ico:'💼', tt:'Job-ready — resume & scripts', min:18, cls:'t-b'},
+  ]},
+];
+const ALL_EPS = SEASONS.flatMap(s=>s.eps.filter(e=>!e.oncall));
+
+const LORE = [
+  {id:'l137', unlock:0, h:'Exit 137 kahan se aata hai?', p:'137 = 128 + 9. Unix mein signal se mara process 128 + signal number deta hai. Signal 9 = SIGKILL. Isliye har SIGKILL 137 deta hai — kernel OOM ho ya kubelet probe-kill. Exit code = "kaise mara", <b>Reason</b> = "kisne mara".'},
+  {id:'lk8s', unlock:0, h:'"K8s" mein 8 kyun?', p:'Kubernetes ka pehla "K", aakhri "s", aur beech ke <b>8 letters</b>. Greek "kubernetes" = helmsman (jahaz ka kaptaan) — isliye logo mein ship ka wheel hai ⚓. Isi tarah i18n, a11y, o11y.'},
+  {id:'lpets', unlock:400, h:'Pets vs Cattle kisne kaha?', p:'2012 mein Bill Baker ne server scaling samjhane ke liye. Pets = naam dete ho, bimar pade to ilaaj (traditional server). Cattle = number hote hain, bimar pade to replace (modern pod). "Treat servers like cattle, not pets."'},
+  {id:'lchaos', unlock:800, h:'Chaos Monkey ki kahani', p:'2011 mein Netflix ne ek tool banaya jo <b>jaan-boojh ke production mein random servers maar deta tha</b> — din ke waqt, taaki failure normal ban jaye. Soch: failure inevitable hai to use 2 AM ke bajaye lunch pe hone do. Yahin se "chaos engineering" paida hui.'},
+  {id:'letcd', unlock:1200, h:'etcd ko odd number kyun chahiye?', p:'etcd Raft consensus use karta hai — likhne ke liye majority (quorum) chahiye. 3 nodes = 1 fail tolerate. 4 nodes = phir bhi sirf 1 (2 chahiye majority). To 4 = 3 se behtar nahi, bas mehnga. Isliye hamesha <b>odd</b>: 3, 5, 7.'},
+  {id:'ldocker', unlock:1600, h:'"It works on my machine" → Docker', p:'Yehi ek line se Docker paida hua (2013, Solomon Hykes). Dev ke laptop pe chalta, server pe nahi — environment alag. Solution: app + saara environment ek "sealed box" mein. Jo box mein chala, har jagah chalega.'},
+  {id:'l502', unlock:2000, h:'502 vs 503 — ek shabd ka farak', p:'502 Bad Gateway = upstream (pod) ne <b>galat jawab</b> diya ya crash ho gaya. 503 Service Unavailable = <b>koi pod hai hi nahi</b> (saare down / 0 ready). Load balancer dono deta hai — par debug ki jagah alag: 502 → pod logs, 503 → replica count / readiness.'},
+  {id:'lyaml', unlock:2600, h:'YAML ka "Norway problem"', p:'YAML 1.1 mein <code>NO</code> ko boolean <b>false</b> mein badal deta hai! To country code list mein Norway (NO) ban jaata false. Isliye hamesha quote karo: <code>country: "NO"</code>. K8s YAML mein ye bug aaj bhi logon ko kaatta hai.'},
+];
+
+/* ============ STATE ============ */
+const HKEY='prod_hub_v1', SIMKEY='billfree_platform_v3';
+let H = {epDone:[], lore:[], streak:{count:0,last:''}, drill:{date:'',steps:[false,false,false]}, fi:0};
+try{const r=localStorage.getItem(HKEY); if(r) H=Object.assign(H,JSON.parse(r));}catch(e){}
+function saveH(){try{localStorage.setItem(HKEY,JSON.stringify(H));}catch(e){}}
+function simState(){try{return JSON.parse(localStorage.getItem(SIMKEY))||{};}catch(e){return {};}}
+function today(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+
+// Combined XP = incident sim XP + hub episode/lore XP. Rank derives from it.
+function simXP(){return simState().xp||0;}
+function hubXP(){return H.epDone.length*EP_XP + H.lore.length*LORE_XP + (H.drill.date===today()&&H.drill.steps.every(Boolean)?DRILL_XP:0);}
+function totalXP(){return Math.min(MAXXP, simXP()+hubXP());}
+function rankIdx(x){let i=0;for(let k=0;k<ROLES.length;k++)if(x>=ROLES[k][1])i=k;return i;}
+function incidentsSolved(){return (simState().done||[]).length;}
+
+/* ============ RENDER ============ */
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove('show'),1800);}
+
+function renderTop(){
+  const x=totalXP();
+  document.getElementById('xpTop').textContent=x.toLocaleString();
+  document.getElementById('streakTop').textContent='🔥 '+H.streak.count;
+  document.getElementById('heroMeta').textContent='~14 min · '+incidentsSolved()+'/14 incidents solved';
+}
+function renderCareer(){
+  const x=totalXP(), ri=rankIdx(x);
+  document.getElementById('rankNow').textContent=ROLES[ri][0];
+  const tr=document.getElementById('track'); tr.innerHTML='';
+  ROLES.forEach((r,i)=>{
+    const d=document.createElement('div');
+    d.className='rank'+(i<ri?' done':i===ri?' now':'');
+    d.innerHTML='<div class="node"></div>'+r[0].replace(' Engineer','').replace(' Eng','');
+    tr.appendChild(d);
+  });
+  const nx=document.getElementById('nextRank');
+  if(ri<ROLES.length-1){nx.innerHTML=(ROLES[ri+1][1]-x)+' XP to<b>'+ROLES[ri+1][0]+'</b>';}
+  else{nx.innerHTML='MAX<b>Principal 🏆</b>';}
+}
+function renderStats(){
+  document.getElementById('stats').innerHTML=`
+    <div class="stat v"><div class="n">${H.epDone.length}<small>/${ALL_EPS.length}</small></div><div class="l">episodes watched</div></div>
+    <div class="stat c"><div class="n">${incidentsSolved()}<small>/14</small></div><div class="l">incidents solved</div></div>
+    <div class="stat f"><div class="n">${H.streak.count} <small>days</small></div><div class="l">learning streak 🔥</div></div>
+    <div class="stat g"><div class="n">${H.lore.length}<small>/${LORE.length}</small></div><div class="l">lore cards collected</div></div>`;
+}
+function renderFact(){
+  const x=totalXP(), f=LORE[H.fi], locked=x<f.unlock;
+  document.getElementById('loreCnt').textContent=H.lore.length+'/'+LORE.length+' collected';
+  document.getElementById('factH').innerHTML=locked?'🔒 Locked lore card':f.h;
+  document.getElementById('factP').innerHTML=locked?('Ye card '+f.unlock+' XP pe khulega. Abhi '+x+' XP — thoda aur seekho.'):f.p;
+  const b=document.getElementById('collectBtn');
+  if(locked){b.className='collect locked';b.textContent='🔒 '+f.unlock+' XP';}
+  else if(H.lore.includes(f.id)){b.className='collect got';b.textContent='✓ collected';}
+  else{b.className='collect';b.textContent='＋ collect';}
+}
+function renderSeasons(){
+  const wrap=document.getElementById('seasons'); wrap.innerHTML='';
+  SEASONS.forEach(se=>{
+    const done=se.eps.filter(e=>!e.oncall&&H.epDone.includes(e.s)).length;
+    const tot=se.eps.filter(e=>!e.oncall).length;
+    const head=document.createElement('div'); head.className='sec-head';
+    head.innerHTML=`<h2>${se.t}</h2><span class="sub">${se.sub}</span><span class="prog">${done}/${tot}</span>`;
+    const rail=document.createElement('div'); rail.className='rail';
+    se.eps.forEach(e=>{
+      if(e.oncall){
+        const a=document.createElement('a'); a.className='ep'; a.href='../platform/';
+        a.innerHTML=`<div class="ep-thumb ${e.cls}"><span class="num" style="font-size:24px">🚨</span><span class="ico">${e.ico}</span></div>
+          <div class="ep-body"><div class="tt">${e.tt}</div><div class="mt">${incidentsSolved()}/14 solved · live</div></div>`;
+        rail.appendChild(a); return;
+      }
+      const isDone=H.epDone.includes(e.s);
+      const a=document.createElement('a'); a.className='ep'+(isDone?' done':''); a.href='../'+e.s+'/';
+      a.dataset.slug=e.s;
+      a.innerHTML=`<div class="chk" title="mark done" onclick="toggleEp(event,'${e.s}')">${isDone?'✓':''}</div>
+        <div class="ep-thumb ${e.cls}"><span class="num">${e.n}</span><span class="ico">${e.ico}</span></div>
+        <div class="ep-body"><div class="tt">${e.tt}</div><div class="mt">${e.min} min · +${EP_XP} XP</div></div>`;
+      rail.appendChild(a);
+    });
+    wrap.appendChild(head); wrap.appendChild(rail);
+  });
+}
+function renderDrill(){
+  const isToday=H.drill.date===today();
+  const steps=isToday?H.drill.steps:[false,false,false];
+  const labels=['Recall gate: requests vs limits','Lab: OOMKilled khud banao','Flashcard: QoS eviction order'];
+  const el=document.getElementById('drillSteps'); el.innerHTML='';
+  steps.forEach((s,i)=>{
+    const d=document.createElement('div'); d.className='dstep'+(s?' done':'');
+    d.innerHTML=`<span class="b">${s?'✓':(i+1)}</span> ${labels[i]}`;
+    d.onclick=()=>toggleDrill(i);
+    el.appendChild(d);
+  });
+  const go=document.getElementById('drillGo');
+  const all=steps.every(Boolean);
+  if(isToday&&all){go.className='go done';go.textContent='✓ Aaj complete · streak '+H.streak.count+' 🔥';}
+  else{go.className='go';go.textContent='Finish → +'+DRILL_XP+' XP';}
+}
+function renderAll(){renderTop();renderCareer();renderStats();renderFact();renderSeasons();renderDrill();}
+
+/* ============ ACTIONS ============ */
+function toggleEp(ev,slug){
+  ev.preventDefault(); ev.stopPropagation();
+  const i=H.epDone.indexOf(slug);
+  if(i>=0){H.epDone.splice(i,1);toast('Episode un-marked');}
+  else{H.epDone.push(slug);bumpStreak();toast('✓ +'+EP_XP+' XP · episode done');}
+  saveH(); renderAll();
+}
+function toggleDrill(i){
+  if(H.drill.date!==today()){H.drill={date:today(),steps:[false,false,false]};}
+  H.drill.steps[i]=!H.drill.steps[i]; saveH(); renderDrill(); renderTop(); renderCareer(); renderFact();
+}
+function finishDrill(){
+  if(H.drill.date!==today())H.drill={date:today(),steps:[false,false,false]};
+  if(H.drill.steps.every(Boolean)){toast('Aaj ka drill already complete 🔥');return;}
+  H.drill={date:today(),steps:[true,true,true]}; bumpStreak();
+  saveH(); renderAll(); toast('🔥 +'+DRILL_XP+' XP · streak '+H.streak.count);
+}
+function bumpStreak(){
+  const t=today();
+  if(H.streak.last===t)return;
+  const y=new Date(); y.setDate(y.getDate()-1);
+  const yest=y.getFullYear()+'-'+(y.getMonth()+1)+'-'+y.getDate();
+  H.streak.count=(H.streak.last===yest)?H.streak.count+1:1;
+  H.streak.last=t;
+}
+function nextFact(){H.fi=(H.fi+1)%LORE.length;saveH();renderFact();}
+function prevFact(){H.fi=(H.fi-1+LORE.length)%LORE.length;saveH();renderFact();}
+function collectFact(){
+  const f=LORE[H.fi];
+  if(totalXP()<f.unlock)return;
+  if(H.lore.includes(f.id)){nextFact();return;}
+  H.lore.push(f.id); bumpStreak(); saveH(); renderAll(); toast('💡 +'+LORE_XP+' XP · lore collected');
+}
+function resetAll(){
+  if(!confirm('Sab progress reset karein? (incident sim ka progress alag hai, wo nahi hatega)'))return;
+  localStorage.removeItem(HKEY);
+  H={epDone:[],lore:[],streak:{count:0,last:''},drill:{date:'',steps:[false,false,false]},fi:0};
+  renderAll(); toast('Hub progress reset');
+}
+function toggleTheme(){const r=document.documentElement,c=r.getAttribute('data-theme');
+  r.setAttribute('data-theme',(c||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'))==='dark'?'light':'dark');}
+
+renderAll();
+</script>
+</body>
+</html>
