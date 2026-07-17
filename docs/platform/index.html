@@ -182,7 +182,7 @@ textarea:focus{border-color:var(--violet)}
       <div class="prov-item"><span class="prov-check">✓</span> On-call · <span style="color:var(--amber)">you. Always. There is nobody else.</span></div>
     </div>
     <button class="btn btn-primary" id="enterBtn" disabled style="width:100%;justify-content:center">Reading the handover…</button>
-    <p class="faint" style="margin-top:12px">Three companies, ten real incidents. Startups teach you to fix · scale-ups to systematise · enterprises to prove it.</p>
+    <p class="faint" style="margin-top:12px">Three companies, fourteen real incidents. Startups teach you to fix · scale-ups to systematise · enterprises to prove it.</p>
   </div>
 </div>
 
@@ -235,11 +235,13 @@ const ALL_INCIDENTS = COMPANIES.flatMap(c => c.incidents.map(i => ({...i, compan
 /* ==================== state ==================== */
 const KEY = 'billfree_platform_v3';
 const XP = {evidence:20, root:75, fix:75, rca:100};
+/* 14 incidents × 350 XP (5 evidence + root + fix + rca) = 4900 possible.
+   Ladder keeps the original shape: 6 roles, equal steps, Principal exactly at max. */
 const ROLES = [
-  ['Junior DevOps Engineer',0],['DevOps Engineer',700],['Platform Engineer',1400],
-  ['Senior Platform Engineer',2100],['Site Reliability Engineer',2800],['Principal Engineer',3500]
+  ['Junior DevOps Engineer',0],['DevOps Engineer',980],['Platform Engineer',1960],
+  ['Senior Platform Engineer',2940],['Site Reliability Engineer',3920],['Principal Engineer',4900]
 ];
-const MAXXP = 3500;
+const MAXXP = 4900;
 let S = {screen:'dashboard', company:'dabbadrop', xp:0, done:[], active:null, step:0, ran:[], fixed:false, rcaDone:false};
 try{ const raw = localStorage.getItem(KEY); if(raw) S = Object.assign(S, JSON.parse(raw)); }catch(e){}
 const save = ()=>{ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} };

@@ -522,5 +522,561 @@ Prevention:
     ['P3','BILL-537','Capacity review — 5Gi never revisited since bootstrap'],
   ]
 },
+{
+  id:'INC-2952', sev:'critical', alert:'PodCrashLooping', svc:'analytics-service',
+  title:'analytics-service CrashLoopBackOff — again exit 137',
+  paged:'09:47 IST', mttr:'21m', skill:'Probes · liveness vs readiness',
+  teaches:'exit 137 is not always OOM — an aggressive liveness probe kills healthy containers',
+  impact:{
+    business:'Analytics dashboards timing out. Scheduled reports incomplete for 3 enterprise accounts.',
+    customer:'Dashboard spins, then errors. Data is intact — it just cannot be served reliably.',
+    rule:'PodCrashLooping · restarts > 3 in 15m · severity: critical'
+  },
+  cmds:{
+    'kubectl get pods -n billfree':{id:'get',out:[
+      ['NAME                                READY   STATUS             RESTARTS      AGE','out'],
+      ['api-gateway-7d4b9c6f8-xk2pq         1/1     Running            0             9d','out'],
+      ['auth-service-6c9d8f2a1-k4mzp        1/1     Running            0             3d','out'],
+      ['analytics-service-8b3f6d2c9-r7hjt   0/1     CrashLoopBackOff   5 (38s ago)   9d','hi'],
+      ['analytics-service-8b3f6d2c9-v2klq   1/1     Running            0             9d','out'],
+      ['postgres-0                          1/1     Running            0             15d','out'],
+      ['','out'],
+      ['💡 Looks identical to INC-2891. Do not assume it is the same cause.','hi'],
+    ]},
+    'kubectl describe pod analytics-service-8b3f6d2c9-r7hjt -n billfree':{id:'describe',out:[
+      ['Name:         analytics-service-8b3f6d2c9-r7hjt','out'],
+      ['Containers:','out'],['  analytics-service:','out'],
+      ['    State:          Waiting','out'],
+      ['      Reason:       CrashLoopBackOff','warn'],
+      ['    Last State:     Terminated','out'],
+      ['      Reason:       Error','hi'],
+      ['      Exit Code:    137','hi'],
+      ['    Restart Count:  5','warn'],
+      ['    Limits:','out'],['      cpu:     500m','out'],['      memory:  512Mi','out'],
+      ['    Requests:','out'],['      cpu:     50m','out'],['      memory:  128Mi','out'],
+      ['    Liveness:   http-get http://:8080/healthz delay=5s timeout=1s period=5s #success=1 #failure=3','hi'],
+      ['    Readiness:  http-get http://:8080/readyz  delay=5s timeout=1s period=10s #success=1 #failure=3','out'],
+      ['Events:','out'],
+      ['  Warning  Unhealthy  2m (x15)  kubelet  Liveness probe failed: Get "http://10.244.2.31:8080/healthz": context deadline exceeded','hi'],
+      ['  Normal   Killing    2m (x5)   kubelet  Container analytics-service failed liveness probe, will be restarted','hi'],
+      ['','out'],
+      ['💡 Reason: Error — NOT OOMKilled. Compare with INC-2891.','hi'],
+    ]},
+    'kubectl logs analytics-service-8b3f6d2c9-r7hjt -n billfree --previous':{id:'logs',out:[
+      ['{"level":"info","msg":"analytics-service starting","port":8080}','out'],
+      ['{"level":"info","msg":"connected to postgres","host":"postgres:5432"}','out'],
+      ['{"level":"info","msg":"listening","addr":":8080"}','out'],
+      ['{"level":"info","msg":"report generated","account":"acme-corp","rows":184203,"ms":1180}','out'],
+      ['{"level":"info","msg":"report generated","account":"initech","rows":201884,"ms":1240}','out'],
+      ['','out'],
+      ['── log ends abruptly · no error, no stack trace, no OOM ──','warn'],
+      ['💡 It was serving fine. Note those 1.2s report times — remember that number.','hi'],
+    ]},
+    'kubectl top pod -n billfree':{id:'top',out:[
+      ['NAME                                CPU(cores)   MEMORY(bytes)','out'],
+      ['api-gateway-7d4b9c6f8-xk2pq         62m          118Mi','out'],
+      ['analytics-service-8b3f6d2c9-v2klq   340m         118Mi','hi'],
+      ['postgres-0                          88m          201Mi','out'],
+      ['','out'],
+      ['💡 Memory 118Mi against a 512Mi limit — 23%. Memory is NOT the problem here.','hi'],
+    ]},
+    'kubectl get events -n billfree --sort-by=.lastTimestamp':{id:'events',out:[
+      ['LAST SEEN   TYPE      REASON      OBJECT                                  MESSAGE','out'],
+      ['38s         Warning   Unhealthy   pod/analytics-service-8b3f6d2c9-r7hjt   Liveness probe failed: context deadline exceeded','hi'],
+      ['38s         Normal    Killing     pod/analytics-service-8b3f6d2c9-r7hjt   failed liveness probe, will be restarted','hi'],
+      ['2m          Warning   BackOff     pod/analytics-service-8b3f6d2c9-r7hjt   Back-off restarting failed container','warn'],
+      ['','out'],
+      ['💡 No OOM event anywhere. The kubelet is doing the killing, deliberately.','hi'],
+    ]},
+  },
+  aliases:{
+    'kubectl get pods':'kubectl get pods -n billfree',
+    'kubectl top pod':'kubectl top pod -n billfree',
+    'kubectl get events -n billfree':'kubectl get events -n billfree --sort-by=.lastTimestamp',
+    'kubectl describe pod analytics-service-8b3f6d2c9-r7hjt':'kubectl describe pod analytics-service-8b3f6d2c9-r7hjt -n billfree',
+    'kubectl logs analytics-service-8b3f6d2c9-r7hjt --previous':'kubectl logs analytics-service-8b3f6d2c9-r7hjt -n billfree --previous',
+  },
+  evidence:'exit <b class="mono">137</b> but <b class="mono">Reason: Error</b> (not OOMKilled) · memory <b class="mono">118Mi</b> of a <b class="mono">512Mi</b> limit · <b class="mono">Liveness probe failed: context deadline exceeded</b> · liveness <b class="mono">timeout=1s</b> · reports take <b class="mono">1.2s</b>',
+  choices:[
+    {k:'A',t:'Memory limit too low — OOMKilled',d:'Same as INC-2891 — the kernel killed it.',ok:false,
+     why:'Two things say no. <b class="mono">top</b> shows 118Mi against a 512Mi limit (23%), and <b class="mono">describe</b> says <b class="mono">Reason: Error</b>, not <b class="mono">OOMKilled</b>. For an OOM kill, <b>both</b> the exit code AND the Reason must line up. Exit 137 alone is not enough.'},
+    {k:'B',t:'Liveness probe timeout too aggressive — kubelet is killing a healthy container',d:'The app is briefly slow; the 1s probe times out and kubelet restarts it.',ok:true},
+    {k:'C',t:'Readiness probe misconfigured',d:'The readiness check is failing and taking the pod down.',ok:false,
+     why:'A readiness failure <b>never kills a container</b> — it only removes the pod from the Service endpoints (it goes 0/1 but keeps Running). A <b>restart loop</b> can only come from liveness (or a crash).'},
+    {k:'D',t:'Application deadlock or bug',d:'The code hangs and the process dies.',ok:false,
+     why:'The logs show it serving reports normally right up to the kill — no error, no stack trace. And it dies at a regular cadence, which points to an external timer, not a bug. A real deadlock would not restart cleanly and then repeat identically.'},
+  ],
+  correctTitle:'✓ Correct — the liveness probe killed a healthy container',
+  correctBody:'Exit <b class="mono">137</b> = SIGKILL — and <b>two</b> different things send it: the kernel OOM killer, or <b>the kubelet after a failed liveness probe</b>. The <b class="mono">Reason:</b> field tells you which — <b class="mono">OOMKilled</b> vs <b class="mono">Error</b>. Here: <b class="mono">timeout=1s</b>, but a large report blocks the event loop for <b class="mono">~1.2s</b>. The probe times out, 3 failures in a row, kubelet kills it. <b>The app was never unhealthy — it was briefly busy.</b> This is the classic self-inflicted outage: the probe meant to protect availability is the thing destroying it.',
+  fixNote:'GitOps cluster — fix the probe values in Git. And note the direction: <b>readiness</b> can be strict (it just parks traffic), <b>liveness</b> must be forgiving (it kills).',
+  fixDiff:`deploy/apps/analytics-service/values.yaml
+
+ probes:
+   liveness:
+     path: /healthz
+<span class="del">-    timeoutSeconds: 1</span>
+<span class="del">-    periodSeconds: 5</span>
+<span class="del">-    failureThreshold: 3</span>
+<span class="add">+    timeoutSeconds: 5        # a slow reply is not a dead app</span>
+<span class="add">+    periodSeconds: 10</span>
+<span class="add">+    failureThreshold: 6      # ~60s of real failure before killing</span>
+<span class="add">+    initialDelaySeconds: 20  # let it warm up first</span>
+   readiness:
+     path: /readyz            # readiness stays strict — it only parks traffic`,
+  shipLabel:'⬆ Commit &amp; push → Argo CD sync',
+  shipOut:`$ git commit -m "fix(analytics): relax liveness probe — killing healthy pods (exit 137, Reason: Error)"
+$ git push
+<span class="add">→ Argo CD  analytics-service  OutOfSync → Syncing → Synced ✓</span>
+<span class="add">→ analytics-service-9f2a7c4d1-x8ntv   1/1   Running   0   45s</span>
+<span class="add">→ Liveness probe failures: 0 · restarts: 0 · reports still serving</span>
+<span class="add">→ alert PodCrashLooping  RESOLVED</span>`,
+  shipNote:'The app never changed. Only our expectation of how fast it must answer did.',
+  wrongLabel:'✎ Raise the memory limit (it IS exit 137…)',
+  wrongTitle:'⚠ 137 sent you to the wrong place',
+  wrongOut:`$ # values.yaml: memory 512Mi → 1Gi · commit · push
+<span class="add">→ Argo CD  analytics-service  Synced ✓</span>
+<span class="add">→ analytics-service-3d8b1e5f2-q9wzr   1/1   Running   0   30s</span>
+<span class="del">→ 4m later…  Liveness probe failed: context deadline exceeded</span>
+<span class="del">→ Killing container · Restart Count: 1</span>
+<span class="del">→ alert PodCrashLooping  FIRING again</span>
+<span class="del">→ memory usage: still 118Mi. You bought 512Mi nobody was asking for.</span>`,
+  wrongNote:'<b class="mono">exit 137</b> has two parents: the OOM killer and the kubelet. You treated the one it did not have. Always read <b class="mono">Reason:</b> before you act — <b class="mono">OOMKilled</b> or <b class="mono">Error</b>. That one field is the whole diagnosis.',
+  rcaModel:`What happened: From 09:47–10:08 IST, one of two analytics-service pods sat in CrashLoopBackOff (5 restarts). Dashboards for 3 enterprise accounts timed out; scheduled reports were incomplete.
+
+Root cause: The liveness probe was configured with timeoutSeconds: 1. Large report generation blocks the request path for ~1.2s, so /healthz answered late. Three consecutive timeouts caused the kubelet to SIGKILL the container (exit 137, Reason: Error) — repeatedly. The container was healthy throughout; the probe was measuring "fast" and calling it "alive".
+
+Detection: PodCrashLooping alert paged on-call. Same alert and same exit code as INC-2891 (OOMKill), which initially misdirected triage — the differentiator is the Reason field, not the exit code.
+
+Resolution: Relaxed the liveness probe (timeout 1s→5s, period 5s→10s, failureThreshold 3→6, added initialDelay 20s) via Git; Argo CD synced. MTTR 21m.
+
+Prevention:
+1. BILL-611 — audit every liveness probe in the chart for timeoutSeconds < 3. This pattern almost certainly exists elsewhere.
+2. BILL-612 — /healthz must be a cheap liveness endpoint that does not touch the DB or share the busy request path.
+3. BILL-613 — question whether analytics-service needs a liveness probe at all. Readiness already parks traffic on a slow pod; liveness only adds a way to kill it.
+4. BILL-614 — profile the 1.2s report blocking time (suspect synchronous serialisation of ~200k rows).`,
+  feedback:'"This is the incident that separates people who <i>memorise</i> from people who <i>read</i>. Exit <span class="mono">137</span> is famous as \'OOM\' — and you had a previous OOM incident on this very cluster to anchor the bias. You went to <b>describe</b>, saw <span class="mono">Reason: Error</span> instead of <span class="mono">OOMKilled</span>, checked <b>top</b>, found 23% memory use, and refused the easy answer. That is real diagnostic discipline.<br><br>Next level: the senior question here is not <i>what timeout?</i> — it is <b>why does this service have a liveness probe at all?</b> Readiness already removes a slow pod from traffic. Liveness only adds the ability to kill it. A restarted pod does not fix a slow report — it just drops the connections and starts cold. Many senior teams run readiness-only for exactly this reason: <b>a badly tuned liveness probe causes far more outages than it prevents.</b>"',
+  tickets:[
+    ['P1','BILL-611','Audit all liveness probes for timeoutSeconds < 3 — this pattern will exist elsewhere'],
+    ['P2','BILL-612','/healthz must be cheap — must not touch DB or share the busy request path'],
+    ['P2','BILL-613','Evaluate removing liveness from analytics-service — readiness may be sufficient'],
+    ['P3','BILL-614','Profile the 1.2s blocking report serialisation (~200k rows)'],
+  ]
+},
+{
+  id:'INC-2967', sev:'warning', alert:'HighErrorRate', svc:'api-gateway',
+  title:'A 5xx spike on every single deploy',
+  paged:'14:22 IST', mttr:'28m', skill:'Graceful shutdown · SIGTERM · preStop',
+  teaches:'maxUnavailable: 0 is not zero-downtime — endpoint removal and SIGTERM race each other',
+  impact:{
+    business:'~700 failed requests per deploy. 6 deploys/day. Nobody logged it as an incident — it "always did that".',
+    customer:'A brief burst of 502s for ~5 seconds during each release. Retries succeed, so few complain.',
+    rule:'HighErrorRate · 5xx ratio > 5% for 5m · severity: warning'
+  },
+  cmds:{
+    'kubectl get pods -n billfree':{id:'get',out:[
+      ['NAME                                READY   STATUS        RESTARTS   AGE','out'],
+      ['api-gateway-7d4b9c6f8-xk2pq         1/1     Terminating   0          9d','hi'],
+      ['api-gateway-8e5c1a9d3-m2vbn         1/1     Running       0          22s','out'],
+      ['api-gateway-8e5c1a9d3-j6plc         1/1     Running       0          14s','out'],
+      ['postgres-0                          1/1     Running       0          15d','out'],
+      ['','out'],
+      ['💡 A rollout is in progress. The 5xx spike lines up exactly with this window.','hi'],
+    ]},
+    'kubectl describe deployment api-gateway -n billfree':{id:'describe',out:[
+      ['Name:               api-gateway','out'],
+      ['Replicas:           2 desired | 2 updated | 3 total','out'],
+      ['StrategyType:       RollingUpdate','out'],
+      ['RollingUpdateStrategy:  0 max unavailable, 1 max surge','hi'],
+      ['Pod Template:','out'],
+      ['  Containers:','out'],
+      ['   api-gateway:','out'],
+      ['    Readiness:  http-get http://:8080/readyz delay=5s timeout=1s period=10s','out'],
+      ['    Lifecycle:  <none>','hi'],
+      ['  TerminationGracePeriodSeconds:  30','out'],
+      ['','out'],
+      ['💡 maxUnavailable is already 0 — so this is NOT a "too few pods" problem.','hi'],
+      ['💡 Lifecycle: <none> — there is no preStop hook.','hi'],
+    ]},
+    'kubectl logs api-gateway-7d4b9c6f8-xk2pq -n billfree':{id:'logs',out:[
+      ['{"level":"info","msg":"request","path":"/api/tickets","status":200,"ms":42}','out'],
+      ['{"level":"info","msg":"request","path":"/api/auth/verify","status":200,"ms":11}','out'],
+      ['{"level":"info","msg":"request","path":"/api/reports","status":200,"ms":88}','out'],
+      ['','out'],
+      ['── SIGTERM received ──','hi'],
+      ['── container exits immediately · 3 in-flight requests dropped ──','warn'],
+      ['','out'],
+      ['💡 The app got SIGTERM and quit on the spot. It did not drain anything.','hi'],
+      ['💡 And requests were STILL arriving when it died.','hi'],
+    ]},
+    'kubectl get endpoints api-gateway -n billfree':{id:'endpoints',out:[
+      ['NAME          ENDPOINTS                                          AGE','out'],
+      ['api-gateway   10.244.1.14:8080,10.244.2.9:8080,10.244.3.22:8080  9d','hi'],
+      ['','out'],
+      ['💡 THREE endpoints — the Terminating pod (10.244.1.14) is still listed.','hi'],
+      ['💡 It is dying, and the Service is still sending it traffic.','hi'],
+    ]},
+    'kubectl get events -n billfree --sort-by=.lastTimestamp':{id:'events',out:[
+      ['LAST SEEN   TYPE     REASON             OBJECT                        MESSAGE','out'],
+      ['24s         Normal   ScalingReplicaSet  deployment/api-gateway        Scaled up replica set api-gateway-8e5c1a9d3 to 1','out'],
+      ['20s         Normal   Killing            pod/api-gateway-7d4b9c6f8-xk2pq  Stopping container api-gateway','hi'],
+      ['','out'],
+      ['💡 No errors, no crashes. This is a normal, healthy rollout — that drops requests.','hi'],
+    ]},
+  },
+  aliases:{
+    'kubectl get pods':'kubectl get pods -n billfree',
+    'kubectl describe deployment api-gateway':'kubectl describe deployment api-gateway -n billfree',
+    'kubectl get endpoints api-gateway':'kubectl get endpoints api-gateway -n billfree',
+    'kubectl logs api-gateway-7d4b9c6f8-xk2pq':'kubectl logs api-gateway-7d4b9c6f8-xk2pq -n billfree',
+    'kubectl get events -n billfree':'kubectl get events -n billfree --sort-by=.lastTimestamp',
+  },
+  evidence:'5xx <b>only</b> during rollouts · <b class="mono">maxUnavailable: 0</b> already · <b class="mono">Lifecycle: &lt;none&gt;</b> (no preStop) · app exits immediately on SIGTERM · the <b class="mono">Terminating</b> pod is <b>still in the endpoints list</b>',
+  choices:[
+    {k:'A',t:'maxUnavailable is too high — not enough pods during rollout',d:'Lower it so a pod is always available.',ok:false,
+     why:'It is already <b class="mono">0</b> with <b class="mono">maxSurge: 1</b> — a new pod is Ready <i>before</i> the old one is touched. Replica count is not the problem; the problem is what happens to the old pod in its last two seconds.'},
+    {k:'B',t:'HPA is scaling down too aggressively',d:'Pods are being removed under load.',ok:false,
+     why:'The 5xx correlate exactly with <b>deploys</b>, not with load. Events show <b class="mono">ScalingReplicaSet</b> from a rollout, not an HPA scale-down.'},
+    {k:'C',t:'No graceful shutdown — the pod is killed mid-request while the Service still routes to it',d:'SIGTERM and endpoint removal happen concurrently, and the app does not drain.',ok:true},
+    {k:'D',t:'Readiness probe is missing',d:'Traffic hits pods before they are ready.',ok:false,
+     why:'Readiness exists (<b class="mono">/readyz</b>) and governs pods coming <b>up</b>. Our errors happen to the pod going <b>down</b> — readiness has no say in that path.'},
+  ],
+  correctTitle:'✓ Correct — nothing drained; the pod died holding live traffic',
+  correctBody:'When a pod is deleted, <b>two things start at the same moment — they are not ordered</b>:<br><br><b>1.</b> kubelet sends <b class="mono">SIGTERM</b> to your container.<br><b>2.</b> The endpoints controller removes the pod IP → every node\'s kube-proxy must then update its iptables rules.<br><br>Step 2 <b>takes time to propagate across the cluster</b>. Step 1 is instant. So for a second or two the pod is <b>shutting down while traffic is still arriving</b> — and this app exits immediately on SIGTERM, dropping every in-flight request. <b class="mono">maxUnavailable: 0</b> cannot help: it counts pods, not the requests inside them. This is the most common cause of "our deploys always blip".',
+  fixNote:'Two fixes, and you need <b>both</b>. <b class="mono">preStop</b> buys time for the endpoint removal to propagate; the SIGTERM handler drains what is in flight.',
+  fixDiff:`deploy/charts/microservice/templates/deployment.yaml
+
+     containers:
+       - name: {{ .Chart.Name }}
+<span class="add">+        lifecycle:</span>
+<span class="add">+          preStop:</span>
+<span class="add">+            exec:</span>
+<span class="add">+              command: ["sh","-c","sleep 10"]   # keep serving while</span>
+<span class="add">+                                                 # endpoints propagate</span>
+<span class="add">+    terminationGracePeriodSeconds: 45   # must exceed preStop + drain time</span>
+
+<span class="k"># and in the app (the half YAML cannot do):</span>
+<span class="add">+  on SIGTERM:  stop accepting new conns → finish in-flight → exit 0</span>`,
+  shipLabel:'⬆ Commit &amp; push → Argo CD sync',
+  shipOut:`$ git commit -m "fix(chart): add preStop drain + SIGTERM handling — 5xx on every rollout"
+$ git push
+<span class="add">→ Argo CD  platform  OutOfSync → Syncing → Synced ✓</span>
+<span class="add">→ rolling update across all 7 services</span>
+<span class="add">→ old pod: SIGTERM → preStop sleep 10s → endpoints propagated → drained → exit 0</span>
+<span class="add">→ 5xx during rollout: 0</span>
+<span class="add">→ alert HighErrorRate  RESOLVED</span>`,
+  shipNote:'It went into the shared chart, so all 7 services got it at once. That is the payoff of one reusable chart.',
+  wrongLabel:'✎ Add more replicas — that should absorb it',
+  wrongTitle:'⚠ Same blip, more pods',
+  wrongOut:`$ # replicaCount: 2 → 6 · commit · push
+<span class="add">→ Argo CD  Synced ✓  · 6 pods Running</span>
+<span class="del">→ next deploy:  5xx spike again — identical shape</span>
+<span class="del">→ (now 6 pods each drop their in-flight requests instead of 2)</span>`,
+  wrongNote:'Every pod that terminates without draining drops its in-flight requests. More replicas = more terminations = the same bug, six times. <b>You cannot out-scale a correctness problem.</b>',
+  rcaModel:`What happened: A ~5s burst of 502s accompanied every deploy — roughly 700 failed requests per release, 6 releases/day. It had been happening for months and was treated as normal.
+
+Root cause: Pods terminated without draining. On delete, SIGTERM and Service endpoint removal happen concurrently; endpoint removal must propagate to kube-proxy on every node, which takes ~1-2s. During that window the terminating pod still receives traffic — and the app exited immediately on SIGTERM, dropping in-flight requests. No preStop hook existed. maxUnavailable: 0 gave false confidence: it guarantees pod count, not request safety.
+
+Detection: Not detected as an incident for months — the HighErrorRate alert is a 5m ratio, and a 5s spike across 6 deploys/day never breached it. Found only when investigating customer reports of intermittent 502s.
+
+Resolution: Added a preStop sleep 10 and raised terminationGracePeriodSeconds to 45 in the shared microservice chart (all 7 services), plus SIGTERM draining in the app. Rollout 5xx dropped to zero. MTTR 28m.
+
+Prevention:
+1. BILL-702 — SIGTERM handling is now a service checklist item; a service without it does not get merged.
+2. BILL-703 — add a deploy-window SLO burn check; a short sharp spike must not hide inside a 5-minute ratio.
+3. BILL-704 — chart defaults now ship preStop + grace period, so new services inherit correctness.`,
+  feedback:'"The most valuable thing you did was <b>disbelieve <span class="mono">maxUnavailable: 0</span></b>. That setting is the number one source of false confidence about zero-downtime deploys — it guarantees <i>pods</i>, not <i>requests</i>. You went to the endpoints list and saw the terminating pod still there. That is the whole incident in one command.<br><br>Also worth noting: this ran for <b>months</b> without paging anyone. A 5-second spike cannot breach a 5-minute ratio alert. <b>Your alerts define what you are able to see</b> — and this one was shaped so that a real, recurring, customer-facing defect was mathematically invisible.<br><br>Next level: you fixed it in the shared chart rather than in one service. Seven services, one commit. That is platform thinking."',
+  tickets:[
+    ['P1','BILL-702','SIGTERM draining is now a service checklist item — enforce in review'],
+    ['P2','BILL-703','Deploy-window error budget check — 5s spikes hide inside 5m ratios'],
+    ['P2','BILL-704','Chart defaults ship preStop + grace period for all new services'],
+  ]
+},
+{
+  id:'INC-2980', sev:'critical', alert:'TargetDown', svc:'postgres',
+  title:'postgres-0 Pending — and it will never schedule',
+  paged:'04:03 IST', mttr:'37m', skill:'StatefulSet · PVC topology · AZ binding',
+  teaches:'An EBS volume lives in ONE availability zone — the pod can only come back where its disk is',
+  impact:{
+    business:'Total platform outage. Every service depends on postgres. Nothing works.',
+    customer:'The product is down. Not degraded — down.',
+    rule:'TargetDown · up == 0 for 2m · severity: critical'
+  },
+  cmds:{
+    'kubectl get pods -n billfree -o wide':{id:'get',out:[
+      ['NAME                                READY   STATUS    RESTARTS   AGE   NODE','out'],
+      ['api-gateway-8e5c1a9d3-m2vbn         1/1     Running   0          2d    ip-10-0-2-51','out'],
+      ['auth-service-6c9d8f2a1-k4mzp        0/1     Running   0          2d    ip-10-0-2-51','warn'],
+      ['postgres-0                          0/1     Pending   0          6m    <none>','hi'],
+      ['','out'],
+      ['💡 postgres-0 has NO node. It has not been placed at all.','hi'],
+      ['💡 auth is Running but 0/1 — its readiness needs the DB.','hi'],
+    ]},
+    'kubectl get nodes -L topology.kubernetes.io/zone':{id:'nodes',out:[
+      ['NAME            STATUS   ROLES    AGE   VERSION   ZONE','out'],
+      ['ip-10-0-2-51    Ready    <none>   21d   v1.29.4   us-east-1b','out'],
+      ['ip-10-0-3-88    Ready    <none>   21d   v1.29.4   us-east-1c','out'],
+      ['ip-10-0-3-91    Ready    <none>   9d    v1.29.4   us-east-1c','out'],
+      ['','out'],
+      ['💡 Three healthy nodes — in 1b and 1c. NOTHING in us-east-1a.','hi'],
+      ['💡 The 1a node was terminated by AWS at 03:57.','hi'],
+    ]},
+    'kubectl describe pod postgres-0 -n billfree':{id:'describe',out:[
+      ['Name:         postgres-0','out'],
+      ['Status:       Pending','warn'],
+      ['Node:         <none>','hi'],
+      ['Volumes:','out'],
+      ['  data:','out'],
+      ['    Type:       PersistentVolumeClaim','out'],
+      ['    ClaimName:  data-postgres-0','out'],
+      ['Events:','out'],
+      ['  Warning  FailedScheduling  6m (x9)  default-scheduler  0/3 nodes are available: 3 node(s) had volume node affinity conflict.','hi'],
+      ['','out'],
+      ['💡 NOT "Insufficient cpu/memory". The word is: volume node affinity conflict.','hi'],
+      ['💡 There is plenty of room. The scheduler is refusing on purpose.','hi'],
+    ]},
+    'kubectl get pv -o wide':{id:'pv',out:[
+      ['NAME       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM                     STORAGECLASS','out'],
+      ['pvc-8a3f   5Gi        RWO            Delete           Bound    billfree/data-postgres-0  gp3','hi'],
+      ['','out'],
+      ['Node Affinity:','out'],
+      ['  Required Terms:','out'],
+      ['    topology.kubernetes.io/zone in [us-east-1a]','hi'],
+      ['','out'],
+      ['💡 The disk itself is pinned to us-east-1a. This is EBS — it cannot leave its zone.','hi'],
+      ['⚠  RECLAIM POLICY: Delete — remember this before you touch anything.','warn'],
+    ]},
+    'kubectl get events -n billfree --sort-by=.lastTimestamp':{id:'events',out:[
+      ['LAST SEEN   TYPE      REASON             OBJECT           MESSAGE','out'],
+      ['6m          Warning   FailedScheduling   pod/postgres-0   volume node affinity conflict','hi'],
+      ['7m          Normal    NodeNotReady       node/ip-10-0-1-40  Node ip-10-0-1-40 status is now: NodeNotReady','warn'],
+      ['','out'],
+      ['💡 ip-10-0-1-40 was the us-east-1a node. AWS retired it.','hi'],
+    ]},
+  },
+  aliases:{
+    'kubectl get pods':'kubectl get pods -n billfree -o wide',
+    'kubectl get pods -n billfree':'kubectl get pods -n billfree -o wide',
+    'kubectl get nodes':'kubectl get nodes -L topology.kubernetes.io/zone',
+    'kubectl describe pod postgres-0':'kubectl describe pod postgres-0 -n billfree',
+    'kubectl get pv':'kubectl get pv -o wide',
+    'kubectl get events -n billfree':'kubectl get events -n billfree --sort-by=.lastTimestamp',
+  },
+  evidence:'<b class="mono">volume node affinity conflict</b> (not Insufficient cpu/memory) · PV pinned to <b class="mono">topology.kubernetes.io/zone in [us-east-1a]</b> · the only 1a node was terminated · surviving nodes are in 1b/1c · <b class="mono">RECLAIM POLICY: Delete</b>',
+  choices:[
+    {k:'A',t:'Insufficient CPU/memory on the remaining nodes',d:'The cluster is out of capacity.',ok:false,
+     why:'The scheduler is explicit about which check failed: <b class="mono">volume node affinity conflict</b>. If it were capacity, it would say <b class="mono">Insufficient cpu</b> or <b class="mono">Insufficient memory</b>. <b>Read the exact rejection reason</b> — the scheduler always names it.'},
+    {k:'B',t:'The PVC\'s EBS volume lives in us-east-1a and no node remains in that zone',d:'The disk cannot move; the pod must go to the disk.',ok:true},
+    {k:'C',t:'The remaining nodes carry a taint postgres does not tolerate',d:'A NoSchedule taint is repelling it.',ok:false,
+     why:'A taint produces a different message: <b class="mono">node(s) had untolerated taint {...}</b>. Ours says volume node affinity. Different filter, different message.'},
+    {k:'D',t:'The StatefulSet is missing its headless Service',d:'postgres cannot get a stable identity.',ok:false,
+     why:'A missing headless Service breaks DNS identity, not scheduling — the pod would still be placed on a node. Ours is never placed at all, and the reason names the volume.'},
+  ],
+  correctTitle:'✓ Correct — the pod cannot go to the disk, so it goes nowhere',
+  correctBody:'An <b>EBS volume is zonal</b>. It physically exists in <b class="mono">us-east-1a</b> and cannot be attached to a node in another AZ — that is a property of AWS block storage, not a Kubernetes bug. So the PV carries <b class="mono">nodeAffinity: zone in [us-east-1a]</b>, and the scheduler honours it: no 1a node → no placement → <b class="mono">Pending</b>, forever. Add a hundred nodes in 1b and nothing changes.<br><br>And here is the sentence that matters: <b>with <span class="mono">replicas: 1</span>, a single AZ going away is a total outage of your entire platform.</b> The AZ did exactly what AWS says an AZ may do at any time.',
+  fixNote:'⚠ <b>This one is not fixed inside Kubernetes.</b> The pod cannot move to the disk — so a node must come back to where the disk lives. That is an <b>infrastructure</b> action, in the layer below.',
+  fixDiff:`infra/terraform/compute.tf   ← NOT a kubectl fix
+
+ module "node_group" {
+   subnet_ids = [
+     aws_subnet.private_1b.id,
+     aws_subnet.private_1c.id,
+<span class="add">+    aws_subnet.private_1a.id,   # bring capacity back to 1a</span>
+   ]
+<span class="del">-  desired_size = 3</span>
+<span class="add">+  desired_size = 4            # so the ASG places one in 1a</span>
+ }
+
+<span class="k"># fastest path at 04:00 — scale the ASG in us-east-1a:</span>
+<span class="k">$ aws autoscaling set-desired-capacity \\</span>
+<span class="k">    --auto-scaling-group-name billfree-ng-1a --desired-capacity 1</span>
+<span class="k"># node joins 1a → scheduler places postgres-0 → PVC attaches → Running</span>`,
+  shipLabel:'⬆ Restore capacity in us-east-1a',
+  shipOut:`$ aws autoscaling set-desired-capacity --auto-scaling-group-name billfree-ng-1a --desired-capacity 1
+<span class="add">→ ip-10-0-1-77   Ready   us-east-1a   38s</span>
+<span class="add">→ postgres-0     Pending → ContainerCreating   (attaching pvc-8a3f)</span>
+<span class="add">→ postgres-0     1/1     Running   0   52s   ip-10-0-1-77</span>
+<span class="add">→ data intact — same volume, same 5Gi, nothing lost</span>
+<span class="add">→ auth-service   1/1     Running   (readiness recovered)</span>
+<span class="add">→ alert TargetDown  RESOLVED</span>`,
+  shipNote:'The pod went to the disk. The disk never moved — and it never can.',
+  wrongLabel:'✎ Delete the PVC and let it recreate',
+  wrongTitle:'☠ You just deleted the database',
+  wrongOut:`$ kubectl delete pvc data-postgres-0 -n billfree
+persistentvolumeclaim "data-postgres-0" deleted
+<span class="del">→ PV pvc-8a3f  Bound → Released</span>
+<span class="del">→ reclaimPolicy: Delete  → EBS vol-0a3f8b2c1 DELETING</span>
+<span class="del">→ EBS volume deleted.</span>
+<span class="del">→ postgres-0 schedules instantly on a 1b node ✓ … with an empty 5Gi disk.</span>
+<span class="del">→ Every customer record, invoice, and ticket: gone.</span>
+<span class="del">→ Last snapshot: none configured.</span>`,
+  wrongNote:'This is the single most destructive key on the keyboard, and it <b>looks like it worked</b> — the Pending cleared instantly. The StorageClass had <b class="mono">reclaimPolicy: Delete</b>, so releasing the claim destroyed the underlying EBS volume. <b>Pending is frustrating. Pending is not data loss. Deleting a bound PVC is.</b> When a stuck pod tempts you toward the PVC, stop and go one layer down instead.',
+  rcaModel:`What happened: At 03:57 AWS retired the EC2 instance that was our only node in us-east-1a. postgres-0 was evicted and entered Pending, where it stayed. Because every service depends on postgres, the platform was fully down for 37 minutes.
+
+Root cause: postgres-0's PVC is backed by a gp3 EBS volume in us-east-1a. EBS is zonal, so the PV carries a node affinity requiring us-east-1a. With no node left in that AZ, the scheduler could not place the pod — correctly. The surviving nodes in 1b/1c had ample capacity and were irrelevant.
+
+The deeper cause is architectural: postgres runs replicas: 1 with a single zonal volume. A single AZ event — which AWS explicitly permits at any time — is therefore a total platform outage. This risk was known and logged as BILL-535 during INC-2938 and had not been actioned.
+
+Detection: TargetDown paged at 04:03, 6m after the node was retired.
+
+Resolution: Scaled the us-east-1a node group to 1. The node joined, postgres-0 scheduled, the PVC re-attached, and the data was intact. MTTR 37m.
+
+Prevention:
+1. BILL-801 — postgres replicas:1 with a zonal disk is a single-AZ SPOF. Decide now: CloudNativePG with multi-AZ replicas, or managed RDS Multi-AZ. This is the second incident caused by this design.
+2. BILL-802 — no automated postgres backups existed. Snapshot schedule + a tested restore, this week.
+3. BILL-803 — keep standing capacity in all three AZs so no single AZ has zero nodes.
+4. BILL-804 — alert when any AZ has zero Ready nodes, before it becomes a scheduling failure.`,
+  feedback:'"You did the two things that mattered. First you read the <b>exact</b> scheduler message — <span class="mono">volume node affinity conflict</span>, not <span class="mono">Insufficient cpu</span> — and let it take you to the PV instead of guessing about capacity. Second, and this is the one I care about: <b>at 04:00, with the platform down, you did not delete the PVC.</b> It would have cleared the Pending in seconds and destroyed every byte the company owns. Under that pressure, the discipline to go <i>down</i> a layer rather than reach for the fast button is exactly the difference between a Senior and an outage post-mortem with a resignation attached.<br><br>Next level: this is the <b>second</b> incident from <span class="mono">replicas: 1</span> — INC-2938 raised BILL-535 and it was never picked up. A risk you have written down and not fixed is not a known risk; it is a scheduled outage. And notice where the fix lived: <b>not in Kubernetes at all</b>. The pod could not move to the disk, so the node had to. Knowing which layer owns the problem is most of the job."',
+  tickets:[
+    ['P1','BILL-801','postgres replicas:1 + zonal PVC = single-AZ SPOF — CloudNativePG multi-AZ or managed RDS. SECOND incident.'],
+    ['P1','BILL-802','No postgres backups exist. Snapshot schedule + tested restore — this week.'],
+    ['P2','BILL-803','Maintain standing capacity in all 3 AZs'],
+    ['P3','BILL-804','Alert when any AZ has zero Ready nodes'],
+  ]
+},
+{
+  id:'INC-2996', sev:'warning', alert:'Deployment not progressing', svc:'report-service',
+  title:'New nodes added, and nothing will schedule on them',
+  paged:'10:15 IST', mttr:'16m', skill:'Scheduling · taints · tolerations · affinity',
+  teaches:'Resources are only half of scheduling — taints repel, tolerations permit, affinity attracts',
+  impact:{
+    business:'Nightly report generation cannot scale up. Enterprise report SLA at risk for tomorrow 06:00.',
+    customer:'Scheduled reports will be late. No live impact yet — this is the hour before the outage.',
+    rule:'KubeDeploymentReplicasMismatch · desired != available for 15m · severity: warning'
+  },
+  cmds:{
+    'kubectl get pods -n billfree':{id:'get',out:[
+      ['NAME                                READY   STATUS    RESTARTS   AGE','out'],
+      ['report-service-5d9c8b3f2-w4tnq      1/1     Running   0          4d','out'],
+      ['report-service-5d9c8b3f2-h8xmv      1/1     Running   0          4d','out'],
+      ['report-service-5d9c8b3f2-k3zrp      0/1     Pending   0          12m','hi'],
+      ['report-service-5d9c8b3f2-b7ynf      0/1     Pending   0          12m','hi'],
+      ['','out'],
+      ['💡 HPA scaled to 4. Two are stuck Pending — even though we just added nodes.','hi'],
+    ]},
+    'kubectl get nodes -L workload':{id:'nodes',out:[
+      ['NAME            STATUS   ROLES    AGE   VERSION   WORKLOAD','out'],
+      ['ip-10-0-2-51    Ready    <none>   21d   v1.29.4','out'],
+      ['ip-10-0-3-88    Ready    <none>   21d   v1.29.4','out'],
+      ['ip-10-0-3-91    Ready    <none>   9d    v1.29.4','out'],
+      ['ip-10-0-4-12    Ready    <none>   40m   v1.29.4   batch','hi'],
+      ['ip-10-0-4-19    Ready    <none>   40m   v1.29.4   batch','hi'],
+      ['','out'],
+      ['💡 Two brand-new "batch" nodes, added this morning, sitting empty.','hi'],
+    ]},
+    'kubectl describe pod report-service-5d9c8b3f2-k3zrp -n billfree':{id:'describe',out:[
+      ['Name:         report-service-5d9c8b3f2-k3zrp','out'],
+      ['Status:       Pending','warn'],
+      ['Node:         <none>','out'],
+      ['    Requests:','out'],['      cpu:     50m','out'],['      memory:  96Mi','out'],
+      ['Tolerations:  node.kubernetes.io/not-ready:NoExecute op=Exists for 300s','hi'],
+      ['Events:','out'],
+      ['  Warning  FailedScheduling  12m (x8)  default-scheduler  0/5 nodes are available: 2 node(s) had untolerated taint {workload: batch}, 3 Insufficient memory.','hi'],
+      ['','out'],
+      ['💡 TWO different reasons at once. Read both halves.','hi'],
+      ['💡 3 old nodes: full. 2 new nodes: room, but they repel this pod.','hi'],
+    ]},
+    'kubectl describe node ip-10-0-4-12':{id:'node',out:[
+      ['Name:               ip-10-0-4-12','out'],
+      ['Labels:             workload=batch','hi'],
+      ['                    topology.kubernetes.io/zone=us-east-1c','out'],
+      ['Taints:             workload=batch:NoSchedule','hi'],
+      ['Allocatable:','out'],
+      ['  cpu:                3920m','out'],
+      ['  memory:             7620Mi','out'],
+      ['Non-terminated Pods: (2 in total)   ← only DaemonSets','out'],
+      ['Allocated resources:','out'],
+      ['  cpu     180m (4%)     memory  220Mi (2%)','hi'],
+      ['','out'],
+      ['💡 98% of this node is free. And nothing will go there.','hi'],
+      ['💡 Taint = the node saying "stay away unless you carry a matching pass".','hi'],
+    ]},
+    'kubectl get events -n billfree --sort-by=.lastTimestamp':{id:'events',out:[
+      ['LAST SEEN   TYPE      REASON             OBJECT                          MESSAGE','out'],
+      ['12m         Warning   FailedScheduling   pod/report-service-5d9c8b3f2-k3zrp   untolerated taint {workload: batch}','hi'],
+      ['12m         Normal    SuccessfulCreate   replicaset/report-service-5d9c8b3f2  Created pod','out'],
+      ['','out'],
+      ['💡 Kubernetes is not broken. It is obeying a rule we wrote and forgot.','hi'],
+    ]},
+  },
+  aliases:{
+    'kubectl get pods':'kubectl get pods -n billfree',
+    'kubectl get nodes':'kubectl get nodes -L workload',
+    'kubectl describe pod report-service-5d9c8b3f2-k3zrp':'kubectl describe pod report-service-5d9c8b3f2-k3zrp -n billfree',
+    'kubectl describe node':'kubectl describe node ip-10-0-4-12',
+    'kubectl get events -n billfree':'kubectl get events -n billfree --sort-by=.lastTimestamp',
+  },
+  evidence:'<b class="mono">0/5 nodes available: 2 node(s) had untolerated taint {workload: batch}, 3 Insufficient memory</b> · the 2 batch nodes are <b>98% free</b> · they carry <b class="mono">workload=batch:NoSchedule</b> · the pod has <b>no matching toleration</b>',
+  choices:[
+    {k:'A',t:'The cluster is out of capacity — add more nodes',d:'Everything is full; scale the cluster.',ok:false,
+     why:'We <b>just added</b> two nodes and they are 98% empty. Adding a third changes nothing — new batch nodes would carry the same taint and be rejected identically. The capacity exists; the pod is not allowed to use it.'},
+    {k:'B',t:'The batch nodes carry a NoSchedule taint and the pod has no matching toleration',d:'The nodes are deliberately repelling pods that do not carry the pass.',ok:true},
+    {k:'C',t:'The nodeSelector on report-service points at the wrong label',d:'It is targeting nodes that do not exist.',ok:false,
+     why:'A nodeSelector mismatch reports <b class="mono">node(s) didn\'t match Pod\'s node affinity/selector</b>. Our message is <b class="mono">untolerated taint</b> — a different filter, with a different message. The scheduler tells you exactly which gate closed.'},
+    {k:'D',t:'The PVC cannot bind',d:'A volume problem is blocking scheduling.',ok:false,
+     why:'report-service is stateless and mounts no PVC. A volume problem reads <b class="mono">volume node affinity conflict</b> (see INC-2980) — not a taint message.'},
+  ],
+  correctTitle:'✓ Correct — the nodes are repelling the pod, on purpose',
+  correctBody:'A <b>taint</b> is a node saying: <i>"stay away unless you carry a matching pass."</i> A <b>toleration</b> is that pass on the pod. The batch node group was created with <b class="mono">workload=batch:NoSchedule</b> to reserve it for nightly jobs — a good decision that nobody told report-service about.<br><br>And now the nuance that catches most people: <b>a toleration only PERMITS — it does not ATTRACT.</b> Adding a toleration lets the pod land on batch nodes; it does not make it prefer them. It could just as easily go to a general node. If you want it to actually <i>go</i> there, you need <b class="mono">nodeAffinity</b> / <b class="mono">nodeSelector</b> too.<br><br><b>Taint repels · Toleration permits · Affinity attracts.</b> Three different jobs. You usually need two of them together.',
+  fixNote:'Give report-service both halves: the <b>pass</b> to be allowed on batch nodes, and the <b>pull</b> to actually prefer them.',
+  fixDiff:`deploy/apps/report-service/values.yaml
+
+<span class="add">+tolerations:                    # the PASS — allowed to land there</span>
+<span class="add">+  - key: workload</span>
+<span class="add">+    operator: Equal</span>
+<span class="add">+    value: batch</span>
+<span class="add">+    effect: NoSchedule</span>
+<span class="add">+</span>
+<span class="add">+affinity:                       # the PULL — actually prefer there</span>
+<span class="add">+  nodeAffinity:</span>
+<span class="add">+    preferredDuringSchedulingIgnoredDuringExecution:</span>
+<span class="add">+      - weight: 100</span>
+<span class="add">+        preference:</span>
+<span class="add">+          matchExpressions:</span>
+<span class="add">+            - key: workload</span>
+<span class="add">+              operator: In</span>
+<span class="add">+              values: ["batch"]</span>
+
+<span class="k"># toleration alone = allowed but may still land on a general node</span>
+<span class="k"># preferred (not required) = if batch is full, general still works</span>`,
+  shipLabel:'⬆ Commit &amp; push → Argo CD sync',
+  shipOut:`$ git commit -m "feat(report): tolerate + prefer batch nodes — 2 replicas stuck Pending"
+$ git push
+<span class="add">→ Argo CD  report-service  OutOfSync → Syncing → Synced ✓</span>
+<span class="add">→ report-service-7f4a2d8c1-q6mvx   1/1   Running   0   19s   ip-10-0-4-12</span>
+<span class="add">→ report-service-7f4a2d8c1-t9jbc   1/1   Running   0   17s   ip-10-0-4-19</span>
+<span class="add">→ 4/4 available · HPA satisfied · batch nodes finally earning their bill</span>
+<span class="add">→ alert KubeDeploymentReplicasMismatch  RESOLVED</span>`,
+  shipNote:'preferred, not required — so if the batch nodes are full at 02:00, reports still run on general nodes instead of sitting Pending.',
+  wrongLabel:'✎ Just remove the taint from the batch nodes',
+  wrongTitle:'⚠ It works — and you dismantled the reason the nodes exist',
+  wrongOut:`$ kubectl taint nodes ip-10-0-4-12 ip-10-0-4-19 workload=batch:NoSchedule-
+node/ip-10-0-4-12 untainted
+<span class="add">→ report-service   4/4   Running ✓   (fixed!)</span>
+<span class="del">→ …by 14:00: api-gateway, web, auth pods scheduled onto the batch nodes too</span>
+<span class="del">→ 02:00 nightly batch job: Pending — no room on its own dedicated nodes</span>
+<span class="del">→ the isolation those nodes were bought for: gone</span>
+<span class="del">→ and the taint is not in Git — the next node the ASG creates has it back</span>`,
+  wrongNote:'Two failures in one. <b>You solved your problem by deleting someone else\'s guarantee</b> — the taint was the entire point of a dedicated node group. And you did it with <span class="mono">kubectl</span> on a GitOps cluster: the change is untracked, unreviewed, and the ASG will hand it back on the next node it launches. <b>When a rule blocks you, find out why it exists before you delete it.</b>',
+  rcaModel:`What happened: HPA scaled report-service from 2 to 4 replicas ahead of the nightly report window. Two replicas sat Pending for 12 minutes despite two freshly-added, almost-empty nodes.
+
+Root cause: The new node group was provisioned with the taint workload=batch:NoSchedule to reserve it for nightly batch jobs. report-service carries no matching toleration, so the scheduler correctly refused those nodes; the three general nodes were genuinely out of memory. Two independent reasons appeared in one message: "2 node(s) had untolerated taint {workload: batch}, 3 Insufficient memory".
+
+Nothing was broken. The cluster obeyed a rule we wrote and did not propagate to the workloads that needed it.
+
+Detection: KubeDeploymentReplicasMismatch (desired != available for 15m). Caught in the quiet hour before the 06:00 report SLA, not during it.
+
+Resolution: Added a toleration (permission) plus a preferred nodeAffinity (attraction) to report-service values.yaml; Argo CD synced; both replicas scheduled onto batch nodes. MTTR 16m.
+
+Prevention:
+1. BILL-905 — the taint was added to infra without a corresponding change to any workload. Taint changes must ship with the tolerations they require, in the same PR.
+2. BILL-906 — alert on Pending pods > 5m. Pending is silent; it only becomes visible when it becomes an outage.
+3. BILL-907 — document the node groups and their taints. The batch group's purpose lived in one engineer's memory.`,
+  feedback:'"The detail I want to call out: the scheduler gave you <b>two reasons in one line</b> — <span class="mono">2 node(s) had untolerated taint</span> AND <span class="mono">3 Insufficient memory</span> — and you read both halves. Most people read the first clause, conclude \'out of memory\', and go buy nodes that will be rejected exactly the same way. The pod was not short of capacity; it was short of <b>permission</b>.<br><br>You also got the nuance right in the fix: a <b>toleration only permits, it does not attract</b>. Toleration alone would have let the pod land anywhere, including back on the full general nodes. Adding <span class="mono">preferred</span> affinity pulls it to batch while still allowing a fallback — required affinity would have traded Pending-now for Pending-at-02:00.<br><br>And you did not rip the taint out. That taint was the entire reason the node group exists. Deleting the rule that blocks you is the fastest fix and the most expensive one — it works today and quietly breaks whatever the rule was protecting."',
+  tickets:[
+    ['P1','BILL-905','Taint changes must ship with required tolerations in the same PR'],
+    ['P2','BILL-906','Alert on pods Pending > 5m — Pending is silent until it is an outage'],
+    ['P3','BILL-907','Document node groups, their taints, and their purpose'],
+  ]
+},
   ]
 };
