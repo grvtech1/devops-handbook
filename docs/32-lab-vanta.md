@@ -2,11 +2,16 @@
 
 > **Kya banega:** Ek **12-service microservices store** (Google Online Boutique base) — local kind se lekar self-managed AWS cluster + Ansible + chaos engineering tak. Ye lab tumhare **apne repo** (`VANTA-Boutique`) pe chalta hai.
 >
-> **⏱️ Time:** ~3 ghante · **🎚️ Level:** Intermediate → Senior · **📋 Pehle:** [Lab A · BillFree](31-lab-billfree.md) · [Terraform](02-M1-terraform.md) · [Ansible](03-M2-ansible.md)
+> **⏱️ Time:** ~3h guided + 40min **Solo Run** · **🎚️ Level:** Intermediate → Senior · **📋 Pehle:** [Lab A · BillFree](31-lab-billfree.md) · [Terraform](02-M1-terraform.md) · [Ansible](03-M2-ansible.md)
 
 !!! tip "Lab A vs Lab B — kyun dono?"
     **Lab A (BillFree)** = ek reusable Helm chart, 7 same-shape services, managed-style GitOps.
     **Lab B (VANTA)** = 12 **alag-alag language** services (Go, C#, Python, Java, Node), **Kustomize** overlays, **self-managed** kubeadm cluster (Ansible se), aur **chaos engineering**. Dono milke poora spectrum cover karte.
+
+!!! danger "🚗 DRIVER MODE — Lab A wale hi rules"
+    **Round 1 (guided):** Parts 1–7 commands ke saath — samajhne ke liye. Har command se pehle 5 second: *"ye kya karegi?"*
+    **Round 2 (SOLO):** [Solo Run](#solo-run-graduation) — commands nahi, sirf goals. **Round 2 hi asli lab hai.**
+    Jo command Lab A mein chala chuke ho (`kubectl get/describe/logs`, `helm`, `git`…) — **yahan bina dekhe** likho. Har boss/chaos ke baad 3-line RCA (symptom → cause → fix).
 
 ---
 
@@ -320,6 +325,45 @@ kind delete cluster --name boutique
 # AWS: terraform destroy (bill band karo!)
 cd terraform && terraform destroy
 ```
+
+---
+
+## SOLO RUN (graduation) 🎓
+
+!!! danger "Commands nahi milenge. Fresh cluster, sirf goals — yehi confidence ka test hai."
+    `kind delete cluster --name boutique` se shuru. **Bolte hue karo** (ya record) — "ab main X kyunki Y." Target: **≤ 40 min, max 2 jhaank** (upar dekhna = jhaank, count karo).
+
+- [ ] **S1.** kind cluster **VANTA ke config se** banao (port mapping wala) — bolo mapping kya karti hai
+- [ ] **S2.** **dev overlay** deploy karo; saare pods Ready; store **browser mein** kholo
+- [ ] **S3.** frontend pod se cartservice ko **DNS naam se** call karke prove karo service discovery chalti hai
+- [ ] **S4.** frontend ko **source se** build karo (`:dev2` tag), cluster mein **bina registry ke** daalo, deployment pe chadhao, rollout complete dikhao
+- [ ] **S5.** **Break:** frontend Service ka selector bigado → store tootna chahiye → endpoints se **prove** karo kyun → fix ([sim ka INC-2915](platform/) yaad hai?)
+- [ ] **S6.** **Chaos:** ek pod maaro (self-heal dikhna), phir frontend ka memory limit itna girao ki **OOMKilled 137** aaye → `Reason:` field padho → theek karo
+- [ ] **S7.** staging vs prod overlay ka **render diff** nikaalo — bolo prod mein kya alag hai aur kyun
+- [ ] **S8.** Cleanup — cluster delete
+
+**Definition of Done:** 8/8 ✓, ≤2 jhaank, aur ye 3 **bina dekhe** bolo:
+1. Kustomize overlay ne base ko *kaise* badla bina base chhue?
+2. `kind load` registry ki jagah kya karta hai?
+3. Exit 137 dono baar aa sakta hai — OOM *aur* probe-kill. Farak kis field se pata chala?
+
+> Dono Solo Runs (A + B) pass? **Ab tumhare paas "maine kiya hai" wali kahaniyan hain, "maine padha hai" wali nahi.** [Interview Bank](14-interview-bank.md) kholo aur inhi runs ko STAR stories mein likho.
+
+---
+
+## Extension Track — jab core ho jaye (M11–M18) 🗺️
+
+!!! note "Honest scope: ye resume-candy pehle NAHI. Core (dono labs + Solo Runs) pehle — phir ye, ek-ek karke."
+    | Kya | Kyun / kab | Kahan se shuru |
+    |---|---|---|
+    | **Service mesh (Istio)** | Pod-to-pod mTLS, traffic-split, retries — jab services 10+ aur security/canary chahiye | Repo mein **`istio-manifests/` already hai** — wahi kholo · [ch15 M12](15-roadmap-M11-M18.md) |
+    | **Kafka / RabbitMQ** | Sync HTTP → async events (order-placed → email/analytics) — jab coupling dard de | [ch15 M13](15-roadmap-M11-M18.md) |
+    | **Argo Rollouts** | Canary/blue-green **automated analysis ke saath** — jab har deploy pe dil dhadakta ho | [ch20 deployment strategies](20-confusions-and-tradeoffs.md) → Rollouts |
+    | **Karpenter / Cluster Autoscaler** | Nodes ka auto-scale — jab Pending pods roz ka dard ho | [ch15 M17](15-roadmap-M11-M18.md) |
+    | **OpenTelemetry + Jaeger/Tempo** | Distributed tracing — "kaunsi service slow hai" ka exact jawab | [ch10 traces section](10-M8-observability-sre.md) |
+    | **Backstage (IDP)** | Developer portal + golden paths — jab teams 3+ aur "kaise deploy karun" roz puchha jaye | [ch15 M18](15-roadmap-M11-M18.md) |
+    | **Crossplane** | Infra bhi K8s CRDs se (Terraform ka GitOps cousin) | [ch15 M17](15-roadmap-M11-M18.md) |
+    | **Falco / OPA** | Runtime security + admission policies (Kyverno ka bada bhai) | [ch15 M16](15-roadmap-M11-M18.md) |
 
 ---
 
