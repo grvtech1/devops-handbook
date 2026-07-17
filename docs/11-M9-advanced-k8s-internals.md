@@ -903,11 +903,21 @@ lifecycle:
       command: ["sleep", "5"]   # wait for slice propagation before SIGTERM
 
 Then:
-  t=0   preStop hook starts (sleep 5)
+  t=0   preStop hook starts (sleep 5)          ← grace clock ALSO starts at t=0
   t=5   SIGTERM sent (slice already removed → no new traffic)
   t=5   App drains in-flight requests
-  t=30  terminationGracePeriodSeconds → SIGKILL if still alive
+  t=30  terminationGracePeriodSeconds expires (counted from t=0) → SIGKILL
 ```
+
+!!! warning "The grace clock starts at pod deletion, not at SIGTERM"
+    `terminationGracePeriodSeconds` is measured from **t=0** (pod deletion) — the preStop hook runs *inside* it, not before it. So:
+
+    ```
+    actual drain window = terminationGracePeriodSeconds − preStop duration
+                        = 30 − 5 = 25s   (not 30s)
+    ```
+
+    If your app needs 30s to drain and you add a 5s preStop with the default 30s grace, it gets SIGKILLed with 5s of work left — connections reset, and it looks exactly like the bug you were trying to fix. **Rule:** `terminationGracePeriodSeconds > preStop + worst-case drain time`, with headroom.
 
 ```bash
 # Check if graceful shutdown is configured:

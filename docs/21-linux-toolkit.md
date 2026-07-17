@@ -169,7 +169,7 @@ A **process** is any running program. Every container, every service, every scri
 
 | Signal | Number | Meaning |
 |--------|--------|---------|
-| SIGHUP | 1 | Reload config — most daemons restart cleanly on `kill -1` |
+| SIGHUP | 1 | Reload config — most daemons re-read their config on `kill -1` **without restarting** (nginx keeps the master PID, spawns new workers, drains old ones) |
 | SIGTERM | 15 | Polite shutdown — app can flush data, close connections, then exit |
 | SIGKILL | 9 | Forced kill by the kernel — no cleanup, no ceremony |
 

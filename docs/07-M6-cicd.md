@@ -67,7 +67,9 @@ These three terms are often collapsed into "CI/CD" but mean distinct things. Kno
 
 **The key difference between Delivery and Deployment:** Delivery says "the artifact is always ready to go to production." Deployment says "the artifact goes to production automatically without a human gate." Most regulated or high-stakes environments use Delivery (human approval before prod); most SaaS companies with strong test suites use Deployment.
 
-In this module, the capstone project implements Continuous Delivery: GitHub Actions builds and pushes the image, updates the manifest in Git, and Argo CD syncs it — but you could add a manual approval step before the GitOps sync if needed.
+In this module, the capstone project implements **Continuous Deployment**: GitHub Actions builds and pushes the image, updates the manifest in Git, and Argo CD auto-syncs it to the cluster — **no human gate anywhere in that chain**. By the table above, that is Deployment, not Delivery.
+
+To turn it into Continuous **Delivery**, you add the gate back: set the Argo CD Application's `syncPolicy` to manual (drop `automated`) so a human clicks Sync, or require a PR approval on the config repo before the image tag can merge. The pipeline is identical up to that point — *the only thing that separates Delivery from Deployment is whether a human must say yes before production.*
 
 ---
 

@@ -598,7 +598,7 @@ CI mein daalo (fail on CRITICAL) — [ch7 CI/CD](07-M6-cicd.md) ka part.
 8. HPA vs VPA? *(out/count vs up/size)*
 
 **Cluster Ops:**
-9. RBAC ke 4 pieces? *(Role/ClusterRole/RoleBinding/ServiceAccount)*
+9. RBAC ke 4 pieces? *(Role/ClusterRole/RoleBinding/**ClusterRoleBinding** — ServiceAccount alag hai: wo **identity** hai jise bind karte ho, RBAC object nahi)*
 10. CRD vs Operator? *(naya kind vs use chalane wala pod)*
 11. Upgrade order? *(control-plane → nodes, ek minor at a time)*
 

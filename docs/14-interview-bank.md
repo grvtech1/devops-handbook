@@ -203,9 +203,21 @@ Checking an external dependency (like the database) in the liveness probe. If th
 
 **Q: What are QoS classes and who dies first when a node runs out of RAM? `[Mid/Sr]`**
 
-K8s assigns a QoS class based on requests/limits: **Guaranteed** (requests == limits for both CPU and RAM), **Burstable** (requests < limits, or only some set), **BestEffort** (nothing set). Under memory pressure, the OOM killer evicts BestEffort first, then Burstable, then Guaranteed last. Critical workloads should be Guaranteed — set `requests.memory == limits.memory`. (→ 06-M5-sizing-and-cost.md)
+K8s assigns a QoS class based on requests/limits: **Guaranteed** (requests == limits for both CPU and RAM), **Burstable** (requests < limits, or only some set), **BestEffort** (nothing set). When the **node** runs low on memory, the **kubelet evicts** pods in QoS order: BestEffort first, then Burstable, then Guaranteed last. Critical workloads should be Guaranteed — set `requests.memory == limits.memory`. (→ 06-M5-sizing-and-cost.md)
 
 > ❌ Don't say: "The pod using the most RAM dies first." QoS class is the primary factor.
+
+**Say "kubelet evicts", not "the OOM killer evicts"** — these are two different mechanisms and interviewers probe the difference:
+
+| | **Kubelet eviction** | **OOM kill** |
+|---|---|---|
+| Trigger | **Node**-level memory pressure | **This container** exceeded `limits.memory` |
+| Who acts | kubelet (eviction manager) | Linux kernel OOM killer |
+| How | Graceful — SIGTERM, respects QoS order | Immediate SIGKILL, no grace |
+| Picks victim by | **QoS class** | `oom_score_adj` (QoS influences it) |
+| Pod status | `Evicted` — may reschedule elsewhere | `OOMKilled`, exit 137 — restarted in place |
+
+QoS ordering is the answer to *"node is out of RAM, who goes first?"* It is **not** the answer to *"why did my container get OOMKilled?"* — that one is simply "it breached its own limit," and a Guaranteed pod gets OOMKilled just as readily as a BestEffort one if it exceeds what it asked for.
 
 **Q: HPA — what does it need to work, and why is scale-down slow? `[Mid]`**
 
@@ -374,7 +386,9 @@ Tried to log in to ECR directly on the Kubernetes master EC2 node. Got "aws: com
 
 **G2 — t3.micro billing surprise** `[Terraform/Cost]`
 
-Stood up a kubeadm cluster on t3.micro thinking it was free-tier. Got a billing alert — kubeadm requires minimum 2 vCPU, and t3.micro (1 vCPU, 1 GB) is free-tier but inadequate. Switched to k3s (lightweight single-binary K8s) on t3.micro with a 2 GB swapfile. **Lesson:** Always check free-tier eligibility before `terraform apply`. For labs, k3s on t3.micro; kubeadm needs t3.medium or larger.
+Stood up a kubeadm cluster on t3.micro thinking it was free-tier. Got a billing alert — and the cluster was unusable anyway. t3.micro is **2 vCPU / 1 GiB**, so it clears kubeadm's 2-vCPU preflight check but fails on **memory**: 1 GiB cannot hold the control plane (apiserver + etcd + scheduler + controller-manager) with room to spare, and kubeadm refuses to run with swap enabled. On top of that, T-family instances are **burstable** — sustained control-plane load drains the CPU credit balance and the box throttles to its baseline, which is where the surprise bill (unlimited-mode credits) came from. Switched to k3s (lightweight single-binary K8s) on t3.micro. **Lesson:** check both free-tier eligibility *and* the real resource floor before `terraform apply`. For labs, k3s on t3.micro; kubeadm needs t3.medium (2 vCPU / 4 GiB) or larger.
+
+> ⚠️ **Do not say "t3.micro has 1 vCPU."** The entire T3 family has 2 vCPU — t3.micro's limit is RAM (1 GiB) and CPU *credits*, not core count. Getting this wrong in an AWS sizing question is an instant correction.
 
 ---
 

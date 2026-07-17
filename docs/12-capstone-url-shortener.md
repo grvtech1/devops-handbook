@@ -790,7 +790,7 @@ aws dynamodb delete-table --table-name tf-lock --region ap-south-1
 
 | Landmine | Why dangerous | Safe habit |
 |----------|--------------|------------|
-| Leaving infra running | ~$73/month idle cost | `terraform destroy` every session |
+| Leaving infra running | ~$105–115/month idle cost (see the cost table above — this cluster is self-managed, so there is **no** $73 EKS control-plane fee; the cost is the EC2 nodes + RDS) | `terraform destroy` every session |
 | `image: latest` in deployment | Cannot tell which version is running; rollback is ambiguous | Always use `git-sha` tag |
 | `kubectl edit` or `kubectl scale` by hand | Argo selfHeal reverts it within 30s; creates confusion | Change Git → let Argo apply |
 | Secret in `.gitignore` not applied | Secret committed, pushed, now in git history forever | Rotate immediately; `git filter-repo` to remove |

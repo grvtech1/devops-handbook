@@ -150,7 +150,26 @@ resources:
 🇮🇳 **Hinglish intuition:**
 - `requests` = reserved seat on the bus. Scheduler ne teri seat book kar di — chahe tu soya ho, jagah teri hai.
 - `limits` = kamre ki deewar. CPU deewar todne ki koshish kare → warden slow karta (throttle, zinda rahega). RAM deewar tode → nikaal bahar (OOMKilled, exit 137, restart).
-- **Reflex:** `OOMKilled` / exit `137` dikhee → RAM limit badhao ya R-family lo. CPU throttle → CPU limit ya C-family.
+- **Reflex:** `Reason: OOMKilled` **+** exit `137` dikhe → RAM limit badhao ya R-family lo. CPU throttle → CPU limit ya C-family.
+
+!!! danger "⚠️ exit 137 ke **DO** baap hain — sirf exit code se diagnose mat karna"
+    `137` = `128 + 9` = process ko **SIGKILL** mila. Par SIGKILL bhejne wale **do** hain:
+
+    | Kisne maara | `kubectl describe pod` mein `Reason:` | Asli wajah | Fix |
+    |---|---|---|---|
+    | **Kernel** ka OOM killer | `OOMKilled` | Container ne apna `limits.memory` toda | RAM limit badhao |
+    | **kubelet** | `Error` | **Liveness probe** fail hui (ya node eviction / `--grace-period=0` delete) | Probe relax karo — RAM ko haath mat lagao |
+
+    **Isliye:** ye padhna sahi hai → *"RAM limit toota → OOMKilled → 137"*. Par ulta padhna **galat** hai → *"137 dikha → RAM limit badhao"*.
+
+    **Hamesha `Reason:` field pehle padho:**
+    ```bash
+    kubectl describe pod <name> | grep -A3 "Last State"
+    #   Reason: OOMKilled  → memory ka masla   (ye chapter)
+    #   Reason: Error      → probe/kubelet ka  (→ 11-M9 §probes)
+    ```
+
+    Memory 23% pe ho aur tum limit badhate raho — ye sabse common galat diagnosis hai. `kubectl top pod` se confirm karo ki memory sach mein limit ke paas thi.
 
 ### Failure Mode Diagram
 
@@ -202,8 +221,9 @@ flowchart TD
     ```
 
 **The reflex (memorize this):**
-- `exit 137` = OOMKilled = RAM limit too low → raise `memory.limits` or switch to R-family.
-- `CrashLoopBackOff` with 137 in `kubectl describe pod` → same diagnosis.
+- `exit 137` **+ `Reason: OOMKilled`** = RAM limit too low → raise `memory.limits` or switch to R-family.
+- `exit 137` **+ `Reason: Error`** = *not* memory — the kubelet killed it (usually a failed liveness probe). Relax the probe; raising RAM changes nothing. (→ [11-M9 §probes](11-M9-advanced-k8s-internals.md))
+- `CrashLoopBackOff` with 137 → read `Reason:` first, *then* pick which of the two above applies.
 - Silent slow API = CPU throttle → raise `cpu.limits` or switch to C-family.
 
 ---
@@ -541,7 +561,8 @@ kubectl describe vpa <vpa-name> -n <namespace>
 
 | Signal | Diagnosis | First action |
 |--------|-----------|-------------|
-| Exit `137` / `OOMKilled` | RAM limit too low | Raise `memory.limits`; check `kubectl top pod` |
+| Exit `137` **+ `Reason: OOMKilled`** | RAM limit too low | Raise `memory.limits`; check `kubectl top pod` |
+| Exit `137` **+ `Reason: Error`** | kubelet killed it — liveness probe failed | Relax the probe, **not** the RAM (→ 11-M9 §probes) |
 | Silent slow API, no errors | CPU throttle (or T-credit exhaustion) | Raise `cpu.limits`; check CloudWatch CPUCreditBalance |
 | Pod `Pending`, nodes have free RAM | Fragmentation or IP exhaustion | `kubectl describe pod` → Events |
 | Bill shock | Over-provisioned, no autoscaling | `kubectl top`, Graviton, Spot for batch, Savings Plan |
@@ -576,7 +597,7 @@ Step 8  REVIEW    → monthly; usage changes, infra should follow
 **Golden rules (distilled):**
 1. Family first, size second. Wrong family = no tuning saves you.
 2. Set requests AND limits on every pod, always.
-3. `OOMKilled / 137` → RAM limit. CPU throttle → CPU limit. `Pending` → `kubectl describe pod`.
+3. `137` → **`Reason:` padho**: `OOMKilled` = RAM limit; `Error` = probe/kubelet kill. CPU throttle → CPU limit. `Pending` → `kubectl describe pod`.
 4. T-series = dev only. Steady prod → M/C/R.
 5. Primary prod DB never in a K8s pod. RDS + Multi-AZ.
 6. Spot = stateless only. Reserved = proven steady baseline.
@@ -598,7 +619,7 @@ Pehle memory se jawab do, phir neeche kholo.
 
 <details markdown="1"><summary>Jawab dekho</summary>
 
-1. Exit 137 = OOMKilled = RAM limit breached. First: `kubectl describe pod <name>` — confirm OOMKilled in State and exit code 137. Second: `kubectl top pod <name>` — see actual memory usage vs limit. Then raise `memory.limits` (and requests proportionally).
+1. **Trick question — 137 alone is not a diagnosis.** 137 = SIGKILL, and it has two sources. First: `kubectl describe pod <name>` and read the **`Reason:`** field. If `Reason: OOMKilled` → RAM limit breached; confirm with `kubectl top pod <name>` (usage should be at/near the limit), then raise `memory.limits` and requests proportionally. If `Reason: Error` **with liveness-probe failure events** → the kubelet killed a healthy container; the fix is relaxing the probe (timeout/failureThreshold/initialDelay), and raising RAM would change nothing. Never act on the exit code alone.
 2. 12% CPU / 15% RAM = severely over-provisioned — paying for idle capacity. Risk: if T-series, CPU credits quietly drain under any burst. Right-size down to a smaller instance or fewer nodes; enable CA scale-down.
 3. `requests` = reserved seat — the scheduler uses this to decide pod placement (node must have at least this much free). `limits` = hard ceiling — exceed CPU → throttle (alive, slow); exceed RAM → OOMKilled (exit 137). Missing requests = scheduler flies blind; missing limits = one noisy pod can starve the whole node.
 4. Fragmentation: total free is 6 CPU / 12 GB but scattered across nodes (e.g., 1.5 CPU / 3 GB each). No single node has 4 CPU + 10 GB contiguous. Diagnose: `kubectl describe pod <name>` → Events: "Insufficient cpu/memory" on every node.
@@ -716,7 +737,12 @@ kubectl delete pod too-big
 
 **Q1: A pod keeps restarting with exit code 137. Walk me through your full diagnosis.**
 
-Expected: Exit 137 = OOMKilled = RAM limit exceeded. Steps: `kubectl describe pod <name>` → confirm OOMKilled in State and 137 in Exit Code → `kubectl top pod <name>` to see current memory use → compare to limit → raise `memory.limits` (and `memory.requests` proportionally) → if this is structural (app always grows), switch to R-family instance and use VPA recommendations.
+Expected: **do not equate 137 with OOM.** 137 = SIGKILL from either the kernel's OOM killer or the kubelet. Steps: `kubectl describe pod <name>` → read **`Reason:`** — `OOMKilled` or `Error`?
+
+- **`Reason: OOMKilled`** → RAM limit exceeded. `kubectl top pod <name>` → compare use vs limit → raise `memory.limits` (and `memory.requests` proportionally) → if structural (app always grows), switch to R-family and use VPA recommendations. Then ask *why* memory grew — a limit bump is a bandage, not a cure.
+- **`Reason: Error`** + `Liveness probe failed` events → the kubelet killed a healthy container. `kubectl top pod` will show memory nowhere near the limit. Fix the probe (raise `timeoutSeconds`/`failureThreshold`, add `initialDelaySeconds`), not the RAM.
+
+> 💡 Saying "137 means OOMKilled, raise the limit" is the answer an interviewer is fishing for — because the follow-up is *"the memory graph is flat at 20%, now what?"*. Leading with **"I'd read the Reason field"** shows you diagnose instead of pattern-match.
 
 **Q2: When is Spot safe and when is it dangerous in Kubernetes?**
 

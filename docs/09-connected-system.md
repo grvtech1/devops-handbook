@@ -155,7 +155,7 @@ The leap: Terraform/Ansible reconcile *when you ask*; Kubernetes/Argo reconcile 
 
 - `tfstate` → S3 (not your laptop) → any machine can run Terraform.
 - App is stateless → pod dies → identical replacement, no data lost.
-- DB is stateful → lives in **RDS outside the cluster**, backed up, never a casual pod.
+- DB is stateful → **usually** lives in **RDS outside the cluster**, backed up — never a *casual* pod (i.e. never a bare Deployment with an `emptyDir`). Running it **in**-cluster is legitimate, but only deliberately: a StatefulSet with `volumeClaimTemplates`, tested backups, and someone owning failover. See the explicit trade-off in [28 — Helm in the real world](28-helm-real-projects.md), where billfree runs a self-managed Postgres StatefulSet on purpose. Managed = less control, far less operational burden; self-managed = full control, and the pager is yours.
 - Because compute is disposable, you can run it on **Spot instances** (M5) and save 70%.
 
 > 🇮🇳 **Hinglish intuition:** *State bahar nikaalo → server/pod disposable ban jaata hai.* Yehi cattle-not-pets ka asli mechanism hai.
