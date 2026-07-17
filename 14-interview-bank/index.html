@@ -2689,10 +2689,48 @@ Network → Auth → App → Config. Or for K8s: outside-in — NodePort → Ser
 <p><strong>Q: Pod Running but zero traffic. Debug it. <code>[Mid]</code></strong></p>
 <p><code>kubectl get endpointslices</code> — is the pod's IP listed? If not: (a) check readiness probe — <code>kubectl describe pod</code> → probe failure events; (b) check label/selector mismatch — <code>kubectl describe svc</code> selector vs <code>kubectl get pod --show-labels</code>. The service never routes directly; it routes via the EndpointSlice which only lists READY pods. Fix the readiness probe or the labels and the IP appears automatically.</p>
 <p><strong>Q: What are QoS classes and who dies first when a node runs out of RAM? <code>[Mid/Sr]</code></strong></p>
-<p>K8s assigns a QoS class based on requests/limits: <strong>Guaranteed</strong> (requests == limits for both CPU and RAM), <strong>Burstable</strong> (requests &lt; limits, or only some set), <strong>BestEffort</strong> (nothing set). Under memory pressure, the OOM killer evicts BestEffort first, then Burstable, then Guaranteed last. Critical workloads should be Guaranteed — set <code>requests.memory == limits.memory</code>. (→ 06-M5-sizing-and-cost.md)</p>
+<p>K8s assigns a QoS class based on requests/limits: <strong>Guaranteed</strong> (requests == limits for both CPU and RAM), <strong>Burstable</strong> (requests &lt; limits, or only some set), <strong>BestEffort</strong> (nothing set). When the <strong>node</strong> runs low on memory, the <strong>kubelet evicts</strong> pods in QoS order: BestEffort first, then Burstable, then Guaranteed last. Critical workloads should be Guaranteed — set <code>requests.memory == limits.memory</code>. (→ 06-M5-sizing-and-cost.md)</p>
 <blockquote>
 <p>❌ Don't say: "The pod using the most RAM dies first." QoS class is the primary factor.</p>
 </blockquote>
+<p><strong>Say "kubelet evicts", not "the OOM killer evicts"</strong> — these are two different mechanisms and interviewers probe the difference:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Kubelet eviction</strong></th>
+<th><strong>OOM kill</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Trigger</td>
+<td><strong>Node</strong>-level memory pressure</td>
+<td><strong>This container</strong> exceeded <code>limits.memory</code></td>
+</tr>
+<tr>
+<td>Who acts</td>
+<td>kubelet (eviction manager)</td>
+<td>Linux kernel OOM killer</td>
+</tr>
+<tr>
+<td>How</td>
+<td>Graceful — SIGTERM, respects QoS order</td>
+<td>Immediate SIGKILL, no grace</td>
+</tr>
+<tr>
+<td>Picks victim by</td>
+<td><strong>QoS class</strong></td>
+<td><code>oom_score_adj</code> (QoS influences it)</td>
+</tr>
+<tr>
+<td>Pod status</td>
+<td><code>Evicted</code> — may reschedule elsewhere</td>
+<td><code>OOMKilled</code>, exit 137 — restarted in place</td>
+</tr>
+</tbody>
+</table>
+<p>QoS ordering is the answer to <em>"node is out of RAM, who goes first?"</em> It is <strong>not</strong> the answer to <em>"why did my container get OOMKilled?"</em> — that one is simply "it breached its own limit," and a Guaranteed pod gets OOMKilled just as readily as a BestEffort one if it exceeds what it asked for.</p>
 <p><strong>Q: HPA — what does it need to work, and why is scale-down slow? <code>[Mid]</code></strong></p>
 <p>HPA needs <code>metrics-server</code> installed (provides CPU/RAM metrics) and pod <code>requests</code> set (the % calculation has no baseline without them). Formula: <code>desiredReplicas = ceil(currentReplicas × currentMetric/targetMetric)</code>. Scale-up is fast because under-provisioning immediately hurts users. Scale-down uses a stabilization window (default 5 minutes) to prevent flapping — if load spikes briefly and you scale down immediately, you'd need to scale up again seconds later. <code>[Mid]</code></p>
 <blockquote>
@@ -2870,7 +2908,10 @@ Network → Auth → App → Config. Or for K8s: outside-in — NodePort → Ser
 <p>Tried to log in to ECR directly on the Kubernetes master EC2 node. Got "aws: command not found." The AWS CLI isn't installed on EC2 instances by default — I'd assumed it was. Generated the ECR token on my laptop (<code>aws ecr get-login-password</code>), piped it to <code>docker login</code>, copied the resulting auth into a Kubernetes pull-secret, and applied it to the cluster. <strong>Lesson:</strong> Nodes don't need the AWS CLI — use IAM instance profiles or Kubernetes pull-secrets. ECR tokens expire in 12 hours; automate rotation.</p>
 <hr />
 <p><strong>G2 — t3.micro billing surprise</strong> <code>[Terraform/Cost]</code></p>
-<p>Stood up a kubeadm cluster on t3.micro thinking it was free-tier. Got a billing alert — kubeadm requires minimum 2 vCPU, and t3.micro (1 vCPU, 1 GB) is free-tier but inadequate. Switched to k3s (lightweight single-binary K8s) on t3.micro with a 2 GB swapfile. <strong>Lesson:</strong> Always check free-tier eligibility before <code>terraform apply</code>. For labs, k3s on t3.micro; kubeadm needs t3.medium or larger.</p>
+<p>Stood up a kubeadm cluster on t3.micro thinking it was free-tier. Got a billing alert — and the cluster was unusable anyway. t3.micro is <strong>2 vCPU / 1 GiB</strong>, so it clears kubeadm's 2-vCPU preflight check but fails on <strong>memory</strong>: 1 GiB cannot hold the control plane (apiserver + etcd + scheduler + controller-manager) with room to spare, and kubeadm refuses to run with swap enabled. On top of that, T-family instances are <strong>burstable</strong> — sustained control-plane load drains the CPU credit balance and the box throttles to its baseline, which is where the surprise bill (unlimited-mode credits) came from. Switched to k3s (lightweight single-binary K8s) on t3.micro. <strong>Lesson:</strong> check both free-tier eligibility <em>and</em> the real resource floor before <code>terraform apply</code>. For labs, k3s on t3.micro; kubeadm needs t3.medium (2 vCPU / 4 GiB) or larger.</p>
+<blockquote>
+<p>⚠️ <strong>Do not say "t3.micro has 1 vCPU."</strong> The entire T3 family has 2 vCPU — t3.micro's limit is RAM (1 GiB) and CPU <em>credits</em>, not core count. Getting this wrong in an AWS sizing question is an instant correction.</p>
+</blockquote>
 <hr />
 <p><strong>G3 — RDS password rejected by AWS</strong> <code>[Terraform/RDS]</code></p>
 <p><code>terraform apply</code> failed with <code>InvalidParameterValue: MasterUserPassword</code>. I'd included a <code>@</code> in the password string. AWS RDS forbids <code>/</code>, <code>@</code>, <code>"</code>, and spaces in master passwords. Changed to alphanumeric only. <strong>Lesson:</strong> Validate all external API constraints at the boundary — IaC provisioning time. In production, use Secrets Manager with auto-rotation so plaintext never appears in <code>tfvars</code>.</p>

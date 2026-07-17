@@ -2832,7 +2832,7 @@
 <ul>
 <li><code>tfstate</code> → S3 (not your laptop) → any machine can run Terraform.</li>
 <li>App is stateless → pod dies → identical replacement, no data lost.</li>
-<li>DB is stateful → lives in <strong>RDS outside the cluster</strong>, backed up, never a casual pod.</li>
+<li>DB is stateful → <strong>usually</strong> lives in <strong>RDS outside the cluster</strong>, backed up — never a <em>casual</em> pod (i.e. never a bare Deployment with an <code>emptyDir</code>). Running it <strong>in</strong>-cluster is legitimate, but only deliberately: a StatefulSet with <code>volumeClaimTemplates</code>, tested backups, and someone owning failover. See the explicit trade-off in <a href="../28-helm-real-projects/">28 — Helm in the real world</a>, where billfree runs a self-managed Postgres StatefulSet on purpose. Managed = less control, far less operational burden; self-managed = full control, and the pager is yours.</li>
 <li>Because compute is disposable, you can run it on <strong>Spot instances</strong> (M5) and save 70%.</li>
 </ul>
 <blockquote>

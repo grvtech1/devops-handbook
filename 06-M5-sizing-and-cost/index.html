@@ -3222,7 +3222,42 @@
 <p>🇮🇳 <strong>Hinglish intuition:</strong>
 - <code>requests</code> = reserved seat on the bus. Scheduler ne teri seat book kar di — chahe tu soya ho, jagah teri hai.
 - <code>limits</code> = kamre ki deewar. CPU deewar todne ki koshish kare → warden slow karta (throttle, zinda rahega). RAM deewar tode → nikaal bahar (OOMKilled, exit 137, restart).
-- <strong>Reflex:</strong> <code>OOMKilled</code> / exit <code>137</code> dikhee → RAM limit badhao ya R-family lo. CPU throttle → CPU limit ya C-family.</p>
+- <strong>Reflex:</strong> <code>Reason: OOMKilled</code> <strong>+</strong> exit <code>137</code> dikhe → RAM limit badhao ya R-family lo. CPU throttle → CPU limit ya C-family.</p>
+<div class="admonition danger">
+<p class="admonition-title">⚠️ exit 137 ke <strong>DO</strong> baap hain — sirf exit code se diagnose mat karna</p>
+<p><code>137</code> = <code>128 + 9</code> = process ko <strong>SIGKILL</strong> mila. Par SIGKILL bhejne wale <strong>do</strong> hain:</p>
+<table>
+<thead>
+<tr>
+<th>Kisne maara</th>
+<th><code>kubectl describe pod</code> mein <code>Reason:</code></th>
+<th>Asli wajah</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Kernel</strong> ka OOM killer</td>
+<td><code>OOMKilled</code></td>
+<td>Container ne apna <code>limits.memory</code> toda</td>
+<td>RAM limit badhao</td>
+</tr>
+<tr>
+<td><strong>kubelet</strong></td>
+<td><code>Error</code></td>
+<td><strong>Liveness probe</strong> fail hui (ya node eviction / <code>--grace-period=0</code> delete)</td>
+<td>Probe relax karo — RAM ko haath mat lagao</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Isliye:</strong> ye padhna sahi hai → <em>"RAM limit toota → OOMKilled → 137"</em>. Par ulta padhna <strong>galat</strong> hai → <em>"137 dikha → RAM limit badhao"</em>.</p>
+<p><strong>Hamesha <code>Reason:</code> field pehle padho:</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>&lt;name&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A3<span class="w"> </span><span class="s2">&quot;Last State&quot;</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1">#   Reason: OOMKilled  → memory ka masla   (ye chapter)</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="c1">#   Reason: Error      → probe/kubelet ka  (→ 11-M9 §probes)</span>
+</span></code></pre></div></p>
+<p>Memory 23% pe ho aur tum limit badhate raho — ye sabse common galat diagnosis hai. <code>kubectl top pod</code> se confirm karo ki memory sach mein limit ke paas thi.</p>
+</div>
 <h3 id="failure-mode-diagram">Failure Mode Diagram<a class="headerlink" href="#failure-mode-diagram" title="Permanent link">&para;</a></h3>
 <pre class="mermaid"><code>flowchart TD
     POD["Pod declares&lt;br/&gt;requests + limits"]:::run
@@ -3250,59 +3285,60 @@
 <p><em><code>requests</code> = guaranteed seat the scheduler uses for placement; <code>limits</code> = hard ceiling — CPU throttles (alive), RAM kills (exit 137).</em></p>
 <details class="note">
 <summary>Text version (ASCII)</summary>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>CPU usage vs limit:
-</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>──────────────────────────────────────────
-</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>  Request  Limit
-</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>  [===|=====|──────────────────────]
-</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a>       ↑       ↑
-</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a>  guaranteed  ceiling
-</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>               │
-</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>               └─ Cross → THROTTLE (slow, alive 🐢)
-</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
-</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>RAM usage vs limit:
-</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>──────────────────────────────────────────
-</span><span id="__span-3-12"><a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>  Request  Limit
-</span><span id="__span-3-13"><a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>  [===|=====|──────────────────────]
-</span><span id="__span-3-14"><a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>               │
-</span><span id="__span-3-15"><a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>               └─ Cross → OOMKilled (restart 💀, exit 137)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>CPU usage vs limit:
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>──────────────────────────────────────────
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>  Request  Limit
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>  [===|=====|──────────────────────]
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>       ↑       ↑
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>  guaranteed  ceiling
+</span><span id="__span-4-7"><a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a>               │
+</span><span id="__span-4-8"><a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>               └─ Cross → THROTTLE (slow, alive 🐢)
+</span><span id="__span-4-9"><a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+</span><span id="__span-4-10"><a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a>RAM usage vs limit:
+</span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a>──────────────────────────────────────────
+</span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a>  Request  Limit
+</span><span id="__span-4-13"><a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a>  [===|=====|──────────────────────]
+</span><span id="__span-4-14"><a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a>               │
+</span><span id="__span-4-15"><a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a>               └─ Cross → OOMKilled (restart 💀, exit 137)
 </span></code></pre></div>
 </details>
 <p><strong>The reflex (memorize this):</strong>
-- <code>exit 137</code> = OOMKilled = RAM limit too low → raise <code>memory.limits</code> or switch to R-family.
-- <code>CrashLoopBackOff</code> with 137 in <code>kubectl describe pod</code> → same diagnosis.
+- <code>exit 137</code> <strong>+ <code>Reason: OOMKilled</code></strong> = RAM limit too low → raise <code>memory.limits</code> or switch to R-family.
+- <code>exit 137</code> <strong>+ <code>Reason: Error</code></strong> = <em>not</em> memory — the kubelet killed it (usually a failed liveness probe). Relax the probe; raising RAM changes nothing. (→ <a href="../11-M9-advanced-k8s-internals/">11-M9 §probes</a>)
+- <code>CrashLoopBackOff</code> with 137 → read <code>Reason:</code> first, <em>then</em> pick which of the two above applies.
 - Silent slow API = CPU throttle → raise <code>cpu.limits</code> or switch to C-family.</p>
 <hr />
 <h2 id="right-sizing-the-formulas">Right-Sizing: The Formulas<a class="headerlink" href="#right-sizing-the-formulas" title="Permanent link">&para;</a></h2>
 <p>Do not size from a guess alone. The workflow is: <strong>Estimate → Deploy → Measure → Right-size</strong>.</p>
 <p>🇮🇳 <strong>Hinglish intuition:</strong> Naap ke kapde silao. Pehle andaaza lagao, phir pahen ke dekho, phir darzi se adjust karwao. Pehli baar perfect hoga nahi — aur woh theek hai.</p>
 <h3 id="per-pod-sizing">Per-Pod Sizing<a class="headerlink" href="#per-pod-sizing" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>Pod CPU request    = avg CPU per request × peak concurrent requests ÷ replicas
-</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>Pod memory request = base process RAM + (per-connection RAM × max connections)
-</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>Pod limit (CPU)    = request × 1.5 to 2   ← spike headroom
-</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>Pod limit (RAM)    = request × 1.5 to 2   ← spike headroom, but be conservative
+<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Pod CPU request    = avg CPU per request × peak concurrent requests ÷ replicas
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Pod memory request = base process RAM + (per-connection RAM × max connections)
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>Pod limit (CPU)    = request × 1.5 to 2   ← spike headroom
+</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>Pod limit (RAM)    = request × 1.5 to 2   ← spike headroom, but be conservative
 </span></code></pre></div>
 <h3 id="node-sizing">Node Sizing<a class="headerlink" href="#node-sizing" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>Node RAM  = (pods_per_node × pod_RAM_limit)  + system_overhead(1.5 GB) + kubelet/CNI(0.5 GB)
-</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>Node CPU  = (pods_per_node × pod_CPU_limit)  + system_overhead(0.5 vCPU)
-</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
-</span><span id="__span-5-4"><a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>Pods per node = min(
-</span><span id="__span-5-5"><a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    110,                              # Kubernetes hard cap (maxPods default)
-</span><span id="__span-5-6"><a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>    node_RAM ÷ pod_RAM_limit,         # memory bound
-</span><span id="__span-5-7"><a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a>    node_CPU ÷ pod_CPU_limit,         # cpu bound
-</span><span id="__span-5-8"><a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>    IP_limit_for_instance_type        # AWS VPC CNI: each pod needs an IP
-</span><span id="__span-5-9"><a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a>)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Node RAM  = (pods_per_node × pod_RAM_limit)  + system_overhead(1.5 GB) + kubelet/CNI(0.5 GB)
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>Node CPU  = (pods_per_node × pod_CPU_limit)  + system_overhead(0.5 vCPU)
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>Pods per node = min(
+</span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a>    110,                              # Kubernetes hard cap (maxPods default)
+</span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    node_RAM ÷ pod_RAM_limit,         # memory bound
+</span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>    node_CPU ÷ pod_CPU_limit,         # cpu bound
+</span><span id="__span-6-8"><a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a>    IP_limit_for_instance_type        # AWS VPC CNI: each pod needs an IP
+</span><span id="__span-6-9"><a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>)
 </span></code></pre></div>
 <h3 id="node-count">Node Count<a class="headerlink" href="#node-count" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a>Total nodes = ceil( total_pods ÷ pods_per_node ) + 1
-</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>                                                   └─ +1 for HA / failure tolerance
+<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>Total nodes = ceil( total_pods ÷ pods_per_node ) + 1
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>                                                   └─ +1 for HA / failure tolerance
 </span></code></pre></div>
 <h3 id="database-sizing-postgres-mysql">Database Sizing (Postgres / MySQL)<a class="headerlink" href="#database-sizing-postgres-mysql" title="Permanent link">&para;</a></h3>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a>DB RAM       = working_set (hot data in memory)
-</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>             + shared_buffers (= RAM × 0.25, Postgres rule of thumb)
-</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>             + (connections × ~10 MB per connection)
-</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>
-</span><span id="__span-7-5"><a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>connections  = (core_count × 2) + effective_spindle_count   ← starting point
-</span><span id="__span-7-6"><a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>               (use PgBouncer to pool; raw connections are expensive)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>DB RAM       = working_set (hot data in memory)
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>             + shared_buffers (= RAM × 0.25, Postgres rule of thumb)
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>             + (connections × ~10 MB per connection)
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>connections  = (core_count × 2) + effective_spindle_count   ← starting point
+</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>               (use PgBouncer to pool; raw connections are expensive)
 </span></code></pre></div>
 <p><strong>Headroom rule:</strong> Never fill a node to 100%. Leave 20–30% buffer for:
 - Sudden traffic spikes before HPA kicks in
@@ -3310,15 +3346,15 @@
 - Rolling update: new pod starts before old one terminates</p>
 <hr />
 <h2 id="cost-on-demand-reserved-spot">Cost: On-Demand, Reserved, Spot<a class="headerlink" href="#cost-on-demand-reserved-spot" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>┌──────────────┬─────────────────────────────┬──────────────┬──────────────────────────┐
-</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>│ Pricing model│ How it works                │ Discount     │ Use when                 │
-</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a>├──────────────┼─────────────────────────────┼──────────────┼──────────────────────────┤
-</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>│ On-Demand    │ Pay per hour, no commitment │ —            │ Dev/test, unpredictable  │
-</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a>│ Reserved /   │ 1-yr or 3-yr commit         │ 40–70% off   │ 24/7 baseline prod       │
-</span><span id="__span-8-6"><a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a>│ Savings Plans│ (Savings Plans = flexible)  │              │ load you&#39;re sure about   │
-</span><span id="__span-8-7"><a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>│ Spot         │ AWS idle capacity, reclaimab│ 70–90% off   │ Stateless, interruptible │
-</span><span id="__span-8-8"><a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a>│              │ le with 2-min warning       │              │ NEVER for DB / stateful  │
-</span><span id="__span-8-9"><a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a>└──────────────┴─────────────────────────────┴──────────────┴──────────────────────────┘
+<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>┌──────────────┬─────────────────────────────┬──────────────┬──────────────────────────┐
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>│ Pricing model│ How it works                │ Discount     │ Use when                 │
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>├──────────────┼─────────────────────────────┼──────────────┼──────────────────────────┤
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>│ On-Demand    │ Pay per hour, no commitment │ —            │ Dev/test, unpredictable  │
+</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>│ Reserved /   │ 1-yr or 3-yr commit         │ 40–70% off   │ 24/7 baseline prod       │
+</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>│ Savings Plans│ (Savings Plans = flexible)  │              │ load you&#39;re sure about   │
+</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>│ Spot         │ AWS idle capacity, reclaimab│ 70–90% off   │ Stateless, interruptible │
+</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>│              │ le with 2-min warning       │              │ NEVER for DB / stateful  │
+</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>└──────────────┴─────────────────────────────┴──────────────┴──────────────────────────┘
 </span></code></pre></div>
 <p><strong>Spot safety rule</strong> (see <a href="../09-connected-system/">09-connected-system.md</a> Golden Thread 2):
 - Spot instances can be reclaimed by AWS with a 2-minute warning.
@@ -3360,18 +3396,18 @@
 <p><em>Three scaling dimensions: HPA adds pods → Cluster Autoscaler adds nodes when pods can't fit → VPA right-sizes pod requests over time.</em></p>
 <details class="note">
 <summary>Text version (ASCII)</summary>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>                    ┌─────────────────────────────────────────────────┐
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>                    │              SCALING DIRECTIONS                  │
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>                    │                                                  │
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>  pods              │  HPA ──────────────────────────────────────→    │
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>  (horizontal)      │  [pod][pod][pod]  →  [pod][pod][pod][pod][pod] │
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a>                    │                                                  │
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a>  nodes             │  Cluster Autoscaler ──────────────────────────→ │
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a>  (horizontal)      │  [node][node]     →  [node][node][node]        │
-</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a>                    │                                                  │
-</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10" href="#__codelineno-9-10"></a>  pod size          │  VPA ↕                                          │
-</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11" href="#__codelineno-9-11"></a>  (vertical)        │  pod(256Mi)  →  pod(512Mi)  (resize requests)  │
-</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12" href="#__codelineno-9-12"></a>                    └─────────────────────────────────────────────────┘
+<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>                    ┌─────────────────────────────────────────────────┐
+</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>                    │              SCALING DIRECTIONS                  │
+</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>                    │                                                  │
+</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>  pods              │  HPA ──────────────────────────────────────→    │
+</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>  (horizontal)      │  [pod][pod][pod]  →  [pod][pod][pod][pod][pod] │
+</span><span id="__span-10-6"><a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>                    │                                                  │
+</span><span id="__span-10-7"><a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a>  nodes             │  Cluster Autoscaler ──────────────────────────→ │
+</span><span id="__span-10-8"><a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a>  (horizontal)      │  [node][node]     →  [node][node][node]        │
+</span><span id="__span-10-9"><a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>                    │                                                  │
+</span><span id="__span-10-10"><a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a>  pod size          │  VPA ↕                                          │
+</span><span id="__span-10-11"><a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a>  (vertical)        │  pod(256Mi)  →  pod(512Mi)  (resize requests)  │
+</span><span id="__span-10-12"><a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a>                    └─────────────────────────────────────────────────┘
 </span></code></pre></div>
 </details>
 <h3 id="side-by-side-comparison">Side-by-Side Comparison<a class="headerlink" href="#side-by-side-comparison" title="Permanent link">&para;</a></h3>
@@ -3410,11 +3446,11 @@
 </tbody>
 </table>
 <p><strong>How they compose:</strong> CA watches for Pending pods. HPA creates Pending pods when load rises and no node has capacity. CA then adds a node. This is the standard chain:</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-10-1"><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a>Traffic spike
-</span><span id="__span-10-2"><a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a>    → HPA: create more pods
-</span><span id="__span-10-3"><a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>        → pods Pending (no node capacity)
-</span><span id="__span-10-4"><a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a>            → CA: provision new node
-</span><span id="__span-10-5"><a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>                → pods scheduled, traffic served
+<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>Traffic spike
+</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>    → HPA: create more pods
+</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>        → pods Pending (no node capacity)
+</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>            → CA: provision new node
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>                → pods scheduled, traffic served
 </span></code></pre></div>
 <p><strong>VPA</strong> alongside HPA: use carefully — both trying to resize can conflict. Common pattern: use VPA in "recommendation mode" only (it suggests optimal requests, you apply manually), then tune HPA thresholds.</p>
 <p><strong>KEDA</strong> (Kubernetes Event-Driven Autoscaling): extends HPA with queue-depth, Kafka lag, cron, and 50+ other triggers. Useful for Profile D (batch/ML inference): scale pods to zero when queue empty, scale up on queue depth.</p>
@@ -3426,38 +3462,38 @@
 <h2 id="traps-cpu-credits-fragmentation-pending-pods">Traps: CPU Credits, Fragmentation, Pending Pods<a class="headerlink" href="#traps-cpu-credits-fragmentation-pending-pods" title="Permanent link">&para;</a></h2>
 <h3 id="trap-1-t-series-cpu-credit-exhaustion">Trap 1 — T-Series CPU Credit Exhaustion<a class="headerlink" href="#trap-1-t-series-cpu-credit-exhaustion" title="Permanent link">&para;</a></h3>
 <p>T-family instances (t3, t4g) are burstable: they earn CPU credits during idle periods and spend them during spikes.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-11-1"><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a>T-instance credit lifecycle:
-</span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a>──────────────────────────────────────────────────
-</span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>  Idle time  → credits accumulate  📈
-</span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a>  Spike      → credits spend       📉
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>  Credits = 0 → CPU capped at BASELINE (~10–20% of vCPU) 🐢
-</span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a>
-</span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a>Timeline:
-</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a> Idle  ────────── Spike ──────────────────────── (steady load)
-</span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a>       [earn]      [spend]   [spend]  [EMPTY→THROTTLE]
+<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>T-instance credit lifecycle:
+</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>──────────────────────────────────────────────────
+</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>  Idle time  → credits accumulate  📈
+</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>  Spike      → credits spend       📉
+</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>  Credits = 0 → CPU capped at BASELINE (~10–20% of vCPU) 🐢
+</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>
+</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>Timeline:
+</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a> Idle  ────────── Spike ──────────────────────── (steady load)
+</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>       [earn]      [spend]   [spend]  [EMPTY→THROTTLE]
 </span></code></pre></div>
 <p><strong>The silent killer:</strong> CPU credit exhaustion looks like a sudden application slowdown with no error, no OOMKill. CPU % in CloudWatch sits at the T-instance baseline cap. New engineers spend hours debugging "the code got slower."</p>
 <p><strong>Rule:</strong> T-series = dev, demo, sporadic-spike workloads only. Any service with sustained CPU &gt; 20% for more than a few minutes → switch to M or C family.</p>
 <h3 id="trap-2-fragmentation">Trap 2 — Fragmentation<a class="headerlink" href="#trap-2-fragmentation" title="Permanent link">&para;</a></h3>
 <p>Total free capacity across the cluster looks sufficient, but no single node has enough contiguous capacity to fit the next pod.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>Fragmentation — &quot;bus seats not together&quot;:
-</span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>─────────────────────────────────────────────────────────────────
-</span><span id="__span-12-3"><a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>  Node A:  [pod][pod][pod][ 1 CPU free ][ 0.5 GB free ]
-</span><span id="__span-12-4"><a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>  Node B:  [pod][pod]    [ 0.5 CPU free][ 2 GB free   ]
-</span><span id="__span-12-5"><a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>
-</span><span id="__span-12-6"><a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>  New pod wants: 1 CPU + 2 GB RAM
-</span><span id="__span-12-7"><a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>  → Node A: 1 CPU OK, 0.5 GB NOT enough
-</span><span id="__span-12-8"><a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>  → Node B: 0.5 CPU NOT enough, 2 GB OK
-</span><span id="__span-12-9"><a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>  → Neither node fits → pod PENDING ❌
-</span><span id="__span-12-10"><a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>
-</span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>  Total free: 1.5 CPU + 2.5 GB (enough on paper)
-</span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>  Schedulable: 0 (fragmented)
+<div class="language-text highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>Fragmentation — &quot;bus seats not together&quot;:
+</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a>─────────────────────────────────────────────────────────────────
+</span><span id="__span-13-3"><a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a>  Node A:  [pod][pod][pod][ 1 CPU free ][ 0.5 GB free ]
+</span><span id="__span-13-4"><a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a>  Node B:  [pod][pod]    [ 0.5 CPU free][ 2 GB free   ]
+</span><span id="__span-13-5"><a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a>
+</span><span id="__span-13-6"><a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a>  New pod wants: 1 CPU + 2 GB RAM
+</span><span id="__span-13-7"><a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a>  → Node A: 1 CPU OK, 0.5 GB NOT enough
+</span><span id="__span-13-8"><a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>  → Node B: 0.5 CPU NOT enough, 2 GB OK
+</span><span id="__span-13-9"><a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a>  → Neither node fits → pod PENDING ❌
+</span><span id="__span-13-10"><a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a>
+</span><span id="__span-13-11"><a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a>  Total free: 1.5 CPU + 2.5 GB (enough on paper)
+</span><span id="__span-13-12"><a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a>  Schedulable: 0 (fragmented)
 </span></code></pre></div>
 <p>Fix: Add a node (CA does this automatically), or run a smaller pod that fits, or repack existing pods.</p>
 <h3 id="trap-3-pod-pending-3-root-causes">Trap 3 — Pod Pending: 3 Root Causes<a class="headerlink" href="#trap-3-pod-pending-3-root-causes" title="Permanent link">&para;</a></h3>
 <p>When <code>kubectl get pods</code> shows <code>Pending</code>, the <strong>first command</strong> is always:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>&lt;pod-name&gt;
-</span><span id="__span-13-2"><a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="c1"># Read the Events section at the bottom — the scheduler writes the exact reason</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>&lt;pod-name&gt;
+</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="c1"># Read the Events section at the bottom — the scheduler writes the exact reason</span>
 </span></code></pre></div></p>
 <table>
 <thead>
@@ -3615,37 +3651,37 @@
 <p><strong>Result:</strong> $580/month (58% reduction), zero OOMKilled incidents, auto-scales to 900 RPS without manual intervention.</p>
 <hr />
 <h2 id="commands-explained">Commands, Explained<a class="headerlink" href="#commands-explained" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-14-1"><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1"># See real CPU and memory usage of all pods (requires metrics-server)</span>
-</span><span id="__span-14-2"><a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a>kubectl<span class="w"> </span>top<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
-</span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="c1"># Why: This is your right-sizing ground truth. Compare to requests/limits.</span>
-</span><span id="__span-14-4"><a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a>
-</span><span id="__span-14-5"><a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="c1"># See node-level resource usage and capacity</span>
-</span><span id="__span-14-6"><a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a>kubectl<span class="w"> </span>top<span class="w"> </span>nodes
-</span><span id="__span-14-7"><a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="c1"># Why: Reveals which nodes are actually loaded; detect fragmentation candidates.</span>
-</span><span id="__span-14-8"><a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a>
-</span><span id="__span-14-9"><a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="c1"># Describe a Pending pod — always start here</span>
-</span><span id="__span-14-10"><a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
-</span><span id="__span-14-11"><a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="c1"># Why: Events section tells you exactly why scheduling failed (resource / IP / taint).</span>
-</span><span id="__span-14-12"><a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>
-</span><span id="__span-14-13"><a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="c1"># Check what limits are set on a running pod</span>
-</span><span id="__span-14-14"><a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.containers[*].resources}&#39;</span>
-</span><span id="__span-14-15"><a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="c1"># Why: Verify your YAML applied; catch missing limits before they bite.</span>
-</span><span id="__span-14-16"><a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a>
-</span><span id="__span-14-17"><a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="c1"># See HPA status and current replica count</span>
-</span><span id="__span-14-18"><a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a>kubectl<span class="w"> </span>get<span class="w"> </span>hpa<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
-</span><span id="__span-14-19"><a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a><span class="c1"># Why: Shows current/desired replicas, target metric %, and scale activity.</span>
-</span><span id="__span-14-20"><a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a>
-</span><span id="__span-14-21"><a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a><span class="c1"># Watch HPA scale in real time during a load test</span>
-</span><span id="__span-14-22"><a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a>kubectl<span class="w"> </span>get<span class="w"> </span>hpa<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-w
-</span><span id="__span-14-23"><a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a><span class="c1"># Why: Observe HPA reaction time (default 15s scrape, 30s stabilization window).</span>
-</span><span id="__span-14-24"><a id="__codelineno-14-24" name="__codelineno-14-24" href="#__codelineno-14-24"></a>
-</span><span id="__span-14-25"><a id="__codelineno-14-25" name="__codelineno-14-25" href="#__codelineno-14-25"></a><span class="c1"># Check Cluster Autoscaler logs (EKS: runs in kube-system)</span>
-</span><span id="__span-14-26"><a id="__codelineno-14-26" name="__codelineno-14-26" href="#__codelineno-14-26"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>cluster-autoscaler<span class="w"> </span>--tail<span class="o">=</span><span class="m">50</span>
-</span><span id="__span-14-27"><a id="__codelineno-14-27" name="__codelineno-14-27" href="#__codelineno-14-27"></a><span class="c1"># Why: CA logs show node provisioning decisions and scale-down blockers.</span>
-</span><span id="__span-14-28"><a id="__codelineno-14-28" name="__codelineno-14-28" href="#__codelineno-14-28"></a>
-</span><span id="__span-14-29"><a id="__codelineno-14-29" name="__codelineno-14-29" href="#__codelineno-14-29"></a><span class="c1"># Get VPA recommendations (if VPA installed in recommendation mode)</span>
-</span><span id="__span-14-30"><a id="__codelineno-14-30" name="__codelineno-14-30" href="#__codelineno-14-30"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>vpa<span class="w"> </span>&lt;vpa-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
-</span><span id="__span-14-31"><a id="__codelineno-14-31" name="__codelineno-14-31" href="#__codelineno-14-31"></a><span class="c1"># Why: Shows recommended requests/limits based on observed usage — use to tune.</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="c1"># See real CPU and memory usage of all pods (requires metrics-server)</span>
+</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>kubectl<span class="w"> </span>top<span class="w"> </span>pods<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="c1"># Why: This is your right-sizing ground truth. Compare to requests/limits.</span>
+</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>
+</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="c1"># See node-level resource usage and capacity</span>
+</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>kubectl<span class="w"> </span>top<span class="w"> </span>nodes
+</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="c1"># Why: Reveals which nodes are actually loaded; detect fragmentation candidates.</span>
+</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>
+</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="c1"># Describe a Pending pod — always start here</span>
+</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</span><span id="__span-15-11"><a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="c1"># Why: Events section tells you exactly why scheduling failed (resource / IP / taint).</span>
+</span><span id="__span-15-12"><a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a>
+</span><span id="__span-15-13"><a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a><span class="c1"># Check what limits are set on a running pod</span>
+</span><span id="__span-15-14"><a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>&lt;pod-name&gt;<span class="w"> </span>-o<span class="w"> </span><span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.spec.containers[*].resources}&#39;</span>
+</span><span id="__span-15-15"><a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="c1"># Why: Verify your YAML applied; catch missing limits before they bite.</span>
+</span><span id="__span-15-16"><a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a>
+</span><span id="__span-15-17"><a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="c1"># See HPA status and current replica count</span>
+</span><span id="__span-15-18"><a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a>kubectl<span class="w"> </span>get<span class="w"> </span>hpa<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</span><span id="__span-15-19"><a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="c1"># Why: Shows current/desired replicas, target metric %, and scale activity.</span>
+</span><span id="__span-15-20"><a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a>
+</span><span id="__span-15-21"><a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a><span class="c1"># Watch HPA scale in real time during a load test</span>
+</span><span id="__span-15-22"><a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a>kubectl<span class="w"> </span>get<span class="w"> </span>hpa<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;<span class="w"> </span>-w
+</span><span id="__span-15-23"><a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a><span class="c1"># Why: Observe HPA reaction time (default 15s scrape, 30s stabilization window).</span>
+</span><span id="__span-15-24"><a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a>
+</span><span id="__span-15-25"><a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a><span class="c1"># Check Cluster Autoscaler logs (EKS: runs in kube-system)</span>
+</span><span id="__span-15-26"><a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-n<span class="w"> </span>kube-system<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>cluster-autoscaler<span class="w"> </span>--tail<span class="o">=</span><span class="m">50</span>
+</span><span id="__span-15-27"><a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a><span class="c1"># Why: CA logs show node provisioning decisions and scale-down blockers.</span>
+</span><span id="__span-15-28"><a id="__codelineno-15-28" name="__codelineno-15-28" href="#__codelineno-15-28"></a>
+</span><span id="__span-15-29"><a id="__codelineno-15-29" name="__codelineno-15-29" href="#__codelineno-15-29"></a><span class="c1"># Get VPA recommendations (if VPA installed in recommendation mode)</span>
+</span><span id="__span-15-30"><a id="__codelineno-15-30" name="__codelineno-15-30" href="#__codelineno-15-30"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>vpa<span class="w"> </span>&lt;vpa-name&gt;<span class="w"> </span>-n<span class="w"> </span>&lt;namespace&gt;
+</span><span id="__span-15-31"><a id="__codelineno-15-31" name="__codelineno-15-31" href="#__codelineno-15-31"></a><span class="c1"># Why: Shows recommended requests/limits based on observed usage — use to tune.</span>
 </span></code></pre></div>
 <hr />
 <h2 id="beginner-mistakes-vs-senior-insights">Beginner Mistakes vs Senior Insights<a class="headerlink" href="#beginner-mistakes-vs-senior-insights" title="Permanent link">&para;</a></h2>
@@ -3711,9 +3747,14 @@
 </thead>
 <tbody>
 <tr>
-<td>Exit <code>137</code> / <code>OOMKilled</code></td>
+<td>Exit <code>137</code> <strong>+ <code>Reason: OOMKilled</code></strong></td>
 <td>RAM limit too low</td>
 <td>Raise <code>memory.limits</code>; check <code>kubectl top pod</code></td>
+</tr>
+<tr>
+<td>Exit <code>137</code> <strong>+ <code>Reason: Error</code></strong></td>
+<td>kubelet killed it — liveness probe failed</td>
+<td>Relax the probe, <strong>not</strong> the RAM (→ 11-M9 §probes)</td>
 </tr>
 <tr>
 <td>Silent slow API, no errors</td>
@@ -3751,21 +3792,21 @@
 - Spot = standby ticket — mila to great, na mila to K8s sambhal lega (sirf stateless).</p>
 <hr />
 <h2 id="summary">Summary<a class="headerlink" href="#summary" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-15-1"><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>SIZING WORKFLOW (har project ke liye)
-</span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a>──────────────────────────────────────
-</span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a>Step 1  CLASSIFY  →  CPU/RAM/IO/GPU bound?  →  pick family (M/C/R/I/P)
-</span><span id="__span-15-4"><a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a>Step 2  ESTIMATE  →  RPS, concurrency, data size  →  rough requests/limits
-</span><span id="__span-15-5"><a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a>Step 3  DEPLOY    →  launch with 20–30% headroom buffer
-</span><span id="__span-15-6"><a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a>Step 4  MEASURE   →  kubectl top + CloudWatch (2 weeks real traffic)
-</span><span id="__span-15-7"><a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a>Step 5  RIGHT-SIZE → adjust requests/limits; switch family if data says so
-</span><span id="__span-15-8"><a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a>Step 6  AUTOSCALE → HPA (pods) + CA (nodes); VPA in recommend mode
-</span><span id="__span-15-9"><a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a>Step 7  COST OPT  → Graviton switch; Spot for batch; Savings Plan for baseline
-</span><span id="__span-15-10"><a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>Step 8  REVIEW    → monthly; usage changes, infra should follow
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>SIZING WORKFLOW (har project ke liye)
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>──────────────────────────────────────
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>Step 1  CLASSIFY  →  CPU/RAM/IO/GPU bound?  →  pick family (M/C/R/I/P)
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>Step 2  ESTIMATE  →  RPS, concurrency, data size  →  rough requests/limits
+</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>Step 3  DEPLOY    →  launch with 20–30% headroom buffer
+</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a>Step 4  MEASURE   →  kubectl top + CloudWatch (2 weeks real traffic)
+</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>Step 5  RIGHT-SIZE → adjust requests/limits; switch family if data says so
+</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a>Step 6  AUTOSCALE → HPA (pods) + CA (nodes); VPA in recommend mode
+</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>Step 7  COST OPT  → Graviton switch; Spot for batch; Savings Plan for baseline
+</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a>Step 8  REVIEW    → monthly; usage changes, infra should follow
 </span></code></pre></div>
 <p><strong>Golden rules (distilled):</strong>
 1. Family first, size second. Wrong family = no tuning saves you.
 2. Set requests AND limits on every pod, always.
-3. <code>OOMKilled / 137</code> → RAM limit. CPU throttle → CPU limit. <code>Pending</code> → <code>kubectl describe pod</code>.
+3. <code>137</code> → <strong><code>Reason:</code> padho</strong>: <code>OOMKilled</code> = RAM limit; <code>Error</code> = probe/kubelet kill. CPU throttle → CPU limit. <code>Pending</code> → <code>kubectl describe pod</code>.
 4. T-series = dev only. Steady prod → M/C/R.
 5. Primary prod DB never in a K8s pod. RDS + Multi-AZ.
 6. Spot = stateless only. Reserved = proven steady baseline.</p>
@@ -3785,7 +3826,7 @@
 <details>
 <summary>Jawab dekho</summary>
 <ol>
-<li>Exit 137 = OOMKilled = RAM limit breached. First: <code>kubectl describe pod &lt;name&gt;</code> — confirm OOMKilled in State and exit code 137. Second: <code>kubectl top pod &lt;name&gt;</code> — see actual memory usage vs limit. Then raise <code>memory.limits</code> (and requests proportionally).</li>
+<li><strong>Trick question — 137 alone is not a diagnosis.</strong> 137 = SIGKILL, and it has two sources. First: <code>kubectl describe pod &lt;name&gt;</code> and read the <strong><code>Reason:</code></strong> field. If <code>Reason: OOMKilled</code> → RAM limit breached; confirm with <code>kubectl top pod &lt;name&gt;</code> (usage should be at/near the limit), then raise <code>memory.limits</code> and requests proportionally. If <code>Reason: Error</code> <strong>with liveness-probe failure events</strong> → the kubelet killed a healthy container; the fix is relaxing the probe (timeout/failureThreshold/initialDelay), and raising RAM would change nothing. Never act on the exit code alone.</li>
 <li>12% CPU / 15% RAM = severely over-provisioned — paying for idle capacity. Risk: if T-series, CPU credits quietly drain under any burst. Right-size down to a smaller instance or fewer nodes; enable CA scale-down.</li>
 <li><code>requests</code> = reserved seat — the scheduler uses this to decide pod placement (node must have at least this much free). <code>limits</code> = hard ceiling — exceed CPU → throttle (alive, slow); exceed RAM → OOMKilled (exit 137). Missing requests = scheduler flies blind; missing limits = one noisy pod can starve the whole node.</li>
 <li>Fragmentation: total free is 6 CPU / 12 GB but scattered across nodes (e.g., 1.5 CPU / 3 GB each). No single node has 4 CPU + 10 GB contiguous. Diagnose: <code>kubectl describe pod &lt;name&gt;</code> → Events: "Insufficient cpu/memory" on every node.</li>
@@ -3798,97 +3839,104 @@
 <hr />
 <h2 id="hands-on-lab">Hands-On Lab<a class="headerlink" href="#hands-on-lab" title="Permanent link">&para;</a></h2>
 <h3 id="lab-m5-a-set-requestslimits-and-trigger-oomkilled">Lab M5-A: Set Requests/Limits and Trigger OOMKilled<a class="headerlink" href="#lab-m5-a-set-requestslimits-and-trigger-oomkilled" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># 1. Deploy a pod with artificially low memory limit</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>cat<span class="w"> </span><span class="s">&lt;&lt;EOF | kubectl apply -f -</span>
-</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="s">apiVersion: apps/v1</span>
-</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="s">kind: Deployment</span>
-</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="s">metadata:</span>
-</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="s">  name: mem-demo</span>
-</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="s">spec:</span>
-</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="s">  replicas: 1</span>
-</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="s">  selector:</span>
-</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="s">    matchLabels: {app: mem-demo}</span>
-</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="s">  template:</span>
-</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="s">    metadata:</span>
-</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="s">      labels: {app: mem-demo}</span>
-</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="s">    spec:</span>
-</span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="s">      containers:</span>
-</span><span id="__span-16-16"><a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="s">      - name: mem-eater</span>
-</span><span id="__span-16-17"><a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="s">        image: polinux/stress</span>
-</span><span id="__span-16-18"><a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a><span class="s">        resources:</span>
-</span><span id="__span-16-19"><a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a><span class="s">          requests: {memory: &quot;50Mi&quot;, cpu: &quot;100m&quot;}</span>
-</span><span id="__span-16-20"><a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a><span class="s">          limits:   {memory: &quot;100Mi&quot;, cpu: &quot;200m&quot;}</span>
-</span><span id="__span-16-21"><a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a><span class="s">        command: [&quot;stress&quot;]</span>
-</span><span id="__span-16-22"><a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a><span class="s">        args: [&quot;--vm&quot;, &quot;1&quot;, &quot;--vm-bytes&quot;, &quot;150M&quot;, &quot;--vm-hang&quot;, &quot;1&quot;]</span>
-</span><span id="__span-16-23"><a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a><span class="s">EOF</span>
-</span><span id="__span-16-24"><a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a>
-</span><span id="__span-16-25"><a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a><span class="c1"># 2. Watch the pod — it should OOMKill shortly</span>
-</span><span id="__span-16-26"><a id="__codelineno-16-26" name="__codelineno-16-26" href="#__codelineno-16-26"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-w
-</span><span id="__span-16-27"><a id="__codelineno-16-27" name="__codelineno-16-27" href="#__codelineno-16-27"></a>
-</span><span id="__span-16-28"><a id="__codelineno-16-28" name="__codelineno-16-28" href="#__codelineno-16-28"></a><span class="c1"># 3. Confirm exit code 137</span>
-</span><span id="__span-16-29"><a id="__codelineno-16-29" name="__codelineno-16-29" href="#__codelineno-16-29"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>mem-demo
-</span><span id="__span-16-30"><a id="__codelineno-16-30" name="__codelineno-16-30" href="#__codelineno-16-30"></a><span class="c1"># Look for: &quot;OOMKilled&quot; in State, &quot;137&quot; in Exit Code</span>
-</span><span id="__span-16-31"><a id="__codelineno-16-31" name="__codelineno-16-31" href="#__codelineno-16-31"></a>
-</span><span id="__span-16-32"><a id="__codelineno-16-32" name="__codelineno-16-32" href="#__codelineno-16-32"></a><span class="c1"># 4. Raise the limit to fix it</span>
-</span><span id="__span-16-33"><a id="__codelineno-16-33" name="__codelineno-16-33" href="#__codelineno-16-33"></a>kubectl<span class="w"> </span><span class="nb">set</span><span class="w"> </span>resources<span class="w"> </span>deployment<span class="w"> </span>mem-demo<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-16-34"><a id="__codelineno-16-34" name="__codelineno-16-34" href="#__codelineno-16-34"></a><span class="w">  </span>--limits<span class="o">=</span><span class="nv">memory</span><span class="o">=</span>256Mi
-</span><span id="__span-16-35"><a id="__codelineno-16-35" name="__codelineno-16-35" href="#__codelineno-16-35"></a>
-</span><span id="__span-16-36"><a id="__codelineno-16-36" name="__codelineno-16-36" href="#__codelineno-16-36"></a><span class="c1"># 5. Verify pod stays Running</span>
-</span><span id="__span-16-37"><a id="__codelineno-16-37" name="__codelineno-16-37" href="#__codelineno-16-37"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>mem-demo
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># 1. Deploy a pod with artificially low memory limit</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>cat<span class="w"> </span><span class="s">&lt;&lt;EOF | kubectl apply -f -</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="s">apiVersion: apps/v1</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="s">kind: Deployment</span>
+</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="s">metadata:</span>
+</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="s">  name: mem-demo</span>
+</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="s">spec:</span>
+</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="s">  replicas: 1</span>
+</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="s">  selector:</span>
+</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="s">    matchLabels: {app: mem-demo}</span>
+</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="s">  template:</span>
+</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="s">    metadata:</span>
+</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="s">      labels: {app: mem-demo}</span>
+</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="s">    spec:</span>
+</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="s">      containers:</span>
+</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="s">      - name: mem-eater</span>
+</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="s">        image: polinux/stress</span>
+</span><span id="__span-17-18"><a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a><span class="s">        resources:</span>
+</span><span id="__span-17-19"><a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a><span class="s">          requests: {memory: &quot;50Mi&quot;, cpu: &quot;100m&quot;}</span>
+</span><span id="__span-17-20"><a id="__codelineno-17-20" name="__codelineno-17-20" href="#__codelineno-17-20"></a><span class="s">          limits:   {memory: &quot;100Mi&quot;, cpu: &quot;200m&quot;}</span>
+</span><span id="__span-17-21"><a id="__codelineno-17-21" name="__codelineno-17-21" href="#__codelineno-17-21"></a><span class="s">        command: [&quot;stress&quot;]</span>
+</span><span id="__span-17-22"><a id="__codelineno-17-22" name="__codelineno-17-22" href="#__codelineno-17-22"></a><span class="s">        args: [&quot;--vm&quot;, &quot;1&quot;, &quot;--vm-bytes&quot;, &quot;150M&quot;, &quot;--vm-hang&quot;, &quot;1&quot;]</span>
+</span><span id="__span-17-23"><a id="__codelineno-17-23" name="__codelineno-17-23" href="#__codelineno-17-23"></a><span class="s">EOF</span>
+</span><span id="__span-17-24"><a id="__codelineno-17-24" name="__codelineno-17-24" href="#__codelineno-17-24"></a>
+</span><span id="__span-17-25"><a id="__codelineno-17-25" name="__codelineno-17-25" href="#__codelineno-17-25"></a><span class="c1"># 2. Watch the pod — it should OOMKill shortly</span>
+</span><span id="__span-17-26"><a id="__codelineno-17-26" name="__codelineno-17-26" href="#__codelineno-17-26"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-w
+</span><span id="__span-17-27"><a id="__codelineno-17-27" name="__codelineno-17-27" href="#__codelineno-17-27"></a>
+</span><span id="__span-17-28"><a id="__codelineno-17-28" name="__codelineno-17-28" href="#__codelineno-17-28"></a><span class="c1"># 3. Confirm exit code 137</span>
+</span><span id="__span-17-29"><a id="__codelineno-17-29" name="__codelineno-17-29" href="#__codelineno-17-29"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>mem-demo
+</span><span id="__span-17-30"><a id="__codelineno-17-30" name="__codelineno-17-30" href="#__codelineno-17-30"></a><span class="c1"># Look for: &quot;OOMKilled&quot; in State, &quot;137&quot; in Exit Code</span>
+</span><span id="__span-17-31"><a id="__codelineno-17-31" name="__codelineno-17-31" href="#__codelineno-17-31"></a>
+</span><span id="__span-17-32"><a id="__codelineno-17-32" name="__codelineno-17-32" href="#__codelineno-17-32"></a><span class="c1"># 4. Raise the limit to fix it</span>
+</span><span id="__span-17-33"><a id="__codelineno-17-33" name="__codelineno-17-33" href="#__codelineno-17-33"></a>kubectl<span class="w"> </span><span class="nb">set</span><span class="w"> </span>resources<span class="w"> </span>deployment<span class="w"> </span>mem-demo<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-17-34"><a id="__codelineno-17-34" name="__codelineno-17-34" href="#__codelineno-17-34"></a><span class="w">  </span>--limits<span class="o">=</span><span class="nv">memory</span><span class="o">=</span>256Mi
+</span><span id="__span-17-35"><a id="__codelineno-17-35" name="__codelineno-17-35" href="#__codelineno-17-35"></a>
+</span><span id="__span-17-36"><a id="__codelineno-17-36" name="__codelineno-17-36" href="#__codelineno-17-36"></a><span class="c1"># 5. Verify pod stays Running</span>
+</span><span id="__span-17-37"><a id="__codelineno-17-37" name="__codelineno-17-37" href="#__codelineno-17-37"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>mem-demo
 </span></code></pre></div>
 <h3 id="lab-m5-b-watch-hpa-scale">Lab M5-B: Watch HPA Scale<a class="headerlink" href="#lab-m5-b-watch-hpa-scale" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1"># Requires metrics-server: kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml</span>
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="c1"># 1. Deploy a CPU-hungry app</span>
-</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>kubectl<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>php-apache<span class="w"> </span>--image<span class="o">=</span>registry.k8s.io/hpa-example
-</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>kubectl<span class="w"> </span>expose<span class="w"> </span>deployment<span class="w"> </span>php-apache<span class="w"> </span>--port<span class="o">=</span><span class="m">80</span>
-</span><span id="__span-17-6"><a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a>
-</span><span id="__span-17-7"><a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="c1"># 2. Create HPA targeting 50% CPU</span>
-</span><span id="__span-17-8"><a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a>kubectl<span class="w"> </span>autoscale<span class="w"> </span>deployment<span class="w"> </span>php-apache<span class="w"> </span>--cpu-percent<span class="o">=</span><span class="m">50</span><span class="w"> </span>--min<span class="o">=</span><span class="m">1</span><span class="w"> </span>--max<span class="o">=</span><span class="m">10</span>
-</span><span id="__span-17-9"><a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a>
-</span><span id="__span-17-10"><a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="c1"># 3. Generate load in a separate terminal</span>
-</span><span id="__span-17-11"><a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a>kubectl<span class="w"> </span>run<span class="w"> </span>load-gen<span class="w"> </span>--image<span class="o">=</span>busybox:1.28<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-17-12"><a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="w">  </span>/bin/sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;while true; do wget -q -O- http://php-apache; done&quot;</span>
-</span><span id="__span-17-13"><a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a>
-</span><span id="__span-17-14"><a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="c1"># 4. Watch HPA react (check every 15-30s)</span>
-</span><span id="__span-17-15"><a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a>kubectl<span class="w"> </span>get<span class="w"> </span>hpa<span class="w"> </span>-w
-</span><span id="__span-17-16"><a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a>
-</span><span id="__span-17-17"><a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="c1"># 5. Kill load and watch scale-down (takes ~5 min stabilization)</span>
-</span><span id="__span-17-18"><a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>load-gen
-</span><span id="__span-17-19"><a id="__codelineno-17-19" name="__codelineno-17-19" href="#__codelineno-17-19"></a>kubectl<span class="w"> </span>get<span class="w"> </span>hpa<span class="w"> </span>-w
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Requires metrics-server: kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="c1"># 1. Deploy a CPU-hungry app</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a>kubectl<span class="w"> </span>create<span class="w"> </span>deployment<span class="w"> </span>php-apache<span class="w"> </span>--image<span class="o">=</span>registry.k8s.io/hpa-example
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>kubectl<span class="w"> </span>expose<span class="w"> </span>deployment<span class="w"> </span>php-apache<span class="w"> </span>--port<span class="o">=</span><span class="m">80</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="c1"># 2. Create HPA targeting 50% CPU</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a>kubectl<span class="w"> </span>autoscale<span class="w"> </span>deployment<span class="w"> </span>php-apache<span class="w"> </span>--cpu-percent<span class="o">=</span><span class="m">50</span><span class="w"> </span>--min<span class="o">=</span><span class="m">1</span><span class="w"> </span>--max<span class="o">=</span><span class="m">10</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="c1"># 3. Generate load in a separate terminal</span>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>kubectl<span class="w"> </span>run<span class="w"> </span>load-gen<span class="w"> </span>--image<span class="o">=</span>busybox:1.28<span class="w"> </span>--restart<span class="o">=</span>Never<span class="w"> </span>--<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="w">  </span>/bin/sh<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;while true; do wget -q -O- http://php-apache; done&quot;</span>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="c1"># 4. Watch HPA react (check every 15-30s)</span>
+</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>kubectl<span class="w"> </span>get<span class="w"> </span>hpa<span class="w"> </span>-w
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a>
+</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="c1"># 5. Kill load and watch scale-down (takes ~5 min stabilization)</span>
+</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>load-gen
+</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a>kubectl<span class="w"> </span>get<span class="w"> </span>hpa<span class="w"> </span>-w
 </span></code></pre></div>
 <h3 id="lab-m5-c-diagnose-a-pending-pod">Lab M5-C: Diagnose a Pending Pod<a class="headerlink" href="#lab-m5-c-diagnose-a-pending-pod" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># 1. Create a pod that requests more resources than any node has</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>cat<span class="w"> </span><span class="s">&lt;&lt;EOF | kubectl apply -f -</span>
-</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="s">apiVersion: v1</span>
-</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="s">kind: Pod</span>
-</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="s">metadata:</span>
-</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="s">  name: too-big</span>
-</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="s">spec:</span>
-</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="s">  containers:</span>
-</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="s">  - name: app</span>
-</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="s">    image: nginx</span>
-</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="s">    resources:</span>
-</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="s">      requests:</span>
-</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="s">        cpu: &quot;100&quot;      # 100 vCPU — no single node has this</span>
-</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="s">        memory: &quot;100Gi&quot;</span>
-</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="s">EOF</span>
-</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a>
-</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="c1"># 2. Observe Pending</span>
-</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>too-big
-</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a>
-</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="c1"># 3. Read the scheduler&#39;s exact message</span>
-</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>too-big
-</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="c1"># Events section shows: &quot;Insufficient cpu&quot; on every node</span>
-</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a>
-</span><span id="__span-18-24"><a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a><span class="c1"># 4. Clean up</span>
-</span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>too-big
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># 1. Create a pod that requests more resources than any node has</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>cat<span class="w"> </span><span class="s">&lt;&lt;EOF | kubectl apply -f -</span>
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="s">apiVersion: v1</span>
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="s">kind: Pod</span>
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="s">metadata:</span>
+</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="s">  name: too-big</span>
+</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="s">spec:</span>
+</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="s">  containers:</span>
+</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="s">  - name: app</span>
+</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="s">    image: nginx</span>
+</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="s">    resources:</span>
+</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="s">      requests:</span>
+</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="s">        cpu: &quot;100&quot;      # 100 vCPU — no single node has this</span>
+</span><span id="__span-19-14"><a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a><span class="s">        memory: &quot;100Gi&quot;</span>
+</span><span id="__span-19-15"><a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a><span class="s">EOF</span>
+</span><span id="__span-19-16"><a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a>
+</span><span id="__span-19-17"><a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a><span class="c1"># 2. Observe Pending</span>
+</span><span id="__span-19-18"><a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pod<span class="w"> </span>too-big
+</span><span id="__span-19-19"><a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a>
+</span><span id="__span-19-20"><a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a><span class="c1"># 3. Read the scheduler&#39;s exact message</span>
+</span><span id="__span-19-21"><a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>too-big
+</span><span id="__span-19-22"><a id="__codelineno-19-22" name="__codelineno-19-22" href="#__codelineno-19-22"></a><span class="c1"># Events section shows: &quot;Insufficient cpu&quot; on every node</span>
+</span><span id="__span-19-23"><a id="__codelineno-19-23" name="__codelineno-19-23" href="#__codelineno-19-23"></a>
+</span><span id="__span-19-24"><a id="__codelineno-19-24" name="__codelineno-19-24" href="#__codelineno-19-24"></a><span class="c1"># 4. Clean up</span>
+</span><span id="__span-19-25"><a id="__codelineno-19-25" name="__codelineno-19-25" href="#__codelineno-19-25"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>too-big
 </span></code></pre></div>
 <p><strong>✅ Sahi hua to aisa dikhega:</strong> Lab A mein <code>kubectl describe pod -l app=mem-demo</code> mein <code>State: Terminated</code>, <code>Reason: OOMKilled</code>, <code>Exit Code: 137</code> clearly dikh raha hai — limit raise karne ke baad pod <code>Running</code> aur <code>READY 1/1</code> mein stable rehta hai. Lab B mein <code>kubectl get hpa -w</code> ka <code>REPLICAS</code> column load ke saath 1 se 5+ tak chadhta hai aur load hatane ke 5 min baad wapas 1 pe aata hai. Lab C mein <code>kubectl describe pod too-big</code> ka Events section har node ke against <code>Insufficient cpu</code> likhta hai.</p>
 <hr />
 <h2 id="interview-questions">Interview Questions<a class="headerlink" href="#interview-questions" title="Permanent link">&para;</a></h2>
 <p><strong>Q1: A pod keeps restarting with exit code 137. Walk me through your full diagnosis.</strong></p>
-<p>Expected: Exit 137 = OOMKilled = RAM limit exceeded. Steps: <code>kubectl describe pod &lt;name&gt;</code> → confirm OOMKilled in State and 137 in Exit Code → <code>kubectl top pod &lt;name&gt;</code> to see current memory use → compare to limit → raise <code>memory.limits</code> (and <code>memory.requests</code> proportionally) → if this is structural (app always grows), switch to R-family instance and use VPA recommendations.</p>
+<p>Expected: <strong>do not equate 137 with OOM.</strong> 137 = SIGKILL from either the kernel's OOM killer or the kubelet. Steps: <code>kubectl describe pod &lt;name&gt;</code> → read <strong><code>Reason:</code></strong> — <code>OOMKilled</code> or <code>Error</code>?</p>
+<ul>
+<li><strong><code>Reason: OOMKilled</code></strong> → RAM limit exceeded. <code>kubectl top pod &lt;name&gt;</code> → compare use vs limit → raise <code>memory.limits</code> (and <code>memory.requests</code> proportionally) → if structural (app always grows), switch to R-family and use VPA recommendations. Then ask <em>why</em> memory grew — a limit bump is a bandage, not a cure.</li>
+<li><strong><code>Reason: Error</code></strong> + <code>Liveness probe failed</code> events → the kubelet killed a healthy container. <code>kubectl top pod</code> will show memory nowhere near the limit. Fix the probe (raise <code>timeoutSeconds</code>/<code>failureThreshold</code>, add <code>initialDelaySeconds</code>), not the RAM.</li>
+</ul>
+<blockquote>
+<p>💡 Saying "137 means OOMKilled, raise the limit" is the answer an interviewer is fishing for — because the follow-up is <em>"the memory graph is flat at 20%, now what?"</em>. Leading with <strong>"I'd read the Reason field"</strong> shows you diagnose instead of pattern-match.</p>
+</blockquote>
 <p><strong>Q2: When is Spot safe and when is it dangerous in Kubernetes?</strong></p>
 <p>Expected: Spot = safe for stateless, interruptible pods (web tier, batch workers, CI runners) because K8s can reschedule on another node when instance is reclaimed (2-min warning). Dangerous for: primary databases (data loss risk), StatefulSets with local storage, anything that cannot tolerate sudden termination. RDS Multi-AZ is the answer for persistent data, not Spot.</p>
 <p><strong>Q3: You have CPU 5% and RAM 90% on your nodes. What does that tell you and what do you do?</strong></p>

@@ -2915,7 +2915,8 @@ Continuous Deployment = no button — it ships to production automatically.</p>
 </tbody>
 </table>
 <p><strong>The key difference between Delivery and Deployment:</strong> Delivery says "the artifact is always ready to go to production." Deployment says "the artifact goes to production automatically without a human gate." Most regulated or high-stakes environments use Delivery (human approval before prod); most SaaS companies with strong test suites use Deployment.</p>
-<p>In this module, the capstone project implements Continuous Delivery: GitHub Actions builds and pushes the image, updates the manifest in Git, and Argo CD syncs it — but you could add a manual approval step before the GitOps sync if needed.</p>
+<p>In this module, the capstone project implements <strong>Continuous Deployment</strong>: GitHub Actions builds and pushes the image, updates the manifest in Git, and Argo CD auto-syncs it to the cluster — <strong>no human gate anywhere in that chain</strong>. By the table above, that is Deployment, not Delivery.</p>
+<p>To turn it into Continuous <strong>Delivery</strong>, you add the gate back: set the Argo CD Application's <code>syncPolicy</code> to manual (drop <code>automated</code>) so a human clicks Sync, or require a PR approval on the config repo before the image tag can merge. The pipeline is identical up to that point — <em>the only thing that separates Delivery from Deployment is whether a human must say yes before production.</em></p>
 <hr />
 <h2 id="pipeline-anatomy-and-shared-vocabulary">Pipeline anatomy and shared vocabulary<a class="headerlink" href="#pipeline-anatomy-and-shared-vocabulary" title="Permanent link">&para;</a></h2>
 <p>Every CI/CD tool — Jenkins, GitHub Actions, GitLab CI, CircleCI, Tekton — is a variation of the same model. Learn the vocabulary once; it transfers everywhere.</p>

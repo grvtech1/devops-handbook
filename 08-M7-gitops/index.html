@@ -3224,7 +3224,7 @@ re-apply Git's version without waiting for a human.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1"># Demo: create drift</span>
 </span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>kubectl<span class="w"> </span>scale<span class="w"> </span>deployment<span class="w"> </span>url-shortener<span class="w"> </span>--replicas<span class="o">=</span><span class="m">5</span><span class="w">   </span><span class="c1"># Git says replicas: 2</span>
 </span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>
-</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># Within ~30 seconds:</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="c1"># Typically within ~30s (see &quot;why the range&quot; below):</span>
 </span><span id="__span-6-5"><a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="c1"># Argo detects: live=5, Git=2 → OutOfSync (Cause B)</span>
 </span><span id="__span-6-6"><a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="c1"># selfHeal: true → kubectl apply → replicas back to 2</span>
 </span><span id="__span-6-7"><a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>kubectl<span class="w"> </span>get<span class="w"> </span>deployment<span class="w"> </span>url-shortener<span class="w">   </span><span class="c1"># READY: 2/2</span>
@@ -3232,6 +3232,33 @@ re-apply Git's version without waiting for a human.</p>
 <blockquote>
 <p>🔧 <strong>War story:</strong> Production mein ek slow pod issue tha — engineer ne <code>kubectl scale deployment app --replicas=5</code> kiya quick hotfix ke liye (Git mein replicas: 3 tha). 3 minute baad pods wapas 3 ho gaye. Log confused: "Kisi ne mera change revert kiya kya?" Root cause: selfHeal:true — Argo cluster ko Git ki taraf wapas kheeench laata hai, silently. Lesson: Argo ke saath <code>kubectl</code> changes temporary hain — permanent change sirf Git se hoga. Poori kahani + lesson → <a href="../14-interview-bank/">Interview Bank</a>.</p>
 </blockquote>
+<div class="admonition question">
+<p class="admonition-title">Why does selfHeal take ~30s in the demo but 3 minutes in the war story?</p>
+<p>Because Argo watches <strong>two different things at two different speeds</strong> — and drift can be caught by either:</p>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>How it works</th>
+<th>Speed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cluster watch</strong></td>
+<td>Argo keeps a Kubernetes informer/watch on the live resources. Your <code>kubectl scale</code> fires a watch event almost immediately.</td>
+<td>seconds → <strong>~30s</strong></td>
+</tr>
+<tr>
+<td><strong>Git poll</strong></td>
+<td>Argo re-checks the repo on a timer (<code>timeout.reconciliation</code>, <strong>default 3m</strong>) unless a webhook pushes it sooner.</td>
+<td>up to <strong>3 min</strong></td>
+</tr>
+</tbody>
+</table>
+<p>A hand-edit to the cluster <em>should</em> be caught by the watch (fast). It slips to the poll interval when the watch is degraded, the app is mid-sync/<code>Progressing</code>, the controller is busy or restarted, or the resource is in <code>ignoreDifferences</code>. So the honest answer is <strong>"typically ~30s via the cluster watch, worst case ~3m at the next reconciliation"</strong> — and the design lesson is unchanged: <strong>never rely on the timing, <code>kubectl</code> changes are temporary either way.</strong></p>
+<p>Add a Git <strong>webhook</strong> to make the Git-side path near-instant instead of waiting up to 3 minutes.</p>
+</div>
 <h3 id="prune">prune<a class="headerlink" href="#prune" title="Permanent link">&para;</a></h3>
 <p><code>prune: true</code> tells Argo: if a manifest exists in the cluster but is no longer in Git, delete it.</p>
 <p>Without prune: you rename <code>service.yaml</code> to <code>api-service.yaml</code> in Git, push — Argo creates

@@ -4365,8 +4365,8 @@ It is a <strong>scientific method</strong> applied to distributed systems: you f
 <hr />
 <h3 id="e6-rds-failover-connection-pool-drain-and-retry">E6 · RDS failover — connection pool drain and retry<a class="headerlink" href="#e6-rds-failover-connection-pool-drain-and-retry" title="Permanent link">&para;</a></h3>
 <p><strong>Steady state:</strong> <code>orders-api</code> connected to RDS Multi-AZ primary. DB query p99 &lt; 20 ms.</p>
-<p><strong>Hypothesis:</strong> RDS Multi-AZ failover takes 30–60 s. During this window, existing connections break. The app's <strong>connection pool + retry logic</strong> absorbs the blip. No user-visible errors beyond a brief latency spike.</p>
-<p><strong>Blast radius:</strong> All DB writes fail for 30–60 s. <strong>Abort:</strong> if error rate stays &gt; 1% for &gt; 3 min post-failover, rollback app config.</p>
+<p><strong>Hypothesis:</strong> RDS Multi-AZ failover typically takes 60–120 s (AWS documented range; matches <a href="../23-production-incident-playbook/">23 — J3</a>). During this window, existing connections break. The app's <strong>connection pool + retry logic</strong> absorbs the blip. No user-visible errors beyond a brief latency spike.</p>
+<p><strong>Blast radius:</strong> All DB writes fail for 60–120 s. <strong>Abort:</strong> if error rate stays &gt; 1% for &gt; 3 min post-failover, rollback app config.</p>
 <h4 id="inject-aws-cli">Inject — AWS CLI<a class="headerlink" href="#inject-aws-cli" title="Permanent link">&para;</a></h4>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>aws<span class="w"> </span>rds<span class="w"> </span>reboot-db-instance<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">  </span>--db-instance-identifier<span class="w"> </span>shopfast-db<span class="w"> </span><span class="se">\</span>

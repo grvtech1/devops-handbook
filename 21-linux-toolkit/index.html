@@ -2925,7 +2925,7 @@
 <tr>
 <td>SIGHUP</td>
 <td>1</td>
-<td>Reload config — most daemons restart cleanly on <code>kill -1</code></td>
+<td>Reload config — most daemons re-read their config on <code>kill -1</code> <strong>without restarting</strong> (nginx keeps the master PID, spawns new workers, drains old ones)</td>
 </tr>
 <tr>
 <td>SIGTERM</td>
