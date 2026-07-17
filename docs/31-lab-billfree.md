@@ -448,7 +448,7 @@ kubectl get pods -n billfree         # 10 pods (abhi)
 kubectl get application auth-service -n argocd -w   # OutOfSync → auto-sync → back to 3
 ```
 
-> ⭐ **Interview gold:** *"kubectl edit se prod badla to ArgoCD selfHeal revert kar deta. Git = source of truth. Cluster galat = Git galat."* — ye [platform simulator](platform/) ka INC-2891 bhi tha.
+> ⭐ **Interview gold:** *"kubectl edit se prod badla to ArgoCD selfHeal revert kar deta. Git = source of truth. Cluster galat = Git galat."* — ye [platform simulator](../platform/) ka INC-2891 bhi tha.
 
 **🧠 Recall:** push vs pull CD? · app-of-apps kya? · selfHeal kya karta?
 
@@ -501,13 +501,13 @@ docker compose down -v
     echo $?
     ```
 
-> CVE mila to kya karein — upgrade / accept / ignore ka **decision tree**: [ch23 F3](23-production-incident-playbook.md#f3--trivy-blocks-the-build-on-a-cve).
+> CVE mila to kya karein — upgrade / accept / ignore ka **decision tree**: [ch23 F3](23-production-incident-playbook.md#f3-trivy-blocks-the-build-on-a-cve).
 
 ### 8.2 — gitleaks: repo mein secret to nahi?
 
 **Goal:** Poore billfree repo ki git history scan karo leaked secrets ke liye. (`app-secret.example.yaml` example hai — asli values out-of-band bante hain, [yaad hai?](28-helm-real-projects.md))
 
-**✅ Success:** report clean — ya agar kuch mila to tum bata sako *rotation hi fix kyun hai, delete kyun nahi* ([Meridian sim ka INC-4118](platform/) yehi tha).
+**✅ Success:** report clean — ya agar kuch mila to tum bata sako *rotation hi fix kyun hai, delete kyun nahi* ([Meridian sim ka INC-4118](../platform/) yehi tha).
 
 ??? tip "🔑 Hint"
     ```bash
@@ -564,7 +564,7 @@ docker compose down -v
     kubectl delete pod good -n billfree
     ```
 
-**💥 Boss fight:** Ab `helm upgrade` se apni auth-service pe `--set image.tag=latest` try karo. Policy tumhe rokegi. **Fix = manifest theek karo, policy delete NAHI** — jo rule tumhe rokta hai, wo kisi cheez ki hifazat kar raha hai ([INC-2996 ka sabak](platform/)).
+**💥 Boss fight:** Ab `helm upgrade` se apni auth-service pe `--set image.tag=latest` try karo. Policy tumhe rokegi. **Fix = manifest theek karo, policy delete NAHI** — jo rule tumhe rokta hai, wo kisi cheez ki hifazat kar raha hai ([INC-2996 ka sabak](../platform/)).
 
 **🧠 Recall:** Trivy gate pipeline mein kahan baithta hai? · leaked secret ka asli fix? · Kyverno `Enforce` vs `Audit`?
 
@@ -690,4 +690,4 @@ docker compose down -v
 
 ---
 
-*Connected: [Lab B · VANTA Boutique](32-lab-vanta.md) · [Helm Real World](28-helm-real-projects.md) · [K8s Complete Reference](30-k8s-complete-reference.md) · [The Production Simulator](platform/) · [Confidence Sprint](29-confidence-sprint.md)*
+*Connected: [Lab B · VANTA Boutique](32-lab-vanta.md) · [Helm Real World](28-helm-real-projects.md) · [K8s Complete Reference](30-k8s-complete-reference.md) · [The Production Simulator](../platform/) · [Confidence Sprint](29-confidence-sprint.md)*

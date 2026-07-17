@@ -314,7 +314,7 @@ bash scripts/rescue-k8s.sh           # recovery steps
 bash scripts/restart-kubelet.sh      # kubelet restart
 ```
 
-> ⭐ **Ye interview mein sona hai:** *"Maine node failure simulate kiya, pods doosre node pe reschedule hote dekhe, control-plane diagnose kiya, aur recover kiya."* Ye woh **war stories** hain jo 2.5-saal experience *dikhati* hain. (Aur [platform simulator](platform/) mein bhi ye incidents khel sakte ho.)
+> ⭐ **Ye interview mein sona hai:** *"Maine node failure simulate kiya, pods doosre node pe reschedule hote dekhe, control-plane diagnose kiya, aur recover kiya."* Ye woh **war stories** hain jo 2.5-saal experience *dikhati* hain. (Aur [platform simulator](../platform/) mein bhi ye incidents khel sakte ho.)
 
 **🧠 Recall:** self-heal kaun karta? · node gire to pods kahan jaate? · diagnose ka order?
 
@@ -337,7 +337,7 @@ cd terraform && terraform destroy
 - [ ] **S2.** **dev overlay** deploy karo; saare pods Ready; store **browser mein** kholo
 - [ ] **S3.** frontend pod se cartservice ko **DNS naam se** call karke prove karo service discovery chalti hai
 - [ ] **S4.** frontend ko **source se** build karo (`:dev2` tag), cluster mein **bina registry ke** daalo, deployment pe chadhao, rollout complete dikhao
-- [ ] **S5.** **Break:** frontend Service ka selector bigado → store tootna chahiye → endpoints se **prove** karo kyun → fix ([sim ka INC-2915](platform/) yaad hai?)
+- [ ] **S5.** **Break:** frontend Service ka selector bigado → store tootna chahiye → endpoints se **prove** karo kyun → fix ([sim ka INC-2915](../platform/) yaad hai?)
 - [ ] **S6.** **Chaos:** ek pod maaro (self-heal dikhna), phir frontend ka memory limit itna girao ki **OOMKilled 137** aaye → `Reason:` field padho → theek karo
 - [ ] **S7.** staging vs prod overlay ka **render diff** nikaalo — bolo prod mein kya alag hai aur kyun
 - [ ] **S8.** Cleanup — cluster delete
@@ -397,4 +397,4 @@ cd terraform && terraform destroy
 
 ---
 
-*Connected: [Lab A · BillFree](31-lab-billfree.md) · [Ansible decision guide](03-M2-ansible.md) · [K8s Complete Reference](30-k8s-complete-reference.md) · [Chaos (Gauntlet)](25-production-gauntlet-chaos.md) · [The Production Simulator](platform/)*
+*Connected: [Lab A · BillFree](31-lab-billfree.md) · [Ansible decision guide](03-M2-ansible.md) · [K8s Complete Reference](30-k8s-complete-reference.md) · [Chaos (Gauntlet)](25-production-gauntlet-chaos.md) · [The Production Simulator](../platform/)*

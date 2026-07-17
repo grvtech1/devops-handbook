@@ -150,7 +150,7 @@ Every module tells you exactly **which arrow it owns** and **what it hands to th
 | [22](22-command-cheatsheets.md) | **Command Cheat-Sheets & Labs** | The "terminal-open" muscle-memory reference: Git · Docker · kubectl · Ansible · Terraform · ArgoCD · **Jenkins** — commands, mini-labs, and interview one-liners |
 | [15](15-roadmap-M11-M18.md) | **Principal Track roadmap (M11–M18)** | Incident response, progressive delivery, distributed systems, security, FinOps, platform engineering |
 | [16](16-reference-appendix.md) | **Reference Appendix** | Glossary (80+ terms), error→cause reflex table, troubleshooting quick-ref, sizing quick-ref, command cheat-sheets |
-| [17](17-flashcards.md) | **Flashcard deck** | Every module's must-remember Q→A in Hinglish — Anki-importable, for daily spaced repetition (see [§0.1](#01-how-to-remember-this-for-life--the-spaced-review-system)) |
+| [17](17-flashcards.md) | **Flashcard deck** | Every module's must-remember Q→A in Hinglish — Anki-importable, for daily spaced repetition (see [§0.1](#01-how-to-remember-this-for-life-the-spaced-review-system)) |
 | [18](18-career-job-ready.md) | **Career / Job-Ready** | Turn the handbook into a job: portfolio, resume bullets, interview scripts, 2-week sprint, salary ranges |
 
 ### Part VI — The Production Gauntlet (build → break → fix)
