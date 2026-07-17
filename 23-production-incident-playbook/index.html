@@ -3794,192 +3794,192 @@
 <tr>
 <td>Pod stuck <code>CrashLoopBackOff</code></td>
 <td>Bad image, config, crash, OOM</td>
-<td><a href="#a1--crashloopbackoff">A1 — CrashLoopBackOff</a></td>
+<td><a href="#a1-crashloopbackoff">A1 — CrashLoopBackOff</a></td>
 </tr>
 <tr>
 <td>Pod stuck <code>ImagePullBackOff</code></td>
 <td>Registry auth, bad tag</td>
-<td><a href="#a2--imagepullbackoff--errimagepull">A2 — ImagePullBackOff</a></td>
+<td><a href="#a2-imagepullbackoff-errimagepull">A2 — ImagePullBackOff</a></td>
 </tr>
 <tr>
 <td>Pod stuck <code>Pending</code> / <code>Unschedulable</code></td>
 <td>Resources, taints, PVC</td>
-<td><a href="#a3--pod-pending--unschedulable">A3 — Pod Pending</a></td>
+<td><a href="#a3-pod-pending-unschedulable">A3 — Pod Pending</a></td>
 </tr>
 <tr>
 <td>Pod shows <code>OOMKilled</code></td>
 <td>Memory limit too low or leak</td>
-<td><a href="#a4--oomkilled">A4 — OOMKilled</a></td>
+<td><a href="#a4-oomkilled">A4 — OOMKilled</a></td>
 </tr>
 <tr>
 <td>Pod stuck <code>Terminating</code></td>
 <td>Finalizers, graceful shutdown</td>
-<td><a href="#a5--pod-stuck-terminating">A5 — Pod stuck Terminating</a></td>
+<td><a href="#a5-pod-stuck-terminating">A5 — Pod stuck Terminating</a></td>
 </tr>
 <tr>
 <td>Users get 502 / 503 / 504</td>
 <td>LB → Ingress → Service → Pod</td>
-<td><a href="#b1--502--503--504-gateway-errors">B1 — 502/503/504 errors</a></td>
+<td><a href="#b1-502-503-504-gateway-errors">B1 — 502/503/504 errors</a></td>
 </tr>
 <tr>
 <td>Service has no endpoints</td>
 <td>Label mismatch, readiness failing</td>
-<td><a href="#b2--service-has-no-endpoints">B2 — No endpoints</a></td>
+<td><a href="#b2-service-has-no-endpoints">B2 — No endpoints</a></td>
 </tr>
 <tr>
 <td>DNS not resolving inside cluster</td>
 <td>CoreDNS, wrong name/namespace</td>
-<td><a href="#b3--dns-resolution-failing">B3 — DNS resolution failing</a></td>
+<td><a href="#b3-dns-resolution-failing">B3 — DNS resolution failing</a></td>
 </tr>
 <tr>
 <td>Connection refused between services</td>
 <td>Wrong port, NetworkPolicy, SG</td>
-<td><a href="#b4--connection-refused--timeout-between-services">B4 — Connection refused / timeout</a></td>
+<td><a href="#b4-connection-refused-timeout-between-services">B4 — Connection refused / timeout</a></td>
 </tr>
 <tr>
 <td>Ingress returns 404 or TLS error</td>
 <td>Host/path mismatch, cert expired</td>
-<td><a href="#b5--ingress-404--tls-errors">B5 — Ingress 404 / TLS error</a></td>
+<td><a href="#b5-ingress-404-tls-errors">B5 — Ingress 404 / TLS error</a></td>
 </tr>
 <tr>
 <td>Rollout stuck, not progressing</td>
 <td>New pods failing readiness</td>
-<td><a href="#c1--rollout-stuck--not-progressing">C1 — Rollout stuck</a></td>
+<td><a href="#c1-rollout-stuck-not-progressing">C1 — Rollout stuck</a></td>
 </tr>
 <tr>
 <td>Bad deploy is live, users affected</td>
 <td>Need rollback now</td>
-<td><a href="#c2--bad-deploy-live--rollback-drill">C2 — Bad deploy rollback</a></td>
+<td><a href="#c2-bad-deploy-live-rollback-drill">C2 — Bad deploy rollback</a></td>
 </tr>
 <tr>
 <td>Config/Secret change not visible</td>
 <td>Pod not restarted</td>
-<td><a href="#c3--configsecret-change-not-applied">C3 — Config change not applied</a></td>
+<td><a href="#c3-configsecret-change-not-applied">C3 — Config change not applied</a></td>
 </tr>
 <tr>
 <td>Node <code>NotReady</code></td>
 <td>kubelet down, disk/memory pressure</td>
-<td><a href="#d1--node-notready">D1 — Node NotReady</a></td>
+<td><a href="#d1-node-notready">D1 — Node NotReady</a></td>
 </tr>
 <tr>
 <td>Disk full on node or PVC</td>
 <td>Log growth, big files, inodes</td>
-<td><a href="#d2--disk-full">D2 — Disk full</a></td>
+<td><a href="#d2-disk-full">D2 — Disk full</a></td>
 </tr>
 <tr>
 <td>High CPU / high latency</td>
 <td>CPU throttling, missing HPA</td>
-<td><a href="#d3--high-cpu--high-latency">D3 — High CPU / latency</a></td>
+<td><a href="#d3-high-cpu-high-latency">D3 — High CPU / latency</a></td>
 </tr>
 <tr>
 <td>Unexpected cloud cost spike</td>
 <td>Idle resources, orphaned LBs</td>
-<td><a href="#d4--cost-spike">D4 — Cost spike</a></td>
+<td><a href="#d4-cost-spike">D4 — Cost spike</a></td>
 </tr>
 <tr>
 <td>PVC stuck <code>Pending</code></td>
 <td>No StorageClass, zone mismatch</td>
-<td><a href="#e1--pvc-stuck-pending">E1 — PVC stuck Pending</a></td>
+<td><a href="#e1-pvc-stuck-pending">E1 — PVC stuck Pending</a></td>
 </tr>
 <tr>
 <td>Volume won't attach / Multi-Attach</td>
 <td>EBS + pod rescheduled to other AZ</td>
-<td><a href="#e2--volume-wont-attach--multi-attach-error">E2 — Volume attach / Multi-Attach error</a></td>
+<td><a href="#e2-volume-wont-attach-multi-attach-error">E2 — Volume attach / Multi-Attach error</a></td>
 </tr>
 <tr>
 <td>Accidental data loss / PVC deleted</td>
 <td><code>reclaimPolicy: Delete</code></td>
-<td><a href="#e3--accidental-data-loss">E3 — Accidental data loss</a></td>
+<td><a href="#e3-accidental-data-loss">E3 — Accidental data loss</a></td>
 </tr>
 <tr>
 <td>PVC stuck <code>Terminating</code> / namespace won't delete</td>
 <td><code>pvc-protection</code> finalizer — a pod still mounts it</td>
-<td><a href="#e4--pvc-stuck-terminating">E4 — PVC stuck Terminating</a></td>
+<td><a href="#e4-pvc-stuck-terminating">E4 — PVC stuck Terminating</a></td>
 </tr>
 <tr>
 <td>CI build fails / flaky tests</td>
 <td>Non-determinism, cache, resources</td>
-<td><a href="#f1--build-fails--flaky-tests">F1 — Build fails / flaky tests</a></td>
+<td><a href="#f1-build-fails-flaky-tests">F1 — Build fails / flaky tests</a></td>
 </tr>
 <tr>
 <td>Image push denied in CI</td>
 <td>Registry auth, expired token</td>
-<td><a href="#f2--image-push-denied">F2 — Image push denied</a></td>
+<td><a href="#f2-image-push-denied">F2 — Image push denied</a></td>
 </tr>
 <tr>
 <td>Trivy blocks build on CVE</td>
 <td>Vulnerable base image or dep</td>
-<td><a href="#f3--trivy-blocks-the-build-on-a-cve">F3 — Trivy CVE block</a></td>
+<td><a href="#f3-trivy-blocks-the-build-on-a-cve">F3 — Trivy CVE block</a></td>
 </tr>
 <tr>
 <td>Wrong image running in cluster</td>
 <td><code>latest</code> + stale cache</td>
-<td><a href="#f4--wrong-image-running">F4 — Wrong image running</a></td>
+<td><a href="#f4-wrong-image-running">F4 — Wrong image running</a></td>
 </tr>
 <tr>
 <td>Argo CD app stuck <code>OutOfSync</code></td>
 <td>Immutable field, hook failure</td>
-<td><a href="#g1--argo-cd-app-outsync-stuck">G1 — Argo OutOfSync stuck</a></td>
+<td><a href="#g1-argo-cd-app-outofsync-stuck">G1 — Argo OutOfSync stuck</a></td>
 </tr>
 <tr>
 <td>Argo CD reverting manual changes</td>
 <td>Self-heal is working as designed</td>
-<td><a href="#g2--selfheal-reverting-a-legitimate-change">G2 — SelfHeal reverting changes</a></td>
+<td><a href="#g2-selfheal-reverting-a-legitimate-change">G2 — SelfHeal reverting changes</a></td>
 </tr>
 <tr>
 <td>Terraform state lock stuck</td>
 <td>DynamoDB lock left by killed run</td>
-<td><a href="#h1--state-lock-stuck">H1 — State lock stuck</a></td>
+<td><a href="#h1-state-lock-stuck">H1 — State lock stuck</a></td>
 </tr>
 <tr>
 <td>Terraform plan shows unexpected drift</td>
 <td>Console click changed reality</td>
-<td><a href="#h2--drift">H2 — Drift</a></td>
+<td><a href="#h2-drift">H2 — Drift</a></td>
 </tr>
 <tr>
 <td>Terraform <code>destroy</code> blocked</td>
 <td><code>prevent_destroy</code> lifecycle rule</td>
-<td><a href="#h3--accidentalblocked-destroy">H3 — Blocked destroy</a></td>
+<td><a href="#h3-accidentalblocked-destroy">H3 — Blocked destroy</a></td>
 </tr>
 <tr>
 <td>Terraform state lost / corrupted</td>
 <td>Backend issue, manual edit</td>
-<td><a href="#h4--state-lost--corrupted">H4 — State lost / corrupted</a></td>
+<td><a href="#h4-state-lost-corrupted">H4 — State lost / corrupted</a></td>
 </tr>
 <tr>
 <td>AWS connection times out</td>
 <td>Security Group not opened</td>
-<td><a href="#i1--connection-times-out-aws">I1 — Connection timeout (AWS)</a></td>
+<td><a href="#i1-connection-times-out-aws">I1 — Connection timeout (AWS)</a></td>
 </tr>
 <tr>
 <td>AWS <code>AccessDenied</code> error</td>
 <td>Missing IAM policy, wrong role</td>
-<td><a href="#i2--iam-accessdenied">I2 — IAM AccessDenied</a></td>
+<td><a href="#i2-iam-accessdenied">I2 — IAM AccessDenied</a></td>
 </tr>
 <tr>
 <td>TLS certificate expired</td>
 <td>Let's Encrypt not renewing</td>
-<td><a href="#i3--tls-certificate-expired">I3 — TLS cert expired</a></td>
+<td><a href="#i3-tls-certificate-expired">I3 — TLS cert expired</a></td>
 </tr>
 <tr>
 <td>LB targets unhealthy</td>
 <td>Health-check mismatch, SG</td>
-<td><a href="#i4--lb-targets-unhealthy">I4 — LB targets unhealthy</a></td>
+<td><a href="#i4-lb-targets-unhealthy">I4 — LB targets unhealthy</a></td>
 </tr>
 <tr>
 <td>"Too many connections" / pool exhausted</td>
 <td>No connection pooling, leaks</td>
-<td><a href="#j1--too-many-connections">J1 — Too many connections</a></td>
+<td><a href="#j1-too-many-connections">J1 — Too many connections</a></td>
 </tr>
 <tr>
 <td>Slow queries / high DB CPU</td>
 <td>Missing index, N+1 queries</td>
-<td><a href="#j2--slow-queries--high-db-cpu">J2 — Slow queries</a></td>
+<td><a href="#j2-slow-queries-high-db-cpu">J2 — Slow queries</a></td>
 </tr>
 <tr>
 <td>DB failover / replica lag</td>
 <td>Multi-AZ RDS failover, replication</td>
-<td><a href="#j3--failover--replica-lag">J3 — Failover / replica lag</a></td>
+<td><a href="#j3-failover-replica-lag">J3 — Failover / replica lag</a></td>
 </tr>
 </tbody>
 </table>
@@ -4016,7 +4016,7 @@
 </tr>
 <tr>
 <td>OOM at startup (too low limit)</td>
-<td><code>Reason: OOMKilled</code> in describe — see <a href="#a4--oomkilled">A4</a></td>
+<td><code>Reason: OOMKilled</code> in describe — see <a href="#a4-oomkilled">A4</a></td>
 </tr>
 </tbody>
 </table>
@@ -4047,7 +4047,7 @@
 - <strong>App crash:</strong> fix the bug, rebuild, push a new image tag, update the manifest.
 - <strong>Missing Secret/ConfigMap:</strong> create the missing resource (<code>kubectl create secret generic ...</code>), then <code>kubectl rollout restart deployment/&lt;name&gt;</code>.
 - <strong>Liveness probe too aggressive:</strong> increase <code>initialDelaySeconds</code> or <code>failureThreshold</code> in the manifest to give the app time to start.
-- <strong>OOM at startup:</strong> raise <code>resources.limits.memory</code> — see <a href="#a4--oomkilled">A4</a>.</p>
+- <strong>OOM at startup:</strong> raise <code>resources.limits.memory</code> — see <a href="#a4-oomkilled">A4</a>.</p>
 <p>🛡️ <strong>Prevent:</strong>
 - Use <code>startupProbe</code> for slow-starting apps so the liveness probe doesn't fire too early.
 - Always mount Secrets/ConfigMaps as <code>optional: false</code> so a missing resource surfaces at deploy time, not runtime.
@@ -4143,7 +4143,7 @@
 <td>Events: <code>had taint ... that the pod didn't tolerate</code></td>
 </tr>
 <tr>
-<td>PVC not bound (see <a href="#e1--pvc-stuck-pending">E1</a>)</td>
+<td>PVC not bound (see <a href="#e1-pvc-stuck-pending">E1</a>)</td>
 <td>Events: <code>persistentvolumeclaim not found</code></td>
 </tr>
 <tr>
@@ -4279,7 +4279,7 @@
 <tr>
 <td>Load Balancer</td>
 <td>503 from LB, no traffic reaching cluster</td>
-<td>LB targets unhealthy — see <a href="#i4--lb-targets-unhealthy">I4</a></td>
+<td>LB targets unhealthy — see <a href="#i4-lb-targets-unhealthy">I4</a></td>
 </tr>
 <tr>
 <td>Ingress Controller</td>
@@ -4289,7 +4289,7 @@
 <tr>
 <td>Service→Pod routing</td>
 <td>502, endpoints empty</td>
-<td>Label selector mismatch — see <a href="#b2--service-has-no-endpoints">B2</a></td>
+<td>Label selector mismatch — see <a href="#b2-service-has-no-endpoints">B2</a></td>
 </tr>
 <tr>
 <td>Pod readiness</td>
@@ -4353,7 +4353,7 @@
 <blockquote>
 <p>🛠️ <strong>Fix:</strong>
 - <strong>Label mismatch:</strong> edit the Service selector (<code>kubectl edit service &lt;name&gt;</code>) or add/fix the label on the Deployment template (<code>kubectl edit deployment &lt;name&gt;</code> → <code>spec.template.metadata.labels</code>).
-- <strong>Readiness probe failing:</strong> investigate why the probe fails (app not healthy, wrong path/port — see <a href="#b1--502--503--504-gateway-errors">B1</a>).</p>
+- <strong>Readiness probe failing:</strong> investigate why the probe fails (app not healthy, wrong path/port — see <a href="#b1-502-503-504-gateway-errors">B1</a>).</p>
 <p>🛡️ <strong>Prevent:</strong> Use a linting tool (e.g., <code>kube-linter</code>) in CI that catches Service selector / Pod label mismatches before deployment.</p>
 </blockquote>
 <hr />
@@ -4474,7 +4474,7 @@
 <p>The rollout is stuck because <strong>new pods are not passing their readiness probe</strong>. The old pods are still running (Kubernetes protects you), but the rollout cannot complete.</p>
 <blockquote>
 <p>🛠️ <strong>Fix:</strong>
-- If new pods are crashing (CrashLoopBackOff): rollback immediately — see <a href="#c2--bad-deploy-live--rollback-drill">C2</a>, then fix the underlying issue.
+- If new pods are crashing (CrashLoopBackOff): rollback immediately — see <a href="#c2-bad-deploy-live-rollback-drill">C2</a>, then fix the underlying issue.
 - If pods are Pending (resources): free resources or scale the cluster first, then retry the rollout.
 - If the readiness probe path changed: fix the probe in the manifest and reapply.</p>
 <p>🛡️ <strong>Prevent:</strong> Set <code>progressDeadlineSeconds</code> to a value that matches your worst-case startup time. Use Argo Rollouts or Flagger for canary/blue-green deploys so a bad version never reaches 100% before validation.</p>
@@ -4570,7 +4570,7 @@
 </span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>df<span class="w"> </span>-h<span class="w">                            </span><span class="c1"># Disk usage — is a partition full?</span>
 </span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a>free<span class="w"> </span>-h<span class="w">                          </span><span class="c1"># Memory pressure?</span>
 </span></code></pre></div>
-<p><strong>Common causes:</strong> kubelet crashed (restart it); disk full on the node (see <a href="#d2--disk-full">D2</a>); node ran out of memory; network partition between node and control plane.</p>
+<p><strong>Common causes:</strong> kubelet crashed (restart it); disk full on the node (see <a href="#d2-disk-full">D2</a>); node ran out of memory; network partition between node and control plane.</p>
 <blockquote>
 <p>🛠️ <strong>Fix:</strong>
 - <strong>kubelet down:</strong> <code>systemctl restart kubelet</code>.
@@ -4840,7 +4840,7 @@
 <h3 id="e4-pvc-stuck-terminating">E4 — PVC stuck <code>Terminating</code><a class="headerlink" href="#e4-pvc-stuck-terminating" title="Permanent link">&para;</a></h3>
 <p><strong>Symptom:</strong> <code>kubectl delete pvc data-postgres-0</code> hangs, or returns and the PVC sits in <code>Terminating</code> forever. Namespace deletion also hangs (a namespace cannot finish deleting while a PVC in it will not go).</p>
 <blockquote>
-<p>⚠️ Different from <a href="#e1--pvc-stuck-pending">E1 (Pending)</a> — that one never bound. This one is bound, in use, and refusing to die.</p>
+<p>⚠️ Different from <a href="#e1-pvc-stuck-pending">E1 (Pending)</a> — that one never bound. This one is bound, in use, and refusing to die.</p>
 </blockquote>
 <p><strong>Diagnose:</strong></p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c1"># 1. Confirm state and look at the finalizer</span>
@@ -4887,10 +4887,10 @@ It "works" instantly — and that is the trap. You have removed the guard, <stro
 <li>Delete in dependency order — workload first, then its claims. For StatefulSets: <code>scale --replicas=0</code>, <em>then</em> delete PVCs.</li>
 <li>Remember StatefulSet PVCs <strong>outlive</strong> the StatefulSet by design (that is the whole point) — deleting the StatefulSet does not delete <code>data-postgres-0</code>. Cleanup is a separate, deliberate step.</li>
 <li>Before deleting a namespace, check for bound PVCs — one stuck PVC hangs the whole namespace deletion.</li>
-<li>Confirm <code>reclaimPolicy</code> before any of this: with <code>Delete</code>, a successful PVC deletion also <strong>destroys the EBS volume and its data</strong> (see <a href="#e3--accidental-data-loss">E3</a>).</li>
+<li>Confirm <code>reclaimPolicy</code> before any of this: with <code>Delete</code>, a successful PVC deletion also <strong>destroys the EBS volume and its data</strong> (see <a href="#e3-accidental-data-loss">E3</a>).</li>
 </ol>
 </blockquote>
-<p>Cross-link: <a href="#e1--pvc-stuck-pending">E1 — PVC stuck Pending</a> · <a href="#e3--accidental-data-loss">E3 — Accidental data loss</a> · <a href="#a5--pod-stuck-terminating">A5 — Pod stuck Terminating</a></p>
+<p>Cross-link: <a href="#e1-pvc-stuck-pending">E1 — PVC stuck Pending</a> · <a href="#e3-accidental-data-loss">E3 — Accidental data loss</a> · <a href="#a5-pod-stuck-terminating">A5 — Pod stuck Terminating</a></p>
 <hr />
 <h2 id="f-cicd-pipeline">F · CI/CD pipeline<a class="headerlink" href="#f-cicd-pipeline" title="Permanent link">&para;</a></h2>
 <h3 id="f1-build-fails-flaky-tests">F1 — Build fails / flaky tests<a class="headerlink" href="#f1-build-fails-flaky-tests" title="Permanent link">&para;</a></h3>

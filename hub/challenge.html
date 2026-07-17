@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PROD · Rapid Fire — react, don't read</title>
+<style>
+  :root{
+    --bg:#08080D;--card:#14141F;--card2:#1B1B29;--line:#242436;--line2:#33334d;
+    --tx:#D6D9F0;--dim:#7A7E9E;--bright:#F4F5FF;
+    --violet:#8B5CF6;--violet2:#A78BFA;--v-bg:rgba(139,92,246,.14);
+    --cyan:#22D3EE;--c-bg:rgba(34,211,238,.13);
+    --green:#34D399;--g-bg:rgba(52,211,153,.16);--g-br:rgba(52,211,153,.5);
+    --amber:#FBBF24;--a-bg:rgba(251,191,36,.13);
+    --rose:#FB7185;--r-bg:rgba(251,113,133,.16);--r-br:rgba(251,113,133,.5);--flame:#FF6B35;
+    --mono:'JetBrains Mono','SF Mono','Consolas',monospace;--sans:system-ui,-apple-system,'Segoe UI',sans-serif;
+  }
+  :root[data-theme="light"]{
+    --bg:#F4F5FB;--card:#FFFFFF;--card2:#F3F4FC;--line:#E0E2F0;--line2:#CBCEE4;
+    --tx:#2A2D45;--dim:#6E7290;--bright:#12132A;
+    --v-bg:rgba(139,92,246,.10);--c-bg:rgba(20,160,190,.10);--g-bg:rgba(16,150,100,.13);--a-bg:rgba(180,130,10,.10);--r-bg:rgba(200,60,90,.13);
+    --cyan:#0891B2;--green:#0E9D68;--amber:#B57F0A;--rose:#D6446A;--violet2:#6D4BD6;
+  }
+  @media(prefers-color-scheme:light){:root:not([data-theme="dark"]){
+    --bg:#F4F5FB;--card:#FFFFFF;--card2:#F3F4FC;--line:#E0E2F0;--line2:#CBCEE4;
+    --tx:#2A2D45;--dim:#6E7290;--bright:#12132A;
+    --v-bg:rgba(139,92,246,.10);--c-bg:rgba(20,160,190,.10);--g-bg:rgba(16,150,100,.13);--a-bg:rgba(180,130,10,.10);--r-bg:rgba(200,60,90,.13);
+    --cyan:#0891B2;--green:#0E9D68;--amber:#B57F0A;--rose:#D6446A;--violet2:#6D4BD6;
+  }}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--tx);font-family:var(--sans);-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+  a{color:var(--cyan);text-decoration:none}
+
+  .top{display:flex;align-items:center;gap:14px;padding:13px 22px;border-bottom:1px solid var(--line)}
+  .logo{font-family:var(--mono);font-weight:800;font-size:16px;color:var(--bright)}
+  .logo span{color:var(--flame)}
+  .top .back{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--dim)}
+  .top .streak{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--flame)}
+
+  .stage{flex:1;display:flex;align-items:center;justify-content:center;padding:24px 20px}
+  .card{width:100%;max-width:660px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:0;overflow:hidden}
+
+  /* progress + hud */
+  .hud{display:flex;align-items:center;gap:10px;padding:16px 22px 0}
+  .dots{display:flex;gap:5px;flex:1}
+  .dot{height:5px;flex:1;background:var(--line);border-radius:5px;transition:.3s}
+  .dot.ok{background:var(--green)}.dot.no{background:var(--rose)}.dot.now{background:var(--cyan)}
+  .hud .sc{font-family:var(--mono);font-size:12px;color:var(--dim)}
+
+  .qwrap{padding:22px 26px 26px}
+  .qtag{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:4px 10px;border-radius:20px;background:var(--v-bg);color:var(--violet2);margin-bottom:14px}
+  .qtext{font-size:19px;line-height:1.4;color:var(--bright);font-weight:600;margin-bottom:6px;text-wrap:balance}
+  .qtext code,.opt code,.exp code{font-family:var(--mono);font-size:.88em;background:var(--card2);padding:1px 6px;border-radius:5px;color:var(--cyan)}
+  pre.term{background:#07070c;border:1px solid var(--line2);border-radius:10px;padding:12px 14px;margin:14px 0 4px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.7;color:#c8d0e0}
+  pre.term .er{color:var(--rose)}pre.term .hl{color:var(--amber)}pre.term .cm{color:#5a6078}pre.term .p{color:var(--green)}
+
+  .opts{display:flex;flex-direction:column;gap:10px;margin-top:18px}
+  .opt{display:flex;align-items:flex-start;gap:12px;text-align:left;background:var(--card2);border:1.5px solid var(--line);border-radius:12px;padding:13px 15px;font-size:14.5px;color:var(--tx);cursor:pointer;transition:.12s;font-family:inherit;line-height:1.4}
+  .opt:hover:not(:disabled){border-color:var(--line2);transform:translateX(2px)}
+  .opt:disabled{cursor:default}
+  .opt .key{width:22px;height:22px;border-radius:6px;background:var(--card);border:1px solid var(--line2);display:grid;place-items:center;font-family:var(--mono);font-size:12px;font-weight:700;flex-shrink:0;color:var(--dim)}
+  .opt.correct{border-color:var(--g-br);background:var(--g-bg)}.opt.correct .key{background:var(--green);color:#04140c;border-color:var(--green)}
+  .opt.wrong{border-color:var(--r-br);background:var(--r-bg)}.opt.wrong .key{background:var(--rose);color:#180509;border-color:var(--rose)}
+  .opt.dim{opacity:.5}
+
+  .exp{margin-top:16px;border-radius:12px;padding:14px 16px;font-size:14px;line-height:1.55;display:none}
+  .exp.show{display:block;animation:pop .25s ease}
+  @keyframes pop{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .exp.right{background:var(--g-bg);border:1px solid var(--g-br)}
+  .exp.wrongx{background:var(--r-bg);border:1px solid var(--r-br)}
+  .exp .verdict{font-weight:800;margin-bottom:5px;display:flex;align-items:center;gap:8px}
+  .exp.right .verdict{color:var(--green)}.exp.wrongx .verdict{color:var(--rose)}
+  .exp b{color:var(--bright)}
+
+  .foot{display:flex;align-items:center;gap:12px;margin-top:18px}
+  .next{margin-left:auto;background:linear-gradient(135deg,var(--violet),var(--cyan));color:#fff;border:none;border-radius:11px;padding:12px 26px;font-size:14.5px;font-weight:700;cursor:pointer;display:none}
+  .next.show{display:inline-block}
+  .hint{font-family:var(--mono);font-size:11.5px;color:var(--dim)}
+
+  /* start + end screens */
+  .screen{padding:40px 30px;text-align:center}
+  .screen h1{font-size:28px;color:var(--bright);font-weight:800;margin-bottom:10px;letter-spacing:-.02em}
+  .screen p{font-size:15px;color:var(--dim);max-width:44ch;margin:0 auto 22px}
+  .big{font-family:var(--mono);font-size:56px;font-weight:800;line-height:1;margin:8px 0}
+  .big.good{color:var(--green)}.big.mid{color:var(--amber)}.big.bad{color:var(--rose)}
+  .go{background:linear-gradient(135deg,var(--violet),var(--cyan));color:#fff;border:none;border-radius:12px;padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer}
+  .weak{text-align:left;max-width:420px;margin:20px auto 0;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px 18px}
+  .weak h4{font-size:12px;font-family:var(--mono);color:var(--amber);letter-spacing:.08em;text-transform:uppercase;margin-bottom:9px}
+  .weak a{display:block;font-size:13.5px;padding:3px 0;color:var(--tx)}
+  .weak a:hover{color:var(--cyan)}
+  .modes{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:8px}
+  .mode{background:var(--card2);border:1px solid var(--line2);color:var(--tx);border-radius:10px;padding:9px 16px;font-size:13px;cursor:pointer;font-family:inherit}
+  .mode:hover{border-color:var(--cyan)}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="logo">PROD <span>·</span> Rapid Fire</div>
+  <div class="streak" id="hotStreak"></div>
+  <a class="back" href="index.html">← hub</a>
+</div>
+
+<div class="stage">
+  <div class="card" id="card"></div>
+</div>
+
+<script>
+/* ============ QUESTION BANK ============ */
+/* Drawn from the real handbook — including the exact myths we debunked.
+   Each: tag, q (html), optional term (pre block), opts[], correct index, exp (html), ref [label,url] */
+const Q = [
+ {tag:'predict output', q:'Ek Deployment <code>frontend</code> hai, <code>replicas: 3</code>. Tune chalaya <code>kubectl delete pod frontend-a8f2</code>. 5 second baad <code>kubectl get pods</code> mein kya?',
+  opts:['2 pods — ek kam ho gaya','3 pods, aur naam <code>frontend-a8f2</code> wapas aa gaya','3 pods, par ek ka naam NAYA hai (frontend-x9k1)','0 pods — poora Deployment gir gaya'],
+  correct:2, exp:'Pod <b>transfer/wapas nahi</b> hota — wo marta hai, aur ReplicaSet ek <b>naya</b> banata hai (naya naam, naya IP). Desired=3, actual=2 → controller gap bharता hai. Yehi self-healing hai.', ref:['K8s Core','../05-M4-kubernetes-core/']},
+
+ {tag:'diagnose', q:'Pod CrashLoop kar raha hai, <code>Exit Code: 137</code>. Sabse pehla sahi kadam?',
+  opts:['<code>memory.limits</code> turant badha do — 137 = OOM','<code>describe</code> mein <code>Reason:</code> field padho pehle','Node reboot kar do','Replicas badha do'],
+  correct:1, exp:'137 = SIGKILL — iske <b>do baap</b> hain. <code>Reason: OOMKilled</code> = RAM limit (kernel). <code>Reason: Error</code> = kubelet ne probe-fail pe maara. Exit code se andaaza mat lagao — <b>Reason padho</b>, warna aadhe waqt galat fix karoge.', ref:['Sizing & 137','../06-M5-sizing-and-cost/']},
+
+ {tag:'spot the myth', q:'Inme se kaunsa statement <b>GALAT</b> hai?',
+  opts:['requests scheduler ke liye hai (placement)','limits kernel enforce karta hai (cgroups)','requests bhi enforce hote hain — app usse zyada nahi le sakta','memory limit cross → SIGKILL; CPU limit cross → throttle'],
+  correct:2, exp:'<b>requests enforce NAHI hote.</b> Wo sirf scheduler ke liye ek number hai (booking). App requests se zyada aaram se le sakta hai agar node pe jagah hai. Sirf <b>limits</b> asli deewar hai (cgroups: <code>memory.max</code>, <code>cpu.max</code>).', ref:['Resources deep-dive','../06-M5-sizing-and-cost/']},
+
+ {tag:'diagnose', q:'Pod <code>Pending</code> hai. Events: <code>volume node affinity conflict</code>. Ye kis layer ka masla hai?',
+  opts:['Pod — requests kam karo','Node/Infra — us AZ mein node chahiye (Terraform)','Service — selector theek karo','RBAC — permission do'],
+  correct:1, exp:'EBS volume <b>ek AZ mein bandha</b> hota hai. PV us zone maangta hai; agar wahan node nahi to pod kabhi schedule nahi hoga — chahe baaki nodes khaali hon. Fix Kubernetes mein nahi, <b>Terraform</b> mein (us AZ mein capacity lao). ⚠️ PVC delete <b>mat</b> karna — data gaya.', ref:['Incident Playbook','../23-production-incident-playbook/']},
+
+ {tag:'spot the myth', q:'"Node bhar gaya, RAM khatam. Kaun pehle jaata hai?" — kaunsa jawab <b>galat shabd</b> use karta hai?',
+  opts:['kubelet BestEffort pods ko pehle evict karta hai','QoS order: BestEffort → Burstable → Guaranteed','OOM killer BestEffort ko pehle evict karta hai','Guaranteed pods sabse safe hote hain'],
+  correct:2, exp:'<b>"OOM killer evict" = galat mixup.</b> Node-pressure pe <b>kubelet EVICTS</b> (graceful, QoS order). <b>OOM killer</b> tab aata hai jab ek container apni <i>apni</i> limit todta hai (SIGKILL). Do alag mechanism — interview mein ye farak poocha jaata hai.', ref:['Interview Bank','../14-interview-bank/']},
+
+ {tag:'taints', q:'Node pe <code>workload=batch:NoSchedule</code> taint hai. Pod ko wahan chalane ke liye kya chahiye?',
+  opts:['Sirf toleration — wo pod ko attract kar legi','Sirf nodeAffinity','Toleration (permission) + affinity (attraction) — dono','Kuch nahi, taint ignore ho jaayega'],
+  correct:2, exp:'<b>Toleration sirf PERMIT karti hai, ATTRACT nahi.</b> Toleration se pod wahan <i>ja sakta</i> hai — par jaayega hi, ye guarantee nahi. Actually bhejne ke liye <code>nodeAffinity</code> chahiye. Taint repels · Toleration permits · Affinity attracts — teen alag kaam.', ref:['K8s Reference','../30-k8s-complete-reference/']},
+
+ {tag:'predict output', q:'<code>kubectl get pods</code>: <code>migrate-abc</code> ka status <code>Completed</code> / <code>Exited (0)</code>. Chinta ki baat?',
+  opts:['Haan — koi pod crash ho gaya','Nahi — ye ek Job hai, kaam karke khatam hua (sahi behaviour)','Haan — Deployment down hai','Restart karna padega'],
+  correct:1, exp:'Ye ek <b>Job</b> hai (DB migration) — chala, kaam poora kiya, <b>exit 0 = success</b>, khatam. Deployment "hamesha chalta" — Job "kaam karke rukta". <code>Exited (0)</code> yahan bilkul sahi hai. Ghabrana tab jab exit non-zero ho.', ref:['K8s Reference','../30-k8s-complete-reference/']},
+
+ {tag:'GitOps', q:'ArgoCD <code>selfHeal: true</code>. Tune <code>kubectl scale --replicas=10</code> kiya (Git mein 3 likha hai). Kya hoga?',
+  opts:['10 pods hamesha ke liye reh jayenge','ArgoCD wapas 3 pe le aayega — Git source of truth','ArgoCD Git ko 10 kar dega','Cluster crash ho jaayega'],
+  correct:1, exp:'selfHeal drift detect karke cluster ko <b>Git jaisa</b> wapas kar deta hai. Manual <code>kubectl</code> change temporary hai — permanent change sirf Git se. "Cluster galat = Git galat" nahi; "Git sahi, cluster ko theek karo".', ref:['GitOps','../08-M7-gitops/']},
+
+ {tag:'spot the myth', q:'CI/CD ke baare mein — kaunsa <b>galat</b> hai?',
+  opts:['CI = test + build automatic','Continuous Deployment = prod tak, koi human gate nahi','Auto-syncing ArgoCD = Continuous Delivery','Continuous Delivery = artifact ready, par prod pe human approval'],
+  correct:2, exp:'Auto-syncing ArgoCD (koi human gate nahi) = Continuous <b>Deployment</b>, Delivery nahi. Delivery ka matlab hai prod se pehle <b>human approval</b>. Gate hai → Delivery. Gate nahi → Deployment. Ye classic interview trap hai.', ref:['CI/CD','../07-M6-cicd/']},
+
+ {tag:'spot the myth', q:'AWS sizing: kaunsa statement <b>galat</b> hai?',
+  opts:['t3.micro = 2 vCPU / 1 GiB','t3.micro = 1 vCPU / 1 GiB','T3 family burstable hai (CPU credits)','kubeadm ko ~2 GiB RAM chahiye, t3.micro kam padta hai'],
+  correct:1, exp:'<b>t3.micro = 2 vCPU</b> (poori T3 family 2 vCPU hai), 1 GiB RAM. Uski dikkat <b>RAM aur CPU credits</b> hai, core count nahi. "t3.micro = 1 vCPU" interview mein turant pakda jaata hai.', ref:['Interview Bank','../14-interview-bank/']},
+
+ {tag:'stateless/stateful', q:'Tumne <b>Go</b> mein ek API likhi jo Postgres se data padhti hai. Ye kaunsi hai?',
+  opts:['Stateful — kyunki DB use karti hai','Stateless — state DB (bahar) mein hai, pod ke andar nahi','Depends on language (Go = stateless)','Dono, half-stateful'],
+  correct:1, exp:'<b>State ki JAGAH decide karti hai, language nahi.</b> App DB se padhti hai par state <b>pod ke bahar</b> (DB mein) hai → pod disposable "cattle" → <b>stateless</b> (Deployment). Tum stateless app likhte ho aur stateful <i>systems</i> (Postgres/Redis) use karte ho.', ref:['K8s Core','../05-M4-kubernetes-core/']},
+
+ {tag:'spot the myth', q:'Kubernetes <b>Secret</b> ke baare mein — kaunsa galat?',
+  opts:['base64 encoding hai, encryption nahi','Secret ki asli value Git mein commit nahi karni','base64 secure hai — decode nahi ho sakta','RBAC se Secret ka access control hota hai'],
+  correct:2, exp:'base64 <b>1 second mein decode</b> ho jaata hai — koi security nahi, sirf encoding. Isliye asli value Git mein kabhi nahi (SealedSecrets/Vault/out-of-band). ConfigMap vs Secret ka farak security nahi — <i>intent</i> + RBAC + encryption-at-rest hai.', ref:['Confusions','../20-confusions-and-tradeoffs/']},
+
+ {tag:'diagnose', q:'Deploy pe har baar ~5s ka 502 spike. <code>maxUnavailable: 0</code> already set hai. Sabse likely cause?',
+  opts:['Replicas kam hain — badha do','Graceful shutdown nahi — pod SIGTERM pe turant marta jabki traffic aa raha','HPA down-scale kar raha','Readiness probe missing'],
+  correct:1, exp:'<code>maxUnavailable: 0</code> <b>pods</b> count karta hai, <b>requests</b> nahi. Pod delete pe SIGTERM aur endpoint-removal <b>saath</b> hote hain — endpoint hatne mein waqt lagta, tab tak dying pod ko traffic milta. Fix: <code>preStop: sleep</code> + app SIGTERM pe drain kare.', ref:['M9 Internals','../11-M9-advanced-k8s-internals/']},
+
+ {tag:'Helm vs Kustomize', q:'VANTA <b>Kustomize</b> use karta, BillFree <b>Helm</b>. Core farak?',
+  opts:['Kustomize purana, Helm naya','Kustomize = base + patches (no templating); Helm = templates + values','Dono same, bas naam alag','Kustomize sirf dev ke liye'],
+  correct:1, exp:'<b>Kustomize:</b> ek base YAML + overlay se sirf farak wali cheez <i>patch</i> karo (koi <code>{{ }}</code> nahi, kubectl mein built-in). <b>Helm:</b> template mein blanks, values.yaml se bharo (packaging + sharing). Chhota multi-env → Kustomize; bahut services/reuse → Helm.', ref:['Helm real world','../28-helm-real-projects/']},
+
+ {tag:'predict output', q:'kind node ke andar Docker hai hi nahi. <code>kubectl</code> ke bina, container ko <code>crictl stop &lt;id&gt;</code> se maara. 5s baad?',
+  opts:['Container hamesha ke liye gaya','Naya container aa gaya (naya ID) — kubelet le aaya','Poora node crash','kubectl error dega'],
+  correct:1, exp:'kubelet desired state maintain karta hai — runtime-level pe container maaro to bhi wo naya bana deta hai (<code>kubelet → CRI → containerd → runc</code>). Node pe Docker nahi hota; kubelet seedha <b>containerd</b> se baat karta hai. Isliye K8s ko Docker ki zaroorat nahi.', ref:['Confusions','../20-confusions-and-tradeoffs/']},
+];
+
+/* ============ STATE ============ */
+const HKEY='prod_hub_v1';
+let H={epDone:[],lore:[],streak:{count:0,last:''},drill:{date:'',steps:[false,false,false]},fi:0};
+try{const r=localStorage.getItem(HKEY);if(r)H=Object.assign(H,JSON.parse(r));}catch(e){}
+function saveH(){try{localStorage.setItem(HKEY,JSON.stringify(H));}catch(e){}}
+function today(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();}
+function bumpStreak(){const t=today();if(H.streak.last===t)return;const y=new Date();y.setDate(y.getDate()-1);const ye=y.getFullYear()+'-'+(y.getMonth()+1)+'-'+y.getDate();H.streak.count=(H.streak.last===ye)?H.streak.count+1:1;H.streak.last=t;}
+
+let round=[], idx=0, score=0, hot=0, answered=false, missed=[];
+const card=document.getElementById('card');
+
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor((i*9301+49297)%(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+// deterministic-ish shuffle by rotating start (avoids Math.random dependence, still varies by day)
+function pickRound(n){const start=(new Date().getDate()*3)%Q.length;const arr=[];for(let i=0;i<n;i++)arr.push(Q[(start+i*5)%Q.length]);return arr;}
+
+function start(n){
+  round=pickRound(n); idx=0; score=0; hot=0; missed=[]; answered=false;
+  document.getElementById('hotStreak').textContent='';
+  renderQ();
+}
+function renderStart(){
+  card.innerHTML=`<div class="screen">
+    <div style="font-size:44px;margin-bottom:6px">⚡</div>
+    <h1>Rapid Fire</h1>
+    <p>Padhna nahi — <b style="color:var(--tx)">react</b> karna. Har sawaal ka turant jawab + <b style="color:var(--tx)">kyun</b>. Galat? wahi sabse acche se yaad rahega. Keyboard: <code style="font-family:var(--mono)">1-4</code> answer, <code style="font-family:var(--mono)">Enter</code> next.</p>
+    <div class="modes">
+      <button class="mode" onclick="start(5)">⚡ Quick · 5</button>
+      <button class="mode" onclick="start(10)" style="border-color:var(--cyan)">🔥 Daily · 10</button>
+      <button class="mode" onclick="start(${Q.length})">💪 Full · ${Q.length}</button>
+    </div>
+    <p style="margin-top:20px;font-size:12.5px">🔥 current streak: ${H.streak.count} din</p>
+  </div>`;
+}
+function renderQ(){
+  answered=false;
+  const q=round[idx];
+  const dots=round.map((_,i)=>`<div class="dot ${i<idx?(missed.includes(i)?'no':'ok'):i===idx?'now':''}"></div>`).join('');
+  card.innerHTML=`
+    <div class="hud"><div class="dots">${dots}</div><div class="sc">${score}/${round.length} ✓</div></div>
+    <div class="qwrap">
+      <div class="qtag">◆ ${q.tag}</div>
+      <div class="qtext">${q.q}</div>
+      ${q.term?`<pre class="term">${q.term}</pre>`:''}
+      <div class="opts" id="opts">
+        ${q.opts.map((o,i)=>`<button class="opt" onclick="answer(${i})"><span class="key">${i+1}</span><span>${o}</span></button>`).join('')}
+      </div>
+      <div class="exp" id="exp"></div>
+      <div class="foot">
+        <span class="hint" id="hint">🔥 ${hot} in a row</span>
+        <button class="next" id="next" onclick="nextQ()">Next →</button>
+      </div>
+    </div>`;
+}
+function answer(i){
+  if(answered)return; answered=true;
+  const q=round[idx], correct=q.correct;
+  const opts=document.querySelectorAll('.opt');
+  opts.forEach((b,j)=>{b.disabled=true;
+    if(j===correct)b.classList.add('correct');
+    else if(j===i)b.classList.add('wrong');
+    else b.classList.add('dim');});
+  const exp=document.getElementById('exp');
+  const right=(i===correct);
+  if(right){score++;hot++;}else{hot=0;missed.push(idx);}
+  document.getElementById('hint').textContent=right?`🔥 ${hot} in a row`:'streak reset';
+  document.getElementById('hotStreak').textContent=hot>=3?('🔥 '+hot):'';
+  exp.className='exp show '+(right?'right':'wrongx');
+  exp.innerHTML=`<div class="verdict">${right?'✓ Sahi!':'✗ Galat — aur yahi yaad rahega'}</div>
+    ${q.exp} ${q.ref?`<div style="margin-top:8px;font-family:var(--mono);font-size:11.5px"><a href="${q.ref[1]}">📖 ${q.ref[0]} →</a></div>`:''}`;
+  document.getElementById('next').classList.add('show');
+  document.getElementById('next').textContent=(idx===round.length-1)?'See score →':'Next →';
+}
+function nextQ(){
+  if(!answered)return;
+  if(idx<round.length-1){idx++;renderQ();}
+  else renderEnd();
+}
+function renderEnd(){
+  const pct=Math.round(score/round.length*100);
+  const xp=score*15;
+  bumpStreak(); saveH();
+  const cls=pct>=80?'good':pct>=50?'mid':'bad';
+  const msg=pct>=80?'Solid. Ab isko <b>terminal pe</b> prove kar.':pct>=50?'Theek — par galat wale hi tera asli syllabus hain.':'Achha hua — jahan atka, wahi kal padhna hai.';
+  const weak=[...new Set(missed.map(i=>round[i]))].filter(q=>q.ref);
+  card.innerHTML=`<div class="screen">
+    <div style="font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.1em">ROUND COMPLETE</div>
+    <div class="big ${cls}">${score}/${round.length}</div>
+    <p>${msg}<br><span style="font-family:var(--mono);font-size:12px;color:var(--cyan)">+${xp} XP · 🔥 streak ${H.streak.count} din</span></p>
+    ${weak.length?`<div class="weak"><h4>⚠ Yahan atke — ye padho</h4>${weak.map(q=>`<a href="${q.ref[1]}">→ ${q.ref[0]} <span style="color:var(--dim)">(${q.tag})</span></a>`).join('')}</div>`:'<p style="color:var(--green)">🎯 Zero galat — clean round!</p>'}
+    <div class="modes" style="margin-top:24px">
+      <button class="mode" onclick="start(10)" style="border-color:var(--cyan)">↻ dubara</button>
+      <button class="mode" onclick="renderStart()">← menu</button>
+      <a class="mode" href="../platform/">🚨 ab asli incident khelo →</a>
+    </div>
+  </div>`;
+}
+document.addEventListener('keydown',e=>{
+  if(e.key>='1'&&e.key<='4'){const b=document.querySelectorAll('.opt')[+e.key-1];if(b&&!b.disabled)b.click();}
+  if(e.key==='Enter'){const n=document.getElementById('next');if(n&&n.classList.contains('show'))nextQ();}
+});
+renderStart();
+</script>
+</body>
+</html>

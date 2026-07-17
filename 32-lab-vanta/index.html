@@ -2441,6 +2441,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#solo-run-graduation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SOLO RUN (graduation) 🎓
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extension-track-jab-core-ho-jaye-m11m18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extension Track — jab core ho jaye (M11–M18) 🗺️
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#full-lab-recall-bina-dekhe" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2757,6 +2779,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#solo-run-graduation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SOLO RUN (graduation) 🎓
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extension-track-jab-core-ho-jaye-m11m18" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extension Track — jab core ho jaye (M11–M18) 🗺️
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#full-lab-recall-bina-dekhe" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2801,12 +2845,18 @@
 <h1 id="32-lab-b-vanta-boutique-end-to-end">32 — Lab B: VANTA-Boutique, End to End<a class="headerlink" href="#32-lab-b-vanta-boutique-end-to-end" title="Permanent link">&para;</a></h1>
 <blockquote>
 <p><strong>Kya banega:</strong> Ek <strong>12-service microservices store</strong> (Google Online Boutique base) — local kind se lekar self-managed AWS cluster + Ansible + chaos engineering tak. Ye lab tumhare <strong>apne repo</strong> (<code>VANTA-Boutique</code>) pe chalta hai.</p>
-<p><strong>⏱️ Time:</strong> ~3 ghante · <strong>🎚️ Level:</strong> Intermediate → Senior · <strong>📋 Pehle:</strong> <a href="../31-lab-billfree/">Lab A · BillFree</a> · <a href="../02-M1-terraform/">Terraform</a> · <a href="../03-M2-ansible/">Ansible</a></p>
+<p><strong>⏱️ Time:</strong> ~3h guided + 40min <strong>Solo Run</strong> · <strong>🎚️ Level:</strong> Intermediate → Senior · <strong>📋 Pehle:</strong> <a href="../31-lab-billfree/">Lab A · BillFree</a> · <a href="../02-M1-terraform/">Terraform</a> · <a href="../03-M2-ansible/">Ansible</a></p>
 </blockquote>
 <div class="admonition tip">
 <p class="admonition-title">Lab A vs Lab B — kyun dono?</p>
 <p><strong>Lab A (BillFree)</strong> = ek reusable Helm chart, 7 same-shape services, managed-style GitOps.
 <strong>Lab B (VANTA)</strong> = 12 <strong>alag-alag language</strong> services (Go, C#, Python, Java, Node), <strong>Kustomize</strong> overlays, <strong>self-managed</strong> kubeadm cluster (Ansible se), aur <strong>chaos engineering</strong>. Dono milke poora spectrum cover karte.</p>
+</div>
+<div class="admonition danger">
+<p class="admonition-title">🚗 DRIVER MODE — Lab A wale hi rules</p>
+<p><strong>Round 1 (guided):</strong> Parts 1–7 commands ke saath — samajhne ke liye. Har command se pehle 5 second: <em>"ye kya karegi?"</em>
+<strong>Round 2 (SOLO):</strong> <a href="#solo-run-graduation">Solo Run</a> — commands nahi, sirf goals. <strong>Round 2 hi asli lab hai.</strong>
+Jo command Lab A mein chala chuke ho (<code>kubectl get/describe/logs</code>, <code>helm</code>, <code>git</code>…) — <strong>yahan bina dekhe</strong> likho. Har boss/chaos ke baad 3-line RCA (symptom → cause → fix).</p>
 </div>
 <hr />
 <h2 id="the-journey-ek-nazar-mein">The journey — ek nazar mein<a class="headerlink" href="#the-journey-ek-nazar-mein" title="Permanent link">&para;</a></h2>
@@ -3062,7 +3112,7 @@
 </span><span id="__span-14-3"><a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>bash<span class="w"> </span>scripts/restart-kubelet.sh<span class="w">      </span><span class="c1"># kubelet restart</span>
 </span></code></pre></div>
 <blockquote>
-<p>⭐ <strong>Ye interview mein sona hai:</strong> <em>"Maine node failure simulate kiya, pods doosre node pe reschedule hote dekhe, control-plane diagnose kiya, aur recover kiya."</em> Ye woh <strong>war stories</strong> hain jo 2.5-saal experience <em>dikhati</em> hain. (Aur <a href="platform/">platform simulator</a> mein bhi ye incidents khel sakte ho.)</p>
+<p>⭐ <strong>Ye interview mein sona hai:</strong> <em>"Maine node failure simulate kiya, pods doosre node pe reschedule hote dekhe, control-plane diagnose kiya, aur recover kiya."</em> Ye woh <strong>war stories</strong> hain jo 2.5-saal experience <em>dikhati</em> hain. (Aur <a href="../platform/">platform simulator</a> mein bhi ye incidents khel sakte ho.)</p>
 </blockquote>
 <p><strong>🧠 Recall:</strong> self-heal kaun karta? · node gire to pods kahan jaate? · diagnose ka order?</p>
 <h3 id="cleanup">Cleanup<a class="headerlink" href="#cleanup" title="Permanent link">&para;</a></h3>
@@ -3070,6 +3120,85 @@
 </span><span id="__span-15-2"><a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="c1"># AWS: terraform destroy (bill band karo!)</span>
 </span><span id="__span-15-3"><a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="nb">cd</span><span class="w"> </span>terraform<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>terraform<span class="w"> </span>destroy
 </span></code></pre></div>
+<hr />
+<h2 id="solo-run-graduation">SOLO RUN (graduation) 🎓<a class="headerlink" href="#solo-run-graduation" title="Permanent link">&para;</a></h2>
+<div class="admonition danger">
+<p class="admonition-title">Commands nahi milenge. Fresh cluster, sirf goals — yehi confidence ka test hai.</p>
+<p><code>kind delete cluster --name boutique</code> se shuru. <strong>Bolte hue karo</strong> (ya record) — "ab main X kyunki Y." Target: <strong>≤ 40 min, max 2 jhaank</strong> (upar dekhna = jhaank, count karo).</p>
+</div>
+<ul class="task-list">
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>S1.</strong> kind cluster <strong>VANTA ke config se</strong> banao (port mapping wala) — bolo mapping kya karti hai</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>S2.</strong> <strong>dev overlay</strong> deploy karo; saare pods Ready; store <strong>browser mein</strong> kholo</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>S3.</strong> frontend pod se cartservice ko <strong>DNS naam se</strong> call karke prove karo service discovery chalti hai</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>S4.</strong> frontend ko <strong>source se</strong> build karo (<code>:dev2</code> tag), cluster mein <strong>bina registry ke</strong> daalo, deployment pe chadhao, rollout complete dikhao</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>S5.</strong> <strong>Break:</strong> frontend Service ka selector bigado → store tootna chahiye → endpoints se <strong>prove</strong> karo kyun → fix (<a href="../platform/">sim ka INC-2915</a> yaad hai?)</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>S6.</strong> <strong>Chaos:</strong> ek pod maaro (self-heal dikhna), phir frontend ka memory limit itna girao ki <strong>OOMKilled 137</strong> aaye → <code>Reason:</code> field padho → theek karo</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>S7.</strong> staging vs prod overlay ka <strong>render diff</strong> nikaalo — bolo prod mein kya alag hai aur kyun</li>
+<li class="task-list-item"><label class="task-list-control"><input type="checkbox" disabled/><span class="task-list-indicator"></span></label> <strong>S8.</strong> Cleanup — cluster delete</li>
+</ul>
+<p><strong>Definition of Done:</strong> 8/8 ✓, ≤2 jhaank, aur ye 3 <strong>bina dekhe</strong> bolo:
+1. Kustomize overlay ne base ko <em>kaise</em> badla bina base chhue?
+2. <code>kind load</code> registry ki jagah kya karta hai?
+3. Exit 137 dono baar aa sakta hai — OOM <em>aur</em> probe-kill. Farak kis field se pata chala?</p>
+<blockquote>
+<p>Dono Solo Runs (A + B) pass? <strong>Ab tumhare paas "maine kiya hai" wali kahaniyan hain, "maine padha hai" wali nahi.</strong> <a href="../14-interview-bank/">Interview Bank</a> kholo aur inhi runs ko STAR stories mein likho.</p>
+</blockquote>
+<hr />
+<h2 id="extension-track-jab-core-ho-jaye-m11m18">Extension Track — jab core ho jaye (M11–M18) 🗺️<a class="headerlink" href="#extension-track-jab-core-ho-jaye-m11m18" title="Permanent link">&para;</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Honest scope: ye resume-candy pehle NAHI. Core (dono labs + Solo Runs) pehle — phir ye, ek-ek karke.</p>
+<table>
+<thead>
+<tr>
+<th>Kya</th>
+<th>Kyun / kab</th>
+<th>Kahan se shuru</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Service mesh (Istio)</strong></td>
+<td>Pod-to-pod mTLS, traffic-split, retries — jab services 10+ aur security/canary chahiye</td>
+<td>Repo mein <strong><code>istio-manifests/</code> already hai</strong> — wahi kholo · <a href="../15-roadmap-M11-M18/">ch15 M12</a></td>
+</tr>
+<tr>
+<td><strong>Kafka / RabbitMQ</strong></td>
+<td>Sync HTTP → async events (order-placed → email/analytics) — jab coupling dard de</td>
+<td><a href="../15-roadmap-M11-M18/">ch15 M13</a></td>
+</tr>
+<tr>
+<td><strong>Argo Rollouts</strong></td>
+<td>Canary/blue-green <strong>automated analysis ke saath</strong> — jab har deploy pe dil dhadakta ho</td>
+<td><a href="../20-confusions-and-tradeoffs/">ch20 deployment strategies</a> → Rollouts</td>
+</tr>
+<tr>
+<td><strong>Karpenter / Cluster Autoscaler</strong></td>
+<td>Nodes ka auto-scale — jab Pending pods roz ka dard ho</td>
+<td><a href="../15-roadmap-M11-M18/">ch15 M17</a></td>
+</tr>
+<tr>
+<td><strong>OpenTelemetry + Jaeger/Tempo</strong></td>
+<td>Distributed tracing — "kaunsi service slow hai" ka exact jawab</td>
+<td><a href="../10-M8-observability-sre/">ch10 traces section</a></td>
+</tr>
+<tr>
+<td><strong>Backstage (IDP)</strong></td>
+<td>Developer portal + golden paths — jab teams 3+ aur "kaise deploy karun" roz puchha jaye</td>
+<td><a href="../15-roadmap-M11-M18/">ch15 M18</a></td>
+</tr>
+<tr>
+<td><strong>Crossplane</strong></td>
+<td>Infra bhi K8s CRDs se (Terraform ka GitOps cousin)</td>
+<td><a href="../15-roadmap-M11-M18/">ch15 M17</a></td>
+</tr>
+<tr>
+<td><strong>Falco / OPA</strong></td>
+<td>Runtime security + admission policies (Kyverno ka bada bhai)</td>
+<td><a href="../15-roadmap-M11-M18/">ch15 M16</a></td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr />
 <h2 id="full-lab-recall-bina-dekhe">🎯 Full lab recall (bina dekhe)<a class="headerlink" href="#full-lab-recall-bina-dekhe" title="Permanent link">&para;</a></h2>
 <ol>
@@ -3132,7 +3261,7 @@
 <p><em>"Dono milke poora DevOps hai — ek scale-up ka clean GitOps, doosra self-managed rigor + chaos. Git → build → package → deploy → GitOps → break &amp; fix. </em><em>Ye do labs = ek engineer ka poora muscle memory.</em><em>"</em></p>
 </blockquote>
 <hr />
-<p><em>Connected: <a href="../31-lab-billfree/">Lab A · BillFree</a> · <a href="../03-M2-ansible/">Ansible decision guide</a> · <a href="../30-k8s-complete-reference/">K8s Complete Reference</a> · <a href="../25-production-gauntlet-chaos/">Chaos (Gauntlet)</a> · <a href="platform/">The Production Simulator</a></em></p>
+<p><em>Connected: <a href="../31-lab-billfree/">Lab A · BillFree</a> · <a href="../03-M2-ansible/">Ansible decision guide</a> · <a href="../30-k8s-complete-reference/">K8s Complete Reference</a> · <a href="../25-production-gauntlet-chaos/">Chaos (Gauntlet)</a> · <a href="../platform/">The Production Simulator</a></em></p>
 
 
 

@@ -3395,7 +3395,7 @@
 </table>
 <div class="admonition warning">
 <p class="admonition-title">The <code>user</code> namespace is the one you probably do NOT have</p>
-<p>The other five namespaces are on by default. The <strong>user namespace is not</strong> — unless you run rootless Docker or set <code>--userns-remap</code>. Without it, <strong>root inside the container is the same UID 0 as root on the host</strong>; only capability dropping and seccomp stand between them. That is exactly why <a href="#non-root">running as non-root</a> matters — you cannot rely on isolation that is switched off.</p>
+<p>The other five namespaces are on by default. The <strong>user namespace is not</strong> — unless you run rootless Docker or set <code>--userns-remap</code>. Without it, <strong>root inside the container is the same UID 0 as root on the host</strong>; only capability dropping and seccomp stand between them. That is exactly why <a href="#run-as-non-root-container-hardening">running as non-root</a> matters — you cannot rely on isolation that is switched off.</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>docker<span class="w"> </span>info<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-i<span class="w"> </span>userns<span class="w">   </span><span class="c1"># prints &quot;userns&quot; only if remapping is ON</span>
 </span></code></pre></div>
 <p>In Kubernetes, assume no user namespace and enforce it in the pod spec instead: <code>runAsNonRoot: true</code>, <code>runAsUser: 1000</code>, <code>allowPrivilegeEscalation: false</code>, <code>capabilities.drop: ["ALL"]</code>.</p>
