@@ -105,6 +105,7 @@ extra:
 
 nav:
   - Home: index.md
+  - "▶ Start Learning (PROD)": hub/index.html
   - Study Plan: study-plan.md
   - My Progress: progress.md
   - Handbook:
