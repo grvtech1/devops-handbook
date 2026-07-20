@@ -1167,6 +1167,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#what-actually-gets-configured-on-a-node-and-the-two-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What actually gets configured on a node — and the two layers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What actually gets configured on a node — and the two layers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-two-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The two layers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-1-osmachine-prep-and-why-each-item-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layer 1 — OS/machine prep (and why each item exists)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-2-cluster-bootstrap-ordered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layer 2 — Cluster bootstrap (ordered)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#your-own-repos-already-make-this-split" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Your own repos already make this split
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#when-not-to-reach-for-ansible" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -2901,6 +2962,67 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#what-actually-gets-configured-on-a-node-and-the-two-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What actually gets configured on a node — and the two layers
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What actually gets configured on a node — and the two layers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-two-layers" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The two layers
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-1-osmachine-prep-and-why-each-item-exists" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layer 1 — OS/machine prep (and why each item exists)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#layer-2-cluster-bootstrap-ordered" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Layer 2 — Cluster bootstrap (ordered)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#your-own-repos-already-make-this-split" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🎯 Your own repos already make this split
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#when-not-to-reach-for-ansible" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3673,6 +3795,159 @@ Rule: if the module takes a list, pass a list. Use <code>loop:</code> when the m
 </blockquote>
 <p>Cross-link: the cluster this builds is what <a href="../05-M4-kubernetes-core/">05-M4-kubernetes-core</a> manages and what <a href="../12-capstone-url-shortener/">12-capstone-url-shortener</a> deploys onto. The full pipeline is described in <a href="../09-connected-system/">09-connected-system</a>.</p>
 <hr />
+<h2 id="what-actually-gets-configured-on-a-node-and-the-two-layers">What actually gets configured on a node — and the two layers<a class="headerlink" href="#what-actually-gets-configured-on-a-node-and-the-two-layers" title="Permanent link">&para;</a></h2>
+<p>Most "Ansible for Kubernetes" checklists you'll find online mix <strong>two completely different layers</strong> into one list. Separating them is the insight that tells you <em>which tool does what</em> — and it is exactly the split your own VANTA repo makes.</p>
+<h3 id="the-two-layers">The two layers<a class="headerlink" href="#the-two-layers" title="Permanent link">&para;</a></h3>
+<pre class="mermaid"><code>flowchart TB
+  subgraph L1["🔧 LAYER 1 — OS / machine prep"]
+    direction LR
+    A["packages · swap off&lt;br/&gt;kernel modules · sysctl&lt;br/&gt;users/SSH · firewall"]:::l1
+    N1["each node independently&lt;br/&gt;PARALLEL · no coordination"]:::note
+  end
+  subgraph L2["☸️ LAYER 2 — Cluster bootstrap"]
+    direction LR
+    B["kubeadm init → token&lt;br/&gt;→ kubeadm join → CNI"]:::l2
+    N2["ORDERED · cross-node&lt;br/&gt;master's token must reach workers"]:::note
+  end
+  L1 --&gt; L2
+  T1["cloud-init OR Ansible&lt;br/&gt;(both work)"]:::t
+  T2["Ansible's REAL job&lt;br/&gt;(cloud-init cannot do this)"]:::t2
+  L1 -.-&gt; T1
+  L2 -.-&gt; T2
+  classDef l1 fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+  classDef l2 fill:#f3e5f5,stroke:#6a1b9a,color:#4a148c
+  classDef note fill:#fff9c4,stroke:#f9a825,color:#4a3800
+  classDef t fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  classDef t2 fill:#fff3e0,stroke:#e65100,color:#bf360c</code></pre>
+<div class="admonition danger">
+<p class="admonition-title">The distinction that matters</p>
+<p><strong>Layer 1 is parallel and independent</strong> — every node does the same thing, in any order, with no knowledge of other nodes. <strong>cloud-init can do this perfectly.</strong></p>
+<p><strong>Layer 2 requires orchestration</strong> — the master must <code>init</code> <em>first</em>, produce a join token, and that token must then reach the workers. This is cross-node coordination with a strict order. <strong>cloud-init cannot express this. This is Ansible's real job.</strong></p>
+</div>
+<blockquote>
+<p>🇮🇳 <strong>Ek line:</strong> Jo kaam <strong>har node alag-alag, kisi bhi order mein</strong> kar sakta → cloud-init kaafi. Jo kaam <strong>order maangta aur nodes ke beech coordination</strong> maangta (master ka token workers tak) → <strong>wahi Ansible ki asli zaroorat hai.</strong></p>
+</blockquote>
+<h3 id="layer-1-osmachine-prep-and-why-each-item-exists">Layer 1 — OS/machine prep (and <em>why</em> each item exists)<a class="headerlink" href="#layer-1-osmachine-prep-and-why-each-item-exists" title="Permanent link">&para;</a></h3>
+<p>Every item here exists because Kubernetes will fail in a specific way without it. Learn the failure, not the command:</p>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Why it's required</th>
+<th>Skip it → what breaks</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>swap off</strong> (+ <code>/etc/fstab</code>)</td>
+<td>kubelet's memory accounting is unreliable with swap</td>
+<td><strong>kubelet refuses to start</strong> — the classic first-time error</td>
+</tr>
+<tr>
+<td><strong><code>overlay</code> module</strong></td>
+<td>overlayfs backs container image layers</td>
+<td>containerd cannot mount images</td>
+</tr>
+<tr>
+<td><strong><code>br_netfilter</code> module</strong></td>
+<td>makes bridged traffic traverse iptables</td>
+<td><strong>pod/Service networking silently breaks</strong></td>
+</tr>
+<tr>
+<td><strong><code>net.ipv4.ip_forward=1</code></strong></td>
+<td>node must forward packets between pods</td>
+<td>pod-to-pod across nodes fails</td>
+</tr>
+<tr>
+<td><strong><code>bridge-nf-call-iptables=1</code></strong></td>
+<td>kube-proxy rules apply to bridged traffic</td>
+<td>Services don't route</td>
+</tr>
+<tr>
+<td><strong>containerd</strong></td>
+<td>the actual CRI runtime</td>
+<td>kubelet has nothing to run containers with</td>
+</tr>
+<tr>
+<td><strong><code>SystemdCgroup = true</code></strong> in containerd</td>
+<td>kubelet uses the systemd cgroup driver; both must agree</td>
+<td><strong>kubelet crash-loops</strong> — the #1 kubeadm gotcha</td>
+</tr>
+<tr>
+<td><strong>kubeadm · kubelet · kubectl</strong></td>
+<td>bootstrap tool · node agent · CLI</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong><code>apt-mark hold</code> those three</strong></td>
+<td>pins versions</td>
+<td>a stray <code>apt upgrade</code> bumps kubelet → <strong>version skew</strong> breaks the node</td>
+</tr>
+<tr>
+<td><strong>Time sync (chrony/NTP)</strong></td>
+<td>certificates and etcd are clock-sensitive</td>
+<td>TLS errors, etcd instability from <strong>clock skew</strong></td>
+</tr>
+<tr>
+<td><strong>users / SSH / sudo</strong></td>
+<td>Ansible itself needs to connect</td>
+<td>Ansible cannot even reach the node</td>
+</tr>
+<tr>
+<td><strong>firewall ports</strong></td>
+<td>6443 (API) · 10250 (kubelet) · 2379-2380 (etcd) · CNI ports</td>
+<td>nodes cannot join</td>
+</tr>
+</tbody>
+</table>
+<h3 id="layer-2-cluster-bootstrap-ordered">Layer 2 — Cluster bootstrap (ordered)<a class="headerlink" href="#layer-2-cluster-bootstrap-ordered" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a>1. kubeadm init        on the master, first
+</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>2. get join token      kubeadm token create --print-join-command
+</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>3. kubeadm join        on each worker, using that token
+</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a>4. install CNI         Flannel / Calico / Cilium
+</span></code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">The gotcha that wastes hours</p>
+<p><strong>Without a CNI installed, every node stays <code>NotReady</code> forever.</strong> People debug kubelet, restart containerd, re-run <code>kubeadm</code> — when the only thing missing is pod networking. If <code>kubectl get nodes</code> shows <code>NotReady</code> right after a successful <code>init</code>/<code>join</code>, <strong>check the CNI first.</strong></p>
+</div>
+<h3 id="your-own-repos-already-make-this-split">🎯 Your own repos already make this split<a class="headerlink" href="#your-own-repos-already-make-this-split" title="Permanent link">&para;</a></h3>
+<p>This is not theory — it is exactly how <strong>VANTA-Boutique</strong> is built:</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Who does it in VANTA</th>
+<th>Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Layer 1</strong> (OS prep)</td>
+<td><strong><code>user_data</code> / cloud-init</strong></td>
+<td><code>terraform/compute.tf</code>: <code>swapoff -a</code>, <code>modprobe overlay</code>, <code>modprobe br_netfilter</code></td>
+</tr>
+<tr>
+<td><strong>Layer 2</strong> (cluster)</td>
+<td><strong>Ansible</strong></td>
+<td><code>ansible/playbook.yml</code>: PLAY 2 <code>kubeadm init</code> → PLAY 3 join → <strong>Flannel</strong> CNI</td>
+</tr>
+</tbody>
+</table>
+<p>And notice what Ansible's PLAY 1 actually does — it does <strong>not</strong> install anything, it <strong>verifies</strong> that Layer 1 already happened:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Check user_data script completed (containerd must be running)</span>
+</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">  </span><span class="nt">shell</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">systemctl is-active containerd</span>
+</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Verify kubeadm is installed</span>
+</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">  </span><span class="nt">shell</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubeadm version -o short</span>
+</span></code></pre></div>
+<blockquote>
+<p>⭐ <strong>Interview answer:</strong> <em>"We split node setup by layer. OS prep — packages, swap, kernel modules, sysctl — runs in cloud-init because it's parallel and needs no coordination. Ansible handles cluster bootstrap, because <code>kubeadm init</code> must complete on the master and its join token must then reach the workers — that ordering is something cloud-init structurally cannot express. Ansible's first play just asserts the cloud-init prep succeeded before it proceeds."</em></p>
+</blockquote>
+<div class="admonition note">
+<p class="admonition-title">CNI: know which one you're running</p>
+<p>Generic guides usually say Calico. <strong>VANTA actually installs Flannel</strong> (<code>ansible/playbook.yml</code>). They solve the same problem differently: <strong>Flannel</strong> = simple overlay, easy, no NetworkPolicy support. <strong>Calico</strong> = supports NetworkPolicy and BGP routing, more capable, more moving parts. If you need <code>NetworkPolicy</code> (<a href="../30-k8s-complete-reference/">ch30</a>), Flannel alone won't give it to you.</p>
+</div>
+<p><strong>🧠 Recall:</strong> Which layer can cloud-init do? · Why can't it do the other? · What breaks without <code>br_netfilter</code>? · Nodes stuck <code>NotReady</code> — first thing to check? · Which CNI does VANTA use?</p>
+<hr />
 <h2 id="when-not-to-reach-for-ansible">When NOT to reach for Ansible<a class="headerlink" href="#when-not-to-reach-for-ansible" title="Permanent link">&para;</a></h2>
 <p>This is where senior engineers distinguish themselves from juniors who reach for the same tool regardless of context.</p>
 <p><strong>Managed services remove the host entirely:</strong>
@@ -3711,49 +3986,49 @@ Rule: if the module takes a list, pass a list. Use <code>loop:</code> when the m
 <p>The honest answer in an interview: "In a self-managed Kubernetes cluster, Ansible is the critical piece that bootstraps the control plane. In a fully managed EKS environment, I would use Ansible only for bastion configuration and operational tasks — not for cluster setup."</p>
 <hr />
 <h2 id="commands-explained">Commands, explained<a class="headerlink" href="#commands-explained" title="Permanent link">&para;</a></h2>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-16-1"><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1"># Test connectivity before running any playbook</span>
-</span><span id="__span-16-2"><a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a>ansible<span class="w"> </span>all<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>-m<span class="w"> </span>ping
-</span><span id="__span-16-3"><a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="c1"># Why: confirms SSH + Python work on every host; catches key/permission</span>
-</span><span id="__span-16-4"><a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="c1"># problems before wasting time on a 10-minute playbook run.</span>
-</span><span id="__span-16-5"><a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a>
-</span><span id="__span-16-6"><a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="c1"># Ad-hoc: install a package on all web servers without a playbook</span>
-</span><span id="__span-16-7"><a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>ansible<span class="w"> </span>webservers<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>-m<span class="w"> </span>apt<span class="w"> </span>-a<span class="w"> </span><span class="s2">&quot;name=htop state=present&quot;</span><span class="w"> </span>--become
-</span><span id="__span-16-8"><a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="c1"># Why: useful for quick one-off commands across a fleet; modules keep it idempotent.</span>
-</span><span id="__span-16-9"><a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a>
-</span><span id="__span-16-10"><a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="c1"># Dry run — see what WOULD change without changing anything</span>
-</span><span id="__span-16-11"><a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>--check<span class="w"> </span>--diff
-</span><span id="__span-16-12"><a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="c1"># Why: review before touching production; --diff shows file-level line changes.</span>
-</span><span id="__span-16-13"><a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a>
-</span><span id="__span-16-14"><a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="c1"># Run the playbook for real</span>
-</span><span id="__span-16-15"><a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml
-</span><span id="__span-16-16"><a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="c1"># Why: this is the standard apply command.</span>
-</span><span id="__span-16-17"><a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a>
-</span><span id="__span-16-18"><a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a><span class="c1"># Limit execution to one host</span>
-</span><span id="__span-16-19"><a id="__codelineno-16-19" name="__codelineno-16-19" href="#__codelineno-16-19"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>--limit<span class="w"> </span>web1
-</span><span id="__span-16-20"><a id="__codelineno-16-20" name="__codelineno-16-20" href="#__codelineno-16-20"></a><span class="c1"># Why: test a change on one node before rolling to the fleet.</span>
-</span><span id="__span-16-21"><a id="__codelineno-16-21" name="__codelineno-16-21" href="#__codelineno-16-21"></a>
-</span><span id="__span-16-22"><a id="__codelineno-16-22" name="__codelineno-16-22" href="#__codelineno-16-22"></a><span class="c1"># Run only tasks tagged &#39;config&#39; — skip untagged tasks</span>
-</span><span id="__span-16-23"><a id="__codelineno-16-23" name="__codelineno-16-23" href="#__codelineno-16-23"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>--tags<span class="w"> </span><span class="s2">&quot;config&quot;</span>
-</span><span id="__span-16-24"><a id="__codelineno-16-24" name="__codelineno-16-24" href="#__codelineno-16-24"></a><span class="c1"># Why: large playbooks can take 10+ minutes; tags let you run one section.</span>
-</span><span id="__span-16-25"><a id="__codelineno-16-25" name="__codelineno-16-25" href="#__codelineno-16-25"></a>
-</span><span id="__span-16-26"><a id="__codelineno-16-26" name="__codelineno-16-26" href="#__codelineno-16-26"></a><span class="c1"># Verbose output — print SSH commands and module output</span>
-</span><span id="__span-16-27"><a id="__codelineno-16-27" name="__codelineno-16-27" href="#__codelineno-16-27"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>-vvv
-</span><span id="__span-16-28"><a id="__codelineno-16-28" name="__codelineno-16-28" href="#__codelineno-16-28"></a><span class="c1"># Why: debugging connection problems, module failures, or unexpected &#39;ok&#39; results.</span>
-</span><span id="__span-16-29"><a id="__codelineno-16-29" name="__codelineno-16-29" href="#__codelineno-16-29"></a>
-</span><span id="__span-16-30"><a id="__codelineno-16-30" name="__codelineno-16-30" href="#__codelineno-16-30"></a><span class="c1"># Scaffold a new role</span>
-</span><span id="__span-16-31"><a id="__codelineno-16-31" name="__codelineno-16-31" href="#__codelineno-16-31"></a>ansible-galaxy<span class="w"> </span>init<span class="w"> </span>myrole
-</span><span id="__span-16-32"><a id="__codelineno-16-32" name="__codelineno-16-32" href="#__codelineno-16-32"></a><span class="c1"># Why: creates the standard directory structure so you do not invent it each time.</span>
-</span><span id="__span-16-33"><a id="__codelineno-16-33" name="__codelineno-16-33" href="#__codelineno-16-33"></a>
-</span><span id="__span-16-34"><a id="__codelineno-16-34" name="__codelineno-16-34" href="#__codelineno-16-34"></a><span class="c1"># Encrypt a secrets file with AES-256</span>
-</span><span id="__span-16-35"><a id="__codelineno-16-35" name="__codelineno-16-35" href="#__codelineno-16-35"></a>ansible-vault<span class="w"> </span>encrypt<span class="w"> </span>secrets.yml
-</span><span id="__span-16-36"><a id="__codelineno-16-36" name="__codelineno-16-36" href="#__codelineno-16-36"></a><span class="c1"># Why: never store API keys or passwords in plaintext in a repo.</span>
-</span><span id="__span-16-37"><a id="__codelineno-16-37" name="__codelineno-16-37" href="#__codelineno-16-37"></a>
-</span><span id="__span-16-38"><a id="__codelineno-16-38" name="__codelineno-16-38" href="#__codelineno-16-38"></a><span class="c1"># Edit an encrypted file in your $EDITOR</span>
-</span><span id="__span-16-39"><a id="__codelineno-16-39" name="__codelineno-16-39" href="#__codelineno-16-39"></a>ansible-vault<span class="w"> </span>edit<span class="w"> </span>secrets.yml
-</span><span id="__span-16-40"><a id="__codelineno-16-40" name="__codelineno-16-40" href="#__codelineno-16-40"></a>
-</span><span id="__span-16-41"><a id="__codelineno-16-41" name="__codelineno-16-41" href="#__codelineno-16-41"></a><span class="c1"># Run a playbook that references vault-encrypted variables</span>
-</span><span id="__span-16-42"><a id="__codelineno-16-42" name="__codelineno-16-42" href="#__codelineno-16-42"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>--ask-vault-pass
-</span><span id="__span-16-43"><a id="__codelineno-16-43" name="__codelineno-16-43" href="#__codelineno-16-43"></a><span class="c1"># Why: vault password is supplied at runtime, never committed.</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Test connectivity before running any playbook</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>ansible<span class="w"> </span>all<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>-m<span class="w"> </span>ping
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="c1"># Why: confirms SSH + Python work on every host; catches key/permission</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="c1"># problems before wasting time on a 10-minute playbook run.</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="c1"># Ad-hoc: install a package on all web servers without a playbook</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a>ansible<span class="w"> </span>webservers<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>-m<span class="w"> </span>apt<span class="w"> </span>-a<span class="w"> </span><span class="s2">&quot;name=htop state=present&quot;</span><span class="w"> </span>--become
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="c1"># Why: useful for quick one-off commands across a fleet; modules keep it idempotent.</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="c1"># Dry run — see what WOULD change without changing anything</span>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>--check<span class="w"> </span>--diff
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="c1"># Why: review before touching production; --diff shows file-level line changes.</span>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="c1"># Run the playbook for real</span>
+</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="c1"># Why: this is the standard apply command.</span>
+</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a>
+</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="c1"># Limit execution to one host</span>
+</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>--limit<span class="w"> </span>web1
+</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="c1"># Why: test a change on one node before rolling to the fleet.</span>
+</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a>
+</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="c1"># Run only tasks tagged &#39;config&#39; — skip untagged tasks</span>
+</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>--tags<span class="w"> </span><span class="s2">&quot;config&quot;</span>
+</span><span id="__span-18-24"><a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a><span class="c1"># Why: large playbooks can take 10+ minutes; tags let you run one section.</span>
+</span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a>
+</span><span id="__span-18-26"><a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a><span class="c1"># Verbose output — print SSH commands and module output</span>
+</span><span id="__span-18-27"><a id="__codelineno-18-27" name="__codelineno-18-27" href="#__codelineno-18-27"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>-vvv
+</span><span id="__span-18-28"><a id="__codelineno-18-28" name="__codelineno-18-28" href="#__codelineno-18-28"></a><span class="c1"># Why: debugging connection problems, module failures, or unexpected &#39;ok&#39; results.</span>
+</span><span id="__span-18-29"><a id="__codelineno-18-29" name="__codelineno-18-29" href="#__codelineno-18-29"></a>
+</span><span id="__span-18-30"><a id="__codelineno-18-30" name="__codelineno-18-30" href="#__codelineno-18-30"></a><span class="c1"># Scaffold a new role</span>
+</span><span id="__span-18-31"><a id="__codelineno-18-31" name="__codelineno-18-31" href="#__codelineno-18-31"></a>ansible-galaxy<span class="w"> </span>init<span class="w"> </span>myrole
+</span><span id="__span-18-32"><a id="__codelineno-18-32" name="__codelineno-18-32" href="#__codelineno-18-32"></a><span class="c1"># Why: creates the standard directory structure so you do not invent it each time.</span>
+</span><span id="__span-18-33"><a id="__codelineno-18-33" name="__codelineno-18-33" href="#__codelineno-18-33"></a>
+</span><span id="__span-18-34"><a id="__codelineno-18-34" name="__codelineno-18-34" href="#__codelineno-18-34"></a><span class="c1"># Encrypt a secrets file with AES-256</span>
+</span><span id="__span-18-35"><a id="__codelineno-18-35" name="__codelineno-18-35" href="#__codelineno-18-35"></a>ansible-vault<span class="w"> </span>encrypt<span class="w"> </span>secrets.yml
+</span><span id="__span-18-36"><a id="__codelineno-18-36" name="__codelineno-18-36" href="#__codelineno-18-36"></a><span class="c1"># Why: never store API keys or passwords in plaintext in a repo.</span>
+</span><span id="__span-18-37"><a id="__codelineno-18-37" name="__codelineno-18-37" href="#__codelineno-18-37"></a>
+</span><span id="__span-18-38"><a id="__codelineno-18-38" name="__codelineno-18-38" href="#__codelineno-18-38"></a><span class="c1"># Edit an encrypted file in your $EDITOR</span>
+</span><span id="__span-18-39"><a id="__codelineno-18-39" name="__codelineno-18-39" href="#__codelineno-18-39"></a>ansible-vault<span class="w"> </span>edit<span class="w"> </span>secrets.yml
+</span><span id="__span-18-40"><a id="__codelineno-18-40" name="__codelineno-18-40" href="#__codelineno-18-40"></a>
+</span><span id="__span-18-41"><a id="__codelineno-18-41" name="__codelineno-18-41" href="#__codelineno-18-41"></a><span class="c1"># Run a playbook that references vault-encrypted variables</span>
+</span><span id="__span-18-42"><a id="__codelineno-18-42" name="__codelineno-18-42" href="#__codelineno-18-42"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>site.yml<span class="w"> </span>--ask-vault-pass
+</span><span id="__span-18-43"><a id="__codelineno-18-43" name="__codelineno-18-43" href="#__codelineno-18-43"></a><span class="c1"># Why: vault password is supplied at runtime, never committed.</span>
 </span></code></pre></div>
 <hr />
 <h2 id="beginner-mistakes-vs-senior-insights">Beginner mistakes vs senior insights<a class="headerlink" href="#beginner-mistakes-vs-senior-insights" title="Permanent link">&para;</a></h2>
@@ -3825,11 +4100,11 @@ Rule: if the module takes a list, pass a list. Use <code>loop:</code> when the m
 <div class="admonition danger">
 <p class="admonition-title">❌ Category error: <em>"Do I use Ansible for stateless or stateful apps?"</em></p>
 <p>Ansible has <strong>nothing to do with</strong> whether your app is stateless or stateful. That question lives in a different layer entirely.</p>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-17-1"><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a>Terraform  →  builds the BUILDING (VM, network, disk)     ← infra layer
-</span><span id="__span-17-2"><a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a>Ansible    →  wires the building&#39;s INSIDE (packages, config) ← machine-config layer
-</span><span id="__span-17-3"><a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>Docker/K8s →  runs the WORK inside (your apps)            ← workload layer
-</span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>                    ↑
-</span><span id="__span-17-5"><a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a>            stateless vs stateful lives HERE, not at the Ansible layer
+<div class="language-text highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>Terraform  →  builds the BUILDING (VM, network, disk)     ← infra layer
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>Ansible    →  wires the building&#39;s INSIDE (packages, config) ← machine-config layer
+</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>Docker/K8s →  runs the WORK inside (your apps)            ← workload layer
+</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a>                    ↑
+</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a>            stateless vs stateful lives HERE, not at the Ansible layer
 </span></code></pre></div>
 <p>Ansible configures the <strong>machine</strong>. It has no idea — and no reason to care — whether the app that will later run on that machine keeps state. The electrician wiring a restaurant doesn't care whether the cook is interchangeable or the cold-storage keeper is not. Ansible does the <strong>wiring</strong>.</p>
 </div>
@@ -4075,6 +4350,8 @@ Rule: if the module takes a list, pass a list. Use <code>loop:</code> when the m
 <h2 id="memory-shortcuts">Memory shortcuts<a class="headerlink" href="#memory-shortcuts" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>Ansible's real axis</strong> = Pets vs Cattle (not stateless vs stateful — that's a different layer)</li>
+<li><strong>Two layers on a node</strong> = OS prep (parallel → cloud-init can do it) vs cluster bootstrap (ordered, cross-node → Ansible's real job)</li>
+<li><strong>Nodes stuck <code>NotReady</code></strong> after a clean <code>init</code>/<code>join</code> = <strong>CNI missing</strong>, check that first</li>
 <li><strong>Control node → Managed nodes</strong> = SSH push from one to many</li>
 <li><strong>Inventory</strong> = "kahan" (where) · <strong>Playbook</strong> = "kya" (what)</li>
 <li><strong>Module</strong> = smart (checks first) · <strong>Shell</strong> = blind (runs always)</li>
@@ -4140,64 +4417,64 @@ Rule: if the module takes a list, pass a list. Use <code>loop:</code> when the m
 <p><strong>Prerequisites:</strong> One Linux VM or EC2 instance you can SSH into. Ansible installed on your local machine (<code>pip install ansible</code> or <code>brew install ansible</code>).</p>
 <h3 id="step-1-inventory">Step 1 — Inventory<a class="headerlink" href="#step-1-inventory" title="Permanent link">&para;</a></h3>
 <p>Create <code>inventory.ini</code>:
-<div class="language-ini highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">[webservers]</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="na">myserver ansible_host</span><span class="o">=</span><span class="s">&lt;YOUR_SERVER_IP&gt;</span>
-</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
-</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="k">[webservers:vars]</span>
-</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="na">ansible_user</span><span class="o">=</span><span class="s">ubuntu</span>
-</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="na">ansible_ssh_private_key_file</span><span class="o">=</span><span class="s">~/.ssh/your-key.pem</span>
+<div class="language-ini highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">[webservers]</span>
+</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="na">myserver ansible_host</span><span class="o">=</span><span class="s">&lt;YOUR_SERVER_IP&gt;</span>
+</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>
+</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="k">[webservers:vars]</span>
+</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="na">ansible_user</span><span class="o">=</span><span class="s">ubuntu</span>
+</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="na">ansible_ssh_private_key_file</span><span class="o">=</span><span class="s">~/.ssh/your-key.pem</span>
 </span></code></pre></div></p>
 <h3 id="step-2-connectivity-check">Step 2 — Connectivity check<a class="headerlink" href="#step-2-connectivity-check" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a>ansible<span class="w"> </span>all<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>-m<span class="w"> </span>ping
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="c1"># Expected: SUCCESS + &quot;ping&quot;: &quot;pong&quot;</span>
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="c1"># If UNREACHABLE: check IP, key path, and security group port 22</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>ansible<span class="w"> </span>all<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>-m<span class="w"> </span>ping
+</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="c1"># Expected: SUCCESS + &quot;ping&quot;: &quot;pong&quot;</span>
+</span><span id="__span-21-3"><a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a><span class="c1"># If UNREACHABLE: check IP, key path, and security group port 22</span>
 </span></code></pre></div>
 <h3 id="step-3-write-the-playbook">Step 3 — Write the playbook<a class="headerlink" href="#step-3-write-the-playbook" title="Permanent link">&para;</a></h3>
 <p><code>webserver.yml</code>:
-<div class="language-yaml highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="nn">---</span>
-</span><span id="__span-20-2"><a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Configure web server</span>
-</span><span id="__span-20-3"><a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webservers</span>
-</span><span id="__span-20-4"><a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">  </span><span class="nt">become</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
-</span><span id="__span-20-5"><a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
-</span><span id="__span-20-6"><a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install nginx</span>
-</span><span id="__span-20-7"><a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">      </span><span class="nt">apt</span><span class="p">:</span>
-</span><span id="__span-20-8"><a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span>
-</span><span id="__span-20-9"><a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
-</span><span id="__span-20-10"><a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="w">        </span><span class="nt">update_cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
-</span><span id="__span-20-11"><a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a>
-</span><span id="__span-20-12"><a id="__codelineno-20-12" name="__codelineno-20-12" href="#__codelineno-20-12"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a custom index page</span>
-</span><span id="__span-20-13"><a id="__codelineno-20-13" name="__codelineno-20-13" href="#__codelineno-20-13"></a><span class="w">      </span><span class="nt">copy</span><span class="p">:</span>
-</span><span id="__span-20-14"><a id="__codelineno-20-14" name="__codelineno-20-14" href="#__codelineno-20-14"></a><span class="w">        </span><span class="nt">dest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/www/html/index.html</span>
-</span><span id="__span-20-15"><a id="__codelineno-20-15" name="__codelineno-20-15" href="#__codelineno-20-15"></a><span class="w">        </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">Ansible</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">configured</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">inventory_hostname</span><span class="nv"> </span><span class="s">}}\n&quot;</span>
-</span><span id="__span-20-16"><a id="__codelineno-20-16" name="__codelineno-20-16" href="#__codelineno-20-16"></a><span class="w">      </span><span class="nt">notify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Reload nginx</span>
-</span><span id="__span-20-17"><a id="__codelineno-20-17" name="__codelineno-20-17" href="#__codelineno-20-17"></a>
-</span><span id="__span-20-18"><a id="__codelineno-20-18" name="__codelineno-20-18" href="#__codelineno-20-18"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure nginx is running and enabled</span>
-</span><span id="__span-20-19"><a id="__codelineno-20-19" name="__codelineno-20-19" href="#__codelineno-20-19"></a><span class="w">      </span><span class="nt">service</span><span class="p">:</span>
-</span><span id="__span-20-20"><a id="__codelineno-20-20" name="__codelineno-20-20" href="#__codelineno-20-20"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span>
-</span><span id="__span-20-21"><a id="__codelineno-20-21" name="__codelineno-20-21" href="#__codelineno-20-21"></a><span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">started</span>
-</span><span id="__span-20-22"><a id="__codelineno-20-22" name="__codelineno-20-22" href="#__codelineno-20-22"></a><span class="w">        </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
-</span><span id="__span-20-23"><a id="__codelineno-20-23" name="__codelineno-20-23" href="#__codelineno-20-23"></a>
-</span><span id="__span-20-24"><a id="__codelineno-20-24" name="__codelineno-20-24" href="#__codelineno-20-24"></a><span class="w">  </span><span class="nt">handlers</span><span class="p">:</span>
-</span><span id="__span-20-25"><a id="__codelineno-20-25" name="__codelineno-20-25" href="#__codelineno-20-25"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Reload nginx</span>
-</span><span id="__span-20-26"><a id="__codelineno-20-26" name="__codelineno-20-26" href="#__codelineno-20-26"></a><span class="w">      </span><span class="nt">service</span><span class="p">:</span>
-</span><span id="__span-20-27"><a id="__codelineno-20-27" name="__codelineno-20-27" href="#__codelineno-20-27"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span>
-</span><span id="__span-20-28"><a id="__codelineno-20-28" name="__codelineno-20-28" href="#__codelineno-20-28"></a><span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reloaded</span>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nn">---</span>
+</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Configure web server</span>
+</span><span id="__span-22-3"><a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">  </span><span class="nt">hosts</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">webservers</span>
+</span><span id="__span-22-4"><a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">  </span><span class="nt">become</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
+</span><span id="__span-22-5"><a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">  </span><span class="nt">tasks</span><span class="p">:</span>
+</span><span id="__span-22-6"><a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install nginx</span>
+</span><span id="__span-22-7"><a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="w">      </span><span class="nt">apt</span><span class="p">:</span>
+</span><span id="__span-22-8"><a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span>
+</span><span id="__span-22-9"><a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">present</span>
+</span><span id="__span-22-10"><a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="w">        </span><span class="nt">update_cache</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
+</span><span id="__span-22-11"><a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a>
+</span><span id="__span-22-12"><a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Create a custom index page</span>
+</span><span id="__span-22-13"><a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a><span class="w">      </span><span class="nt">copy</span><span class="p">:</span>
+</span><span id="__span-22-14"><a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a><span class="w">        </span><span class="nt">dest</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/var/www/html/index.html</span>
+</span><span id="__span-22-15"><a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a><span class="w">        </span><span class="nt">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello</span><span class="nv"> </span><span class="s">from</span><span class="nv"> </span><span class="s">Ansible</span><span class="nv"> </span><span class="s">—</span><span class="nv"> </span><span class="s">configured</span><span class="nv"> </span><span class="s">{{</span><span class="nv"> </span><span class="s">inventory_hostname</span><span class="nv"> </span><span class="s">}}\n&quot;</span>
+</span><span id="__span-22-16"><a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a><span class="w">      </span><span class="nt">notify</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Reload nginx</span>
+</span><span id="__span-22-17"><a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a>
+</span><span id="__span-22-18"><a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Ensure nginx is running and enabled</span>
+</span><span id="__span-22-19"><a id="__codelineno-22-19" name="__codelineno-22-19" href="#__codelineno-22-19"></a><span class="w">      </span><span class="nt">service</span><span class="p">:</span>
+</span><span id="__span-22-20"><a id="__codelineno-22-20" name="__codelineno-22-20" href="#__codelineno-22-20"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span>
+</span><span id="__span-22-21"><a id="__codelineno-22-21" name="__codelineno-22-21" href="#__codelineno-22-21"></a><span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">started</span>
+</span><span id="__span-22-22"><a id="__codelineno-22-22" name="__codelineno-22-22" href="#__codelineno-22-22"></a><span class="w">        </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">yes</span>
+</span><span id="__span-22-23"><a id="__codelineno-22-23" name="__codelineno-22-23" href="#__codelineno-22-23"></a>
+</span><span id="__span-22-24"><a id="__codelineno-22-24" name="__codelineno-22-24" href="#__codelineno-22-24"></a><span class="w">  </span><span class="nt">handlers</span><span class="p">:</span>
+</span><span id="__span-22-25"><a id="__codelineno-22-25" name="__codelineno-22-25" href="#__codelineno-22-25"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Reload nginx</span>
+</span><span id="__span-22-26"><a id="__codelineno-22-26" name="__codelineno-22-26" href="#__codelineno-22-26"></a><span class="w">      </span><span class="nt">service</span><span class="p">:</span>
+</span><span id="__span-22-27"><a id="__codelineno-22-27" name="__codelineno-22-27" href="#__codelineno-22-27"></a><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nginx</span>
+</span><span id="__span-22-28"><a id="__codelineno-22-28" name="__codelineno-22-28" href="#__codelineno-22-28"></a><span class="w">        </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">reloaded</span>
 </span></code></pre></div></p>
 <h3 id="step-4-dry-run">Step 4 — Dry run<a class="headerlink" href="#step-4-dry-run" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-21-1"><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>webserver.yml<span class="w"> </span>--check<span class="w"> </span>--diff
-</span><span id="__span-21-2"><a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a><span class="c1"># Review: what would change? No actual changes yet.</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>webserver.yml<span class="w"> </span>--check<span class="w"> </span>--diff
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="c1"># Review: what would change? No actual changes yet.</span>
 </span></code></pre></div>
 <h3 id="step-5-first-run">Step 5 — First run<a class="headerlink" href="#step-5-first-run" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-22-1"><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>webserver.yml
-</span><span id="__span-22-2"><a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="c1"># Observe: changed=3 (install + copy + ensure running)</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>webserver.yml
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="c1"># Observe: changed=3 (install + copy + ensure running)</span>
 </span></code></pre></div>
 <p>Verify:
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>curl<span class="w"> </span>http://&lt;YOUR_SERVER_IP&gt;
-</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="c1"># → Hello from Ansible — configured myserver</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a>curl<span class="w"> </span>http://&lt;YOUR_SERVER_IP&gt;
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="c1"># → Hello from Ansible — configured myserver</span>
 </span></code></pre></div></p>
 <h3 id="step-6-second-run-the-idempotency-proof">Step 6 — Second run (the idempotency proof)<a class="headerlink" href="#step-6-second-run-the-idempotency-proof" title="Permanent link">&para;</a></h3>
-<div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>webserver.yml
-</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="c1"># Observe: changed=0 — everything was already in the desired state</span>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>ansible-playbook<span class="w"> </span>-i<span class="w"> </span>inventory.ini<span class="w"> </span>webserver.yml
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="c1"># Observe: changed=0 — everything was already in the desired state</span>
 </span></code></pre></div>
 <p>This is the output you describe in every interview when asked about idempotency. Save both run outputs.</p>
 <h3 id="step-7-trigger-the-handler">Step 7 — Trigger the handler<a class="headerlink" href="#step-7-trigger-the-handler" title="Permanent link">&para;</a></h3>

@@ -6,157 +6,393 @@
 <title>BillFree Labs · Internal Engineering Platform</title>
 <meta name="description" content="An interactive production engineering simulation — triage real incidents on a real microservices architecture.">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛠️</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0a0b0f; --surface:#12141c; --surface-2:#171a24; --surface-3:#1e2230;
-  --border:#262b3a; --border-lit:#333a4d;
-  --fg:#e6e9f2; --fg-dim:#9aa3b8; --fg-faint:#6b7488;
+  --bg:#080a10; --surface:#0f111a; --surface-2:#161926; --surface-3:#1d2235;
+  --border:#1e2438; --border-lit:#2d3555;
+  --fg:#e2e8f7; --fg-dim:#8892b0; --fg-faint:#4a536e;
   --indigo:#6366f1; --violet:#8b5cf6; --cyan:#06b6d4;
-  --green:#10b981; --amber:#f59e0b; --red:#ef4444;
+  --green:#10b981; --amber:#f59e0b; --red:#ef4444; --rose:#fb7185;
   --grad:linear-gradient(135deg,#6366f1,#8b5cf6 55%,#06b6d4);
-  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace;
-  --sans:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif;
-  --r:12px; --shadow:0 16px 40px -20px rgba(0,0,0,.8);
+  --grad-subtle:linear-gradient(135deg,rgba(99,102,241,.15),rgba(6,182,212,.15));
+  --glow-indigo:0 0 30px rgba(99,102,241,.35);
+  --glow-red:0 0 20px rgba(239,68,68,.5);
+  --glow-green:0 0 20px rgba(16,185,129,.4);
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+  --sans:'Inter',system-ui,-apple-system,sans-serif;
+  --r:12px; --shadow:0 20px 50px -20px rgba(0,0,0,.9);
 }
 [data-theme="light"]{
-  --bg:#f7f8fc; --surface:#fff; --surface-2:#f2f4f9; --surface-3:#e9edf5;
-  --border:#e0e5f0; --border-lit:#cdd5e5;
-  --fg:#12141c; --fg-dim:#5a6478; --fg-faint:#8a93a8;
-  --shadow:0 16px 40px -24px rgba(30,40,80,.35);
+  --bg:#f5f7ff; --surface:#fff; --surface-2:#f0f3ff; --surface-3:#e8ecfa;
+  --border:#dde2f5; --border-lit:#c5cde8;
+  --fg:#0f172a; --fg-dim:#4a5568; --fg-faint:#8a96b5;
+  --glow-indigo:0 0 20px rgba(99,102,241,.2);
+  --glow-red:0 0 16px rgba(239,68,68,.25);
+  --glow-green:0 0 16px rgba(16,185,129,.25);
+  --shadow:0 16px 40px -24px rgba(30,40,80,.3);
 }
+
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%}
-body{background:var(--bg);color:var(--fg);font-family:var(--sans);font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased}
-.app{display:grid;grid-template-columns:232px 1fr;min-height:100vh}
-.sidebar{background:var(--surface);border-right:1px solid var(--border);padding:16px 12px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh;overflow-y:auto}
-.brand{display:flex;align-items:center;gap:9px;padding:6px 8px 16px}
-.brand-mark{width:28px;height:28px;border-radius:8px;background:var(--grad);display:grid;place-items:center;font-size:14px;flex:none}
-.brand-name{font-weight:700;font-size:13.5px;letter-spacing:-.01em;line-height:1.2}
-.brand-sub{font-size:10px;color:var(--fg-faint);letter-spacing:.06em;text-transform:uppercase}
-.nav-label{font-size:10px;color:var(--fg-faint);text-transform:uppercase;letter-spacing:.1em;padding:14px 8px 6px;font-weight:600}
-.nav-item{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:8px;color:var(--fg-dim);cursor:pointer;font-size:13px;font-weight:500;border:1px solid transparent;transition:.15s;user-select:none}
+html,body{height:100%;font-family:var(--sans);-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--fg);font-size:14px;line-height:1.6}
+
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-thumb{background:var(--border-lit);border-radius:6px}
+
+/* ─── Layout ─── */
+.app{display:grid;grid-template-columns:228px 1fr;min-height:100vh}
+
+/* ─── Sidebar ─── */
+.sidebar{
+  background:var(--surface);border-right:1px solid var(--border);
+  padding:14px 10px;display:flex;flex-direction:column;gap:2px;
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+}
+.brand{
+  display:flex;align-items:center;gap:9px;padding:8px 10px 18px;
+  cursor:pointer;border-radius:10px;transition:.15s;
+}
+.brand:hover{background:var(--surface-2)}
+.brand-mark{
+  width:30px;height:30px;border-radius:9px;background:var(--grad);
+  display:grid;place-items:center;font-size:15px;flex:none;
+  box-shadow:var(--glow-indigo);
+}
+.brand-name{font-weight:700;font-size:13px;letter-spacing:-.02em;line-height:1.25}
+.brand-sub{font-size:10px;color:var(--fg-faint);letter-spacing:.07em;text-transform:uppercase}
+.nav-label{font-size:10px;color:var(--fg-faint);text-transform:uppercase;letter-spacing:.1em;padding:14px 10px 5px;font-weight:700}
+.nav-item{
+  display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;
+  color:var(--fg-dim);cursor:pointer;font-size:12.5px;font-weight:500;
+  border:1px solid transparent;transition:.12s;user-select:none;
+}
 .nav-item:hover{background:var(--surface-2);color:var(--fg)}
-.nav-item.active{background:var(--surface-3);color:var(--fg);border-color:var(--border-lit)}
+.nav-item.active{
+  background:var(--surface-3);color:var(--fg);border-color:var(--border-lit);
+  box-shadow:inset 3px 0 0 var(--indigo);
+}
 .nav-item .ico{width:16px;text-align:center;flex:none}
-.nav-item .badge{margin-left:auto;background:var(--red);color:#fff;font-size:9.5px;font-weight:700;padding:1px 6px;border-radius:999px}
-.sidebar-foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--border)}
-.me{display:flex;align-items:center;gap:9px;padding:7px 8px}
-.avatar{width:28px;height:28px;border-radius:50%;background:var(--grad);display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;flex:none}
-.me-name{font-size:12.5px;font-weight:600;line-height:1.3}
+.nav-item .badge{
+  margin-left:auto;background:var(--red);color:#fff;font-size:9.5px;
+  font-weight:800;padding:1px 6px;border-radius:999px;
+  animation:badgePulse 2s infinite;
+}
+@keyframes badgePulse{0%,100%{box-shadow:0 0 0 0 rgba(239,68,68,.5)}50%{box-shadow:0 0 0 4px rgba(239,68,68,0)}}
+.sidebar-foot{margin-top:auto;padding-top:12px;border-top:1px solid var(--border)}
+.me{display:flex;align-items:center;gap:9px;padding:8px 10px}
+.avatar{
+  width:30px;height:30px;border-radius:50%;background:var(--grad);
+  display:grid;place-items:center;font-size:11px;font-weight:700;color:#fff;flex:none;
+}
+.me-name{font-size:12px;font-weight:600;line-height:1.3}
 .me-role{font-size:10.5px;color:var(--fg-faint)}
+
+/* ─── Main ─── */
 .main{display:flex;flex-direction:column;min-width:0}
-.topbar{height:52px;border-bottom:1px solid var(--border);background:var(--surface);display:flex;align-items:center;gap:12px;padding:0 20px;position:sticky;top:0;z-index:20}
+.topbar{
+  height:52px;border-bottom:1px solid var(--border);background:var(--surface);
+  display:flex;align-items:center;gap:12px;padding:0 22px;
+  position:sticky;top:0;z-index:30;
+  backdrop-filter:blur(12px);background:color-mix(in srgb,var(--surface) 85%,transparent);
+}
 .crumb{font-size:12.5px;color:var(--fg-dim)}
 .crumb b{color:var(--fg);font-weight:600}
 .topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.chip{font-size:11px;font-weight:600;padding:3px 9px;border-radius:999px;border:1px solid var(--border-lit);color:var(--fg-dim);background:var(--surface-2)}
-.chip.live::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;margin-right:6px;animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-.icon-btn{width:30px;height:30px;border-radius:8px;border:1px solid var(--border-lit);background:var(--surface-2);color:var(--fg-dim);cursor:pointer;display:grid;place-items:center;font-size:13px}
-.icon-btn:hover{color:var(--fg);border-color:var(--violet)}
-.content{padding:24px 28px 60px;max-width:1180px;width:100%}
-h1{font-size:24px;font-weight:700;letter-spacing:-.02em;line-height:1.2}
-h2{font-size:16px;font-weight:650;letter-spacing:-.01em;margin-bottom:2px}
+.chip{
+  font-size:11px;font-weight:600;padding:3px 10px;border-radius:999px;
+  border:1px solid var(--border-lit);color:var(--fg-dim);background:var(--surface-2);
+}
+.chip.live::before{
+  content:"";width:6px;height:6px;border-radius:50%;background:var(--green);
+  display:inline-block;margin-right:6px;animation:livePulse 2s infinite;
+}
+@keyframes livePulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(16,185,129,.5)}50%{opacity:.6;box-shadow:0 0 0 4px rgba(16,185,129,0)}}
+.icon-btn{
+  width:30px;height:30px;border-radius:8px;border:1px solid var(--border-lit);
+  background:var(--surface-2);color:var(--fg-dim);cursor:pointer;
+  display:grid;place-items:center;font-size:13px;transition:.15s;
+}
+.icon-btn:hover{color:var(--fg);border-color:var(--violet);box-shadow:var(--glow-indigo)}
+
+/* ─── Content ─── */
+.content{padding:22px 26px 60px;max-width:1200px;width:100%}
+.screen{animation:screenFade .3s ease}
+@keyframes screenFade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+h1{font-size:22px;font-weight:700;letter-spacing:-.02em;line-height:1.25}
+h2{font-size:15px;font-weight:650;letter-spacing:-.01em;margin-bottom:2px}
 h3{font-size:13px;font-weight:650}
 .dim{color:var(--fg-dim)}
 .faint{color:var(--fg-faint);font-size:12px}
 .mono{font-family:var(--mono)}
-.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px}
+
+/* ─── Cards ─── */
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);padding:16px;
+  transition:border-color .2s;
+}
+.card:hover{border-color:var(--border-lit)}
 .card-h{display:flex;align-items:center;gap:8px;margin-bottom:12px}
-.btn{font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:8px;border:1px solid var(--border-lit);background:var(--surface-2);color:var(--fg);cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:7px}
-.btn:hover:not(:disabled){border-color:var(--violet);transform:translateY(-1px)}
+
+/* ─── Buttons ─── */
+.btn{
+  font-family:inherit;font-size:12.5px;font-weight:600;padding:8px 15px;
+  border-radius:8px;border:1px solid var(--border-lit);
+  background:var(--surface-2);color:var(--fg);cursor:pointer;
+  transition:.15s;display:inline-flex;align-items:center;gap:7px;
+}
+.btn:hover:not(:disabled){border-color:var(--violet);transform:translateY(-1px);box-shadow:var(--glow-indigo)}
 .btn:disabled{opacity:.4;cursor:not-allowed}
-.btn-primary{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 10px 24px -12px rgba(99,102,241,.8)}
-.btn-primary:hover:not(:disabled){filter:brightness(1.1)}
+.btn-primary{
+  background:var(--grad);border-color:transparent;color:#fff;
+  box-shadow:0 10px 28px -12px rgba(99,102,241,.7);
+}
+.btn-primary:hover:not(:disabled){filter:brightness(1.1);transform:translateY(-1px)}
 .btn-ghost{background:transparent}
+
+/* ─── Grid / Row / Tiles ─── */
 .grid{display:grid;gap:12px}
 .row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px}
+.tile{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:14px;transition:.2s;
+}
+.tile:hover{border-color:var(--border-lit);transform:translateY(-2px)}
+.tile-l{font-size:10px;color:var(--fg-faint);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.tile-v{font-size:22px;font-weight:700;font-family:var(--mono);letter-spacing:-.02em;margin-top:4px;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.tile-d{font-size:10.5px;margin-top:3px}
+.up{color:var(--red)}.good{color:var(--green)}
+
+/* ─── Severity badges ─── */
 .sev{font-size:9.5px;font-weight:800;letter-spacing:.07em;padding:2px 7px;border-radius:5px;text-transform:uppercase}
 .sev-crit{background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.35)}
 .sev-warn{background:rgba(245,158,11,.13);color:#fcd34d;border:1px solid rgba(245,158,11,.32)}
 .sev-ok{background:rgba(16,185,129,.13);color:#6ee7b7;border:1px solid rgba(16,185,129,.32)}
-[data-theme="light"] .sev-crit{color:#b91c1c}[data-theme="light"] .sev-warn{color:#b45309}[data-theme="light"] .sev-ok{color:#047857}
-.svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(184px,1fr));gap:10px}
-.svc{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;transition:.18s;position:relative;overflow:hidden}
+[data-theme="light"] .sev-crit{color:#b91c1c}
+[data-theme="light"] .sev-warn{color:#b45309}
+[data-theme="light"] .sev-ok{color:#047857}
+
+/* ─── Services grid ─── */
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.svc{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:10px;padding:12px;transition:.18s;position:relative;overflow:hidden;cursor:pointer;
+}
 .svc:hover{border-color:var(--border-lit);transform:translateY(-2px)}
-.svc.bad{border-color:rgba(239,68,68,.5)}
-.svc.bad::before{content:"";position:absolute;inset:0 0 auto 0;height:2px;background:var(--red)}
+.svc.bad{border-color:rgba(239,68,68,.5);box-shadow:0 0 14px rgba(239,68,68,.15)}
+.svc.bad::before{content:"";position:absolute;inset:0 0 auto 0;height:2px;background:var(--red);animation:svcPulse 1.5s infinite}
+@keyframes svcPulse{0%,100%{opacity:1}50%{opacity:.4}}
 .svc-top{display:flex;align-items:center;justify-content:space-between;gap:6px}
 .svc-name{font-family:var(--mono);font-size:12px;font-weight:600}
 .dot{width:7px;height:7px;border-radius:50%;flex:none}
 .dot.ok{background:var(--green);box-shadow:0 0 0 3px rgba(16,185,129,.15)}
-.dot.bad{background:var(--red);box-shadow:0 0 0 3px rgba(239,68,68,.15);animation:pulse 1.4s infinite}
+.dot.bad{background:var(--red);box-shadow:0 0 0 3px rgba(239,68,68,.15);animation:livePulse 1.4s infinite}
 .svc-meta{display:flex;gap:10px;margin-top:9px;font-size:10.5px;color:var(--fg-faint);font-family:var(--mono)}
 .svc-meta b{color:var(--fg-dim);font-weight:600}
-.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-.tile{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px}
-.tile-l{font-size:10px;color:var(--fg-faint);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
-.tile-v{font-size:21px;font-weight:700;font-family:var(--mono);letter-spacing:-.02em;margin-top:3px}
-.tile-d{font-size:10.5px;margin-top:2px}
-.up{color:var(--red)}.good{color:var(--green)}
-.alert-banner{border:1px solid rgba(239,68,68,.4);background:linear-gradient(90deg,rgba(239,68,68,.12),transparent 60%);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:14px;animation:slideIn .4s ease}
-@keyframes slideIn{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
-.alert-icon{font-size:20px;animation:pulse 1.5s infinite}
-.term{background:#07080c;border:1px solid var(--border-lit);border-radius:10px;overflow:hidden;font-family:var(--mono);font-size:12px}
+
+/* ─── Alert banner ─── */
+.alert-banner{
+  border:1px solid rgba(239,68,68,.4);
+  background:linear-gradient(90deg,rgba(239,68,68,.1),rgba(245,158,11,.05) 60%,transparent);
+  border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;gap:14px;
+  animation:slideIn .4s ease;box-shadow:0 0 30px rgba(239,68,68,.1);
+}
+@keyframes slideIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:none}}
+.alert-icon{font-size:20px;animation:livePulse 1.5s infinite}
+
+/* ─── Terminal ─── */
+.term{
+  background:#060810;border:1px solid var(--border-lit);
+  border-radius:10px;overflow:hidden;font-family:var(--mono);font-size:12px;
+  box-shadow:inset 0 0 40px rgba(0,0,0,.4);
+}
 [data-theme="light"] .term{background:#0d1017}
-.term-bar{background:var(--surface-2);border-bottom:1px solid var(--border);padding:7px 12px;display:flex;align-items:center;gap:7px}
-[data-theme="light"] .term-bar{background:#1a1f2e;border-color:#2a3140}
+.term-bar{
+  background:var(--surface-2);border-bottom:1px solid var(--border);
+  padding:7px 12px;display:flex;align-items:center;gap:7px;
+}
 .tdot{width:9px;height:9px;border-radius:50%}
 .term-title{font-size:10.5px;color:var(--fg-faint);margin-left:6px}
-[data-theme="light"] .term-title{color:#8a93a8}
-.term-body{padding:12px;max-height:340px;overflow-y:auto;color:#d5dae6}
-.term-line{white-space:pre-wrap;word-break:break-word;line-height:1.55}
+.term-body{padding:12px;max-height:320px;overflow-y:auto;color:#d5dae6;line-height:1.6}
+.term-line{white-space:pre-wrap;word-break:break-word;padding:1px 0}
 .term-cmd{color:#8b5cf6;font-weight:600}
 .term-cmd::before{content:"$ ";color:#10b981}
 .term-out{color:#a8b0c2}
 .term-hi{color:#fca5a5;font-weight:600}
 .term-ok{color:#6ee7b7}
 .term-warn{color:#fcd34d}
-.term-input-row{display:flex;align-items:center;gap:7px;border-top:1px solid var(--border);padding:9px 12px;background:#0b0d13}
+.term-input-row{
+  display:flex;align-items:center;gap:7px;border-top:1px solid var(--border);
+  padding:9px 12px;background:#0b0d14;
+}
 [data-theme="light"] .term-input-row{background:#12161f;border-color:#2a3140}
 .term-prompt{color:#10b981;font-weight:700;flex:none}
-.term-input{flex:1;background:none;border:none;outline:none;color:#e6e9f2;font-family:var(--mono);font-size:12px}
-.term-input::placeholder{color:#4b5468}
-.hints{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
-.hint{font-family:var(--mono);font-size:10.5px;padding:4px 8px;border-radius:6px;border:1px dashed var(--border-lit);color:var(--fg-dim);cursor:pointer;background:var(--surface-2)}
-.hint:hover{border-style:solid;border-color:var(--violet);color:var(--fg)}
-.hint.done{opacity:.4;text-decoration:line-through}
+.term-input{
+  flex:1;background:none;border:none;outline:none;
+  color:#e6e9f2;font-family:var(--mono);font-size:12px;
+}
+.term-input::placeholder{color:#3a4060}
+
+/* ─── Command Builder ─── */
+.cmd-builder{
+  background:var(--surface);border:1px solid var(--border-lit);
+  border-radius:var(--r);padding:14px 16px;margin-top:10px;
+}
+.cmd-builder h3{font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--violet);margin-bottom:10px;font-weight:700}
+.builder-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.builder-select{
+  font-family:var(--mono);font-size:12px;font-weight:600;
+  background:var(--surface-2);border:1px solid var(--border-lit);
+  color:var(--fg);border-radius:7px;padding:6px 10px;cursor:pointer;
+  outline:none;transition:.15s;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%236b7488'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 8px center;
+  padding-right:26px;
+}
+.builder-select:focus{border-color:var(--violet);box-shadow:0 0 0 2px rgba(139,92,246,.2)}
+.builder-preview{
+  font-family:var(--mono);font-size:11.5px;color:var(--cyan);
+  background:var(--surface-3);border:1px dashed var(--border-lit);
+  border-radius:7px;padding:7px 12px;flex:1;min-width:200px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.builder-run{
+  background:var(--grad);border:none;color:#fff;
+  border-radius:7px;padding:7px 14px;font-family:var(--mono);
+  font-size:12px;font-weight:700;cursor:pointer;
+  box-shadow:0 6px 20px -8px rgba(99,102,241,.7);
+  transition:.15s;white-space:nowrap;
+}
+.builder-run:hover{filter:brightness(1.1);transform:translateY(-1px)}
+
+/* ─── Network Topology Map ─── */
+.topo-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r);padding:16px;position:relative;overflow:hidden;
+}
+.topo-card::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(99,102,241,.04),transparent);
+  pointer-events:none;
+}
+.topo-card h2{margin-bottom:14px}
+#topoSvg{width:100%;height:260px;font-family:var(--mono)}
+.topo-node{cursor:pointer;transition:.2s}
+.topo-node:hover .node-ring{transform:scale(1.12)}
+.node-ring{transition:transform .2s}
+.node-label{font-size:9.5px;fill:var(--fg-dim);text-anchor:middle;pointer-events:none}
+.node-badge{font-size:8px;font-weight:700;fill:white;text-anchor:middle;pointer-events:none}
+.topo-line{stroke:var(--border-lit);stroke-width:1.5;fill:none;stroke-dasharray:4 3}
+.topo-line.active{stroke:rgba(239,68,68,.4);stroke-dasharray:none}
+.topo-hint{font-size:10px;color:var(--fg-faint);margin-top:8px;display:flex;align-items:center;gap:6px}
+.topo-hint span{
+  width:8px;height:8px;border-radius:50%;background:var(--red);display:inline-block;
+  animation:livePulse 1.4s infinite;
+}
+
+/* ─── Hints ─── */
+.hints{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+.hint{
+  font-family:var(--mono);font-size:10.5px;padding:4px 9px;border-radius:6px;
+  border:1px dashed var(--border-lit);color:var(--fg-dim);cursor:pointer;
+  background:var(--surface-2);transition:.12s;
+}
+.hint:hover{border-style:solid;border-color:var(--violet);color:var(--fg);transform:translateY(-1px)}
+.hint.done{opacity:.4;text-decoration:line-through;cursor:default}
+
+/* ─── Steps ─── */
 .steps{display:flex;gap:0;margin-bottom:20px;flex-wrap:wrap}
 .step{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--fg-faint);font-weight:600}
-.step:not(:last-child)::after{content:"";width:26px;height:1px;background:var(--border-lit);margin:0 9px}
-.step-n{width:20px;height:20px;border-radius:50%;border:1px solid var(--border-lit);display:grid;place-items:center;font-size:10px;flex:none}
+.step:not(:last-child)::after{content:"";width:28px;height:1px;background:var(--border-lit);margin:0 9px}
+.step-n{width:21px;height:21px;border-radius:50%;border:1px solid var(--border-lit);display:grid;place-items:center;font-size:10px;flex:none}
 .step.active{color:var(--fg)}
-.step.active .step-n{background:var(--grad);border-color:transparent;color:#fff}
+.step.active .step-n{background:var(--grad);border-color:transparent;color:#fff;box-shadow:0 0 12px rgba(99,102,241,.5)}
 .step.done{color:var(--green)}
 .step.done .step-n{background:rgba(16,185,129,.18);border-color:var(--green);color:var(--green)}
-.choice{display:flex;gap:11px;padding:13px;border:1px solid var(--border);border-radius:10px;background:var(--surface);cursor:pointer;transition:.15s;align-items:flex-start}
-.choice:hover{border-color:var(--violet);transform:translateX(3px)}
-.choice.correct{border-color:var(--green);background:rgba(16,185,129,.07)}
+
+/* ─── Choices ─── */
+.choice{
+  display:flex;align-items:flex-start;gap:11px;padding:13px;
+  border:1px solid var(--border);border-radius:10px;
+  background:var(--surface);cursor:pointer;transition:.15s;
+}
+.choice:hover{border-color:var(--violet);transform:translateX(3px);background:var(--surface-2)}
+.choice.correct{border-color:var(--green);background:rgba(16,185,129,.07);box-shadow:0 0 16px rgba(16,185,129,.15)}
 .choice.wrong{border-color:var(--red);background:rgba(239,68,68,.07);opacity:.75}
 .choice.disabled{pointer-events:none}
-.choice-k{width:22px;height:22px;border-radius:6px;background:var(--surface-3);border:1px solid var(--border-lit);display:grid;place-items:center;font-size:10.5px;font-weight:700;flex:none;font-family:var(--mono)}
-.code{background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:11px 13px;font-family:var(--mono);font-size:11.5px;white-space:pre;overflow-x:auto;color:var(--fg-dim);line-height:1.6}
+.choice-k{
+  width:24px;height:24px;border-radius:7px;background:var(--surface-3);
+  border:1px solid var(--border-lit);display:grid;place-items:center;
+  font-size:11px;font-weight:700;flex:none;font-family:var(--mono);
+}
+
+/* ─── Code blocks ─── */
+.code{
+  background:var(--surface-2);border:1px solid var(--border);border-radius:8px;
+  padding:11px 13px;font-family:var(--mono);font-size:11.5px;white-space:pre;
+  overflow-x:auto;color:var(--fg-dim);line-height:1.7;
+}
 .code .add{color:var(--green)}.code .del{color:var(--red)}.code .k{color:var(--violet)}
-.xpbar{height:6px;background:var(--surface-3);border-radius:99px;overflow:hidden;margin-top:6px}
-.xpfill{height:100%;background:var(--grad);border-radius:99px;transition:width .6s cubic-bezier(.4,0,.2,1)}
-textarea{width:100%;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;padding:11px;color:var(--fg);font-family:var(--mono);font-size:12px;resize:vertical;outline:none}
-textarea:focus{border-color:var(--violet)}
-.toast{position:fixed;bottom:22px;right:22px;background:var(--surface);border:1px solid var(--green);border-radius:10px;padding:12px 16px;box-shadow:var(--shadow);z-index:99;animation:slideIn .3s ease;max-width:300px}
+
+/* ─── XP bar ─── */
+.xpbar{height:5px;background:var(--surface-3);border-radius:99px;overflow:hidden;margin-top:6px}
+.xpfill{height:100%;background:var(--grad);border-radius:99px;transition:width .8s cubic-bezier(.4,0,.2,1);box-shadow:0 0 8px rgba(99,102,241,.5)}
+
+/* ─── Textarea ─── */
+textarea{
+  width:100%;background:var(--surface-2);border:1px solid var(--border);
+  border-radius:8px;padding:11px;color:var(--fg);font-family:var(--mono);
+  font-size:12px;resize:vertical;outline:none;transition:.15s;
+}
+textarea:focus{border-color:var(--violet);box-shadow:0 0 0 2px rgba(139,92,246,.15)}
+
+/* ─── Toast ─── */
+.toast{
+  position:fixed;bottom:22px;right:22px;background:var(--surface);
+  border:1px solid var(--green);border-radius:10px;padding:10px 16px;
+  box-shadow:var(--shadow),var(--glow-green);z-index:99;
+  animation:toastIn .3s ease;max-width:260px;font-size:13px;font-weight:600;
+}
+@keyframes toastIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* ─── Onboarding ─── */
 .hidden{display:none!important}
-.screen{animation:fade .35s ease}
-@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.inc-row{display:flex;align-items:center;gap:12px;padding:13px 14px;border:1px solid var(--border);border-radius:10px;background:var(--surface);cursor:pointer;transition:.15s}
-.inc-row:hover{border-color:var(--violet);transform:translateX(3px)}
+.onb{
+  min-height:100vh;display:grid;place-items:center;padding:24px;
+  position:relative;overflow:hidden;
+}
+.onb::before{
+  content:"";position:absolute;top:-25%;left:50%;transform:translateX(-50%);
+  width:800px;height:800px;
+  background:radial-gradient(circle,rgba(99,102,241,.12),transparent 62%);
+  pointer-events:none;
+}
+.onb-card{max-width:520px;position:relative;text-align:center}
+.onb h1{font-size:28px;margin:16px 0 8px;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-weight:800}
+.prov{text-align:left;margin:22px 0;display:grid;gap:6px}
+.prov-item{
+  display:flex;align-items:center;gap:9px;padding:9px 12px;
+  border:1px solid var(--border);border-radius:8px;
+  background:var(--surface);font-size:12.5px;opacity:.2;transition:.45s;
+}
+.prov-item.on{opacity:1;border-color:rgba(16,185,129,.35);background:rgba(16,185,129,.04)}
+.prov-check{color:var(--green);font-weight:700}
+
+/* ─── Inc rows ─── */
+.inc-row{
+  display:flex;align-items:center;gap:12px;padding:13px 14px;
+  border:1px solid var(--border);border-radius:10px;
+  background:var(--surface);cursor:pointer;transition:.15s;
+}
+.inc-row:hover{border-color:var(--violet);transform:translateX(3px);box-shadow:var(--glow-indigo)}
 .inc-row.done{opacity:.6}
 .inc-row.done:hover{opacity:.85}
-.onb{min-height:100vh;display:grid;place-items:center;padding:24px;position:relative;overflow:hidden}
-.onb::before{content:"";position:absolute;top:-30%;left:50%;transform:translateX(-50%);width:700px;height:700px;background:radial-gradient(circle,rgba(99,102,241,.16),transparent 62%)}
-.onb-card{max-width:520px;position:relative;text-align:center}
-.onb h1{font-size:30px;margin:16px 0 8px;background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.prov{text-align:left;margin:22px 0;display:grid;gap:7px}
-.prov-item{display:flex;align-items:center;gap:9px;padding:9px 12px;border:1px solid var(--border);border-radius:8px;background:var(--surface);font-size:12.5px;opacity:.25;transition:.4s}
-.prov-item.on{opacity:1;border-color:rgba(16,185,129,.4)}
-.prov-check{color:var(--green);font-weight:700}
+
+/* ─── Responsive ─── */
 @media(max-width:880px){
   .app{grid-template-columns:1fr}
   .sidebar{position:static;height:auto;flex-direction:row;overflow-x:auto;align-items:center;padding:10px}
@@ -164,14 +400,16 @@ textarea:focus{border-color:var(--violet)}
   .nav-item{white-space:nowrap}
   .content{padding:16px}
   .steps{font-size:10px}
+  #topoSvg{height:180px}
 }
 </style>
 </head>
 <body>
 
+<!-- ── Onboarding ── -->
 <div id="onboarding" class="onb">
   <div class="onb-card">
-    <div style="font-size:44px">🍱</div>
+    <div style="font-size:46px">🍱</div>
     <h1>Welcome to DabbaDrop</h1>
     <p class="dim" style="font-size:14px">You're joining a seed-stage startup as its <b style="color:var(--fg)">first and only engineer</b>. 400 orders a day, 11 people, one server. Here's your handover.</p>
     <div class="prov">
@@ -186,9 +424,10 @@ textarea:focus{border-color:var(--violet)}
   </div>
 </div>
 
+<!-- ── App ── -->
 <div class="app hidden" id="app">
   <aside class="sidebar">
-    <div class="brand" data-go="companies" style="cursor:pointer" title="Switch company">
+    <div class="brand" data-go="companies" title="Switch company">
       <div class="brand-mark">🛠️</div>
       <div style="min-width:0">
         <div class="brand-name" id="coName">DabbaDrop</div>
@@ -204,6 +443,7 @@ textarea:focus{border-color:var(--violet)}
     <div class="nav-item" data-screen="career"><span class="ico">📈</span> Your Career</div>
     <div class="nav-label">Services</div>
     <div class="nav-item" data-screen="architecture"><span class="ico">🗺️</span> Architecture</div>
+    <div class="nav-item" data-screen="topology"><span class="ico">🌐</span> Live Topology</div>
     <div class="sidebar-foot">
       <div class="me">
         <div class="avatar">GP</div>
@@ -228,15 +468,13 @@ textarea:focus{border-color:var(--violet)}
 <script src="data/billfree.js"></script>
 <script src="data/meridian.js"></script>
 <script>
-/* ==================== companies (data lives in data/*.js) ==================== */
+/* ==================== companies ==================== */
 const COMPANIES = [window.CO_DABBADROP, window.CO_BILLFREE, window.CO_MERIDIAN].filter(Boolean);
 const ALL_INCIDENTS = COMPANIES.flatMap(c => c.incidents.map(i => ({...i, company: c.id})));
 
 /* ==================== state ==================== */
 const KEY = 'billfree_platform_v3';
 const XP = {evidence:20, root:75, fix:75, rca:100};
-/* 14 incidents × 350 XP (5 evidence + root + fix + rca) = 4900 possible.
-   Ladder keeps the original shape: 6 roles, equal steps, Principal exactly at max. */
 const ROLES = [
   ['Junior DevOps Engineer',0],['DevOps Engineer',980],['Platform Engineer',1960],
   ['Senior Platform Engineer',2940],['Site Reliability Engineer',3920],['Principal Engineer',4900]
@@ -258,7 +496,7 @@ const coDone = c => c.incidents.every(i=>S.done.includes(i.id));
 
 /* ==================== onboarding ==================== */
 const provItems = document.querySelectorAll('.prov-item');
-if(S.done.length || S.xp){       // returning user — skip the ceremony
+if(S.done.length || S.xp){
   $('#onboarding').classList.add('hidden'); $('#app').classList.remove('hidden');
 }else{
   provItems.forEach((it,i)=> setTimeout(()=> it.classList.add('on'), 450+i*420));
@@ -287,7 +525,7 @@ function addXp(n){
   const rl=$('#roleLabel'); if(rl) rl.textContent = roleOf(S.xp);
 }
 function toast(msg){
-  const t = el(`<div class="toast"><b>${msg}</b></div>`);
+  const t = el(`<div class="toast">${msg}</div>`);
   document.body.appendChild(t); setTimeout(()=>t.remove(),1800);
 }
 
@@ -295,7 +533,7 @@ function toast(msg){
 function runCmd(raw){
   const body=$('#termBody'); if(!body) return;
   const I=cur(); const t=raw.trim();
-  const cmd = I.aliases[t] || t;
+  const cmd = I.aliases ? (I.aliases[t] || t) : t;
   body.appendChild(el(`<div class="term-line term-cmd">${esc(raw)}</div>`));
   const hit = I.cmds[cmd];
   if(hit){
@@ -305,17 +543,172 @@ function runCmd(raw){
     });
     if(!S.ran.includes(hit.id)){ S.ran.push(hit.id); save(); addXp(XP.evidence); }
     document.querySelectorAll('.hint').forEach(h=>{
-      if((I.aliases[h.dataset.cmd]||h.dataset.cmd)===cmd) h.classList.add('done');
+      if((I.aliases&&I.aliases[h.dataset.cmd]||h.dataset.cmd)===cmd) h.classList.add('done');
     });
     if(S.ran.length>=3 && S.step===0){ S.step=1; save(); setTimeout(render,700); }
   } else if(cmd==='clear'){ body.innerHTML=''; }
-  else body.appendChild(el(`<div class="term-line term-warn">command not recognised in this simulation — try a hint below</div>`));
+  else body.appendChild(el(`<div class="term-line term-warn">command not recognised — try a hint or the command builder below</div>`));
   body.scrollTop = body.scrollHeight;
+  // highlight topo node if relevant
+  updateTopoHighlight(cmd);
+}
+
+/* ==================== topology SVG builder ==================== */
+function buildTopologySVG(badSvcs){
+  const c = co();
+  const svcs = c.services || [];
+  // Layout positions in a 600×240 canvas
+  const layout = {
+    'nginx':        {x:300,y:28},
+    'api-gateway':  {x:300,y:28},
+    'api':          {x:300,y:28},
+    'web':          {x:300,y:28},
+    'auth':         {x:120,y:110},
+    'auth-service': {x:120,y:110},
+    'ticket-service':{x:240,y:110},
+    'ticket':       {x:240,y:110},
+    'api':          {x:300,y:28},
+    'analytics-service':{x:370,y:110},
+    'analytics':    {x:370,y:110},
+    'calllog-service':{x:490,y:110},
+    'report-service':{x:120,y:195},
+    'web':          {x:490,y:28},
+    'postgres':     {x:300,y:200},
+    'postgres-0':   {x:300,y:200},
+    'redis':        {x:440,y:200},
+    'payments-api': {x:120,y:110},
+    'ledger-api':   {x:300,y:110},
+    'kyc-api':      {x:480,y:110},
+    'recon-worker': {x:120,y:200},
+    'analytics-etl':{x:300,y:200},
+    'istio-ingress':{x:300,y:28},
+  };
+
+  // Build positions for services in co()
+  let nodes = [];
+  const count = svcs.length;
+  svcs.forEach((s, i) => {
+    const pos = layout[s.n];
+    if(pos){
+      nodes.push({...s, ...pos});
+    } else {
+      // distribute in a circle
+      const angle = (i/count)*2*Math.PI - Math.PI/2;
+      nodes.push({...s, x: 300 + 200*Math.cos(angle), y: 130 + 100*Math.sin(angle)});
+    }
+  });
+
+  // Dedupe by position
+  const seen = {}; nodes = nodes.filter(n=>{const k=`${n.x},${n.y}`;if(seen[k])return false;seen[k]=true;return true;});
+
+  const bad = new Set(badSvcs);
+
+  // Build SVG connections (simple hub-spoke from first node)
+  const hub = nodes[0];
+  let lines = '';
+  nodes.slice(1).forEach(n=>{
+    const isBad = bad.has(n.n)||bad.has(hub.n);
+    lines += `<line class="topo-line${isBad?' active':''}" x1="${hub.x}" y1="${hub.y}" x2="${n.x}" y2="${n.y}"/>`;
+  });
+
+  let nodesSvg = nodes.map(n=>{
+    const isBad = bad.has(n.n);
+    const fill = isBad ? 'rgba(239,68,68,.18)' : 'rgba(16,185,129,.12)';
+    const stroke = isBad ? '#ef4444' : '#10b981';
+    const dotColor = isBad ? '#ef4444' : '#10b981';
+    const anim = isBad ? `<animate attributeName="opacity" values="1;0.5;1" dur="1.5s" repeatCount="indefinite"/>` : '';
+    // find matching kubectl command
+    const cmdMatch = cur() ? Object.keys(cur().cmds).find(c=>c.includes(n.n)) : null;
+    const dataCmd = cmdMatch ? `data-cmd="${esc(cmdMatch)}"` : '';
+    return `<g class="topo-node" ${dataCmd} transform="translate(${n.x},${n.y})">
+      <circle class="node-ring" r="26" fill="${fill}" stroke="${stroke}" stroke-width="${isBad?2:1.5}" opacity="${isBad?1:.7}">
+        ${anim}
+      </circle>
+      <circle r="8" fill="${dotColor}" opacity="${isBad?1:.85}">
+        ${isBad?`<animate attributeName="r" values="7;10;7" dur="1.4s" repeatCount="indefinite"/>`:''}
+      </circle>
+      <text class="node-label" dy="40">${n.n.replace('-service','').replace('-api','')}</text>
+    </g>`;
+  }).join('');
+
+  return `<svg id="topoSvg" viewBox="0 0 600 240" xmlns="http://www.w3.org/2000/svg" style="overflow:visible">
+    <defs>
+      <filter id="glow"><feGaussianBlur stdDeviation="3" result="g"/><feMerge><feMergeNode in="g"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    </defs>
+    <!-- Users -->
+    <text x="300" y="12" text-anchor="middle" font-size="11" fill="var(--fg-faint)" font-family="var(--mono)">🌐 users (HTTPS)</text>
+    ${lines}
+    ${nodesSvg}
+  </svg>`;
+}
+
+function updateTopoHighlight(cmd){
+  // After running a command, if there's a node matching it, animate it
+  document.querySelectorAll('.topo-node[data-cmd]').forEach(node=>{
+    if(node.dataset.cmd === cmd){
+      node.style.filter = 'brightness(1.5)';
+      setTimeout(()=>node.style.filter='',1000);
+    }
+  });
+}
+
+/* ==================== command builder ==================== */
+function buildCommandBuilder(){
+  const I = cur(); if(!I) return '';
+  const cmds = Object.keys(I.cmds);
+  // Parse kubectl commands for builder
+  const isKubectl = cmds.some(c=>c.startsWith('kubectl'));
+  const isDocker = cmds.some(c=>c.startsWith('docker'));
+
+  if(!isKubectl && !isDocker) return '';
+
+  const actions = isKubectl ? ['kubectl get','kubectl describe','kubectl logs','kubectl top','kubectl get events'] : ['docker compose ps','docker compose logs','docker inspect','docker stats'];
+  const resources = isKubectl ? ['pods','pod','service','endpoints','nodes','events'] : ['api','nginx','postgres','redis'];
+  const targets = (I.svc ? [I.svc] : []).concat(Object.keys(I.cmds).map(c=>{
+    const m = c.match(/(?:pod|logs)\s+(\S+)/);
+    return m ? m[1] : null;
+  }).filter(Boolean));
+  const flags = isKubectl ? ['-n billfree','--previous','--sort-by=.lastTimestamp','-o wide',''] : ['--tail=25',''];
+
+  return `<div class="cmd-builder">
+    <h3>⚡ Interactive Command Builder</h3>
+    <div class="builder-row">
+      <select class="builder-select" id="blAction" onchange="updateBuilder()">
+        ${actions.map(a=>`<option>${a}</option>`).join('')}
+      </select>
+      <select class="builder-select" id="blResource" onchange="updateBuilder()">
+        ${resources.map(r=>`<option>${r}</option>`).join('')}
+      </select>
+      <select class="builder-select" id="blTarget" onchange="updateBuilder()">
+        <option value="">(no target)</option>
+        ${[...new Set(targets)].map(t=>`<option>${t}</option>`).join('')}
+      </select>
+      <select class="builder-select" id="blFlag" onchange="updateBuilder()">
+        ${flags.map(f=>`<option value="${f}">${f||'(no flag)'}</option>`).join('')}
+      </select>
+    </div>
+    <div class="builder-row" style="margin-top:9px">
+      <div class="builder-preview" id="blPreview">kubectl get pods</div>
+      <button class="builder-run" onclick="runBuiltCmd()">▶ Run</button>
+    </div>
+  </div>`;
+}
+function updateBuilder(){
+  const a=$('#blAction')?.value||'';
+  const r=$('#blResource')?.value||'';
+  const t=$('#blTarget')?.value||'';
+  const f=$('#blFlag')?.value||'';
+  const cmd = [a,r,t,f].filter(Boolean).join(' ');
+  const p=$('#blPreview'); if(p) p.textContent=cmd;
+}
+function runBuiltCmd(){
+  const p=$('#blPreview'); if(!p) return;
+  runCmd(p.textContent.trim());
 }
 
 /* ==================== render ==================== */
 function render(){
-  const titles={companies:'Companies',dashboard:'Dashboard',queue:'Incidents',incident:'Incidents',runbook:'Runbooks',career:'Your Career',architecture:'Architecture'};
+  const titles={companies:'Companies',dashboard:'Dashboard',queue:'Incidents',incident:'Incidents',runbook:'Runbooks',career:'Your Career',architecture:'Architecture',topology:'Live Topology'};
   $('#crumb').innerHTML = S.screen==='incident' && cur()
     ? `<span class="dim">${co().name} /</span> <b>Incidents</b> <span class="dim">/ ${cur().id}</span>`
     : `<span class="dim">${co().name} /</span> <b>${titles[S.screen]||'Dashboard'}</b>`;
@@ -331,22 +724,13 @@ function render(){
   wire();
 }
 
-const SERVICES = [
-  {n:'api-gateway',rep:'2/2',mem:'118Mi',cpu:'62m'},
-  {n:'auth-service',rep:'2/2',mem:'171Mi',cpu:'41m'},
-  {n:'ticket-service',rep:'2/2',mem:'104Mi',cpu:'38m'},
-  {n:'analytics-service',rep:'2/2',mem:'131Mi',cpu:'55m'},
-  {n:'calllog-service',rep:'2/2',mem:'99Mi',cpu:'27m'},
-  {n:'report-service',rep:'2/2',mem:'112Mi',cpu:'33m'},
-  {n:'web',rep:'2/2',mem:'87Mi',cpu:'19m'},
-  {n:'postgres',rep:'1/1',mem:'201Mi',cpu:'88m'},
-];
-
+/* ==================== VIEWS ==================== */
 const VIEWS = {
-/* ---------- COMPANIES ---------- */
+
+/* ── COMPANIES ── */
 companies: ()=>`
   <h1>Your career path</h1>
-  <p class="dim" style="margin-bottom:20px">Three companies, three stages of engineering maturity. Each one teaches what the previous one lacked — and introduces failures the previous one could never have.</p>
+  <p class="dim" style="margin-bottom:20px">Three companies, three stages of engineering maturity.</p>
   <div class="grid">
     ${COMPANIES.map(c=>{
       const open = unlocked(c), done = coDone(c), here = c.id===S.company;
@@ -354,17 +738,13 @@ companies: ()=>`
       return `<div class="inc-row ${!open?'done':''}" ${open?`data-co="${c.id}"`:''} style="${!open?'cursor:not-allowed':''};align-items:flex-start">
         <span style="font-size:20px;margin-top:2px">${!open?'🔒':done?'✅':here?'🔵':'⭕'}</span>
         <div style="flex:1;min-width:200px">
-          <div class="row" style="gap:8px">
-            <b style="font-size:14px">${c.name}</b>
-            <span class="chip">${c.tag}</span>
-            ${here?'<span class="chip" style="border-color:var(--violet);color:var(--violet)">you are here</span>':''}
-          </div>
+          <div class="row" style="gap:8px"><b style="font-size:14px">${c.name}</b><span class="chip">${c.tag}</span>${here?'<span class="chip" style="border-color:var(--violet);color:var(--violet)">you are here</span>':''}</div>
           <div class="faint" style="margin-top:3px">${c.stack}</div>
           <div class="dim" style="font-size:12.5px;margin-top:7px;max-width:60ch">${c.blurb}</div>
         </div>
         <div style="text-align:right;min-width:130px">
           <div class="faint" style="font-size:11px">${c.role}</div>
-          <div class="faint" style="font-size:10.5px;opacity:.8;margin-top:2px">${solved}/${c.incidents.length} incidents</div>
+          <div class="faint" style="font-size:10.5px;margin-top:2px">${solved}/${c.incidents.length} incidents</div>
           ${!open?`<div class="sev sev-warn" style="margin-top:6px;display:inline-block">${c.unlock} XP to unlock</div>`:''}
         </div>
       </div>`;
@@ -372,20 +752,20 @@ companies: ()=>`
   </div>
   <div class="card" style="margin-top:18px">
     <div class="card-h"><h2>🎓 Why this order</h2></div>
-    <p class="dim" style="font-size:13px"><b>DabbaDrop</b> has no supervisor, no alerting, and no rollback — so you feel exactly why those exist. <b>BillFree</b> gives you all three, and then shows you the failures that only appear once you have a platform: GitOps drift, label glue, pipeline lies. <b>Meridian</b> is where nothing crashes at all — the danger is what a mistake is <i>allowed</i> to reach.<br><br>Startups teach you to fix. Scale-ups teach you to systematise. Enterprises teach you to prove it.</p>
+    <p class="dim" style="font-size:13px"><b>DabbaDrop</b> has no supervisor, no alerting, and no rollback — so you feel exactly why those exist. <b>BillFree</b> gives you all three, and then shows you failures that only appear once you have a platform. <b>Meridian</b> is where nothing crashes at all — the danger is what a mistake is <i>allowed</i> to reach.<br><br>Startups teach you to fix. Scale-ups teach you to systematise. Enterprises teach you to prove it.</p>
   </div>`,
 
-/* ---------- DASHBOARD ---------- */
+/* ── DASHBOARD ── */
 dashboard: ()=>{
   const open = INCIDENTS().filter(i=>!S.done.includes(i.id));
   const bad = new Set(open.map(i=>i.svc));
   const allClear = open.length===0;
   return `
   <h1>Good morning, Gaurav 👋</h1>
-  <p class="dim" style="margin-bottom:20px">Here's what's happening in <span class="mono">billfree-prod</span> right now.</p>
+  <p class="dim" style="margin-bottom:20px">Here's what's happening in <span class="mono">${co().env}</span> right now.</p>
   ${allClear ? `
-  <div class="alert-banner" style="margin-bottom:20px;border-color:rgba(16,185,129,.4);background:linear-gradient(90deg,rgba(16,185,129,.1),transparent 60%)">
-    <div class="alert-icon" style="animation:none">✅</div>
+  <div class="alert-banner" style="margin-bottom:20px;border-color:rgba(16,185,129,.4);background:linear-gradient(90deg,rgba(16,185,129,.08),transparent)">
+    <div style="font-size:20px">✅</div>
     <div style="flex:1"><b>All systems operational</b><div class="dim" style="font-size:12.5px">${INCIDENTS().length} incidents resolved · you cleared the queue</div></div>
     <button class="btn btn-primary" data-go="career">See your progression →</button>
   </div>` : `
@@ -399,15 +779,23 @@ dashboard: ()=>{
   </div>`}
   <div class="tiles" style="margin-bottom:20px">
     <div class="tile"><div class="tile-l">Requests / sec</div><div class="tile-v">1,284</div><div class="tile-d good">▲ 3.2% vs 1h</div></div>
-    <div class="tile"><div class="tile-l">Error rate</div><div class="tile-v" style="color:${allClear?'var(--green)':'var(--red)'}">${allClear?'0.14%':'4.8%'}</div><div class="tile-d ${allClear?'good':'up'}">${allClear?'▼ within SLO':'▲ SLO breach'}</div></div>
+    <div class="tile"><div class="tile-l">Error rate</div><div class="tile-v" style="${allClear?'':'background:linear-gradient(135deg,#ef4444,#f59e0b);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent'}">${allClear?'0.14%':'4.8%'}</div><div class="tile-d ${allClear?'good':'up'}">${allClear?'▼ within SLO':'▲ SLO breach'}</div></div>
     <div class="tile"><div class="tile-l">p95 latency</div><div class="tile-v">${allClear?'214ms':'890ms'}</div><div class="tile-d ${allClear?'good':'up'}">${allClear?'▼ healthy':'▲ degraded'}</div></div>
     <div class="tile"><div class="tile-l">Incidents open</div><div class="tile-v">${open.length}</div><div class="tile-d ${allClear?'good':'up'}">${S.done.length} resolved</div></div>
   </div>
-  <div class="card-h"><h2>Services</h2><span class="faint">namespace: billfree</span></div>
+
+  <!-- Network Topology Map on Dashboard -->
+  <div class="topo-card" style="margin-bottom:20px">
+    <div class="card-h"><h2>🌐 Live Service Topology</h2><span class="faint">click a node to run diagnostics</span></div>
+    ${buildTopologySVG([...bad])}
+    ${bad.size>0?`<div class="topo-hint"><span></span> Pulsing red = active incident · click node to investigate</div>`:'<div class="topo-hint" style="color:var(--green)">✓ All services healthy</div>'}
+  </div>
+
+  <div class="card-h"><h2>Services</h2><span class="faint">namespace: ${co().env}</span></div>
   <div class="svc-grid">
     ${co().services.map(s=>{
       const b = bad.has(s.n);
-      return `<div class="svc ${b?'bad':''}">
+      return `<div class="svc ${b?'bad':''}" ${b?`data-inc="${INCIDENTS().find(i=>i.svc===s.n)?.id||''}"`:''}">
         <div class="svc-top"><span class="svc-name">${s.n}</span><span class="dot ${b?'bad':'ok'}"></span></div>
         <div class="svc-meta"><span><b>${b?'1/2':s.rep}</b> ready</span><span><b>${s.mem}</b></span><span><b>${s.cpu}</b></span></div>
       </div>`;
@@ -415,10 +803,39 @@ dashboard: ()=>{
   </div>`;
 },
 
-/* ---------- QUEUE ---------- */
+/* ── TOPOLOGY ── */
+topology: ()=>{
+  const open = INCIDENTS().filter(i=>!S.done.includes(i.id));
+  const bad = new Set(open.map(i=>i.svc));
+  return `
+  <h1>Live Service Topology</h1>
+  <p class="dim" style="margin-bottom:16px">Real-time view of <span class="mono">${co().env}</span>. <b>Click any node</b> to run the relevant diagnostic command.</p>
+  <div class="topo-card" style="margin-bottom:20px">
+    ${buildTopologySVG([...bad])}
+    <div style="margin-top:12px;display:flex;gap:16px;flex-wrap:wrap">
+      <div class="topo-hint"><span></span> Pulsing = active incident</div>
+      <div class="topo-hint"><span style="background:var(--green)"></span> Healthy service</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-h"><h2>📊 Current service metrics</h2></div>
+    <div class="svc-grid">
+      ${co().services.map(s=>{
+        const b = bad.has(s.n);
+        return `<div class="svc ${b?'bad':''}">
+          <div class="svc-top"><span class="svc-name">${s.n}</span><span class="dot ${b?'bad':'ok'}"></span></div>
+          <div class="svc-meta"><span><b>${b?'1/2':s.rep}</b> ready</span><span><b>${s.mem}</b></span><span><b>${s.cpu}</b></span></div>
+          ${b?`<div style="margin-top:6px"><span class="sev sev-crit">INCIDENT</span></div>`:''}
+        </div>`;
+      }).join('')}
+    </div>
+  </div>`;
+},
+
+/* ── QUEUE ── */
 queue: ()=>`
   <h1>Incident queue</h1>
-  <p class="dim" style="margin-bottom:20px">You are on-call for <span class="mono">billfree-prod</span>. Each incident teaches a different diagnostic skill.</p>
+  <p class="dim" style="margin-bottom:20px">You are on-call for <span class="mono">${co().env}</span>. Each incident teaches a different diagnostic skill.</p>
   <div class="grid">
     ${INCIDENTS().map(i=>{
       const done = S.done.includes(i.id);
@@ -442,10 +859,11 @@ queue: ()=>`
     </div>
   </div>`,
 
-/* ---------- INCIDENT ---------- */
+/* ── INCIDENT ── */
 incident: ()=>{
   const I = cur(); if(!I) return VIEWS.queue();
   if(S.rcaDone) return VIEWS.review();
+  const bad = [I.svc];
   return `
   <div class="row" style="justify-content:space-between;margin-bottom:6px">
     <h1>${I.id} · ${I.title}</h1>
@@ -458,6 +876,14 @@ incident: ()=>{
     <div class="step ${S.step===2?'active':S.step>2?'done':''}"><span class="step-n">${S.step>2?'✓':'3'}</span> Fix</div>
     <div class="step ${S.step===3?'active':S.step>3?'done':''}"><span class="step-n">${S.step>3?'✓':'4'}</span> RCA</div>
   </div>
+
+  <!-- Live topology inside incident -->
+  <div class="topo-card" style="margin-bottom:14px">
+    <div class="card-h"><h2>🌐 Incident topology</h2><span class="faint sev sev-crit" style="font-size:9px">LIVE</span></div>
+    ${buildTopologySVG(bad)}
+    <div class="topo-hint"><span></span> ${I.svc} is the affected service — click the node to run diagnostics</div>
+  </div>
+
   <div class="grid" style="grid-template-columns:1fr;gap:14px">
     <div class="card">
       <div class="card-h"><h2>📋 Impact</h2></div>
@@ -473,16 +899,18 @@ incident: ()=>{
       <div class="term">
         <div class="term-bar">
           <span class="tdot" style="background:#ef4444"></span><span class="tdot" style="background:#f59e0b"></span><span class="tdot" style="background:#10b981"></span>
-          <span class="term-title">gaurav@workstation — billfree-prod</span>
+          <span class="term-title">gaurav@workstation — ${co().env}</span>
         </div>
         <div class="term-body" id="termBody">
-          <div class="term-line term-out">Connected to <span class="term-ok">billfree-prod</span>. Alert <span class="term-warn">${I.alert}</span> firing on <span class="term-warn">${I.svc}</span>. Investigate.</div>
+          <div class="term-line term-out">Connected to <span class="term-ok">${co().env}</span>. Alert <span class="term-warn">${I.alert}</span> firing on <span class="term-warn">${I.svc}</span>. Investigate.</div>
         </div>
         <div class="term-input-row"><span class="term-prompt">$</span>
-          <input class="term-input" id="termIn" placeholder="type a command… (or click a hint below)" autocomplete="off" spellcheck="false"></div>
+          <input class="term-input" id="termIn" placeholder="type a command… (or click a hint / use the builder below)" autocomplete="off" spellcheck="false">
+        </div>
       </div>
       <div class="hints">${Object.keys(I.cmds).map(c=>`<span class="hint" data-cmd="${esc(c)}">${esc(c)}</span>`).join('')}</div>
-    </div>`:''}
+      ${buildCommandBuilder()}
+    </div>`:''} 
     ${S.step===1?`
     <div class="card">
       <div class="card-h"><h2>🧠 Step 2 · What is the root cause?</h2></div>
@@ -491,7 +919,7 @@ incident: ()=>{
         ${I.choices.map(c=>`<div class="choice" data-k="${c.k}"><span class="choice-k">${c.k}</span><div><b>${c.t}</b><div class="faint">${c.d}</div></div></div>`).join('')}
       </div>
       <div id="rcFeedback" style="margin-top:14px"></div>
-    </div>`:''}
+    </div>`:''} 
     ${S.step===2?`
     <div class="card">
       <div class="card-h"><h2>🔧 Step 3 · Ship the fix</h2></div>
@@ -502,7 +930,7 @@ incident: ()=>{
         <button class="btn btn-ghost" id="wrongBtn">${I.wrongLabel}</button>
       </div>
       <div id="fixFeedback" style="margin-top:14px"></div>
-    </div>`:''}
+    </div>`:''} 
     ${S.step===3?`
     <div class="card">
       <div class="card-h"><h2>📝 Step 4 · Write the RCA</h2><span class="faint">blameless · what broke, why, how we prevent it</span></div>
@@ -516,11 +944,11 @@ Prevention (so it never repeats):"></textarea>
         <button class="btn btn-primary" id="rcaBtn">Publish postmortem</button>
         <button class="btn btn-ghost" id="rcaFill">✨ Show a model answer</button>
       </div>
-    </div>`:''}
+    </div>`:''} 
   </div>`;
 },
 
-/* ---------- REVIEW ---------- */
+/* ── REVIEW ── */
 review: ()=>{
   const I = cur();
   const left = INCIDENTS().filter(i=>!S.done.includes(i.id));
@@ -550,13 +978,13 @@ review: ()=>{
   </div>`;
 },
 
-/* ---------- CAREER ---------- */
+/* ── CAREER ── */
 career: ()=>{
   const pct = Math.round(S.xp/MAXXP*100);
   const role = roleOf(S.xp);
   const next = ROLES.find(r=>r[1]>S.xp);
   return `
-  <h1>Your career at BillFree Labs</h1>
+  <h1>Your career at ${co().name}</h1>
   <p class="dim" style="margin-bottom:20px">Progression is earned through handled incidents — not chapters read.</p>
   <div class="card" style="margin-bottom:16px">
     <div class="row" style="justify-content:space-between">
@@ -592,11 +1020,11 @@ career: ()=>{
   ${INCIDENTS().every(i=>S.done.includes(i.id))?`
   <div class="card" style="margin-top:14px;border-color:var(--green);background:rgba(16,185,129,.06)">
     <div class="card-h"><h2 style="color:var(--green)">🎉 Promotion — Principal Engineer</h2></div>
-    <p class="dim" style="font-size:13px">You handled every incident in the queue: resource limits, supply chain, label/selector glue, and stateful storage. More importantly, you shipped through Git every time and wrote prevention into each RCA.<br><br><b>Unlocked:</b> multi-region infrastructure · Terraform apply on prod · architecture review authority · Sev-1 incident command · chaos game-days.</p>
-  </div>`:''}`;
+    <p class="dim" style="font-size:13px">You handled every incident in the queue. More importantly, you shipped through Git every time and wrote prevention into each RCA.</p>
+  </div>`:''} `;
 },
 
-/* ---------- RUNBOOK ---------- */
+/* ── RUNBOOK ── */
 runbook: ()=>`
   <h1>Runbooks</h1>
   <p class="dim" style="margin-bottom:20px">What every on-call engineer reaches for at 3 AM.</p>
@@ -619,12 +1047,9 @@ runbook: ()=>`
   <div class="card" style="margin-bottom:14px">
     <div class="card-h"><h2>🔍 Symptom → first move</h2></div>
     <div class="code"><span class="k">CrashLoopBackOff</span>    describe → Last State/Reason → logs --previous
-<span class="k">ImagePullBackOff</span>    describe → the exact pull error:
-                      manifest unknown → tag doesn't exist (check CI!)
-                      unauthorized     → imagePullSecret
-                      i/o timeout      → network/egress
+<span class="k">ImagePullBackOff</span>    describe → the exact pull error
 <span class="k">Running but 503</span>     get endpoints → if &lt;none&gt;, it's LABELS
-<span class="k">Reads ok, writes 500</span> logs → "No space left on device" → df -h in the pod
+<span class="k">Reads ok, writes 500</span> logs → "No space left on device" → df -h in pod
 <span class="k">Pending</span>             describe → scheduling (resources / taints / PVC)</div>
   </div>
   <div class="card">
@@ -637,13 +1062,13 @@ runbook: ()=>`
     </div>
   </div>`,
 
-/* ---------- ARCHITECTURE ---------- */
+/* ── ARCHITECTURE ── */
 architecture: ()=>`
   <h1>Architecture</h1>
   <p class="dim" style="margin-bottom:20px"><span class="mono">${co().env}</span> · what you're on-call for.</p>
   <div class="card"><div class="code">${co().arch}</div></div>
   <div class="card" style="margin-top:14px">
-    <div class="card-h"><h2>&#9888;&#65039; Known risks (each one has bitten us)</h2></div>
+    <div class="card-h"><h2>⚠️ Known risks (each one has bitten us)</h2></div>
     <div class="grid" style="gap:8px">
       ${co().risks.map(([tag,txt])=>`<div class="row" style="gap:9px"><span class="sev ${tag==='SPOF'||tag==='Blast radius'||tag==='Blind'?'sev-crit':'sev-warn'}">${tag}</span><span class="dim" style="font-size:12.5px">${txt}</span></div>`).join('')}
     </div>
@@ -658,15 +1083,38 @@ function wire(){
     if(!unlocked(c)){ toast(`Locked — reach ${c.unlock} XP`); return; }
     S.company = c.id; S.screen = 'dashboard'; S.active = null; save();
     document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active', x.dataset.screen==='dashboard'));
-    toast(`Switched to ${c.name}`);
-    render();
+    toast(`Switched to ${c.name}`); render();
   });
   document.querySelectorAll('[data-inc]').forEach(b=> b.onclick = ()=>{
-    const id = b.dataset.inc;
+    const id = b.dataset.inc; if(!id) return;
     if(S.done.includes(id)){ toast('Already resolved — reset to replay'); return; }
     S.active=id; S.step=0; S.ran=[]; S.fixed=false; S.rcaDone=false; S.screen='incident'; save();
     document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active', x.dataset.screen==='queue'));
     render();
+  });
+
+  // Topology node click → run relevant command
+  document.querySelectorAll('.topo-node[data-cmd]').forEach(node=>{
+    node.onclick = ()=>{
+      if(S.screen!=='incident'){ 
+        // Navigate to first matching incident
+        const I = INCIDENTS().find(i=>!S.done.includes(i.id));
+        if(I){ S.active=I.id; S.step=0; S.ran=[]; S.fixed=false; S.rcaDone=false; S.screen='incident'; save(); render(); }
+        return;
+      }
+      runCmd(node.dataset.cmd);
+    };
+  });
+
+  // Service card click → open incident
+  document.querySelectorAll('.svc[data-inc]').forEach(card=>{
+    card.onclick = ()=>{
+      const id=card.dataset.inc; if(!id) return;
+      if(S.done.includes(id)){ toast('Already resolved'); return; }
+      S.active=id; S.step=0; S.ran=[]; S.fixed=false; S.rcaDone=false; S.screen='incident'; save();
+      document.querySelectorAll('.nav-item').forEach(x=>x.classList.toggle('active', x.dataset.screen==='queue'));
+      render();
+    };
   });
 
   const inp=$('#termIn');
