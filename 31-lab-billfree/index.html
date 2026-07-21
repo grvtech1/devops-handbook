@@ -3501,18 +3501,79 @@
 <p>💡 <strong>StatefulSet dekho:</strong> pod ka naam <strong><code>postgres-0</code></strong> (random nahi), PVC <strong><code>data-postgres-0</code></strong> — <a href="../30-k8s-complete-reference/">ch30 ka StatefulSet</a> live.</p>
 </blockquote>
 <h3 id="53-ek-service-deploy-helm-install">5.3 — Ek service deploy (Helm install)<a class="headerlink" href="#53-ek-service-deploy-helm-install" title="Permanent link">&para;</a></h3>
+<div class="admonition warning">
+<p class="admonition-title">⚠️ Teen cheezein jo fresh kind cluster pe <strong>fail</strong> karti hain (ye lab actually chalake nikli)</p>
+<p>Ye teeno maine live cluster pe hit kiye — agar in par dhyan na do to lab yahin atak jaayega:</p>
+<ol>
+<li><strong>Chart ko Prometheus CRDs chahiye.</strong> Chart mein <code>ServiceMonitor</code> + <code>PrometheusRule</code> hain, jo kube-prometheus-stack ke <strong>CRDs</strong> hain. Bare cluster pe: <code>no matches for kind "PrometheusRule"</code>. → lab mein <code>--set metrics.enabled=false</code> karo (ya pehle monitoring install karo).</li>
+<li><strong><code>JWT_SECRET</code> kam se kam 16 chars.</strong> App startup pe Zod se validate karta — chhota secret = <strong>CrashLoopBackOff, exit 1</strong>.</li>
+<li><strong><code>REQUIRE_GOOGLE_AUTH=false</code> chahiye.</strong> Service <strong>secure-by-default</strong> hai: prod mein Google OAuth enforce karta, warna start hi nahi hota. Local lab ke liye explicitly off karna padta.</li>
+</ol>
+</div>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1"># secret (out-of-band — Git mein kabhi nahi)</span>
-</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>billfree-app-secrets<span class="w"> </span>-n<span class="w"> </span>billfree<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">DATABASE_URL</span><span class="o">=</span><span class="s2">&quot;postgres://billfree:pass@postgres:5432/billfree&quot;</span><span class="w"> </span><span class="se">\</span>
-</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">JWT_SECRET</span><span class="o">=</span><span class="s2">&quot;lab-secret&quot;</span>
-</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>
-</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="c1"># Helm install</span>
-</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>helm<span class="w"> </span>install<span class="w"> </span>auth-service<span class="w"> </span>deploy/charts/microservice<span class="w"> </span><span class="se">\</span>
-</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="w">  </span>-f<span class="w"> </span>deploy/apps/auth-service/values.yaml<span class="w"> </span>-n<span class="w"> </span>billfree
-</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a>
-</span><span id="__span-23-10"><a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods,svc,hpa<span class="w"> </span>-n<span class="w"> </span>billfree
-</span><span id="__span-23-11"><a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a>kubectl<span class="w"> </span>logs<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/name<span class="o">=</span>auth-service<span class="w"> </span>-n<span class="w"> </span>billfree<span class="w"> </span>--tail<span class="o">=</span><span class="m">10</span>
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="c1"># ⚠️ JWT_SECRET 16+ chars — warna app start hi nahi hoga</span>
+</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>billfree-app-secrets<span class="w"> </span>-n<span class="w"> </span>billfree<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">DATABASE_URL</span><span class="o">=</span><span class="s2">&quot;postgres://billfree:labpass@postgres:5432/billfree&quot;</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">JWT_SECRET</span><span class="o">=</span><span class="s2">&quot;lab-secret-at-least-32-chars-long-ok&quot;</span>
+</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>
+</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="c1"># postgres ka apna secret (StatefulSet isse envFrom se padhta)</span>
+</span><span id="__span-23-8"><a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>generic<span class="w"> </span>postgres-secret<span class="w"> </span>-n<span class="w"> </span>billfree<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-9"><a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">POSTGRES_USER</span><span class="o">=</span>billfree<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-10"><a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">POSTGRES_PASSWORD</span><span class="o">=</span>labpass<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-11"><a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a><span class="w">  </span>--from-literal<span class="o">=</span><span class="nv">POSTGRES_DB</span><span class="o">=</span>billfree
+</span><span id="__span-23-12"><a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a>
+</span><span id="__span-23-13"><a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a><span class="c1"># lab-only override (CRDs nahi hain + Google auth off)</span>
+</span><span id="__span-23-14"><a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a>cat<span class="w"> </span>&gt;<span class="w"> </span>/tmp/lab-override.yaml<span class="w"> </span><span class="s">&lt;&lt;&#39;EOF&#39;</span>
+</span><span id="__span-23-15"><a id="__codelineno-23-15" name="__codelineno-23-15" href="#__codelineno-23-15"></a><span class="s">metrics:</span>
+</span><span id="__span-23-16"><a id="__codelineno-23-16" name="__codelineno-23-16" href="#__codelineno-23-16"></a><span class="s">  enabled: false          # ServiceMonitor/PrometheusRule CRDs nahi hain</span>
+</span><span id="__span-23-17"><a id="__codelineno-23-17" name="__codelineno-23-17" href="#__codelineno-23-17"></a><span class="s">env:</span>
+</span><span id="__span-23-18"><a id="__codelineno-23-18" name="__codelineno-23-18" href="#__codelineno-23-18"></a><span class="s">  - name: SERVICE_NAME</span>
+</span><span id="__span-23-19"><a id="__codelineno-23-19" name="__codelineno-23-19" href="#__codelineno-23-19"></a><span class="s">    value: auth-service</span>
+</span><span id="__span-23-20"><a id="__codelineno-23-20" name="__codelineno-23-20" href="#__codelineno-23-20"></a><span class="s">  - name: PORT</span>
+</span><span id="__span-23-21"><a id="__codelineno-23-21" name="__codelineno-23-21" href="#__codelineno-23-21"></a><span class="s">    value: &quot;8080&quot;</span>
+</span><span id="__span-23-22"><a id="__codelineno-23-22" name="__codelineno-23-22" href="#__codelineno-23-22"></a><span class="s">  - name: REQUIRE_GOOGLE_AUTH</span>
+</span><span id="__span-23-23"><a id="__codelineno-23-23" name="__codelineno-23-23" href="#__codelineno-23-23"></a><span class="s">    value: &quot;false&quot;        # non-prod: OAuth enforcement off</span>
+</span><span id="__span-23-24"><a id="__codelineno-23-24" name="__codelineno-23-24" href="#__codelineno-23-24"></a><span class="s">EOF</span>
+</span><span id="__span-23-25"><a id="__codelineno-23-25" name="__codelineno-23-25" href="#__codelineno-23-25"></a>
+</span><span id="__span-23-26"><a id="__codelineno-23-26" name="__codelineno-23-26" href="#__codelineno-23-26"></a><span class="c1"># Helm install</span>
+</span><span id="__span-23-27"><a id="__codelineno-23-27" name="__codelineno-23-27" href="#__codelineno-23-27"></a>helm<span class="w"> </span>install<span class="w"> </span>auth-service<span class="w"> </span>deploy/charts/microservice<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-23-28"><a id="__codelineno-23-28" name="__codelineno-23-28" href="#__codelineno-23-28"></a><span class="w">  </span>-f<span class="w"> </span>deploy/apps/auth-service/values.yaml<span class="w"> </span>-f<span class="w"> </span>/tmp/lab-override.yaml<span class="w"> </span>-n<span class="w"> </span>billfree
+</span><span id="__span-23-29"><a id="__codelineno-23-29" name="__codelineno-23-29" href="#__codelineno-23-29"></a>
+</span><span id="__span-23-30"><a id="__codelineno-23-30" name="__codelineno-23-30" href="#__codelineno-23-30"></a>kubectl<span class="w"> </span>rollout<span class="w"> </span>status<span class="w"> </span>deployment/auth-service<span class="w"> </span>-n<span class="w"> </span>billfree
+</span><span id="__span-23-31"><a id="__codelineno-23-31" name="__codelineno-23-31" href="#__codelineno-23-31"></a>kubectl<span class="w"> </span>get<span class="w"> </span>pods,svc,hpa,pvc<span class="w"> </span>-n<span class="w"> </span>billfree
 </span></code></pre></div>
+<p>Sahi chalne pe aisa dikhega — <strong>ye asli output hai, real kind cluster se</strong>:</p>
+<p><img alt="Real kubectl output from a live kind cluster: two auth-service pods Running, postgres-0 Running, ClusterIP services, HPA with 2 replicas, and the data-postgres-0 PVC Bound at 5Gi" src="../assets/shot-kubectl-healthy.png" /></p>
+<p><em>☝️ </em><em>2/2 pods Running</em><em>, StatefulSet ka <code>postgres-0</code>, aur <code>data-postgres-0</code> PVC </em><em>Bound 5Gi</em><em>. Dhyan do HPA <code>&lt;unknown&gt;/70%</code> dikhata — kyunki </em><em>kind pe metrics-server nahi hota</em><em> (<code>kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml</code> se aayega).</em></p>
+<details class="danger">
+<summary>🔬 Bonus — is lab mein mila ek ASLI CrashLoopBackOff (aur uska diagnosis)</summary>
+<p>Pehli koshish mein maine <code>JWT_SECRET="lab-secret"</code> (10 chars) diya tha. Natija — real incident:</p>
+<p><img alt="Real terminal output showing two auth-service pods in CrashLoopBackOff with 15 restarts, exit code 1 with reason Error, and logs revealing a Zod validation error that JWT_SECRET must be at least 16 chars" src="../assets/shot-crashloop-real.png" /></p>
+<p><strong>Diagnosis ka poora sabak ek jagah:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Signal</th>
+<th>Kya batata</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>exit code 1</code> (137 <strong>nahi</strong>)</td>
+<td>app ne <strong>khud ko mara</strong> — external kill nahi</td>
+</tr>
+<tr>
+<td>logs mein <strong>stack trace</strong></td>
+<td>app error. <em>(OOMKill hota to logs </em><em>silent</em><em> hote)</em></td>
+</tr>
+<tr>
+<td><code>reason=Error</code></td>
+<td><code>OOMKilled</code> nahi</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Yehi <a href="../30-k8s-complete-reference/">ch30 ka rule</a> live hai:</strong> <em>"Silent logs = external kill. Stack trace = app ne khud ko mara."</em> Ye screenshot fabricate nahi kiya — ye asli cluster pe asli crash tha.</p>
+</details>
 <h3 id="54-self-heal-scale-dekho">5.4 — Self-heal + scale dekho<a class="headerlink" href="#54-self-heal-scale-dekho" title="Permanent link">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1"># ek pod maar do → khud wapas aata (ReplicaSet ka kaam)</span>
 </span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>kubectl<span class="w"> </span>delete<span class="w"> </span>pod<span class="w"> </span>-l<span class="w"> </span>app.kubernetes.io/name<span class="o">=</span>auth-service<span class="w"> </span>-n<span class="w"> </span>billfree
