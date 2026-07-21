@@ -351,19 +351,67 @@ kubectl get pods,pvc,statefulset -n billfree -w   # postgres-0 Running + PVC Bou
 
 ### 5.3 — Ek service deploy (Helm install)
 
+!!! warning "⚠️ Teen cheezein jo fresh kind cluster pe **fail** karti hain (ye lab actually chalake nikli)"
+    Ye teeno maine live cluster pe hit kiye — agar in par dhyan na do to lab yahin atak jaayega:
+
+    1. **Chart ko Prometheus CRDs chahiye.** Chart mein `ServiceMonitor` + `PrometheusRule` hain, jo kube-prometheus-stack ke **CRDs** hain. Bare cluster pe: `no matches for kind "PrometheusRule"`. → lab mein `--set metrics.enabled=false` karo (ya pehle monitoring install karo).
+    2. **`JWT_SECRET` kam se kam 16 chars.** App startup pe Zod se validate karta — chhota secret = **CrashLoopBackOff, exit 1**.
+    3. **`REQUIRE_GOOGLE_AUTH=false` chahiye.** Service **secure-by-default** hai: prod mein Google OAuth enforce karta, warna start hi nahi hota. Local lab ke liye explicitly off karna padta.
+
 ```bash
 # secret (out-of-band — Git mein kabhi nahi)
+# ⚠️ JWT_SECRET 16+ chars — warna app start hi nahi hoga
 kubectl create secret generic billfree-app-secrets -n billfree \
-  --from-literal=DATABASE_URL="postgres://billfree:pass@postgres:5432/billfree" \
-  --from-literal=JWT_SECRET="lab-secret"
+  --from-literal=DATABASE_URL="postgres://billfree:labpass@postgres:5432/billfree" \
+  --from-literal=JWT_SECRET="lab-secret-at-least-32-chars-long-ok"
+
+# postgres ka apna secret (StatefulSet isse envFrom se padhta)
+kubectl create secret generic postgres-secret -n billfree \
+  --from-literal=POSTGRES_USER=billfree \
+  --from-literal=POSTGRES_PASSWORD=labpass \
+  --from-literal=POSTGRES_DB=billfree
+
+# lab-only override (CRDs nahi hain + Google auth off)
+cat > /tmp/lab-override.yaml <<'EOF'
+metrics:
+  enabled: false          # ServiceMonitor/PrometheusRule CRDs nahi hain
+env:
+  - name: SERVICE_NAME
+    value: auth-service
+  - name: PORT
+    value: "8080"
+  - name: REQUIRE_GOOGLE_AUTH
+    value: "false"        # non-prod: OAuth enforcement off
+EOF
 
 # Helm install
 helm install auth-service deploy/charts/microservice \
-  -f deploy/apps/auth-service/values.yaml -n billfree
+  -f deploy/apps/auth-service/values.yaml -f /tmp/lab-override.yaml -n billfree
 
-kubectl get pods,svc,hpa -n billfree
-kubectl logs -l app.kubernetes.io/name=auth-service -n billfree --tail=10
+kubectl rollout status deployment/auth-service -n billfree
+kubectl get pods,svc,hpa,pvc -n billfree
 ```
+
+Sahi chalne pe aisa dikhega — **ye asli output hai, real kind cluster se**:
+
+![Real kubectl output from a live kind cluster: two auth-service pods Running, postgres-0 Running, ClusterIP services, HPA with 2 replicas, and the data-postgres-0 PVC Bound at 5Gi](assets/shot-kubectl-healthy.png)
+
+*☝️ **2/2 pods Running**, StatefulSet ka `postgres-0`, aur `data-postgres-0` PVC **Bound 5Gi**. Dhyan do HPA `<unknown>/70%` dikhata — kyunki **kind pe metrics-server nahi hota** (`kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml` se aayega).*
+
+??? danger "🔬 Bonus — is lab mein mila ek ASLI CrashLoopBackOff (aur uska diagnosis)"
+    Pehli koshish mein maine `JWT_SECRET="lab-secret"` (10 chars) diya tha. Natija — real incident:
+
+    ![Real terminal output showing two auth-service pods in CrashLoopBackOff with 15 restarts, exit code 1 with reason Error, and logs revealing a Zod validation error that JWT_SECRET must be at least 16 chars](assets/shot-crashloop-real.png)
+
+    **Diagnosis ka poora sabak ek jagah:**
+
+    | Signal | Kya batata |
+    |---|---|
+    | `exit code 1` (137 **nahi**) | app ne **khud ko mara** — external kill nahi |
+    | logs mein **stack trace** | app error. *(OOMKill hota to logs **silent** hote)* |
+    | `reason=Error` | `OOMKilled` nahi |
+
+    **Yehi [ch30 ka rule](30-k8s-complete-reference.md) live hai:** *"Silent logs = external kill. Stack trace = app ne khud ko mara."* Ye screenshot fabricate nahi kiya — ye asli cluster pe asli crash tha.
 
 ### 5.4 — Self-heal + scale dekho
 
