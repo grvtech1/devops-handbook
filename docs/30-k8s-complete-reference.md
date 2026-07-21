@@ -583,6 +583,283 @@ CI mein daalo (fail on CRITICAL) — [ch7 CI/CD](07-M6-cicd.md) ka part.
 
 ---
 
+---
+
+# Part E — Modern K8s: jo daily chahiye par kahin nahi milta
+
+Ye Part woh 5 cheezein hai jo **roz kaam aati hain**, interview mein aati hain, par zyadatar courses mein hoti hi nahi. Har ek ka apna real trigger hai.
+
+---
+
+## E1 · `kubectl debug` — jab container mein shell hi nahi hai
+
+**Trigger:** Tumne security best-practice follow ki — **distroless/slim image** ([ch04 Docker](04-M3-docker.md) mein yahi recommend hai). Ab production mein debug karna hai:
+
+```bash
+$ kubectl exec -it auth-service-7d4b-xk2p -- sh
+error: exec: "sh": executable file not found in $PATH
+```
+
+**Shell hai hi nahi.** Distroless image mein sirf tumhari app binary hoti — koi `sh`, `bash`, `ls`, `curl`, kuch nahi. Yehi to point tha (attack surface kam). Par ab debug kaise?
+
+!!! danger "Ye loop bahut logo ka band nahi hota"
+    Distroless use karo (sahi) → shell gayab → `kubectl exec` fail → log frustrate hoke **shell wapas image mein daal dete hain** (galat, security wapas kamzor). Sahi jawab: **image mat badlo — debugging tools alag se attach karo.**
+
+**Solution — ephemeral containers.** Ek temporary container **usi pod ke andar** attach karo, jo tumhare tools laata hai — bina pod restart kiye, bina image badle.
+
+```bash
+# ek debug container attach karo (busybox = tools)
+kubectl debug -it auth-service-7d4b-xk2p --image=busybox --target=auth-service
+
+# ab tum usi pod ke andar ho, tumhare tools ke saath:
+  ps aux              # target ke processes dikhte (--target se process namespace share)
+  wget -qO- localhost:8080/healthz
+  cat /proc/1/environ
+```
+
+**Restaurant analogy:** Cook ke paas apne auzaar nahi hain (distroless). Tum use naye auzaar nahi de sakte (image immutable). Toh tum **apna toolbox lekar usi kitchen mein ghus jaate ho** — cook wahi rehta, kaam chalta rehta, aur tum jaanch kar lete ho.
+
+**Teen modes (yaad rakho):**
+
+| Kya karna hai | Command | Kab |
+|---|---|---|
+| **Chalte pod mein** tools attach | `kubectl debug -it POD --image=busybox --target=CONTAINER` | distroless debug, live pod |
+| **Pod ki copy** banao (badalke) | `kubectl debug POD --copy-to=debug-pod --image=busybox` | crashing pod — original chhedna nahi |
+| **Node** pe debug (host access) | `kubectl debug node/NODE-1 -it --image=busybox` | node-level issue (disk, network) |
+
+```bash
+# CrashLoopBackOff pod — copy banao command badalke (original chalta rahe)
+kubectl debug auth-service-7d4b-xk2p --copy-to=auth-debug \
+  --set-image='*=busybox' -- sleep 1d
+kubectl exec -it auth-debug -- sh     # ab aaram se dekho
+```
+
+> ⚠️ **`--target` bhoolna** = sabse common galti. Uske bina debug container **apne** namespace mein chalta — target ke processes nahi dikhenge. `--target=<container-name>` se process namespace share hota.
+
+> 🇮🇳 **Ek line:** `kubectl exec` tab kaam karta jab image mein shell ho. **Distroless mein `kubectl debug` hi ekmatra rasta hai** — tools alag container se aate, image chhedni nahi padti.
+
+---
+
+## E2 · Native sidecars (K8s 1.29+) — purana hack ab theek ho gaya
+
+**Sidecar kya:** ek helper container jo main app ke **saath** chalta — log shipper, proxy, metrics agent.
+
+**Purana tareeka (aur uski do bimariyan):** sidecar ko normal container ki tarah `containers:` mein daalte the. Do problems:
+
+```mermaid
+flowchart TB
+  subgraph OLD["❌ Purana hack — sidecar as normal container"]
+    O1["Startup race:<br/>app shuru, sidecar abhi ready nahi<br/>→ pehle requests fail"]:::bad
+    O2["Job kabhi complete NAHI hoti:<br/>main container khatam<br/>sidecar chalta rehta → Job hang"]:::bad
+  end
+  subgraph NEW["✅ 1.29+ native sidecar"]
+    N1["initContainers me daalo<br/>+ restartPolicy: Always"]:::good
+    N2["app se PEHLE ready<br/>+ Job complete hone deta"]:::good
+  end
+  OLD --> NEW
+  classDef bad fill:#ffebee,stroke:#c62828,color:#b71c1c
+  classDef good fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+```
+
+**Naya (native) sidecar** — `initContainers` mein, par `restartPolicy: Always` ke saath:
+
+```yaml
+spec:
+  initContainers:
+    - name: log-shipper
+      image: fluent-bit:latest
+      restartPolicy: Always      # 👈 YEHI ise sidecar banata (init nahi)
+      # ye app se PEHLE start hoga, ready hoga, aur SAATH chalta rahega
+  containers:
+    - name: app
+      image: my-app:v1
+```
+
+**Woh ek line kya karti hai:**
+
+| Bina `restartPolicy: Always` | Ke saath |
+|---|---|
+| normal **init container** — chalta, khatam, phir app | **sidecar** — chalta, ready hota, **saath chalta rehta** |
+| app ke baad khatam | app ke baad **band ho jaata** (Job complete ho sakti) |
+
+**Do problems jo ye solve karta:**
+1. **Startup order** — sidecar (proxy/log-shipper) **app se pehle** ready. Pehle requests ab fail nahi hoti.
+2. **Job completion** — pehle: main container khatam, sidecar chalta raha → **Job kabhi Complete nahi hoti** (classic bug). Ab: main khatam → sidecar apne aap band → Job Complete ✅
+
+> 💡 **billfree connection:** Tumhara `migrate` Job ([ch30 A5](#a5-job-ek-baar-ka-kaam)) — agar usme koi sidecar (metrics/log agent) hota purane tareeke se, to woh Job **kabhi complete nahi hoti**. Native sidecar isi ko fix karta hai.
+
+> 🇮🇳 **Ek line:** Sidecar ab `initContainers` mein `restartPolicy: Always` ke saath likhte hain — isse woh **app se pehle ready** hota aur **Job ko complete hone deta** hai. Purana tareeka (normal container) dono cheezein tod deta tha.
+
+---
+
+## E3 · Requests/limits ke numbers *kaise chunte hain*
+
+QoS, OOMKill, throttling — sab [ch30 se pehle](05-M4-kubernetes-core.md) cover hai. Par asli sawaal: **"256Mi hi kyun likha? 512 kyun nahi?"** Ye methodology kahin nahi milti.
+
+!!! danger "Galat tareeke (jo sab karte hain)"
+    - **Guess** — "512Mi theek lagta hai" 🎲
+    - **Copy-paste** — doosri service se utha liya
+    - **Bahut bada** — "safe rahenge" → **cluster ka paisa barbaad**, kam pods fit hote
+    - **Requests = Limits hamesha** — Guaranteed QoS milta, par utilization gir jaata
+
+### Sahi procedure — 4 steps
+
+```
+1. OBSERVE   → real usage measure karo (guess mat karo)
+2. REQUESTS  → typical usage (p50–p95) + thoda headroom
+3. LIMITS    → peak usage × safety factor
+4. ITERATE   → production data se adjust karo
+```
+
+**Step 1 — Measure (deploy karke dekho):**
+```bash
+# live usage
+kubectl top pod -l app=auth-service --containers
+
+# Prometheus se sach (p95 over 7 days) — ye asli data hai
+# memory: quantile_over_time(0.95, container_memory_working_set_bytes[7d])
+# cpu:    quantile_over_time(0.95, rate(container_cpu_usage_seconds_total[5m])[7d:])
+```
+
+**Step 2/3 — Numbers nikalo:**
+
+| Resource | Requests | Limits | Kyun |
+|---|---|---|---|
+| **Memory** | p95 usage × **1.2** | requests × **2** | memory **compressible nahi** — limit paar = instant OOMKill. Headroom chahiye |
+| **CPU** | p50–p95 usage | requests × **2–4** *(ya set hi mat karo)* | CPU **compressible** hai — limit paar = sirf throttle (kill nahi) |
+
+> ⭐ **Senior nuance (interview gold):** Bahut senior log **CPU limit set hi nahi karte** — sirf requests. Kyun? CPU throttling latency ko chupke se maar deti hai, jabki spare CPU waise bhi bekaar padi hoti. **Memory limit hamesha set karo** (warna ek leaky pod poore node ko le doobega). *"Requests for scheduling, memory-limits for safety, CPU-limits usually not."*
+
+**Step 4 — Tumhare billfree ka real case:**
+
+```yaml
+# deploy/apps/auth-service/values.yaml — jo abhi hai
+resources:
+  requests: { cpu: 50m,  memory: 96Mi }
+  limits:   { cpu: 500m, memory: 256Mi }
+```
+Aur observed usage tha **254Mi** — yaani limit ka **99%**. Formula lagao: p95 (254Mi) × 1.2 ≈ **300Mi requests**, limits ≈ **600Mi**. Jo 256Mi tha wo **p95 se bhi kam** tha — isiliye OOMKill hua ([platform simulator INC-2891](../platform/) ka pura incident yahi tha).
+
+> 🇮🇳 **Ek line:** Numbers **maapo, guess mat karo**. Memory: p95 × 1.2 (requests), × 2 (limits). CPU: p50–p95 requests, limit aksar chhodo hi. Aur **deploy karke dobara dekho** — pehla number hamesha andaza hota hai.
+
+---
+
+## E4 · `imagePullSecrets` — private registry
+
+**Trigger:** `ImagePullBackOff`, par error `manifest unknown` nahi — `unauthorized` hai. Matlab image hai, par cluster ko **dekhne ki ijazat nahi**.
+
+```bash
+kubectl describe pod my-app-xyz | grep -A3 Events
+#   Failed to pull image "ghcr.io/myorg/app:v1": unauthorized
+```
+
+**Fix — registry credential ek Secret ki tarah:**
+
+```bash
+# 1. docker-registry type ka secret banao
+kubectl create secret docker-registry ghcr-creds \
+  --docker-server=ghcr.io \
+  --docker-username=grvtech1 \
+  --docker-password=$GITHUB_TOKEN \
+  -n billfree
+
+# 2. pod ko batao ise use karna hai
+```
+```yaml
+spec:
+  imagePullSecrets:
+    - name: ghcr-creds        # 👈 yehi line
+  containers:
+    - name: app
+      image: ghcr.io/myorg/app:v1
+```
+
+**Ya har pod mein likhne ke bajaye — ServiceAccount pe ek baar** (behtar):
+```bash
+kubectl patch serviceaccount default -n billfree \
+  -p '{"imagePullSecrets":[{"name":"ghcr-creds"}]}'
+# ab us namespace ke saare pods ko automatically mil jaayega
+```
+
+> **billfree connection:** Chart mein `imagePullSecrets: []` field already hai ([values.yaml](28-helm-real-projects.md)) — private registry pe jaate hi bas usme naam daalna hota hai.
+
+**ImagePullBackOff ka decoder (ye yaad rakho):**
+
+| Error | Matlab | Fix |
+|---|---|---|
+| `manifest unknown` | tag **exist hi nahi** karta | CI check karo (image push hui?) — [INC-2904](../platform/) |
+| `unauthorized` / `denied` | **credentials** problem | `imagePullSecrets` |
+| `i/o timeout` | **network/egress** blocked | NetworkPolicy / firewall |
+
+---
+
+## E5 · Gateway API — Ingress ka successor
+
+**Kya:** Kubernetes ka **naya official** traffic-routing standard. Ingress ab feature-frozen hai — naye features Gateway API mein aa rahe.
+
+**Ingress ki problem:** sab kuch **annotations** mein thunsa hota tha:
+```yaml
+annotations:
+  nginx.ingress.kubernetes.io/rewrite-target: /
+  nginx.ingress.kubernetes.io/canary: "true"       # non-standard!
+  nginx.ingress.kubernetes.io/canary-weight: "10"  # har controller ka apna
+```
+Har ingress-controller ke apne annotations → **portable nahi**, type-safe nahi.
+
+**Gateway API** in cheezon ko **proper API fields** banata, aur role split karta:
+
+```mermaid
+flowchart LR
+  GC["GatewayClass<br/>(infra provider)"]:::a --> GW["Gateway<br/>(platform team)<br/>listeners · TLS · ports"]:::b
+  GW --> HR["HTTPRoute<br/>(app team)<br/>paths · weights · headers"]:::c
+  HR --> SVC["Service"]:::d
+  classDef a fill:#fce4ec,stroke:#880e4f,color:#880e4f
+  classDef b fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+  classDef c fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  classDef d fill:#e8eaf6,stroke:#283593,color:#1a237e
+```
+
+```yaml
+# canary — ab annotation nahi, asli API field
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata: { name: auth-route }
+spec:
+  parentRefs: [{ name: prod-gateway }]
+  rules:
+    - matches: [{ path: { type: PathPrefix, value: /auth } }]
+      backendRefs:
+        - { name: auth-service, port: 80, weight: 90 }   # 90% purana
+        - { name: auth-canary,  port: 80, weight: 10 }   # 10% naya
+```
+
+| | **Ingress** | **Gateway API** |
+|---|---|---|
+| Status | feature-frozen | active development |
+| Traffic splitting | controller annotations | **built-in `weight`** |
+| Roles | sab ek object mein | **split** (infra / platform / app team) |
+| Protocols | HTTP(S) mostly | HTTP · gRPC · TCP · UDP |
+| Kab use karo | aaj kaam kar raha hai to rehne do | **naya setup**, ya canary/multi-team chahiye |
+
+> 🇮🇳 **Interview answer:** *"Ingress feature-frozen hai; Gateway API successor hai. Do bade fayde — traffic splitting annotation ke bajaye **asli API field** hai (canary asaan), aur **role separation** hai: platform team Gateway banati (TLS/listeners), app team HTTPRoute (paths/weights). Purana Ingress chal raha ho to migrate ki jaldi nahi — par naya banate waqt Gateway API dekho."*
+
+---
+
+## 🎯 Part E recall drill
+
+1. Distroless image, `kubectl exec -- sh` fail — ab kya? *(kubectl debug + ephemeral container)*
+2. `kubectl debug` mein `--target` kyun zaroori? *(process namespace share — warna target dikhta hi nahi)*
+3. Native sidecar kaise likhte? *(initContainers + `restartPolicy: Always`)*
+4. Purana sidecar Job ke saath kya todta tha? *(Job kabhi Complete nahi hoti thi)*
+5. Memory requests ka formula? *(p95 × 1.2; limits ≈ requests × 2)*
+6. CPU limit aksar set kyun nahi karte? *(throttling latency maarti; CPU compressible hai)*
+7. `unauthorized` vs `manifest unknown` — farak? *(creds vs tag exist nahi)*
+8. Gateway API ke 2 bade fayde? *(built-in traffic weight; role separation)*
+
+> **Pass = 6/8.**
+
+---
+
 ## 🎯 Complete recall drill (bina dekhe bolo)
 
 **Workloads:**
@@ -620,6 +897,8 @@ SCHEDULING: Affinity/nodeSelector = pod node ko KHEENCHTA
             HPA = zyada pods (out) · VPA = bada pod (up)
 CLUSTER OPS: RBAC(kaun kya) · CRD(naya kind)+Operator(dimaag) · upgrade: CP→nodes
 SECURITY: PSS restricted · Secret = base64 (NOT encrypted) → RBAC+at-rest+external
+MODERN:   kubectl debug (distroless = no shell) · native sidecar (init + restartPolicy:Always)
+          requests = p95x1.2 (measure!) · imagePullSecrets (unauthorized) · Gateway API > Ingress
 ```
 
 > 🇮🇳 **Ek line:** Ye chapter woh "baaki surface" hai jo ek video sirf naam-le ke chhod deta — yahan har ek ka **why + real example + haath se**. Ab tum sirf syllabus-complete nahi, **samajh ke confident** ho. 😊
