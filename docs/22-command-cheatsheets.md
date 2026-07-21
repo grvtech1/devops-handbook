@@ -14,13 +14,13 @@
 
 | # | Tool | Key topics |
 |---|------|-----------|
-| [1](#-git) | 🌿 Git | 3-area model · everyday · branching · undo · rebase · reflog |
-| [2](#-docker) | 🐳 Docker | images · containers · Dockerfile · Compose · debug flow |
-| [3](#-kubectl-kubernetes) | ☸️ kubectl | pods · deployments · services · CrashLoopBackOff debug |
-| [4](#-ansible) | ⚙️ Ansible | inventory · playbooks · idempotency · roles · vault |
-| [5](#-terraform) | 🏗️ Terraform | HCL · plan/apply · state · modules · environments |
-| [6](#-gitops--argocd) | 🔄 GitOps / ArgoCD | Application CRD · sync · drift · App-of-Apps |
-| [7](#-jenkins) | 🔧 Jenkins | Jenkinsfile anatomy · credentials · parallel · shared libs |
+| [1](#git) | 🌿 Git | 3-area model · everyday · branching · undo · rebase · reflog |
+| [2](#docker) | 🐳 Docker | images · containers · Dockerfile · Compose · debug flow |
+| [3](#kubectl-kubernetes) | ☸️ kubectl | pods · deployments · services · CrashLoopBackOff debug |
+| [4](#ansible) | ⚙️ Ansible | inventory · playbooks · idempotency · roles · vault |
+| [5](#terraform) | 🏗️ Terraform | HCL · plan/apply · state · modules · environments |
+| [6](#gitops-argocd) | 🔄 GitOps / ArgoCD | Application CRD · sync · drift · App-of-Apps |
+| [7](#jenkins) | 🔧 Jenkins | Jenkinsfile anatomy · credentials · parallel · shared libs |
 
 ---
 

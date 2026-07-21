@@ -84,44 +84,44 @@ Cross-link: [ch14 "deploy failed in prod" scenario](14-interview-bank.md) has wa
 
 | What you see | Likely area | Jump to |
 |---|---|---|
-| Pod stuck `CrashLoopBackOff` | Bad image, config, crash, OOM | [A1 — CrashLoopBackOff](#a1--crashloopbackoff) |
-| Pod stuck `ImagePullBackOff` | Registry auth, bad tag | [A2 — ImagePullBackOff](#a2--imagepullbackoff--errimagepull) |
-| Pod stuck `Pending` / `Unschedulable` | Resources, taints, PVC | [A3 — Pod Pending](#a3--pod-pending--unschedulable) |
-| Pod shows `OOMKilled` | Memory limit too low or leak | [A4 — OOMKilled](#a4--oomkilled) |
-| Pod stuck `Terminating` | Finalizers, graceful shutdown | [A5 — Pod stuck Terminating](#a5--pod-stuck-terminating) |
-| Users get 502 / 503 / 504 | LB → Ingress → Service → Pod | [B1 — 502/503/504 errors](#b1--502--503--504-gateway-errors) |
-| Service has no endpoints | Label mismatch, readiness failing | [B2 — No endpoints](#b2--service-has-no-endpoints) |
-| DNS not resolving inside cluster | CoreDNS, wrong name/namespace | [B3 — DNS resolution failing](#b3--dns-resolution-failing) |
-| Connection refused between services | Wrong port, NetworkPolicy, SG | [B4 — Connection refused / timeout](#b4--connection-refused--timeout-between-services) |
-| Ingress returns 404 or TLS error | Host/path mismatch, cert expired | [B5 — Ingress 404 / TLS error](#b5--ingress-404--tls-errors) |
-| Rollout stuck, not progressing | New pods failing readiness | [C1 — Rollout stuck](#c1--rollout-stuck--not-progressing) |
-| Bad deploy is live, users affected | Need rollback now | [C2 — Bad deploy rollback](#c2--bad-deploy-live--rollback-drill) |
-| Config/Secret change not visible | Pod not restarted | [C3 — Config change not applied](#c3--configsecret-change-not-applied) |
-| Node `NotReady` | kubelet down, disk/memory pressure | [D1 — Node NotReady](#d1--node-notready) |
-| Disk full on node or PVC | Log growth, big files, inodes | [D2 — Disk full](#d2--disk-full) |
-| High CPU / high latency | CPU throttling, missing HPA | [D3 — High CPU / latency](#d3--high-cpu--high-latency) |
-| Unexpected cloud cost spike | Idle resources, orphaned LBs | [D4 — Cost spike](#d4--cost-spike) |
-| PVC stuck `Pending` | No StorageClass, zone mismatch | [E1 — PVC stuck Pending](#e1--pvc-stuck-pending) |
-| Volume won't attach / Multi-Attach | EBS + pod rescheduled to other AZ | [E2 — Volume attach / Multi-Attach error](#e2--volume-wont-attach--multi-attach-error) |
-| Accidental data loss / PVC deleted | `reclaimPolicy: Delete` | [E3 — Accidental data loss](#e3--accidental-data-loss) |
-| PVC stuck `Terminating` / namespace won't delete | `pvc-protection` finalizer — a pod still mounts it | [E4 — PVC stuck Terminating](#e4--pvc-stuck-terminating) |
-| CI build fails / flaky tests | Non-determinism, cache, resources | [F1 — Build fails / flaky tests](#f1--build-fails--flaky-tests) |
-| Image push denied in CI | Registry auth, expired token | [F2 — Image push denied](#f2--image-push-denied) |
-| Trivy blocks build on CVE | Vulnerable base image or dep | [F3 — Trivy CVE block](#f3--trivy-blocks-the-build-on-a-cve) |
-| Wrong image running in cluster | `latest` + stale cache | [F4 — Wrong image running](#f4--wrong-image-running) |
-| Argo CD app stuck `OutOfSync` | Immutable field, hook failure | [G1 — Argo OutOfSync stuck](#g1--argo-cd-app-outsync-stuck) |
-| Argo CD reverting manual changes | Self-heal is working as designed | [G2 — SelfHeal reverting changes](#g2--selfheal-reverting-a-legitimate-change) |
-| Terraform state lock stuck | DynamoDB lock left by killed run | [H1 — State lock stuck](#h1--state-lock-stuck) |
-| Terraform plan shows unexpected drift | Console click changed reality | [H2 — Drift](#h2--drift) |
-| Terraform `destroy` blocked | `prevent_destroy` lifecycle rule | [H3 — Blocked destroy](#h3--accidentalblocked-destroy) |
-| Terraform state lost / corrupted | Backend issue, manual edit | [H4 — State lost / corrupted](#h4--state-lost--corrupted) |
-| AWS connection times out | Security Group not opened | [I1 — Connection timeout (AWS)](#i1--connection-times-out-aws) |
-| AWS `AccessDenied` error | Missing IAM policy, wrong role | [I2 — IAM AccessDenied](#i2--iam-accessdenied) |
-| TLS certificate expired | Let's Encrypt not renewing | [I3 — TLS cert expired](#i3--tls-certificate-expired) |
-| LB targets unhealthy | Health-check mismatch, SG | [I4 — LB targets unhealthy](#i4--lb-targets-unhealthy) |
-| "Too many connections" / pool exhausted | No connection pooling, leaks | [J1 — Too many connections](#j1--too-many-connections) |
-| Slow queries / high DB CPU | Missing index, N+1 queries | [J2 — Slow queries](#j2--slow-queries--high-db-cpu) |
-| DB failover / replica lag | Multi-AZ RDS failover, replication | [J3 — Failover / replica lag](#j3--failover--replica-lag) |
+| Pod stuck `CrashLoopBackOff` | Bad image, config, crash, OOM | [A1 — CrashLoopBackOff](#a1-crashloopbackoff) |
+| Pod stuck `ImagePullBackOff` | Registry auth, bad tag | [A2 — ImagePullBackOff](#a2-imagepullbackoff-errimagepull) |
+| Pod stuck `Pending` / `Unschedulable` | Resources, taints, PVC | [A3 — Pod Pending](#a3-pod-pending-unschedulable) |
+| Pod shows `OOMKilled` | Memory limit too low or leak | [A4 — OOMKilled](#a4-oomkilled) |
+| Pod stuck `Terminating` | Finalizers, graceful shutdown | [A5 — Pod stuck Terminating](#a5-pod-stuck-terminating) |
+| Users get 502 / 503 / 504 | LB → Ingress → Service → Pod | [B1 — 502/503/504 errors](#b1-502-503-504-gateway-errors) |
+| Service has no endpoints | Label mismatch, readiness failing | [B2 — No endpoints](#b2-service-has-no-endpoints) |
+| DNS not resolving inside cluster | CoreDNS, wrong name/namespace | [B3 — DNS resolution failing](#b3-dns-resolution-failing) |
+| Connection refused between services | Wrong port, NetworkPolicy, SG | [B4 — Connection refused / timeout](#b4-connection-refused-timeout-between-services) |
+| Ingress returns 404 or TLS error | Host/path mismatch, cert expired | [B5 — Ingress 404 / TLS error](#b5-ingress-404-tls-errors) |
+| Rollout stuck, not progressing | New pods failing readiness | [C1 — Rollout stuck](#c1-rollout-stuck-not-progressing) |
+| Bad deploy is live, users affected | Need rollback now | [C2 — Bad deploy rollback](#c2-bad-deploy-live-rollback-drill) |
+| Config/Secret change not visible | Pod not restarted | [C3 — Config change not applied](#c3-configsecret-change-not-applied) |
+| Node `NotReady` | kubelet down, disk/memory pressure | [D1 — Node NotReady](#d1-node-notready) |
+| Disk full on node or PVC | Log growth, big files, inodes | [D2 — Disk full](#d2-disk-full) |
+| High CPU / high latency | CPU throttling, missing HPA | [D3 — High CPU / latency](#d3-high-cpu-high-latency) |
+| Unexpected cloud cost spike | Idle resources, orphaned LBs | [D4 — Cost spike](#d4-cost-spike) |
+| PVC stuck `Pending` | No StorageClass, zone mismatch | [E1 — PVC stuck Pending](#e1-pvc-stuck-pending) |
+| Volume won't attach / Multi-Attach | EBS + pod rescheduled to other AZ | [E2 — Volume attach / Multi-Attach error](#e2-volume-wont-attach-multi-attach-error) |
+| Accidental data loss / PVC deleted | `reclaimPolicy: Delete` | [E3 — Accidental data loss](#e3-accidental-data-loss) |
+| PVC stuck `Terminating` / namespace won't delete | `pvc-protection` finalizer — a pod still mounts it | [E4 — PVC stuck Terminating](#e4-pvc-stuck-terminating) |
+| CI build fails / flaky tests | Non-determinism, cache, resources | [F1 — Build fails / flaky tests](#f1-build-fails-flaky-tests) |
+| Image push denied in CI | Registry auth, expired token | [F2 — Image push denied](#f2-image-push-denied) |
+| Trivy blocks build on CVE | Vulnerable base image or dep | [F3 — Trivy CVE block](#f3-trivy-blocks-the-build-on-a-cve) |
+| Wrong image running in cluster | `latest` + stale cache | [F4 — Wrong image running](#f4-wrong-image-running) |
+| Argo CD app stuck `OutOfSync` | Immutable field, hook failure | [G1 — Argo OutOfSync stuck](#g1-argo-cd-app-outofsync-stuck) |
+| Argo CD reverting manual changes | Self-heal is working as designed | [G2 — SelfHeal reverting changes](#g2-selfheal-reverting-a-legitimate-change) |
+| Terraform state lock stuck | DynamoDB lock left by killed run | [H1 — State lock stuck](#h1-state-lock-stuck) |
+| Terraform plan shows unexpected drift | Console click changed reality | [H2 — Drift](#h2-drift) |
+| Terraform `destroy` blocked | `prevent_destroy` lifecycle rule | [H3 — Blocked destroy](#h3-accidentalblocked-destroy) |
+| Terraform state lost / corrupted | Backend issue, manual edit | [H4 — State lost / corrupted](#h4-state-lost-corrupted) |
+| AWS connection times out | Security Group not opened | [I1 — Connection timeout (AWS)](#i1-connection-times-out-aws) |
+| AWS `AccessDenied` error | Missing IAM policy, wrong role | [I2 — IAM AccessDenied](#i2-iam-accessdenied) |
+| TLS certificate expired | Let's Encrypt not renewing | [I3 — TLS cert expired](#i3-tls-certificate-expired) |
+| LB targets unhealthy | Health-check mismatch, SG | [I4 — LB targets unhealthy](#i4-lb-targets-unhealthy) |
+| "Too many connections" / pool exhausted | No connection pooling, leaks | [J1 — Too many connections](#j1-too-many-connections) |
+| Slow queries / high DB CPU | Missing index, N+1 queries | [J2 — Slow queries](#j2-slow-queries-high-db-cpu) |
+| DB failover / replica lag | Multi-AZ RDS failover, replication | [J3 — Failover / replica lag](#j3-failover-replica-lag) |
 
 ---
 
@@ -139,7 +139,7 @@ Cross-link: [ch14 "deploy failed in prod" scenario](14-interview-bank.md) has wa
 | Missing env var or Secret | App logs: "config not found", `KeyError`, nil pointer |
 | Bad image tag / corrupt image | `kubectl describe` shows `OCI error` or pull succeeded but container exits immediately |
 | Liveness probe too aggressive | Events: `Liveness probe failed` → container killed |
-| OOM at startup (too low limit) | `Reason: OOMKilled` in describe — see [A4](#a4--oomkilled) |
+| OOM at startup (too low limit) | `Reason: OOMKilled` in describe — see [A4](#a4-oomkilled) |
 
 > 🔍 **Diagnose:**
 
@@ -168,7 +168,7 @@ kubectl get configmap <cm-name> -n <namespace>
 > - **App crash:** fix the bug, rebuild, push a new image tag, update the manifest.
 > - **Missing Secret/ConfigMap:** create the missing resource (`kubectl create secret generic ...`), then `kubectl rollout restart deployment/<name>`.
 > - **Liveness probe too aggressive:** increase `initialDelaySeconds` or `failureThreshold` in the manifest to give the app time to start.
-> - **OOM at startup:** raise `resources.limits.memory` — see [A4](#a4--oomkilled).
+> - **OOM at startup:** raise `resources.limits.memory` — see [A4](#a4-oomkilled).
 
 > 🛡️ **Prevent:**
 > - Use `startupProbe` for slow-starting apps so the liveness probe doesn't fire too early.
@@ -233,7 +233,7 @@ kubectl delete pod test-pull -n <namespace>
 | Insufficient CPU or memory on all nodes | Events: `Insufficient cpu` / `Insufficient memory` |
 | Node selector / affinity mismatch | Events: `didn't match node selector` |
 | Taint on all nodes, no toleration | Events: `had taint ... that the pod didn't tolerate` |
-| PVC not bound (see [E1](#e1--pvc-stuck-pending)) | Events: `persistentvolumeclaim not found` |
+| PVC not bound (see [E1](#e1-pvc-stuck-pending)) | Events: `persistentvolumeclaim not found` |
 | No nodes at all / cluster autoscaler not provisioned | `kubectl get nodes` shows nothing |
 
 > 🔍 **Diagnose:**
@@ -352,9 +352,9 @@ Internet → Load Balancer → Ingress Controller → Service → Endpoints → 
 
 | Layer | Symptom | Cause |
 |---|---|---|
-| Load Balancer | 503 from LB, no traffic reaching cluster | LB targets unhealthy — see [I4](#i4--lb-targets-unhealthy) |
+| Load Balancer | 503 from LB, no traffic reaching cluster | LB targets unhealthy — see [I4](#i4-lb-targets-unhealthy) |
 | Ingress Controller | 502 from Ingress | Ingress pod itself is crashing or OOM |
-| Service→Pod routing | 502, endpoints empty | Label selector mismatch — see [B2](#b2--service-has-no-endpoints) |
+| Service→Pod routing | 502, endpoints empty | Label selector mismatch — see [B2](#b2-service-has-no-endpoints) |
 | Pod readiness | 503, pod running but `0/1 READY` | Readiness probe failing — app not ready |
 | Pod too slow | 504 Gateway Timeout | App latency > upstream timeout; resource starvation |
 
@@ -413,7 +413,7 @@ kubectl get pods -n <namespace>
 
 > 🛠️ **Fix:**
 > - **Label mismatch:** edit the Service selector (`kubectl edit service <name>`) or add/fix the label on the Deployment template (`kubectl edit deployment <name>` → `spec.template.metadata.labels`).
-> - **Readiness probe failing:** investigate why the probe fails (app not healthy, wrong path/port — see [B1](#b1--502--503--504-gateway-errors)).
+> - **Readiness probe failing:** investigate why the probe fails (app not healthy, wrong path/port — see [B1](#b1-502-503-504-gateway-errors)).
 
 > 🛡️ **Prevent:** Use a linting tool (e.g., `kube-linter`) in CI that catches Service selector / Pod label mismatches before deployment.
 
@@ -555,7 +555,7 @@ kubectl describe deployment <name> -n <namespace>
 The rollout is stuck because **new pods are not passing their readiness probe**. The old pods are still running (Kubernetes protects you), but the rollout cannot complete.
 
 > 🛠️ **Fix:**
-> - If new pods are crashing (CrashLoopBackOff): rollback immediately — see [C2](#c2--bad-deploy-live--rollback-drill), then fix the underlying issue.
+> - If new pods are crashing (CrashLoopBackOff): rollback immediately — see [C2](#c2-bad-deploy-live-rollback-drill), then fix the underlying issue.
 > - If pods are Pending (resources): free resources or scale the cluster first, then retry the rollout.
 > - If the readiness probe path changed: fix the probe in the manifest and reapply.
 
@@ -666,7 +666,7 @@ df -h                            # Disk usage — is a partition full?
 free -h                          # Memory pressure?
 ```
 
-**Common causes:** kubelet crashed (restart it); disk full on the node (see [D2](#d2--disk-full)); node ran out of memory; network partition between node and control plane.
+**Common causes:** kubelet crashed (restart it); disk full on the node (see [D2](#d2-disk-full)); node ran out of memory; network partition between node and control plane.
 
 > 🛠️ **Fix:**
 > - **kubelet down:** `systemctl restart kubelet`.
@@ -919,7 +919,7 @@ Cross-link: [ch20 EBS / EFS / S3 trade-offs](20-confusions-and-tradeoffs.md).
 
 **Symptom:** `kubectl delete pvc data-postgres-0` hangs, or returns and the PVC sits in `Terminating` forever. Namespace deletion also hangs (a namespace cannot finish deleting while a PVC in it will not go).
 
-> ⚠️ Different from [E1 (Pending)](#e1--pvc-stuck-pending) — that one never bound. This one is bound, in use, and refusing to die.
+> ⚠️ Different from [E1 (Pending)](#e1-pvc-stuck-pending) — that one never bound. This one is bound, in use, and refusing to die.
 
 **Diagnose:**
 
@@ -973,9 +973,9 @@ kubectl delete pod <zombie> -n billfree --grace-period=0 --force
 > 1. Delete in dependency order — workload first, then its claims. For StatefulSets: `scale --replicas=0`, *then* delete PVCs.
 > 2. Remember StatefulSet PVCs **outlive** the StatefulSet by design (that is the whole point) — deleting the StatefulSet does not delete `data-postgres-0`. Cleanup is a separate, deliberate step.
 > 3. Before deleting a namespace, check for bound PVCs — one stuck PVC hangs the whole namespace deletion.
-> 4. Confirm `reclaimPolicy` before any of this: with `Delete`, a successful PVC deletion also **destroys the EBS volume and its data** (see [E3](#e3--accidental-data-loss)).
+> 4. Confirm `reclaimPolicy` before any of this: with `Delete`, a successful PVC deletion also **destroys the EBS volume and its data** (see [E3](#e3-accidental-data-loss)).
 
-Cross-link: [E1 — PVC stuck Pending](#e1--pvc-stuck-pending) · [E3 — Accidental data loss](#e3--accidental-data-loss) · [A5 — Pod stuck Terminating](#a5--pod-stuck-terminating)
+Cross-link: [E1 — PVC stuck Pending](#e1-pvc-stuck-pending) · [E3 — Accidental data loss](#e3-accidental-data-loss) · [A5 — Pod stuck Terminating](#a5-pod-stuck-terminating)
 
 ---
 

@@ -5,13 +5,13 @@
 > 1. Sirf **left column (Sawaal)** dekho — right column ko haath/kaagaz se dhak lo.
 > 2. Memory se jawab bolo (ya likho). *Retrieve karo, re-read mat karo.*
 > 3. Phir right column kholo aur check karo. Galat nikla? Us card pe ⭐ lagao — kal usse pehle karo.
-> 4. **Spaced schedule:** naya module → Day 1, Day 3, Day 7, Day 30. (See [00-INDEX §0.1](00-INDEX.md#01-how-to-remember-this-for-life--the-spaced-review-system).)
+> 4. **Spaced schedule:** naya module → Day 1, Day 3, Day 7, Day 30. (See [00-INDEX §0.1](00-INDEX.md#01-how-to-remember-this-for-life-the-spaced-review-system).)
 >
 > 🇮🇳 **Hinglish intuition:** Flashcard = memory ka dumbbell. Ek baar uthana nahi, *baar-baar badhte gap pe* uthana muscle (yaaddaasht) banata hai.
 >
 > **Anki users:** har module table ko copy karke pipe (`|`) separator se import kar sakte ho — Front = Sawaal, Back = Jawab.
 
-Deck size: **~190 cards** across M0–M9 + the connected-system (SYS) + both capstones. Jump: [M0](#m0--foundations) · [M1](#m1--terraform) · [M2](#m2--ansible) · [M3](#m3--docker) · [M4](#m4--kubernetes-core) · [M5](#m5--sizing--cost) · [M6](#m6--cicd) · [M7](#m7--gitops) · [SYS](#sys--the-connected-system) · [M8](#m8--observability--sre) · [M9](#m9--advanced-k8s-internals) · [CAP1](#cap1--capstone-url-shortener) · [CAP2](#cap2--capstone-microshop)
+Deck size: **~190 cards** across M0–M9 + the connected-system (SYS) + both capstones. Jump: [M0](#m0-foundations) · [M1](#m1-terraform) · [M2](#m2-ansible) · [M3](#m3-docker) · [M4](#m4-kubernetes-core) · [M5](#m5-sizing-cost) · [M6](#m6-cicd) · [SYS](#sys-the-connected-system) · [M8](#m8-observability-sre) · [M9](#m9-advanced-k8s-internals) · [CAP1](#cap1-capstone-url-shortener) · [CAP2](#cap2-capstone-microshop)
 
 ---
 

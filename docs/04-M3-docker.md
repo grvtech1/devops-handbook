@@ -91,7 +91,7 @@ Isolation in a container comes from two Linux kernel primitives:
 | `user` | User IDs — *can* map UID 0 in container to an unprivileged host UID — **but Docker does NOT enable this by default** (see warning below) |
 
 !!! warning "The `user` namespace is the one you probably do NOT have"
-    The other five namespaces are on by default. The **user namespace is not** — unless you run rootless Docker or set `--userns-remap`. Without it, **root inside the container is the same UID 0 as root on the host**; only capability dropping and seccomp stand between them. That is exactly why [running as non-root](#non-root) matters — you cannot rely on isolation that is switched off.
+    The other five namespaces are on by default. The **user namespace is not** — unless you run rootless Docker or set `--userns-remap`. Without it, **root inside the container is the same UID 0 as root on the host**; only capability dropping and seccomp stand between them. That is exactly why [running as non-root](#run-as-non-root-container-hardening) matters — you cannot rely on isolation that is switched off.
 
     ```bash
     docker info | grep -i userns   # prints "userns" only if remapping is ON

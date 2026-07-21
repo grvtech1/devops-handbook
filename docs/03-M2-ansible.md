@@ -464,6 +464,101 @@ Cross-link: the cluster this builds is what [05-M4-kubernetes-core](05-M4-kubern
 
 ---
 
+## What actually gets configured on a node — and the two layers
+
+Most "Ansible for Kubernetes" checklists you'll find online mix **two completely different layers** into one list. Separating them is the insight that tells you *which tool does what* — and it is exactly the split your own VANTA repo makes.
+
+### The two layers
+
+```mermaid
+flowchart TB
+  subgraph L1["🔧 LAYER 1 — OS / machine prep"]
+    direction LR
+    A["packages · swap off<br/>kernel modules · sysctl<br/>users/SSH · firewall"]:::l1
+    N1["each node independently<br/>PARALLEL · no coordination"]:::note
+  end
+  subgraph L2["☸️ LAYER 2 — Cluster bootstrap"]
+    direction LR
+    B["kubeadm init → token<br/>→ kubeadm join → CNI"]:::l2
+    N2["ORDERED · cross-node<br/>master's token must reach workers"]:::note
+  end
+  L1 --> L2
+  T1["cloud-init OR Ansible<br/>(both work)"]:::t
+  T2["Ansible's REAL job<br/>(cloud-init cannot do this)"]:::t2
+  L1 -.-> T1
+  L2 -.-> T2
+  classDef l1 fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+  classDef l2 fill:#f3e5f5,stroke:#6a1b9a,color:#4a148c
+  classDef note fill:#fff9c4,stroke:#f9a825,color:#4a3800
+  classDef t fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  classDef t2 fill:#fff3e0,stroke:#e65100,color:#bf360c
+```
+
+!!! danger "The distinction that matters"
+    **Layer 1 is parallel and independent** — every node does the same thing, in any order, with no knowledge of other nodes. **cloud-init can do this perfectly.**
+
+    **Layer 2 requires orchestration** — the master must `init` *first*, produce a join token, and that token must then reach the workers. This is cross-node coordination with a strict order. **cloud-init cannot express this. This is Ansible's real job.**
+
+> 🇮🇳 **Ek line:** Jo kaam **har node alag-alag, kisi bhi order mein** kar sakta → cloud-init kaafi. Jo kaam **order maangta aur nodes ke beech coordination** maangta (master ka token workers tak) → **wahi Ansible ki asli zaroorat hai.**
+
+### Layer 1 — OS/machine prep (and *why* each item exists)
+
+Every item here exists because Kubernetes will fail in a specific way without it. Learn the failure, not the command:
+
+| Item | Why it's required | Skip it → what breaks |
+|---|---|---|
+| **swap off** (+ `/etc/fstab`) | kubelet's memory accounting is unreliable with swap | **kubelet refuses to start** — the classic first-time error |
+| **`overlay` module** | overlayfs backs container image layers | containerd cannot mount images |
+| **`br_netfilter` module** | makes bridged traffic traverse iptables | **pod/Service networking silently breaks** |
+| **`net.ipv4.ip_forward=1`** | node must forward packets between pods | pod-to-pod across nodes fails |
+| **`bridge-nf-call-iptables=1`** | kube-proxy rules apply to bridged traffic | Services don't route |
+| **containerd** | the actual CRI runtime | kubelet has nothing to run containers with |
+| **`SystemdCgroup = true`** in containerd | kubelet uses the systemd cgroup driver; both must agree | **kubelet crash-loops** — the #1 kubeadm gotcha |
+| **kubeadm · kubelet · kubectl** | bootstrap tool · node agent · CLI | — |
+| **`apt-mark hold` those three** | pins versions | a stray `apt upgrade` bumps kubelet → **version skew** breaks the node |
+| **Time sync (chrony/NTP)** | certificates and etcd are clock-sensitive | TLS errors, etcd instability from **clock skew** |
+| **users / SSH / sudo** | Ansible itself needs to connect | Ansible cannot even reach the node |
+| **firewall ports** | 6443 (API) · 10250 (kubelet) · 2379-2380 (etcd) · CNI ports | nodes cannot join |
+
+### Layer 2 — Cluster bootstrap (ordered)
+
+```
+1. kubeadm init        on the master, first
+2. get join token      kubeadm token create --print-join-command
+3. kubeadm join        on each worker, using that token
+4. install CNI         Flannel / Calico / Cilium
+```
+
+!!! warning "The gotcha that wastes hours"
+    **Without a CNI installed, every node stays `NotReady` forever.** People debug kubelet, restart containerd, re-run `kubeadm` — when the only thing missing is pod networking. If `kubectl get nodes` shows `NotReady` right after a successful `init`/`join`, **check the CNI first.**
+
+### 🎯 Your own repos already make this split
+
+This is not theory — it is exactly how **VANTA-Boutique** is built:
+
+| Layer | Who does it in VANTA | Evidence |
+|---|---|---|
+| **Layer 1** (OS prep) | **`user_data` / cloud-init** | `terraform/compute.tf`: `swapoff -a`, `modprobe overlay`, `modprobe br_netfilter` |
+| **Layer 2** (cluster) | **Ansible** | `ansible/playbook.yml`: PLAY 2 `kubeadm init` → PLAY 3 join → **Flannel** CNI |
+
+And notice what Ansible's PLAY 1 actually does — it does **not** install anything, it **verifies** that Layer 1 already happened:
+
+```yaml
+- name: Check user_data script completed (containerd must be running)
+  shell: systemctl is-active containerd
+- name: Verify kubeadm is installed
+  shell: kubeadm version -o short
+```
+
+> ⭐ **Interview answer:** *"We split node setup by layer. OS prep — packages, swap, kernel modules, sysctl — runs in cloud-init because it's parallel and needs no coordination. Ansible handles cluster bootstrap, because `kubeadm init` must complete on the master and its join token must then reach the workers — that ordering is something cloud-init structurally cannot express. Ansible's first play just asserts the cloud-init prep succeeded before it proceeds."*
+
+!!! note "CNI: know which one you're running"
+    Generic guides usually say Calico. **VANTA actually installs Flannel** (`ansible/playbook.yml`). They solve the same problem differently: **Flannel** = simple overlay, easy, no NetworkPolicy support. **Calico** = supports NetworkPolicy and BGP routing, more capable, more moving parts. If you need `NetworkPolicy` ([ch30](30-k8s-complete-reference.md)), Flannel alone won't give it to you.
+
+**🧠 Recall:** Which layer can cloud-init do? · Why can't it do the other? · What breaks without `br_netfilter`? · Nodes stuck `NotReady` — first thing to check? · Which CNI does VANTA use?
+
+---
+
 ## When NOT to reach for Ansible
 
 This is where senior engineers distinguish themselves from juniors who reach for the same tool regardless of context.
@@ -676,6 +771,8 @@ Ansible's territory is **shrinking**, not dying:
 ## Memory shortcuts
 
 - **Ansible's real axis** = Pets vs Cattle (not stateless vs stateful — that's a different layer)
+- **Two layers on a node** = OS prep (parallel → cloud-init can do it) vs cluster bootstrap (ordered, cross-node → Ansible's real job)
+- **Nodes stuck `NotReady`** after a clean `init`/`join` = **CNI missing**, check that first
 - **Control node → Managed nodes** = SSH push from one to many
 - **Inventory** = "kahan" (where) · **Playbook** = "kya" (what)
 - **Module** = smart (checks first) · **Shell** = blind (runs always)

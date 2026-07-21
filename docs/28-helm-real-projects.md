@@ -721,6 +721,215 @@ Tumhara box, dono patterns me:
 
 ---
 
+## 🎓 Advanced Helm — the 4 things that make you dangerous
+
+Ab tak tumne **apna** chart banaya, render kiya, deploy kiya. Ye section woh 4 cheezein deta hai jo Helm ko sirf "template tool" se ek **package ecosystem** bana deti hain — aur jo interview + real production mein daily aati hain.
+
+> **Mental model shift:** Ab tak Helm = "tumhari YAML likhne ka smart tareeka". Aage Helm = **npm/apt for Kubernetes** — doosron ke charts install karo, charts ko ek doosre pe depend karao, aur deploy ke lifecycle mein hook lagao.
+
+---
+
+### 1 · Chart repositories — `helm install nginx` (npm/apt jaisa)
+
+**Analogy:** Ab tak tumne **ghar pe khaana** banaya (apna chart). Chart repo = **Swiggy** — koi aur ne bana ke rakha hai, tum bas order karo. Postgres, Prometheus, nginx-ingress, cert-manager — inhe khud likhne ki zaroorat nahi, koi expert ne already production-grade chart bana rakha hai.
+
+**Mental model:** Chart repo = **app store for Kubernetes**. `helm repo add` = ek store connect karo. `helm install` = wahan se ek app install karo.
+
+**WHY:** Redis/Prometheus ka poora chart khud likhna = pahiya dobara banana. Community ka battle-tested chart use karo, sirf `values` se customize.
+
+```bash
+# 1. Ek repo (app store) add karo
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo add bitnami https://charts.bitnami.com/bitnami
+helm repo update                          # latest list kheencho
+
+# 2. Dhoondo kya available hai
+helm search repo postgres                 # bitnami/postgresql milega
+helm search repo prometheus
+
+# 3. Install karo — apni values ke saath
+helm install my-db bitnami/postgresql \
+  --set auth.database=billfree \
+  -n data --create-namespace
+
+# 4. Install se pehle unke defaults dekho (hamesha!)
+helm show values bitnami/postgresql | head -40
+helm show readme bitnami/postgresql       # docs
+```
+
+> **billfree connection:** Jab tumne monitoring setup ki thi — `helm install kps prometheus-community/kube-prometheus-stack` — woh **exactly ye** tha. Prometheus + Grafana + Alertmanager, sab ek community chart se. Tumne ek line likhe bina poora monitoring stack khada kar diya.
+
+> 🇮🇳 **Yaad rakho:** Apna app = apna chart likho. Infra pieces (DB, monitoring, ingress) = **community chart install karo**, khud mat likho. `helm repo add` → `helm search` → `helm show values` → `helm install`.
+
+---
+
+### 2 · Chart dependencies (subcharts) — chart ke andar chart
+
+**Analogy:** Tumhari app ki chart ek **thali** hai. Par app ko Postgres bhi chahiye. Kya Postgres ki poori YAML apni chart mein copy karo? Nahi — **thali mein ek ready-made katori (Postgres subchart) rakh do**. Woh katori kisi aur ne banayi, tum bas apni thali mein include kar lo.
+
+**Mental model:** Dependencies = **"mera chart in charts pe depend karta hai"** — jaise `package.json` mein dependencies. Ek `helm install` parent + saare subcharts ko ek saath deploy karta.
+
+**WHY:** App + uska DB + uska cache ek saath deploy karne hon, versioned bundle ke roop mein. Har cheez alag manage karne ke bajaye **ek chart, sab andar**.
+
+```yaml
+# Chart.yaml — dependencies declare karo
+apiVersion: v2
+name: my-app
+version: 1.0.0
+dependencies:
+  - name: postgresql              # bitnami ka subchart
+    version: "15.x.x"
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled  # values se on/off kar sakte
+  - name: redis
+    version: "18.x.x"
+    repository: https://charts.bitnami.com/bitnami
+```
+
+```bash
+helm dependency update            # subcharts download → charts/ folder mein
+helm dependency list              # kya-kya depend karta
+helm install my-app .             # parent + postgres + redis — sab ek saath
+```
+
+Parent ki `values.yaml` se subchart ko configure karo (naam se namespaced):
+```yaml
+# my-app ki values.yaml
+postgresql:                       # 👈 subchart ka naam = key
+  auth:
+    database: billfree
+  primary:
+    persistence:
+      size: 20Gi
+redis:
+  architecture: standalone
+```
+
+> **Senior nuance (interview gold):** Subchart tab jab woh cheez **is app ke saath jeeti-marti** ho (app ka apna DB). Agar DB ko **multiple apps** share karti hain, ya uska lifecycle alag hai — usse **alag** rakho (billfree ka Postgres alag `platform` app mein hai, subchart nahi). *"Depend karta hai" ≠ "andar hona chahiye."* Shared/independent = alag; owned/co-lifecycle = subchart.
+
+> 🇮🇳 **Yaad rakho:** Subchart = "chart ke andar chart" (thali mein katori). `Chart.yaml` mein `dependencies:` → `helm dependency update` → ek `helm install` sab deploy kare. Parent values se `subchartname:` key se configure.
+
+---
+
+### 3 · Helm hooks — deploy ke lifecycle mein sahi waqt pe kaam
+
+**Analogy:** Restaurant mein grand opening se **pehle** kitchen saaf karni hai, aur opening ke **baad** feedback lena hai. Ye kaam khud dish banane se alag hain — inhe khaas **waqt** pe karna hai. Helm hooks = "deploy ke pehle/baad ye extra kaam chalao".
+
+**Mental model:** Normal manifests = "ye cheezein cluster mein honi chahiye". Hooks = **"deploy ke is lamhe pe ye kaam ek baar chalao"** — DB migration, backup, cleanup.
+
+**WHY:** Kuch kaam deploy ke **around** hote hain, deploy ka **hissa** nahi: nayi version deploy se pehle DB migrate karo; upgrade se pehle backup lo; delete pe cleanup karo. Timing matter karti hai.
+
+```yaml
+# templates/migrate-job.yaml — ek Job, hook annotation ke saath
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-migrate
+  annotations:
+    "helm.sh/hook": pre-upgrade,pre-install       # 👈 kab chale
+    "helm.sh/hook-weight": "-5"                    # order (chhota pehle)
+    "helm.sh/hook-delete-policy": before-hook-creation  # purana Job hatao
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migrate
+          image: my-app/migrate:v2
+          command: ["npm","run","migrate"]
+```
+
+**5 common hooks (timing):**
+
+| Hook | Kab chalta | Use |
+|---|---|---|
+| `pre-install` | pehli install se pehle | initial DB setup |
+| `pre-upgrade` | har upgrade se pehle | **DB migration** (sabse common) |
+| `post-upgrade` | upgrade ke baad | cache warm, smoke test |
+| `pre-delete` | uninstall se pehle | data backup |
+| `post-delete` | uninstall ke baad | external cleanup |
+
+> **billfree connection (bilkul real):** Tumhara `deploy/platform/migrate-job.yaml` **exactly ye pattern** hai — bas ArgoCD ke saath. Woh `argocd.argoproj.io/hook: PostSync` use karta (Helm ka `post-install`/`post-upgrade` ka ArgoCD-equivalent). **Concept identical hai:** "migration ko deploy ke around, sahi timing pe, ek baar chalao." Helm mein `helm.sh/hook`, ArgoCD mein `argocd.argoproj.io/hook`.
+
+> ⚠️ **Interview trap:** Hooks normal reconcile ke bahar chalte hain — ArgoCD/Helm inhe alag treat karta. Aur `hook-delete-policy` na ho to purane hook Jobs jam ho jaate. Aur order `hook-weight` se (chhota number pehle).
+
+> 🇮🇳 **Yaad rakho:** Hook = "deploy ke **is lamhe** pe ye kaam ek baar chalao" (na ki "ye hamesha chalti rahe"). Migration = `pre-upgrade`. Backup = `pre-delete`. billfree ka migrate Job isi ka real example hai.
+
+---
+
+### 4 · `helm test` + `helm package` — quality aur publishing
+
+**Analogy:** Dish bana li — ab **chakhh ke** dekho theek bani ya nahi (`helm test`), phir **dabbe mein pack** karke shelf pe rakho taaki doosre order kar sakein (`helm package`).
+
+**`helm test`** — chart ke andar ek test pod jo deploy ke baad verify kare "sach mein kaam kar raha?":
+```yaml
+# templates/tests/connection-test.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-test"
+  annotations:
+    "helm.sh/hook": test          # 👈 test hook
+spec:
+  restartPolicy: Never
+  containers:
+    - name: test
+      image: busybox
+      command: ['wget','-qO-','http://{{ .Release.Name }}-svc:80/health']
+```
+```bash
+helm install my-app .
+helm test my-app          # test pod chalao → pass/fail batata
+```
+
+**`helm package`** — chart ko ek versioned `.tgz` mein pack karo (publish/share ke liye):
+```bash
+helm package ./my-app                    # → my-app-1.0.0.tgz (immutable artifact)
+helm push my-app-1.0.0.tgz oci://registry.example.com/charts   # OCI registry pe
+# ab koi bhi: helm install x oci://registry.example.com/charts/my-app --version 1.0.0
+```
+
+> 🇮🇳 **Yaad rakho:** `helm lint` = syntax check (deploy se pehle). `helm test` = **runtime** check (deploy ke baad sach mein chala?). `helm package` = versioned `.tgz` banao taaki chart bhi image ki tarah **immutable + shareable** ho.
+
+---
+
+### The complete Helm lifecycle — sab ek saath
+
+```mermaid
+flowchart LR
+  DEV["✍️ Author\nchart likho + values"]:::a
+  DEP["📦 Dependencies\nhelm dependency update"]:::b
+  LINT["🔍 helm lint\nsyntax"]:::c
+  TMPL["👁️ helm template\nrender + verify"]:::c
+  INST["🚀 helm install/upgrade\n+ hooks (pre/post)"]:::d
+  TEST["✅ helm test\nruntime check"]:::e
+  PKG["📤 helm package + push\nversioned .tgz → registry"]:::f
+  DEV --> DEP --> LINT --> TMPL --> INST --> TEST --> PKG
+  classDef a fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  classDef b fill:#fff3e0,stroke:#e65100,color:#bf360c
+  classDef c fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+  classDef d fill:#f3e5f5,stroke:#6a1b9a,color:#4a148c
+  classDef e fill:#e0f2f1,stroke:#00897b,color:#004d40
+  classDef f fill:#ede7f6,stroke:#5e35b1,color:#311b92
+```
+
+---
+
+### 🎯 Advanced Helm recall drill
+
+1. Public Postgres chart install karne ke 4 commands? *(`repo add` → `repo update` → `show values` → `install`)*
+2. Subchart kya hai, `Chart.yaml` mein kaise? *(chart ke andar chart; `dependencies:`)*
+3. Subchart kab, kab alag rakhe? *(owned/co-lifecycle = subchart; shared/independent = alag)*
+4. DB migration deploy se pehle chalane ka hook? *(`pre-upgrade`)*
+5. Hook order kaise control karo? *(`hook-weight`)*
+6. `helm lint` vs `helm test`? *(syntax before vs runtime after)*
+7. `helm package` kya deta? *(versioned immutable `.tgz`)*
+8. billfree ka migrate Job kis Helm concept ka real example? *(hook — ArgoCD PostSync = Helm post-install)*
+
+> **Pass = 6/8.** Ye aa gaya → tum Helm ka **poora** ecosystem jaante ho, sirf templating nahi. 💪
+
+---
+
 ## 20-second recall
 
 ```
@@ -731,6 +940,12 @@ HELM = YAML ka structure wahi, bas: template banao + values bahar + ek package.
 CORE FLOW: values + templates → helm render → plain YAML → kubectl apply → cluster
 VERIFY: `helm template` se render karke dekho (deploy se pehle).
 K8s ko Helm ka pata nahi — object wahi banta jaise haath se likha ho.
+
+ADVANCED (Helm = npm/apt for K8s):
+  REPOS   : helm repo add → search → show values → install (community charts)
+  SUBCHART: Chart.yaml dependencies: → chart ke andar chart (owned = subchart)
+  HOOKS   : pre-upgrade (migration) · pre-delete (backup) — deploy ke around
+  QUALITY : lint (syntax before) · test (runtime after) · package (.tgz immutable)
 ```
 
 > 🇮🇳 **Ek line:** Helm tumhare Service/ConfigMap/Deployment/Secret/StatefulSet ko banata nahi — sirf unhe **template + values + package** me smart tareeke se likhta hai, taaki ek chart se har environment aur har service ban jaye. billfree "ek saancha, N cookies"; VANTA "ek thali, N katori". 😊

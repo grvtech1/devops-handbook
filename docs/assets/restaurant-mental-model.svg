@@ -1,0 +1,217 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 700" width="1180" height="700" role="img"
+     aria-label="The restaurant mental model: source code is the recipe, Docker image the sealed box, CI the test kitchen, Git the menu board, ArgoCD the manager, Kubernetes the kitchen with cooks as pods, Terraform and Ansible build the building, Prometheus and Grafana are the health inspector.">
+  <title>DevOps = running a restaurant — the master mental model</title>
+  <defs>
+    <style>
+      .lbl   { font-family: 'Space Grotesk', Inter, system-ui, sans-serif; font-weight: 700; }
+      .sub   { font-family: Inter, system-ui, sans-serif; font-weight: 500; }
+      .mono  { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 500; }
+      .zone  { font-family: 'Space Grotesk', Inter, sans-serif; font-weight: 700; letter-spacing: .08em; }
+      /* light theme (default) */
+      .bg      { fill: #ffffff; }
+      .ztext   { fill: #6b7488; }
+      .title   { fill: #12141c; }
+      .cardtx  { fill: #12141c; }
+      .cardsub { fill: #5a6478; }
+      .flow    { stroke: #9aa3b8; }
+      .flowtx  { fill: #6b7488; }
+      .zbox    { fill: #f7f8fc; stroke: #e0e5f0; }
+      @media (prefers-color-scheme: dark) {
+        .bg      { fill: #0a0b0f; }
+        .ztext   { fill: #6b7488; }
+        .title   { fill: #e6e9f2; }
+        .cardtx  { fill: #e6e9f2; }
+        .cardsub { fill: #9aa3b8; }
+        .flow    { stroke: #4b5468; }
+        .flowtx  { fill: #6b7488; }
+        .zbox    { fill: #12141c; stroke: #262b3a; }
+      }
+    </style>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#9aa3b8"/>
+    </marker>
+    <linearGradient id="gTitle" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#6366f1"/>
+      <stop offset="55%"  stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+
+  <rect class="bg" width="1180" height="700"/>
+
+  <text class="lbl" x="590" y="42" font-size="26" text-anchor="middle" fill="url(#gTitle)">DevOps = ek restaurant chalana</text>
+  <text class="sub ztext" x="590" y="66" font-size="13.5" text-anchor="middle">One analogy. Every tool has exactly one place in it.</text>
+
+  <!-- ===================== ZONE 1: YOU (chef) ===================== -->
+  <rect class="zbox" x="30" y="96" width="248" height="204" rx="14"/>
+  <text class="zone ztext" x="46" y="120" font-size="10.5">👨‍🍳 YOU · THE CHEF</text>
+
+  <g transform="translate(52,136)">
+    <rect width="204" height="60" rx="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+    <text class="lbl" x="14" y="26" font-size="14" fill="#1b5e20">📝 Recipe</text>
+    <text class="mono" x="14" y="45" font-size="11" fill="#2e7d32">source code</text>
+  </g>
+  <g transform="translate(52,216)">
+    <rect width="204" height="60" rx="10" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+    <text class="lbl" x="14" y="26" font-size="14" fill="#1b5e20">📦 Sealed box</text>
+    <text class="mono" x="14" y="45" font-size="11" fill="#2e7d32">Docker image</text>
+  </g>
+  <path class="flow" d="M154,196 L154,214" stroke-width="1.6" marker-end="url(#ar)" fill="none"/>
+
+  <!-- ===================== ZONE 2: CI (test kitchen) ===================== -->
+  <rect class="zbox" x="306" y="96" width="248" height="204" rx="14"/>
+  <text class="zone ztext" x="322" y="120" font-size="10.5">🧪 TEST KITCHEN · CI</text>
+
+  <g transform="translate(328,136)">
+    <rect width="204" height="140" rx="10" fill="#fff3e0" stroke="#e65100" stroke-width="1.5"/>
+    <text class="lbl" x="14" y="26" font-size="13.5" fill="#bf360c">🧪 Taste test</text>
+    <text class="mono" x="14" y="43" font-size="10.5" fill="#e65100">run tests</text>
+    <text class="lbl" x="14" y="72" font-size="13.5" fill="#bf360c">🔒 Seal the box</text>
+    <text class="mono" x="14" y="89" font-size="10.5" fill="#e65100">build + scan</text>
+    <text class="lbl" x="14" y="118" font-size="13.5" fill="#bf360c">🏪 Put on shelf</text>
+    <text class="mono" x="14" y="135" font-size="10.5" fill="#e65100">push to registry</text>
+  </g>
+  <path class="flow" d="M262,206 L322,206" stroke-width="1.6" marker-end="url(#ar)" fill="none"/>
+
+  <!-- ===================== ZONE 3: GIT + ARGOCD ===================== -->
+  <rect class="zbox" x="582" y="96" width="248" height="204" rx="14"/>
+  <text class="zone ztext" x="598" y="120" font-size="10.5">📋 MENU BOARD · GITOPS</text>
+
+  <g transform="translate(604,136)">
+    <rect width="204" height="60" rx="10" fill="#e3f2fd" stroke="#1565c0" stroke-width="1.5"/>
+    <text class="lbl" x="14" y="26" font-size="14" fill="#0d47a1">📋 Menu board</text>
+    <text class="mono" x="14" y="45" font-size="11" fill="#1565c0">Git = source of truth</text>
+  </g>
+  <g transform="translate(604,216)">
+    <rect width="204" height="60" rx="10" fill="#f3e5f5" stroke="#6a1b9a" stroke-width="1.5"/>
+    <text class="lbl" x="14" y="26" font-size="14" fill="#4a148c">👔 Manager</text>
+    <text class="mono" x="14" y="45" font-size="11" fill="#6a1b9a">ArgoCD watches menu</text>
+  </g>
+  <path class="flow" d="M706,196 L706,214" stroke-width="1.6" marker-end="url(#ar)" fill="none"/>
+  <path class="flow" d="M538,206 L598,206" stroke-width="1.6" marker-end="url(#ar)" fill="none"/>
+
+  <!-- ===================== ZONE 4: INSPECTOR ===================== -->
+  <rect class="zbox" x="858" y="96" width="292" height="204" rx="14"/>
+  <text class="zone ztext" x="874" y="120" font-size="10.5">🔍 HEALTH INSPECTOR</text>
+
+  <g transform="translate(880,136)">
+    <rect width="248" height="140" rx="10" fill="#e0f7fa" stroke="#006064" stroke-width="1.5"/>
+    <text class="lbl" x="14" y="28" font-size="13.5" fill="#004d40">📊 Prometheus</text>
+    <text class="mono" x="14" y="45" font-size="10.5" fill="#006064">collects the numbers</text>
+    <text class="lbl" x="14" y="74" font-size="13.5" fill="#004d40">📈 Grafana</text>
+    <text class="mono" x="14" y="91" font-size="10.5" fill="#006064">shows the dashboard</text>
+    <text class="lbl" x="14" y="120" font-size="13.5" fill="#004d40">🚨 Alertmanager</text>
+    <text class="mono" x="14" y="137" font-size="10.5" fill="#006064">wakes you at 3 AM</text>
+  </g>
+
+  <!-- ===================== ZONE 5: THE KITCHEN (K8s) ===================== -->
+  <rect class="zbox" x="30" y="326" width="800" height="248" rx="14"/>
+  <text class="zone ztext" x="46" y="350" font-size="10.5">🍽️ THE KITCHEN · KUBERNETES CLUSTER</text>
+
+  <!-- gate -->
+  <g transform="translate(52,366)">
+    <rect width="150" height="72" rx="10" fill="#ede7f6" stroke="#5e35b1" stroke-width="1.5"/>
+    <text class="lbl" x="12" y="26" font-size="13" fill="#311b92">🚪 Front gate</text>
+    <text class="mono" x="12" y="44" font-size="10" fill="#5e35b1">Ingress</text>
+    <text class="mono" x="12" y="60" font-size="9.5" fill="#5e35b1">routes by host/path</text>
+  </g>
+  <!-- counter -->
+  <g transform="translate(228,366)">
+    <rect width="150" height="72" rx="10" fill="#ede7f6" stroke="#5e35b1" stroke-width="1.5"/>
+    <text class="lbl" x="12" y="26" font-size="13" fill="#311b92">🔔 Order counter</text>
+    <text class="mono" x="12" y="44" font-size="10" fill="#5e35b1">Service</text>
+    <text class="mono" x="12" y="60" font-size="9.5" fill="#5e35b1">stable address</text>
+  </g>
+  <!-- head chef -->
+  <g transform="translate(404,366)">
+    <rect width="150" height="72" rx="10" fill="#e0f2f1" stroke="#00897b" stroke-width="1.5"/>
+    <text class="lbl" x="12" y="26" font-size="13" fill="#004d40">👨‍🍳 Head chef</text>
+    <text class="mono" x="12" y="44" font-size="10" fill="#00897b">Deployment</text>
+    <text class="mono" x="12" y="60" font-size="9.5" fill="#00897b">keeps N cooks on duty</text>
+  </g>
+  <!-- cooks -->
+  <g transform="translate(580,366)">
+    <rect width="228" height="72" rx="10" fill="#e0f2f1" stroke="#00897b" stroke-width="1.5"/>
+    <text class="lbl" x="12" y="26" font-size="13" fill="#004d40">🧑‍🍳 Cooks  (Pods)</text>
+    <text class="mono" x="12" y="44" font-size="10" fill="#00897b">interchangeable · disposable</text>
+    <text class="mono" x="12" y="60" font-size="9.5" fill="#00897b">one dies → head chef hires another</text>
+  </g>
+
+  <!-- recipe card / masala / pantry -->
+  <g transform="translate(52,462)">
+    <rect width="150" height="66" rx="10" fill="#fff3e0" stroke="#ef6c00" stroke-width="1.5"/>
+    <text class="lbl" x="12" y="25" font-size="12.5" fill="#e65100">🗒️ Recipe card</text>
+    <text class="mono" x="12" y="42" font-size="10" fill="#ef6c00">ConfigMap</text>
+    <text class="mono" x="12" y="57" font-size="9.5" fill="#ef6c00">non-secret settings</text>
+  </g>
+  <g transform="translate(228,462)">
+    <rect width="150" height="66" rx="10" fill="#fff3e0" stroke="#ef6c00" stroke-width="1.5"/>
+    <text class="lbl" x="12" y="25" font-size="12.5" fill="#e65100">🧂 Secret masala</text>
+    <text class="mono" x="12" y="42" font-size="10" fill="#ef6c00">Secret</text>
+    <text class="mono" x="12" y="57" font-size="9.5" fill="#ef6c00">base64 ≠ encrypted</text>
+  </g>
+  <g transform="translate(404,462)">
+    <rect width="150" height="66" rx="10" fill="#fff3e0" stroke="#ef6c00" stroke-width="1.5"/>
+    <text class="lbl" x="12" y="25" font-size="12.5" fill="#e65100">🧊 Cold storage</text>
+    <text class="mono" x="12" y="42" font-size="10" fill="#ef6c00">PV / PVC</text>
+    <text class="mono" x="12" y="57" font-size="9.5" fill="#ef6c00">survives cook change</text>
+  </g>
+  <!-- autoscale -->
+  <g transform="translate(580,462)">
+    <rect width="228" height="66" rx="10" fill="#e3f2fd" stroke="#1976d2" stroke-width="1.5"/>
+    <text class="lbl" x="12" y="25" font-size="12.5" fill="#0d47a1">📈 Rush hour → more cooks</text>
+    <text class="mono" x="12" y="42" font-size="10" fill="#1976d2">HPA (autoscaler)</text>
+    <text class="mono" x="12" y="57" font-size="9.5" fill="#1976d2">quiet again → let them go</text>
+  </g>
+
+  <!-- kitchen internal flow -->
+  <path class="flow" d="M206,402 L224,402" stroke-width="1.6" marker-end="url(#ar)" fill="none"/>
+  <path class="flow" d="M382,402 L400,402" stroke-width="1.6" marker-end="url(#ar)" fill="none"/>
+  <path class="flow" d="M558,402 L576,402" stroke-width="1.6" marker-end="url(#ar)" fill="none"/>
+  <path class="flow" d="M694,438 L694,458" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#ar)" fill="none"/>
+  <path class="flow" d="M127,438 L127,458" stroke-width="1.4" stroke-dasharray="4 3" fill="none"/>
+  <path class="flow" d="M303,438 L303,458" stroke-width="1.4" stroke-dasharray="4 3" fill="none"/>
+  <path class="flow" d="M479,438 L479,458" stroke-width="1.4" stroke-dasharray="4 3" fill="none"/>
+
+  <!-- manager -> kitchen -->
+  <path class="flow" d="M706,300 C706,316 470,312 430,326" stroke-width="1.8" marker-end="url(#ar)" fill="none"/>
+  <text class="sub flowtx" x="512" y="316" font-size="10.5">deploys / self-heals</text>
+
+  <!-- kitchen -> inspector -->
+  <path class="flow" d="M830,420 C880,420 900,340 940,300" stroke-width="1.8" marker-end="url(#ar)" fill="none"/>
+  <text class="sub flowtx" x="822" y="352" font-size="10.5" text-anchor="end">metrics ↗</text>
+
+  <!-- ===================== ZONE 6: THE BUILDING ===================== -->
+  <rect class="zbox" x="858" y="326" width="292" height="248" rx="14"/>
+  <text class="zone ztext" x="874" y="350" font-size="10.5">🏗️ THE BUILDING · INFRA</text>
+
+  <g transform="translate(880,366)">
+    <rect width="248" height="80" rx="10" fill="#fce4ec" stroke="#880e4f" stroke-width="1.5"/>
+    <text class="lbl" x="14" y="26" font-size="13.5" fill="#880e4f">🏗️ Contractor</text>
+    <text class="mono" x="14" y="44" font-size="10.5" fill="#ad1457">Terraform</text>
+    <text class="mono" x="14" y="62" font-size="9.5" fill="#ad1457">builds servers, network, disks</text>
+  </g>
+  <g transform="translate(880,468)">
+    <rect width="248" height="80" rx="10" fill="#fce4ec" stroke="#880e4f" stroke-width="1.5"/>
+    <text class="lbl" x="14" y="26" font-size="13.5" fill="#880e4f">🔌 Electrician</text>
+    <text class="mono" x="14" y="44" font-size="10.5" fill="#ad1457">Ansible</text>
+    <text class="mono" x="14" y="62" font-size="9.5" fill="#ad1457">wires the inside of each node</text>
+  </g>
+  <path class="flow" d="M1004,446 L1004,466" stroke-width="1.6" marker-end="url(#ar)" fill="none"/>
+  <path class="flow" d="M876,506 C848,506 840,470 832,450" stroke-width="1.8" marker-end="url(#ar)" fill="none"/>
+  <text class="sub flowtx" x="1004" y="566" font-size="10.5" text-anchor="middle">↖ the kitchen stands on this</text>
+
+  <!-- ===================== CUSTOMER ===================== -->
+  <g transform="translate(30,600)">
+    <rect width="180" height="52" rx="26" fill="#e8eaf6" stroke="#3f51b5" stroke-width="1.5"/>
+    <text class="lbl" x="20" y="24" font-size="13.5" fill="#1a237e">🌐 Customer</text>
+    <text class="mono" x="20" y="41" font-size="10" fill="#3f51b5">your user</text>
+  </g>
+  <path class="flow" d="M127,598 L127,548" stroke-width="1.8" marker-end="url(#ar)" fill="none"/>
+  <text class="sub flowtx" x="140" y="578" font-size="10.5">walks in the front gate →</text>
+
+  <!-- one-line summary -->
+  <text class="sub cardsub" x="590" y="672" font-size="12" text-anchor="middle">
+    Chef writes the recipe → seals it in a box → test kitchen approves it → menu board updated → manager adjusts the kitchen → cooks serve the customer → inspector watches everything.
+  </text>
+</svg>

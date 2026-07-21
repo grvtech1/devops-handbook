@@ -10,6 +10,10 @@
 
 Ek hi analogy. Har cheez isi mein fit hoti hai. Ek baar yeh picture ban gayi — baaki sab apne aap jud jaata hai.
 
+![The restaurant mental model — every DevOps tool mapped to one place in a restaurant: recipe (code), sealed box (image), test kitchen (CI), menu board (Git), manager (ArgoCD), kitchen (Kubernetes), building (Terraform/Ansible), health inspector (Prometheus/Grafana)](assets/restaurant-mental-model.svg)
+
+*☝️ **Ye ek tasveer pin kar lo.** Poore handbook ka har tool isi mein kahin na kahin baitha hai — jab bhi koi nayi cheez mile, poocho: **"ye restaurant mein kaun hai?"***
+
 ```mermaid
 flowchart TD
   subgraph CHEF["👨‍🍳 You (Developer / DevOps Engineer)"]

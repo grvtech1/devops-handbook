@@ -100,6 +100,40 @@ Read (linearizable): always goes to leader
 
 > **Single control-plane = SPOF.** The capstone runs one control-plane node. Production clusters run 3 or 5. etcd backup: `etcdctl snapshot save /backup/snap.db` — treat it like Terraform state (lose it = cluster amnesia).
 
+#### The restore drill — an untested backup is not a backup
+
+Taking the snapshot is the easy half. The half that actually saves you is the one nobody rehearses:
+
+```bash
+export ETCDCTL_API=3
+CERTS="--cacert=/etc/kubernetes/pki/etcd/ca.crt \
+       --cert=/etc/kubernetes/pki/etcd/peer.crt \
+       --key=/etc/kubernetes/pki/etcd/peer.key"
+
+# 1. BACKUP (cron this — and ship it OFF the node)
+etcdctl snapshot save /backup/etcd-$(date +%F).db --endpoints=https://127.0.0.1:2379 $CERTS
+etcdctl snapshot status /backup/etcd-$(date +%F).db --write-out=table   # verify it is readable
+
+# 2. RESTORE (disaster) — restores into a NEW data dir, it does not overwrite in place
+sudo mv /etc/kubernetes/manifests /etc/kubernetes/manifests.bak   # stop static pods (apiserver+etcd)
+sudo etcdctl snapshot restore /backup/etcd-2026-07-17.db \
+  --data-dir=/var/lib/etcd-restored
+
+# 3. point etcd at the restored dir, then bring the control plane back
+sudo sed -i 's#/var/lib/etcd#/var/lib/etcd-restored#' /etc/kubernetes/manifests.bak/etcd.yaml
+sudo mv /etc/kubernetes/manifests.bak /etc/kubernetes/manifests   # kubelet restarts the static pods
+
+# 4. VERIFY (this is the step that proves the backup was real)
+kubectl get nodes && kubectl get pods -A
+```
+
+!!! danger "The three things that make backups fail when you need them"
+    1. **Never restored it.** A snapshot you have never replayed is a hypothesis, not a backup. Rehearse quarterly on a throwaway cluster.
+    2. **Stored on the same disk/node.** If the node dies (or the disk fills — see [ch30's disk-full incident](30-k8s-complete-reference.md)), the backup dies with it. Ship snapshots to S3.
+    3. **Snapshot ≠ whole cluster.** etcd holds K8s *objects*. It does **not** hold your **PersistentVolume data** — that needs its own backup (Velero / volume snapshots). Restoring etcd gives you back the PVC *object* pointing at a volume whose contents you never backed up.
+
+> 🇮🇳 **Ek line:** `snapshot save` aasaan hissa hai. Asli sawaal — *"kya tumne kabhi restore karke dekha?"* Aur yaad rakho: **etcd = objects, PV data alag** (Velero chahiye). Untested backup = backup nahi.
+
 **Debug commands — control plane:**
 ```bash
 # Are control-plane components alive? (static pods in /etc/kubernetes/manifests)

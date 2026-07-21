@@ -260,6 +260,33 @@
   padding: .12em .38em;
 }
 
+/* ---------- 9b. Diagrams / images ---------- */
+.md-typeset img:not([src*="shields.io"]):not(.twemoji):not(.emojione) {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 1.5rem auto .6rem;
+  border: 1px solid var(--dhb-border);
+  border-radius: var(--dhb-radius);
+  padding: .9rem;
+  background: var(--md-default-bg-color);
+  box-shadow: 0 4px 18px -12px rgba(0,0,0,.4);
+}
+/* caption = the italic line right after an image */
+.md-typeset p > img:not([src*="shields.io"]) + em,
+.md-typeset p > em:only-child {
+  display: block;
+  text-align: center;
+  font-size: .74rem;
+  color: var(--md-default-fg-color--light);
+  line-height: 1.55;
+}
+/* badge rows stay inline and unframed */
+.md-typeset img[src*="shields.io"] {
+  display: inline-block;
+  border: none; padding: 0; margin: 0 .15rem; box-shadow: none; background: none;
+}
+
 /* ---------- 10. Mermaid ---------- */
 .md-typeset .mermaid {
   display: flex;
