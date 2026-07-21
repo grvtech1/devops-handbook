@@ -2961,6 +2961,8 @@ Jo command Lab A mein chala chuke ho (<code>kubectl get/describe/logs</code>, <c
 </span><span id="__span-4-11"><a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">  </span>kubectl<span class="w"> </span>kustomize<span class="w"> </span>kustomize/overlays/<span class="nv">$env</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A1<span class="w"> </span><span class="s2">&quot;replicas:&quot;</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>head<span class="w"> </span>-4
 </span><span id="__span-4-12"><a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="k">done</span>
 </span></code></pre></div>
+<p><img alt="Real terminal output: kubectl kustomize rendering the VANTA dev overlay into 38 objects, the prod kustomization.yaml adding hpa.yaml and replicas 3, and a comparison showing dev 38, staging 38, prod 39 objects" src="../assets/shot-kustomize-overlays.png" /></p>
+<p><em>☝️ </em><em>Asli output, VANTA repo se.</em><em> Dhyan do: </em><em>same base</em><em>, par prod overlay <code>hpa.yaml</code> + <code>replicas: 3</code> add karta hai → 39 objects. Yehi overlay ka poora idea hai — koi templating nahi, sirf patch.</em></p>
 <h3 id="kustomize-vs-helm-interview-favourite">Kustomize vs Helm (interview favourite)<a class="headerlink" href="#kustomize-vs-helm-interview-favourite" title="Permanent link">&para;</a></h3>
 <table>
 <thead>

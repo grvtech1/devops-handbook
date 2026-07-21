@@ -3439,6 +3439,8 @@
 </span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">80</span><span class="w">           </span><span class="c1"># ← .Values.service.port bhar gaya</span>
 </span></code></pre></div></p>
 <p><strong>Bas yehi templating hai.</strong> <code>{{ ... }}</code> = "yahan value bharo". Baaki sab isi ka detail hai.</p>
+<p><img alt="Real terminal output: the same Service manifest before templating (with {{ }} placeholders in yellow) and after helm template rendered it (with real values filled in, in green)" src="../assets/shot-helm-before-after.png" /></p>
+<p><em>☝️ </em><em>Ye asli output hai</em><em> — tumhare <code>deploy/charts/microservice</code> chart pe chalaya gaya. Upar template (peela <code>{{ }}</code>), neeche Helm ka banaya hua asli YAML (hara). Yehi ek tasveer poora Helm samjha deti hai.</em></p>
 <p>Khud chalao:
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-12-1"><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>helm<span class="w"> </span>template<span class="w"> </span>auth-service<span class="w"> </span>deploy/charts/microservice<span class="w"> </span><span class="se">\</span>
 </span><span id="__span-12-2"><a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">  </span>-f<span class="w"> </span>deploy/apps/auth-service/values.yaml<span class="w"> </span>--show-only<span class="w"> </span>templates/service.yaml
