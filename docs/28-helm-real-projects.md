@@ -379,6 +379,10 @@ spec:
 
 **Bas yehi templating hai.** `{{ ... }}` = "yahan value bharo". Baaki sab isi ka detail hai.
 
+![Real terminal output: the same Service manifest before templating (with {{ }} placeholders in yellow) and after helm template rendered it (with real values filled in, in green)](assets/shot-helm-before-after.png)
+
+*☝️ **Ye asli output hai** — tumhare `deploy/charts/microservice` chart pe chalaya gaya. Upar template (peela `{{ }}`), neeche Helm ka banaya hua asli YAML (hara). Yehi ek tasveer poora Helm samjha deti hai.*
+
 Khud chalao:
 ```bash
 helm template auth-service deploy/charts/microservice \

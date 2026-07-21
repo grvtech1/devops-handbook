@@ -145,6 +145,10 @@ for env in dev staging prod; do
 done
 ```
 
+![Real terminal output: kubectl kustomize rendering the VANTA dev overlay into 38 objects, the prod kustomization.yaml adding hpa.yaml and replicas 3, and a comparison showing dev 38, staging 38, prod 39 objects](assets/shot-kustomize-overlays.png)
+
+*☝️ **Asli output, VANTA repo se.** Dhyan do: **same base**, par prod overlay `hpa.yaml` + `replicas: 3` add karta hai → 39 objects. Yehi overlay ka poora idea hai — koi templating nahi, sirf patch.*
+
 ### Kustomize vs Helm (interview favourite)
 
 | | **Kustomize** (VANTA) | **Helm** (BillFree) |

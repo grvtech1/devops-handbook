@@ -284,6 +284,10 @@ helm template auth-service deploy/charts/microservice \
 # → Deployment · Service · HPA · PDB · ServiceMonitor · PrometheusRule
 ```
 
+![Real terminal output of helm template and helm lint run on the billfree microservice chart, showing six Kubernetes objects rendered and a clean lint result](assets/shot-helm-template.png)
+
+*☝️ **Tumhara output aisa dikhna chahiye.** Ek chart → **6 objects**. Aur `helm lint` clean — deploy se pehle yahi do commands hamesha.*
+
 ### 4.1 — Ek chart, N services dekho
 
 ```bash
