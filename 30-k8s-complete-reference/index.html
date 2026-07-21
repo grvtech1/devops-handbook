@@ -2889,6 +2889,327 @@
 </span></code></pre></div>
 <p>CI mein daalo (fail on CRITICAL) — <a href="../07-M6-cicd/">ch7 CI/CD</a> ka part.</p>
 <hr />
+<hr />
+<h1 id="part-e-modern-k8s-jo-daily-chahiye-par-kahin-nahi-milta">Part E — Modern K8s: jo daily chahiye par kahin nahi milta<a class="headerlink" href="#part-e-modern-k8s-jo-daily-chahiye-par-kahin-nahi-milta" title="Permanent link">&para;</a></h1>
+<p>Ye Part woh 5 cheezein hai jo <strong>roz kaam aati hain</strong>, interview mein aati hain, par zyadatar courses mein hoti hi nahi. Har ek ka apna real trigger hai.</p>
+<hr />
+<h2 id="e1-kubectl-debug-jab-container-mein-shell-hi-nahi-hai">E1 · <code>kubectl debug</code> — jab container mein shell hi nahi hai<a class="headerlink" href="#e1-kubectl-debug-jab-container-mein-shell-hi-nahi-hai" title="Permanent link">&para;</a></h2>
+<p><strong>Trigger:</strong> Tumne security best-practice follow ki — <strong>distroless/slim image</strong> (<a href="../04-M3-docker/">ch04 Docker</a> mein yahi recommend hai). Ab production mein debug karna hai:</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>$<span class="w"> </span>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>auth-service-7d4b-xk2p<span class="w"> </span>--<span class="w"> </span>sh
+</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>error:<span class="w"> </span>exec:<span class="w"> </span><span class="s2">&quot;sh&quot;</span>:<span class="w"> </span>executable<span class="w"> </span>file<span class="w"> </span>not<span class="w"> </span>found<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nv">$PATH</span>
+</span></code></pre></div>
+<p><strong>Shell hai hi nahi.</strong> Distroless image mein sirf tumhari app binary hoti — koi <code>sh</code>, <code>bash</code>, <code>ls</code>, <code>curl</code>, kuch nahi. Yehi to point tha (attack surface kam). Par ab debug kaise?</p>
+<div class="admonition danger">
+<p class="admonition-title">Ye loop bahut logo ka band nahi hota</p>
+<p>Distroless use karo (sahi) → shell gayab → <code>kubectl exec</code> fail → log frustrate hoke <strong>shell wapas image mein daal dete hain</strong> (galat, security wapas kamzor). Sahi jawab: <strong>image mat badlo — debugging tools alag se attach karo.</strong></p>
+</div>
+<p><strong>Solution — ephemeral containers.</strong> Ek temporary container <strong>usi pod ke andar</strong> attach karo, jo tumhare tools laata hai — bina pod restart kiye, bina image badle.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-24-1"><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1"># ek debug container attach karo (busybox = tools)</span>
+</span><span id="__span-24-2"><a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a>kubectl<span class="w"> </span>debug<span class="w"> </span>-it<span class="w"> </span>auth-service-7d4b-xk2p<span class="w"> </span>--image<span class="o">=</span>busybox<span class="w"> </span>--target<span class="o">=</span>auth-service
+</span><span id="__span-24-3"><a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a>
+</span><span id="__span-24-4"><a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="c1"># ab tum usi pod ke andar ho, tumhare tools ke saath:</span>
+</span><span id="__span-24-5"><a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">  </span>ps<span class="w"> </span>aux<span class="w">              </span><span class="c1"># target ke processes dikhte (--target se process namespace share)</span>
+</span><span id="__span-24-6"><a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="w">  </span>wget<span class="w"> </span>-qO-<span class="w"> </span>localhost:8080/healthz
+</span><span id="__span-24-7"><a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="w">  </span>cat<span class="w"> </span>/proc/1/environ
+</span></code></pre></div>
+<p><strong>Restaurant analogy:</strong> Cook ke paas apne auzaar nahi hain (distroless). Tum use naye auzaar nahi de sakte (image immutable). Toh tum <strong>apna toolbox lekar usi kitchen mein ghus jaate ho</strong> — cook wahi rehta, kaam chalta rehta, aur tum jaanch kar lete ho.</p>
+<p><strong>Teen modes (yaad rakho):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Kya karna hai</th>
+<th>Command</th>
+<th>Kab</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Chalte pod mein</strong> tools attach</td>
+<td><code>kubectl debug -it POD --image=busybox --target=CONTAINER</code></td>
+<td>distroless debug, live pod</td>
+</tr>
+<tr>
+<td><strong>Pod ki copy</strong> banao (badalke)</td>
+<td><code>kubectl debug POD --copy-to=debug-pod --image=busybox</code></td>
+<td>crashing pod — original chhedna nahi</td>
+</tr>
+<tr>
+<td><strong>Node</strong> pe debug (host access)</td>
+<td><code>kubectl debug node/NODE-1 -it --image=busybox</code></td>
+<td>node-level issue (disk, network)</td>
+</tr>
+</tbody>
+</table>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># CrashLoopBackOff pod — copy banao command badalke (original chalta rahe)</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>kubectl<span class="w"> </span>debug<span class="w"> </span>auth-service-7d4b-xk2p<span class="w"> </span>--copy-to<span class="o">=</span>auth-debug<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">  </span>--set-image<span class="o">=</span><span class="s1">&#39;*=busybox&#39;</span><span class="w"> </span>--<span class="w"> </span>sleep<span class="w"> </span>1d
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>kubectl<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>auth-debug<span class="w"> </span>--<span class="w"> </span>sh<span class="w">     </span><span class="c1"># ab aaram se dekho</span>
+</span></code></pre></div>
+<blockquote>
+<p>⚠️ <strong><code>--target</code> bhoolna</strong> = sabse common galti. Uske bina debug container <strong>apne</strong> namespace mein chalta — target ke processes nahi dikhenge. <code>--target=&lt;container-name&gt;</code> se process namespace share hota.</p>
+<p>🇮🇳 <strong>Ek line:</strong> <code>kubectl exec</code> tab kaam karta jab image mein shell ho. <strong>Distroless mein <code>kubectl debug</code> hi ekmatra rasta hai</strong> — tools alag container se aate, image chhedni nahi padti.</p>
+</blockquote>
+<hr />
+<h2 id="e2-native-sidecars-k8s-129-purana-hack-ab-theek-ho-gaya">E2 · Native sidecars (K8s 1.29+) — purana hack ab theek ho gaya<a class="headerlink" href="#e2-native-sidecars-k8s-129-purana-hack-ab-theek-ho-gaya" title="Permanent link">&para;</a></h2>
+<p><strong>Sidecar kya:</strong> ek helper container jo main app ke <strong>saath</strong> chalta — log shipper, proxy, metrics agent.</p>
+<p><strong>Purana tareeka (aur uski do bimariyan):</strong> sidecar ko normal container ki tarah <code>containers:</code> mein daalte the. Do problems:</p>
+<pre class="mermaid"><code>flowchart TB
+  subgraph OLD["❌ Purana hack — sidecar as normal container"]
+    O1["Startup race:&lt;br/&gt;app shuru, sidecar abhi ready nahi&lt;br/&gt;→ pehle requests fail"]:::bad
+    O2["Job kabhi complete NAHI hoti:&lt;br/&gt;main container khatam&lt;br/&gt;sidecar chalta rehta → Job hang"]:::bad
+  end
+  subgraph NEW["✅ 1.29+ native sidecar"]
+    N1["initContainers me daalo&lt;br/&gt;+ restartPolicy: Always"]:::good
+    N2["app se PEHLE ready&lt;br/&gt;+ Job complete hone deta"]:::good
+  end
+  OLD --&gt; NEW
+  classDef bad fill:#ffebee,stroke:#c62828,color:#b71c1c
+  classDef good fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20</code></pre>
+<p><strong>Naya (native) sidecar</strong> — <code>initContainers</code> mein, par <code>restartPolicy: Always</code> ke saath:</p>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">  </span><span class="nt">initContainers</span><span class="p">:</span>
+</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">log-shipper</span>
+</span><span id="__span-26-4"><a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">fluent-bit:latest</span>
+</span><span id="__span-26-5"><a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="w">      </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Always</span><span class="w">      </span><span class="c1"># 👈 YEHI ise sidecar banata (init nahi)</span>
+</span><span id="__span-26-6"><a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="w">      </span><span class="c1"># ye app se PEHLE start hoga, ready hoga, aur SAATH chalta rahega</span>
+</span><span id="__span-26-7"><a id="__codelineno-26-7" name="__codelineno-26-7" href="#__codelineno-26-7"></a><span class="w">  </span><span class="nt">containers</span><span class="p">:</span>
+</span><span id="__span-26-8"><a id="__codelineno-26-8" name="__codelineno-26-8" href="#__codelineno-26-8"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app</span>
+</span><span id="__span-26-9"><a id="__codelineno-26-9" name="__codelineno-26-9" href="#__codelineno-26-9"></a><span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-app:v1</span>
+</span></code></pre></div>
+<p><strong>Woh ek line kya karti hai:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Bina <code>restartPolicy: Always</code></th>
+<th>Ke saath</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>normal <strong>init container</strong> — chalta, khatam, phir app</td>
+<td><strong>sidecar</strong> — chalta, ready hota, <strong>saath chalta rehta</strong></td>
+</tr>
+<tr>
+<td>app ke baad khatam</td>
+<td>app ke baad <strong>band ho jaata</strong> (Job complete ho sakti)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Do problems jo ye solve karta:</strong>
+1. <strong>Startup order</strong> — sidecar (proxy/log-shipper) <strong>app se pehle</strong> ready. Pehle requests ab fail nahi hoti.
+2. <strong>Job completion</strong> — pehle: main container khatam, sidecar chalta raha → <strong>Job kabhi Complete nahi hoti</strong> (classic bug). Ab: main khatam → sidecar apne aap band → Job Complete ✅</p>
+<blockquote>
+<p>💡 <strong>billfree connection:</strong> Tumhara <code>migrate</code> Job (<a href="#a5-job-ek-baar-ka-kaam">ch30 A5</a>) — agar usme koi sidecar (metrics/log agent) hota purane tareeke se, to woh Job <strong>kabhi complete nahi hoti</strong>. Native sidecar isi ko fix karta hai.</p>
+<p>🇮🇳 <strong>Ek line:</strong> Sidecar ab <code>initContainers</code> mein <code>restartPolicy: Always</code> ke saath likhte hain — isse woh <strong>app se pehle ready</strong> hota aur <strong>Job ko complete hone deta</strong> hai. Purana tareeka (normal container) dono cheezein tod deta tha.</p>
+</blockquote>
+<hr />
+<h2 id="e3-requestslimits-ke-numbers-kaise-chunte-hain">E3 · Requests/limits ke numbers <em>kaise chunte hain</em><a class="headerlink" href="#e3-requestslimits-ke-numbers-kaise-chunte-hain" title="Permanent link">&para;</a></h2>
+<p>QoS, OOMKill, throttling — sab <a href="../05-M4-kubernetes-core/">ch30 se pehle</a> cover hai. Par asli sawaal: <strong>"256Mi hi kyun likha? 512 kyun nahi?"</strong> Ye methodology kahin nahi milti.</p>
+<div class="admonition danger">
+<p class="admonition-title">Galat tareeke (jo sab karte hain)</p>
+<ul>
+<li><strong>Guess</strong> — "512Mi theek lagta hai" 🎲</li>
+<li><strong>Copy-paste</strong> — doosri service se utha liya</li>
+<li><strong>Bahut bada</strong> — "safe rahenge" → <strong>cluster ka paisa barbaad</strong>, kam pods fit hote</li>
+<li><strong>Requests = Limits hamesha</strong> — Guaranteed QoS milta, par utilization gir jaata</li>
+</ul>
+</div>
+<h3 id="sahi-procedure-4-steps">Sahi procedure — 4 steps<a class="headerlink" href="#sahi-procedure-4-steps" title="Permanent link">&para;</a></h3>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>1. OBSERVE   → real usage measure karo (guess mat karo)
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>2. REQUESTS  → typical usage (p50–p95) + thoda headroom
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>3. LIMITS    → peak usage × safety factor
+</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a>4. ITERATE   → production data se adjust karo
+</span></code></pre></div>
+<p><strong>Step 1 — Measure (deploy karke dekho):</strong>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="c1"># live usage</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a>kubectl<span class="w"> </span>top<span class="w"> </span>pod<span class="w"> </span>-l<span class="w"> </span><span class="nv">app</span><span class="o">=</span>auth-service<span class="w"> </span>--containers
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="c1"># Prometheus se sach (p95 over 7 days) — ye asli data hai</span>
+</span><span id="__span-28-5"><a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="c1"># memory: quantile_over_time(0.95, container_memory_working_set_bytes[7d])</span>
+</span><span id="__span-28-6"><a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="c1"># cpu:    quantile_over_time(0.95, rate(container_cpu_usage_seconds_total[5m])[7d:])</span>
+</span></code></pre></div></p>
+<p><strong>Step 2/3 — Numbers nikalo:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Resource</th>
+<th>Requests</th>
+<th>Limits</th>
+<th>Kyun</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Memory</strong></td>
+<td>p95 usage × <strong>1.2</strong></td>
+<td>requests × <strong>2</strong></td>
+<td>memory <strong>compressible nahi</strong> — limit paar = instant OOMKill. Headroom chahiye</td>
+</tr>
+<tr>
+<td><strong>CPU</strong></td>
+<td>p50–p95 usage</td>
+<td>requests × <strong>2–4</strong> <em>(ya set hi mat karo)</em></td>
+<td>CPU <strong>compressible</strong> hai — limit paar = sirf throttle (kill nahi)</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>⭐ <strong>Senior nuance (interview gold):</strong> Bahut senior log <strong>CPU limit set hi nahi karte</strong> — sirf requests. Kyun? CPU throttling latency ko chupke se maar deti hai, jabki spare CPU waise bhi bekaar padi hoti. <strong>Memory limit hamesha set karo</strong> (warna ek leaky pod poore node ko le doobega). <em>"Requests for scheduling, memory-limits for safety, CPU-limits usually not."</em></p>
+</blockquote>
+<p><strong>Step 4 — Tumhare billfree ka real case:</strong></p>
+<p><div class="language-yaml highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1"># deploy/apps/auth-service/values.yaml — jo abhi hai</span>
+</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="nt">resources</span><span class="p">:</span>
+</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="w">  </span><span class="nt">requests</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> cpu</span><span class="p">:</span><span class="w"> </span><span class="nv">50m</span><span class="p p-Indicator">,</span><span class="nt">  memory</span><span class="p">:</span><span class="w"> </span><span class="nv">96Mi</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="w">  </span><span class="nt">limits</span><span class="p">:</span><span class="w">   </span><span class="p p-Indicator">{</span><span class="nt"> cpu</span><span class="p">:</span><span class="w"> </span><span class="nv">500m</span><span class="p p-Indicator">,</span><span class="nt"> memory</span><span class="p">:</span><span class="w"> </span><span class="nv">256Mi</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span></code></pre></div>
+Aur observed usage tha <strong>254Mi</strong> — yaani limit ka <strong>99%</strong>. Formula lagao: p95 (254Mi) × 1.2 ≈ <strong>300Mi requests</strong>, limits ≈ <strong>600Mi</strong>. Jo 256Mi tha wo <strong>p95 se bhi kam</strong> tha — isiliye OOMKill hua (<a href="../platform/">platform simulator INC-2891</a> ka pura incident yahi tha).</p>
+<blockquote>
+<p>🇮🇳 <strong>Ek line:</strong> Numbers <strong>maapo, guess mat karo</strong>. Memory: p95 × 1.2 (requests), × 2 (limits). CPU: p50–p95 requests, limit aksar chhodo hi. Aur <strong>deploy karke dobara dekho</strong> — pehla number hamesha andaza hota hai.</p>
+</blockquote>
+<hr />
+<h2 id="e4-imagepullsecrets-private-registry">E4 · <code>imagePullSecrets</code> — private registry<a class="headerlink" href="#e4-imagepullsecrets-private-registry" title="Permanent link">&para;</a></h2>
+<p><strong>Trigger:</strong> <code>ImagePullBackOff</code>, par error <code>manifest unknown</code> nahi — <code>unauthorized</code> hai. Matlab image hai, par cluster ko <strong>dekhne ki ijazat nahi</strong>.</p>
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a>kubectl<span class="w"> </span>describe<span class="w"> </span>pod<span class="w"> </span>my-app-xyz<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-A3<span class="w"> </span>Events
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="c1">#   Failed to pull image &quot;ghcr.io/myorg/app:v1&quot;: unauthorized</span>
+</span></code></pre></div>
+<p><strong>Fix — registry credential ek Secret ki tarah:</strong></p>
+<p><div class="language-bash highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="c1"># 1. docker-registry type ka secret banao</span>
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>kubectl<span class="w"> </span>create<span class="w"> </span>secret<span class="w"> </span>docker-registry<span class="w"> </span>ghcr-creds<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="w">  </span>--docker-server<span class="o">=</span>ghcr.io<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="w">  </span>--docker-username<span class="o">=</span>grvtech1<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a><span class="w">  </span>--docker-password<span class="o">=</span><span class="nv">$GITHUB_TOKEN</span><span class="w"> </span><span class="se">\</span>
+</span><span id="__span-31-6"><a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a><span class="w">  </span>-n<span class="w"> </span>billfree
+</span><span id="__span-31-7"><a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>
+</span><span id="__span-31-8"><a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a><span class="c1"># 2. pod ko batao ise use karna hai</span>
+</span></code></pre></div>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="w">  </span><span class="nt">imagePullSecrets</span><span class="p">:</span>
+</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr-creds</span><span class="w">        </span><span class="c1"># 👈 yehi line</span>
+</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="w">  </span><span class="nt">containers</span><span class="p">:</span>
+</span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">app</span>
+</span><span id="__span-32-6"><a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a><span class="w">      </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ghcr.io/myorg/app:v1</span>
+</span></code></pre></div></p>
+<p><strong>Ya har pod mein likhne ke bajaye — ServiceAccount pe ek baar</strong> (behtar):
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a>kubectl<span class="w"> </span>patch<span class="w"> </span>serviceaccount<span class="w"> </span>default<span class="w"> </span>-n<span class="w"> </span>billfree<span class="w"> </span><span class="se">\</span>
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="w">  </span>-p<span class="w"> </span><span class="s1">&#39;{&quot;imagePullSecrets&quot;:[{&quot;name&quot;:&quot;ghcr-creds&quot;}]}&#39;</span>
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="c1"># ab us namespace ke saare pods ko automatically mil jaayega</span>
+</span></code></pre></div></p>
+<blockquote>
+<p><strong>billfree connection:</strong> Chart mein <code>imagePullSecrets: []</code> field already hai (<a href="../28-helm-real-projects/">values.yaml</a>) — private registry pe jaate hi bas usme naam daalna hota hai.</p>
+</blockquote>
+<p><strong>ImagePullBackOff ka decoder (ye yaad rakho):</strong></p>
+<table>
+<thead>
+<tr>
+<th>Error</th>
+<th>Matlab</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>manifest unknown</code></td>
+<td>tag <strong>exist hi nahi</strong> karta</td>
+<td>CI check karo (image push hui?) — <a href="../platform/">INC-2904</a></td>
+</tr>
+<tr>
+<td><code>unauthorized</code> / <code>denied</code></td>
+<td><strong>credentials</strong> problem</td>
+<td><code>imagePullSecrets</code></td>
+</tr>
+<tr>
+<td><code>i/o timeout</code></td>
+<td><strong>network/egress</strong> blocked</td>
+<td>NetworkPolicy / firewall</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="e5-gateway-api-ingress-ka-successor">E5 · Gateway API — Ingress ka successor<a class="headerlink" href="#e5-gateway-api-ingress-ka-successor" title="Permanent link">&para;</a></h2>
+<p><strong>Kya:</strong> Kubernetes ka <strong>naya official</strong> traffic-routing standard. Ingress ab feature-frozen hai — naye features Gateway API mein aa rahe.</p>
+<p><strong>Ingress ki problem:</strong> sab kuch <strong>annotations</strong> mein thunsa hota tha:
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="nt">annotations</span><span class="p">:</span>
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="w">  </span><span class="nt">nginx.ingress.kubernetes.io/rewrite-target</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/</span>
+</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="w">  </span><span class="nt">nginx.ingress.kubernetes.io/canary</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w">       </span><span class="c1"># non-standard!</span>
+</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="w">  </span><span class="nt">nginx.ingress.kubernetes.io/canary-weight</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;10&quot;</span><span class="w">  </span><span class="c1"># har controller ka apna</span>
+</span></code></pre></div>
+Har ingress-controller ke apne annotations → <strong>portable nahi</strong>, type-safe nahi.</p>
+<p><strong>Gateway API</strong> in cheezon ko <strong>proper API fields</strong> banata, aur role split karta:</p>
+<pre class="mermaid"><code>flowchart LR
+  GC["GatewayClass&lt;br/&gt;(infra provider)"]:::a --&gt; GW["Gateway&lt;br/&gt;(platform team)&lt;br/&gt;listeners · TLS · ports"]:::b
+  GW --&gt; HR["HTTPRoute&lt;br/&gt;(app team)&lt;br/&gt;paths · weights · headers"]:::c
+  HR --&gt; SVC["Service"]:::d
+  classDef a fill:#fce4ec,stroke:#880e4f,color:#880e4f
+  classDef b fill:#e3f2fd,stroke:#1565c0,color:#0d47a1
+  classDef c fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+  classDef d fill:#e8eaf6,stroke:#283593,color:#1a237e</code></pre>
+<div class="language-yaml highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="c1"># canary — ab annotation nahi, asli API field</span>
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gateway.networking.k8s.io/v1</span>
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HTTPRoute</span>
+</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="nt">metadata</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">auth-route</span><span class="w"> </span><span class="p p-Indicator">}</span>
+</span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="nt">spec</span><span class="p">:</span>
+</span><span id="__span-35-6"><a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="w">  </span><span class="nt">parentRefs</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[{</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">prod-gateway</span><span class="w"> </span><span class="p p-Indicator">}]</span>
+</span><span id="__span-35-7"><a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="w">  </span><span class="nt">rules</span><span class="p">:</span>
+</span><span id="__span-35-8"><a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a><span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">matches</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[{</span><span class="nt"> path</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> type</span><span class="p">:</span><span class="w"> </span><span class="nv">PathPrefix</span><span class="p p-Indicator">,</span><span class="nt"> value</span><span class="p">:</span><span class="w"> </span><span class="nv">/auth</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w"> </span><span class="p p-Indicator">}]</span>
+</span><span id="__span-35-9"><a id="__codelineno-35-9" name="__codelineno-35-9" href="#__codelineno-35-9"></a><span class="w">      </span><span class="nt">backendRefs</span><span class="p">:</span>
+</span><span id="__span-35-10"><a id="__codelineno-35-10" name="__codelineno-35-10" href="#__codelineno-35-10"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">auth-service</span><span class="p p-Indicator">,</span><span class="nt"> port</span><span class="p">:</span><span class="w"> </span><span class="nv">80</span><span class="p p-Indicator">,</span><span class="nt"> weight</span><span class="p">:</span><span class="w"> </span><span class="nv">90</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">   </span><span class="c1"># 90% purana</span>
+</span><span id="__span-35-11"><a id="__codelineno-35-11" name="__codelineno-35-11" href="#__codelineno-35-11"></a><span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="p p-Indicator">{</span><span class="nt"> name</span><span class="p">:</span><span class="w"> </span><span class="nv">auth-canary</span><span class="p p-Indicator">,</span><span class="nt">  port</span><span class="p">:</span><span class="w"> </span><span class="nv">80</span><span class="p p-Indicator">,</span><span class="nt"> weight</span><span class="p">:</span><span class="w"> </span><span class="nv">10</span><span class="w"> </span><span class="p p-Indicator">}</span><span class="w">   </span><span class="c1"># 10% naya</span>
+</span></code></pre></div>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><strong>Ingress</strong></th>
+<th><strong>Gateway API</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Status</td>
+<td>feature-frozen</td>
+<td>active development</td>
+</tr>
+<tr>
+<td>Traffic splitting</td>
+<td>controller annotations</td>
+<td><strong>built-in <code>weight</code></strong></td>
+</tr>
+<tr>
+<td>Roles</td>
+<td>sab ek object mein</td>
+<td><strong>split</strong> (infra / platform / app team)</td>
+</tr>
+<tr>
+<td>Protocols</td>
+<td>HTTP(S) mostly</td>
+<td>HTTP · gRPC · TCP · UDP</td>
+</tr>
+<tr>
+<td>Kab use karo</td>
+<td>aaj kaam kar raha hai to rehne do</td>
+<td><strong>naya setup</strong>, ya canary/multi-team chahiye</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>🇮🇳 <strong>Interview answer:</strong> <em>"Ingress feature-frozen hai; Gateway API successor hai. Do bade fayde — traffic splitting annotation ke bajaye </em><em>asli API field</em><em> hai (canary asaan), aur </em><em>role separation</em><em> hai: platform team Gateway banati (TLS/listeners), app team HTTPRoute (paths/weights). Purana Ingress chal raha ho to migrate ki jaldi nahi — par naya banate waqt Gateway API dekho."</em></p>
+</blockquote>
+<hr />
+<h2 id="part-e-recall-drill">🎯 Part E recall drill<a class="headerlink" href="#part-e-recall-drill" title="Permanent link">&para;</a></h2>
+<ol>
+<li>Distroless image, <code>kubectl exec -- sh</code> fail — ab kya? <em>(kubectl debug + ephemeral container)</em></li>
+<li><code>kubectl debug</code> mein <code>--target</code> kyun zaroori? <em>(process namespace share — warna target dikhta hi nahi)</em></li>
+<li>Native sidecar kaise likhte? <em>(initContainers + <code>restartPolicy: Always</code>)</em></li>
+<li>Purana sidecar Job ke saath kya todta tha? <em>(Job kabhi Complete nahi hoti thi)</em></li>
+<li>Memory requests ka formula? <em>(p95 × 1.2; limits ≈ requests × 2)</em></li>
+<li>CPU limit aksar set kyun nahi karte? <em>(throttling latency maarti; CPU compressible hai)</em></li>
+<li><code>unauthorized</code> vs <code>manifest unknown</code> — farak? <em>(creds vs tag exist nahi)</em></li>
+<li>Gateway API ke 2 bade fayde? <em>(built-in traffic weight; role separation)</em></li>
+</ol>
+<blockquote>
+<p><strong>Pass = 6/8.</strong></p>
+</blockquote>
+<hr />
 <h2 id="complete-recall-drill-bina-dekhe-bolo">🎯 Complete recall drill (bina dekhe bolo)<a class="headerlink" href="#complete-recall-drill-bina-dekhe-bolo" title="Permanent link">&para;</a></h2>
 <p><strong>Workloads:</strong>
 1. 6 workloads + har ek "kab"?
@@ -2912,13 +3233,15 @@
 </blockquote>
 <hr />
 <h2 id="20-second-recall">20-second recall<a class="headerlink" href="#20-second-recall" title="Permanent link">&para;</a></h2>
-<div class="language-text highlight"><pre><span></span><code><span id="__span-23-1"><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a>WORKLOADS: Deployment(stateless) · StatefulSet(stateful+PVC) · DaemonSet(per-node)
-</span><span id="__span-23-2"><a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a>           · ReplicaSet(count) · Job(once) · CronJob(scheduled)
-</span><span id="__span-23-3"><a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a>SCHEDULING: Affinity/nodeSelector = pod node ko KHEENCHTA
-</span><span id="__span-23-4"><a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a>            Taint/Toleration = node pod ko DHAKELTA (bouncer + VIP pass)
-</span><span id="__span-23-5"><a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a>            HPA = zyada pods (out) · VPA = bada pod (up)
-</span><span id="__span-23-6"><a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a>CLUSTER OPS: RBAC(kaun kya) · CRD(naya kind)+Operator(dimaag) · upgrade: CP→nodes
-</span><span id="__span-23-7"><a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a>SECURITY: PSS restricted · Secret = base64 (NOT encrypted) → RBAC+at-rest+external
+<div class="language-text highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>WORKLOADS: Deployment(stateless) · StatefulSet(stateful+PVC) · DaemonSet(per-node)
+</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>           · ReplicaSet(count) · Job(once) · CronJob(scheduled)
+</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>SCHEDULING: Affinity/nodeSelector = pod node ko KHEENCHTA
+</span><span id="__span-36-4"><a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a>            Taint/Toleration = node pod ko DHAKELTA (bouncer + VIP pass)
+</span><span id="__span-36-5"><a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a>            HPA = zyada pods (out) · VPA = bada pod (up)
+</span><span id="__span-36-6"><a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a>CLUSTER OPS: RBAC(kaun kya) · CRD(naya kind)+Operator(dimaag) · upgrade: CP→nodes
+</span><span id="__span-36-7"><a id="__codelineno-36-7" name="__codelineno-36-7" href="#__codelineno-36-7"></a>SECURITY: PSS restricted · Secret = base64 (NOT encrypted) → RBAC+at-rest+external
+</span><span id="__span-36-8"><a id="__codelineno-36-8" name="__codelineno-36-8" href="#__codelineno-36-8"></a>MODERN:   kubectl debug (distroless = no shell) · native sidecar (init + restartPolicy:Always)
+</span><span id="__span-36-9"><a id="__codelineno-36-9" name="__codelineno-36-9" href="#__codelineno-36-9"></a>          requests = p95x1.2 (measure!) · imagePullSecrets (unauthorized) · Gateway API &gt; Ingress
 </span></code></pre></div>
 <blockquote>
 <p>🇮🇳 <strong>Ek line:</strong> Ye chapter woh "baaki surface" hai jo ek video sirf naam-le ke chhod deta — yahan har ek ka <strong>why + real example + haath se</strong>. Ab tum sirf syllabus-complete nahi, <strong>samajh ke confident</strong> ho. 😊</p>
