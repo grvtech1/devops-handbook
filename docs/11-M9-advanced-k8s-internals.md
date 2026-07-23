@@ -429,6 +429,36 @@ With **BGP** there is no step ④/⑥ — the routes were shared ahead of time, 
 
 > ⚠️ **Your projects:** VANTA runs **Flannel (VXLAN overlay)** — portable, runs anywhere, but see the MTU and NetworkPolicy gotchas below (both bite Flannel specifically). Managed EKS often uses **VPC-native routing** — AWS's own network knows the pod IPs, so no wrapping is needed at all.
 
+#### Your two projects picked two different CNIs — and it was the right call each time
+
+This is the clearest possible illustration of *why CNI choice matters*, because your own repos made opposite choices for opposite reasons:
+
+| | 🅰️ **VANTA-Boutique** | 🅱️ **billfree-techops** |
+|---|---|---|
+| CNI | **Flannel** (VXLAN overlay) | **Calico v3.28.0** |
+| Installed by | Ansible playbook (`ansible/playbook.yml`) | cloud-init (`kubectl apply -f calico.yaml` at boot) |
+| **NetworkPolicy** | ❌ **silently ignored** | ✅ **enforced** |
+| Why this CNI | just needs pods to talk — simple, portable | needs security segmentation between services |
+
+**The deciding factor is NetworkPolicy — and it is not optional trivia for billfree.** billfree ships real network firewall rules in `deploy/platform/networkpolicies.yaml`:
+
+```yaml
+kind: NetworkPolicy
+  name: default-deny-ingress      # nobody may talk to anyone…
+kind: NetworkPolicy
+  name: allow-intra-namespace     # …except within the same namespace…
+kind: NetworkPolicy
+  name: allow-ingress-controller  # …and inbound only via the ingress controller
+```
+
+This is a **zero-trust** posture: deny everything, then allow the minimum. It is exactly what a payments platform needs — if `analytics` is ever compromised, it still cannot reach `auth`'s pods, because the NetworkPolicy blocks it at the CNI layer.
+
+**Now the punchline:** had billfree used **Flannel** (like VANTA), those three policies would be **silently ignored**. `default-deny-ingress` would be written, reviewed, and merged — and every pod would still be wide open. A firewall that isn't enforcing is worse than no firewall, because you *believe* you're protected. **billfree chose Calico precisely so its NetworkPolicies actually mean something.**
+
+> 🇮🇳 **Ek line — dono projects:** VANTA ko sirf **connectivity** chahiye thi → Flannel kaafi (simple, portable). billfree ko connectivity **+ firewall (NetworkPolicy)** chahiye thi → **Calico zaroori**, kyunki Flannel NetworkPolicy enforce hi nahi karta. *Same problem, alag zaroorat, alag CNI — aur dono sahi.*
+
+> ⭐ **Interview answer:** *"CNI ka choice zaroorat pe depend karta. Sirf pods connect karne hain → Flannel (simple, kahin bhi). NetworkPolicy / security segmentation chahiye → Calico ya Cilium — kyunki Flannel NetworkPolicy implement hi nahi karta, apply karo to silently ignore hoti hai. Mere do projects mein exactly yahi split hai: VANTA=Flannel (connectivity), billfree=Calico (zero-trust NetworkPolicy)."*
+
 > 💡 **Same-node is different:** two pods on the *same* node never leave it — `Pod-A → veth → node bridge → veth → Pod-B`, pure in-kernel, **no wrap**. Encapsulation only happens **cross-node**. That's why same-node calls are a touch faster.
 
 #### How a pod actually gets its IP
