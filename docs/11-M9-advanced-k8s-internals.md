@@ -363,6 +363,74 @@ flowchart LR
 
 🇮🇳 **Hinglish intuition:** CNI = inter-city highway. Har pod ek ghar hai. Bina highway ke sirf apne mohalle (node) mein jaa sakte ho. CNI highways banata hai node se node tak — har ghar se har ghar seedha.
 
+#### The postal analogy — VXLAN vs BGP, step by step
+
+The mode table above is precise but terse. Here is the same thing in a way that sticks — because *where* each mode applies is what trips people up.
+
+**Set the scene (three separate networks — never confuse these):**
+
+```
+1. Node network    192.168.1.x   ← real machines (physical)
+2. Pod network     10.244.x.x    ← pods (virtual)      ← the hard part
+3. Service network 10.96.x.x     ← services (virtual)
+```
+
+Each node owns a **slice** of the pod network, so the IP itself tells you the node:
+
+```
+Node A  →  10.244.0.0/24   (a pod here is 10.244.0.x)
+Node B  →  10.244.1.0/24   (a pod here is 10.244.1.x)
+         └─ the middle octet = which node
+```
+
+**The core problem:** a pod's IP (`10.244.1.8`) only means something *inside* Kubernetes. The physical network between nodes only understands **node IPs** (`192.168.1.x`). So how does a pod-to-pod packet cross that gap?
+
+**Restaurant / postal analogy:**
+
+```
+Pod-1 writes a letter to Pod-2  (inner address: 10.244.1.8)
+        ↓
+But the postman only knows BUILDING addresses (192.168.x)
+        ↓
+CNI = the receptionist. Two ways it can help:
+```
+
+| | 📦 **VXLAN (overlay)** | 🗺️ **BGP (routing)** |
+|---|---|---|
+| What the receptionist does | puts the letter **inside a bigger envelope** addressed "Building B" | hands the postman a **map** once, so they route it directly |
+| Applied **where** | on **every packet**, at runtime (kernel wraps it) | in each node's **routing table**, **once** (routes shared, then nothing per-packet) |
+| Extra header | yes (~50 bytes/packet) | none |
+| Needs from the network | **nothing** — works on any underlay | the network must be able to route pod IPs |
+| Speed | slightly slower (wrap/unwrap) | faster |
+| Pick it when | cloud / mixed / "just make it work" | performance-critical, you control the network |
+| Real examples | **Flannel**, Calico-VXLAN | Calico-BGP, Cilium |
+
+**Where does the CNI itself run?** On **every node**, as a **DaemonSet** ([ch30 · DaemonSet](30-k8s-complete-reference.md)) — "one pod per node." That agent (a) programs the node's routing table and (b) does the wrap/unwrap (VXLAN) or pure routing (BGP). See it in any cluster:
+
+```bash
+kubectl get pods -n kube-system | grep -iE "flannel|calico|cilium|kindnet"
+```
+
+**The cross-node packet journey (VXLAN):**
+
+```
+① Pod-1 (10.244.0.5, Node A) → packet "to: 10.244.1.8"
+② out of the pod via its veth pair to Node A
+③ Node A routing table: "10.244.1.x lives on Node B (192.168.1.20)"
+④ CNI WRAPS it:  [ outer: nodeA→nodeB (192.168.x) [ inner: pod1→pod2 (10.244.x) ] ]
+⑤ physical network carries it (sees only node IPs)
+⑥ Node B UNWRAPS → recovers the original pod packet
+⑦ Node B: "10.244.1.8 is my local pod" → veth → Pod-2
+```
+
+With **BGP** there is no step ④/⑥ — the routes were shared ahead of time, so the packet travels **as-is**, the network already knowing where `10.244.1.x` lives.
+
+> 🇮🇳 **Ek line:** VXLAN har packet ko **lifafe mein wrap** karta (network ko pod IP jaanne ki zaroorat nahi — kahin bhi chalta, thoda slow). BGP nodes ke beech **routes share** karta (network khud pod IP tak pahunchata — fast, par network support chahiye). Dono **har node ke CNI agent** (DaemonSet) chalate hain.
+
+> ⚠️ **Your projects:** VANTA runs **Flannel (VXLAN overlay)** — portable, runs anywhere, but see the MTU and NetworkPolicy gotchas below (both bite Flannel specifically). Managed EKS often uses **VPC-native routing** — AWS's own network knows the pod IPs, so no wrapping is needed at all.
+
+> 💡 **Same-node is different:** two pods on the *same* node never leave it — `Pod-A → veth → node bridge → veth → Pod-B`, pure in-kernel, **no wrap**. Encapsulation only happens **cross-node**. That's why same-node calls are a touch faster.
+
 #### How a pod actually gets its IP
 
 **The apartment-building analogy:**
