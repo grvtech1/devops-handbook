@@ -132,6 +132,36 @@ Ingress is not a Service type — it is a separate resource that routes HTTP/HTT
 **ConfigMap = non-sensitive config (URLs, feature flags); Secret = sensitive values (passwords, tokens) — stored as base64, not encrypted by default.**
 Base64 is encoding, not encryption — anyone with `kubectl get secret` access can decode it. For real security: enable Kubernetes encryption-at-rest, or use an external secret manager (HashiCorp Vault, AWS Secrets Manager, Sealed Secrets). Neither ConfigMap nor Secret should ever be baked into the image.
 
+### Encoding vs Hashing vs Encryption
+
+These three get mixed up constantly, and the Secret discussion above hinges on the first one. They answer three different questions:
+
+| | **Encoding** (base64) | **Hashing** (bcrypt, SHA-256) | **Encryption** (AES, RSA) |
+|---|---|---|---|
+| Purpose | change *format* (safe transport) | *verify* without storing the original | *hide* data you need back |
+| Reversible? | ✅ trivially (no key) | ❌ **never** (one-way) | ✅ but **only with the key** |
+| Needs a key? | No | No | **Yes** |
+| Same input → same output? | Yes | Yes (unless salted) | No (with random IV) |
+| Use it for | JSON/binary over the wire, K8s Secrets | **passwords**, file integrity | messages, disk-at-rest, TLS in transit |
+| Security? | **None** — it's not security | integrity/auth | confidentiality |
+
+**Encoding — base64.** Just a reversible format change, *no key*. `echo` a base64 string to `base64 -d` and it's back. This is why a K8s Secret is **not** encrypted — base64 is encoding. Never mistake "it looks scrambled" for "it's protected."
+
+**Hashing — one-way, for passwords.** Runs input through a one-way function → a fixed-length digest you *cannot reverse*. You store the **hash**, never the password. On login you hash the attempt and compare hashes — the system never knows your actual password (that's why "forgot password" *resets* rather than *reveals*).
+
+- **Salt** = a random value mixed in per-password, so two users with the same password get **different** hashes. Kills precomputed "rainbow table" attacks and stops one crack from unlocking another account.
+- **Use a slow, salted password hash — `bcrypt`, `argon2`, `scrypt`** — deliberately slow to make brute-force infeasible. **Never `md5`/`sha1`** for passwords: they're fast, which helps the attacker. (Fast hashes like SHA-256 are fine for *file integrity*, not passwords.)
+- 🔗 This is the `bcrypt` "native module" from [M3](04-M3-docker.md) — its speed-critical core is compiled C (glibc), which is why an Alpine/musl base can break it.
+
+**Encryption — reversible with a key, for confidentiality.**
+
+- **Symmetric (AES):** one shared key encrypts *and* decrypts — fast, for bulk data (disk-at-rest, DB fields).
+- **Asymmetric (RSA/ECC):** a public key encrypts, a private key decrypts — used to bootstrap TLS and to sign. → [TLS/mTLS in M9](11-M9-advanced-k8s-internals.md).
+
+> 🇮🇳 **Hinglish intuition:** Encoding = **envelope** (koi bhi khol le — sirf format). Hashing = **meat grinder** (steak→keema, wapas nahi — password verify karo bina store kiye). Encryption = **locker with a key** (band karo, key se kholo — jo wapas chahiye).
+>
+> ⭐ **Interview reflex:** *"Password? **hash** (bcrypt, salted) — kabhi encrypt nahi (encryption reversible hai, password wapas nahi chahiye). Data jo wapas chahiye? **encrypt** (AES at-rest, TLS in-transit). base64? wo **encoding** hai — koi security nahi."* Saying "we encrypt passwords" is a red flag — you **hash** passwords.
+
 ### requests vs limits (and OOMKilled)
 
 **request = the scheduler's placement guarantee; limit = the hard ceiling — exceed CPU → throttled, exceed memory → pod killed (OOMKilled).**
