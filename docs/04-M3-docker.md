@@ -390,11 +390,34 @@ CMD ["node", "dist/server.js"]
 - No TypeScript compiler, no test frameworks, no source maps ship to production
 - Runs as a non-root user
 
+### Choosing a base image — the decision, not a coin toss
+
+Base images sit on a spectrum from biggest-and-easiest to smallest-and-strictest. The rule: **the smallest image that (a) runs your app correctly and (b) you can still operate/debug.**
+
+| Base | C library | Size | Shell? | Choose it when |
+|------|-----------|------|--------|----------------|
+| `node:20` (full Debian) | glibc | ~1 GB | yes | learning, or the **build** stage where size is irrelevant |
+| **`node:20-slim`** | glibc | ~200 MB | yes | **sensible default** — small but debuggable |
+| `node:20-alpine` | **musl** | ~120 MB | yes (busybox) | you need tiny **and** have no fragile native deps |
+| `distroless` (debian) | glibc | ~150 MB | **no** | production, max security, team can debug without a shell |
+| `scratch` | none | ~0 | **no** | a **fully static binary** only (Go, Rust) |
+
+!!! warning "The one gotcha that bites people: musl vs glibc"
+    Most Linux (Debian/Ubuntu, and their `-slim` images) ship **glibc** — the standard C library every program links against. **Alpine ships `musl`** instead: much smaller, but *not* 100% behaviourally identical. Precompiled native modules (Node `bcrypt`/`sharp`, some Python wheels) are usually built against glibc — on Alpine they can fail to load, behave subtly differently, or force a slow from-source rebuild. There have also been famous musl DNS-resolution edge cases.
+
+    **Practical rule:** static binary (Go/Rust) → `scratch`/`distroless`. Interpreted app with native deps (Node/Python) → **stay on glibc** (`-slim` or `distroless-debian`); reach for Alpine only when you've confirmed nothing native breaks. When unsure, `-slim` is the safe answer 90 % of the time.
+
+    > **Analogy:** the C library is your house wiring. `glibc` = standard wiring every appliance fits; `musl` = a slimmer wiring — most appliances work, a few older/precompiled ones spark.
+
+    "But distroless has no shell to debug!" — in Kubernetes that objection is now stale: attach an [ephemeral debug container](30-k8s-complete-reference.md) with `kubectl debug -it <pod> --image=busybox --target=<container>`. The runtime image stays minimal; you still get a shell when you need one.
+
+> 🏭 **Production standard (beyond just "smaller"):** base choice matters *less* than these — pin by **digest** (`image@sha256:...`), not a mutable tag; **rebuild regularly** so base CVE patches land (let Renovate/Dependabot bump the base); **scan in CI** with a Trivy gate; run **non-root**; and at higher maturity, **sign** images (`cosign`) + ship an **SBOM** (`syft`). See [M6 CI/CD](07-M6-cicd.md) and [roadmap M16](15-roadmap-M11-M18.md).
+
 ### Image optimization checklist
 
 | Optimization | Why | How |
 |-------------|-----|-----|
-| Small base image | Fewer packages = smaller attack surface + faster pulls | `alpine`, `slim`, `distroless` |
+| Small base image | Fewer packages = smaller attack surface + faster pulls | `slim` (default) · `distroless` (secure) · `alpine` (tiny, mind musl) |
 | Layer order | Maximize cache hits | deps before code |
 | Combine RUN commands | Fewer layers, smaller image | `RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*` |
 | Multi-stage | Drop build toolchain | `FROM ... AS build` then `COPY --from=build` |
